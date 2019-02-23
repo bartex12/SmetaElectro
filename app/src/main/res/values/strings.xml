@@ -1,0 +1,493 @@
+<resources>
+    <string name="app_name">SmetaElectro</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_smeta_type">SmetaType</string>
+
+    <string-array name="MenuMain">
+        <item>Оценочная смета на работу</item>
+        <item>Оценочная смета на материалы</item>
+        <item>Смета на работу</item>
+        <item>Смета на материалы</item>
+    </string-array>
+
+    <string-array name="category_name">
+        <item>Электромонтаж</item>
+        <item>Другие работы</item>
+    </string-array>
+
+    <string-array name="category_descr">
+        <item>Электрика и слаботочка</item>
+        <item>Работы, не имеющие отношения к электрике</item>
+    </string-array>
+
+
+    <string-array name="type_name_electro">
+        <item>Демонтаж</item>
+        <item>Подготовительные работы</item>
+        <item>Пробивка штроб и отверстий под коробки</item>
+        <item>Прокладка кабеля</item>
+        <item>Установка и расключение коробок</item>
+        <item>Сверление отверстий</item>
+        <item>Работа со щитом</item>
+        <item>Установка розеток и выключателей</item>
+        <item>Установка и подключение светильников</item>
+        <item>Светодиодная подсветка</item>
+        <item>Установка и подключение оборудования</item>
+        <item>Сопутствующие работы</item>
+        <item>Примечания к смете</item>
+    </string-array>
+
+    <string-array name="type_descr_electro">
+        <item>Демонтаж старой электропроводки и оборудования</item>
+        <item>Временный щит, времянки, удлинители</item>
+        <item>Пробивка штроб и отверстий под коробки</item>
+        <item>Прокладка электро и слаботочного кабеля</item>
+        <item>Установка и расключение монтажных и распределительных коробок</item>
+        <item>Сверление отверстий в перегородках и перекрытиях</item>
+        <item>Установка щита и подключение автоматов</item>
+        <item>Установка розеток и выключателей</item>
+        <item>Установка и подключение светильников</item>
+        <item>Наклейка ленты и подключение блоков управления</item>
+        <item>Установка и подключение вентиляторов, водонагревателей, электроплиты и т.д.</item>
+        <item>Разработка монтажной схемы, покупка материалов, пусконаладка и т.п.</item>
+        <item>Условия, при которых написана смета</item>
+    </string-array>
+
+    <string-array name="type_name_drugoe">
+        <item>Хрень</item>
+        <item>Полная хрень</item>
+    </string-array>
+
+    <string-array name="type_descr_drugoe">
+        <item>Не электрика</item>
+        <item>Ваще не электрика</item>
+    </string-array>
+
+    <string-array name="work_name_type_hren">
+        <item>Валять дурака</item>
+        <item>Ковырять в носу</item>
+    </string-array>
+
+    <string-array name="work_name_type_full_hren">
+        <item>Спать </item>
+        <item>Ждать</item>
+    </string-array>
+
+    <string-array name="work_name_type_demontag">
+        <item>Демонтаж розеток, выключателей, светильников</item>
+        <item>Демонтаж старого кабеля</item>
+    </string-array>
+
+    <string-array name="work_name_type_podgotovka">
+        <item>Монтаж временного освещения (точка)</item>
+        <item>Установка  временного  строительного щитка (при необходимости)</item>
+    </string-array>
+
+    <string-array name="work_name_type_shtroby_otverstia">
+        <item>Пробивка штроб в бетоне</item>
+        <item>Пробивка штроб в бетоне на потолке</item>
+        <item>Пробивка отверстий под коробки в бетоне</item>
+        <item>Пробивка отверстий под распред коробки в бетоне</item>
+        <item>Пробивка штроб в штукатурке и кирпиче</item>
+        <item>Пробивка отверстий под монтажные  коробки в кирпиче</item>
+        <item>Пробивка отверстий под распред коробки в кирпиче</item>
+        <item>Пробивка штроб в штукатурке, пенобетоне, гипсолите</item>
+        <item>Пробивка отверстий под монтажные  коробки в штукатурке, пенобетоне, гипсолите</item>
+        <item>Пробивка отверстий под распределительные  коробки в штукатурке, пенобетоне, гипсолите</item>
+        <item>Разметка и сверление отверстий под коробки в гипроке</item>
+    </string-array>
+
+    <string-array name="work_name_type_kabel_kabelkanaly">
+        <item>Прокладка электрокабеля в гофре с подготовкой трасс</item>
+        <item>Прокладка электрокабеля без гофры с подготовкой трасс</item>
+        <item>Прокладка слаботочного кабеля в гофре с подготовкой трасс</item>
+        <item>Прокладка слаботочного кабеля без гофры с подготовкой трасс</item>
+        <item>Прокладка кабелей для тёплых полов, за кв м</item>
+        <item>Прокладка кабеля в траншеях в ПНД для грунтовых светильников</item>
+        <item>Монтаж кабель-канала шириной до 40 мм</item>
+        <item>Монтаж кабель-канала шириной oт 40 мм</item>
+    </string-array>
+
+    <string-array name="work_name_type_korobki">
+        <item>Установка монтажных коробок скрыто (вмазка)</item>
+        <item>Установка монтажных коробок открыто</item>
+        <item>Установка монтажных коробок в гипроке</item>
+        <item>Установка коробок в вагонке, фанере</item>
+        <item>Установка монтажных коробок в кафеле (со сверл. отв.)</item>
+        <item>Установка распределительных коробок в гипроке</item>
+        <item>Установка распределительных коробок скрыто (вмазка)</item>
+        <item>Расключение распределительных коробок</item>
+        <item>Расключение проходных монтажно-распределительных коробок</item>
+        <item>Расключение "слепых" монтажных коробок со сваркой скруток</item>
+        <item>Соединение проводов сваркой в блоках розеток</item>
+        <item>Сварка скруток электрокабеля</item>
+    </string-array>
+
+    <string-array name="work_name_type_sverlenie_otverstii">
+        <item>Сверление отверстий под гофру 16мм в  кирпичнных стенах толщиной до 25 см</item>
+        <item>Сверление отверстий под гофру 16мм в  бетонных стенах толщиной до 15см</item>
+        <item>Сверление отверстий под гофру 20мм в  кирпичнных стенах толщиной до 25 см</item>
+        <item>Сверление отверстий под гофру 20мм в  бетонных стенах толщиной до 15см</item>
+        <item>Сверление отверстий под гофру 16мм в  капитальных  стенах</item>
+        <item>Разметка и сверление отверстий под встроенные светильники</item>
+    </string-array>
+
+    <string-array name="work_name_type_shchit">
+        <item>Установка и подключение встроенного электрощита на 12 модулей</item>
+        <item>Установка и подключение встроенного электрощита на 24 модулей</item>
+        <item>Установка и подключение встроенного электрощита на 36 модулей</item>
+        <item>Установка и подключение встроенного электрощита на 48 модулей</item>
+        <item>Установка и подключение наружного электрощита на 12 модулей</item>
+        <item>Установка и подключение наружного электрощита на 24 модулей</item>
+        <item>Установка и подключение наружного электрощита на 36 модулей</item>
+        <item>Установка и подключение наружного электрощита на 48 модулей</item>
+        <item>Установка слаботочного щита (на 24 модуля)</item>
+        <item>Внутренняя разводка шин электрощита</item>
+        <item>Установка и подключение 1ф электрочётчика на DIN рейку</item>
+        <item>Установка и подключение 1ф электрочётчика на панель</item>
+        <item>Установка и подключение 3ф электрочётчика на DIN рейку</item>
+        <item>Установка и подключение 3ф электрочётчика на панель</item>
+        <item>Установка и подключение 1ф автомата</item>
+        <item>Установка и подключение 1ф УЗО, дифавтомата</item>
+        <item>Установка и подключение 3ф автомата</item>
+        <item>Установка и подключение 3ф УЗО</item>
+        <item>Установка и подключение 3ф  рубильника</item>
+        <item>Установка и подключение 3ф реверсивного рубильника</item>
+        <item>Установка и подключение 3ф контактора</item>
+        <item>Установка и подключения блока сумеречного выключателя</item>
+        <item>Замена вводного кабеля от  шины питания до счётчика</item>
+        <item>Установка и подключение автомата ввода в щите дома</item>
+        <item>Маркировка автоматов щита - печатная версия</item>
+    </string-array>
+
+    <string-array name="work_name_type_set_rozetki">
+        <item>Установка розеток и выключателей)</item>
+        <item>Установка  переключателей</item>
+        <item>Установка  двухклавишных переключателей</item>
+        <item>Установка перекрёстных выключателей</item>
+        <item>Установка диммеров</item>
+        <item>Установка компьютерных розеток</item>
+        <item>Установка телефонных розеток</item>
+        <item>Установка  конечных ТВ розеток</item>
+        <item>Установка и подключение терморегуляторов тёплого пола</item>
+        <item>Установка и подключение ТВ-разветвителя на 4 направления</item>
+        <item>Установка заглушек</item>
+        <item>Установка и подключение  кнопки</item>
+    </string-array>
+
+    <string-array name="work_name_type_set_svetilniki">
+        <item> Установка и подкл. потолочных светильников</item>
+        <item>Установка и подключение настенных светильников (бра)</item>
+        <item>Сборка, установка и подключение люстры (до 5 рожков), от</item>
+        <item>Установка и подключение подвесов</item>
+        <item>Установка и подкл. светодиод/галоген встроенных светильников</item>
+        <item>Подкл. блоков питания  светодиод/галоген  встр. светильников</item>
+        <item>Подключение подсветки зеркала</item>
+        <item>Установка и подключение датчиков освещённости</item>
+        <item>Установка и подключение датчиков движения</item>
+        <item>Установка и подключение  светильников нижн подсв кухни</item>
+        <item>Установка и подключение грунтовых светильников</item>
+    </string-array>
+
+    <string-array name="work_name_type_LED">
+        <item>Установка теплоотводов для светодиодной ленты, м</item>
+        <item>Наклейка, соединение, подключение светодиодной ленты, м</item>
+        <item>Установка и подключение блоков питания для ленты</item>
+        <item>Установка и подключение усилителя для ленты</item>
+        <item>Установка и подключение контроллера для ленты</item>
+    </string-array>
+
+    <string-array name="work_name_type_oborudovanie">
+        <item>Установка и подключение элестрополотенцесушила</item>
+        <item>Установка и подключение вентилятора</item>
+        <item>Установка и подключение электрозвонка</item>
+        <item>Установка и подключение электроплиты</item>
+        <item>Установка и подключение проточного водонагревателя</item>
+        <item>Подключение накопительного водонагревателя</item>
+        <item>Подключение домофона</item>
+    </string-array>
+
+    <string-array name="work_name_type_soputstv">
+        <item>Разработка и корректировка монтажной схемы</item>
+        <item>Разработка схемы электрощита</item>
+        <item>Организационная работа</item>
+        <item>Пусконаладочные работы</item>
+        <item>Транспортные расходы</item>
+        <item>Составление схемы скрытой проводки (в электронном виде)</item>
+    </string-array>
+
+    <string-array name="work_name_type_primechania">
+        <item>Подключение плиты , духовки, вытяжки выполняют кухонщики</item>
+        <item>Установку и подключение блока Wi-Fi, домофона и т.п. производят специализированные фирмы</item>
+        <item>Телевизионные, компьютерные кабели, кабели видеонаблюдения, сигнализации, системы доступа прокладывают  специализированные фирмы</item>
+        <item>Окончательная смета уточняется по фактически выполненному объёму работ</item>
+        <item>Смета составлена в расценках на </item>
+    </string-array>
+
+    <string-array name="unit_name">
+        <item>шт</item>
+        <item>м</item>
+        <item>кв.м</item>
+        <item>кг</item>
+        <item> </item>
+    </string-array>
+
+
+    <string-array name="cost_of_work">
+        <item>30</item>
+        <item>10</item>
+        <item>150</item>
+        <item>500</item>
+        <item>300</item>
+        <item>350</item>
+        <item>330</item>
+        <item>350</item>
+        <item>250</item>
+        <item>280</item>
+        <item>300</item>
+        <item>200</item>
+        <item>220</item>
+        <item>250</item>
+        <item>80</item>
+        <item>70</item>
+        <item>60</item>
+        <item>60</item>
+        <item>50</item>
+        <item>400</item>
+        <item>100</item>
+        <item>120</item>
+        <item>200</item>
+        <item>100</item>
+        <item>200</item>
+        <item>60</item>
+        <item>150</item>
+        <item>180</item>
+        <item>80</item>
+        <item>120</item>
+        <item>450</item>
+        <item>150</item>
+        <item>150</item>
+        <item>150</item>
+        <item>30</item>
+        <item>100</item>
+        <item>100</item>
+        <item>150</item>
+        <item>150</item>
+        <item>300</item>
+        <item>180</item>
+        <item>500</item>
+        <item>600</item>
+        <item>800</item>
+        <item>1000</item>
+        <item>300</item>
+        <item>400</item>
+        <item>600</item>
+        <item>800</item>
+        <item>500</item>
+        <item>1500</item>
+        <item>350</item>
+        <item>800</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>400</item>
+        <item>350</item>
+        <item>800</item>
+        <item>650</item>
+        <item>800</item>
+        <item>500</item>
+        <item>300</item>
+        <item>30</item>
+        <item>200</item>
+        <item>220</item>
+        <item>280</item>
+        <item>250</item>
+        <item>250</item>
+        <item>250</item>
+        <item>220</item>
+        <item>220</item>
+        <item>450</item>
+        <item>300</item>
+        <item>100</item>
+        <item>200</item>
+        <item>450</item>
+        <item>450</item>
+        <item>500</item>
+        <item>400</item>
+        <item>200</item>
+        <item>150</item>
+        <item>600</item>
+        <item>350</item>
+        <item>350</item>
+        <item>450</item>
+        <item>700</item>
+        <item>120</item>
+        <item>180</item>
+        <item>250</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1500</item>
+        <item>650</item>
+        <item>250</item>
+        <item>700</item>
+        <item>2000</item>
+        <item>300</item>
+        <item>200</item>
+        <item>3000</item>
+        <item>2000</item>
+        <item>2000</item>
+        <item>2000</item>
+        <item>1000</item>
+        <item>3000</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+
+    </string-array>
+
+
+    <string-array name="unit_of_work">
+        <item>1</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>31</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>11</item>
+        <item>31</item>
+
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+    </string-array>
+
+</resources>
