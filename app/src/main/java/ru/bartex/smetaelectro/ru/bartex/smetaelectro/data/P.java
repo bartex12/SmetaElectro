@@ -6,12 +6,16 @@ public class P {
 
     //имя файла  по умолчанию
     public static final String FILENAME_DEFAULT ="Новая смета";
+    //имя текущего файла сметы
+    public static final String FILENAME_CURRENT ="Имя файла сметы";
     //Название объекта по умолчанию
     public static final String ADRESS_DEFAULT ="Новый объект";
     //Описание сметы объекта по умолчанию
     public static final String DESCRIPTION_DEFAULT ="Смета на работу на новом объекте";
     //id файла по умолчанию из таблицы файлов
     public static final String ID_FILE_DEFAULT ="ID файла на смету на работу на новом объекте";
+    //id файла по умолчанию из таблицы файлов
+    public static final String ID_FILE ="ID файла сметы";
     //id категории из таблицы категорий
     public static final String ID_CATEGORY ="ID категории работ";
     //id типа работ

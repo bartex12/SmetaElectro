@@ -2,10 +2,12 @@ package ru.bartex.smetaelectro;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,6 +37,9 @@ public class SmetaCategoryElectro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_category);
 
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         mSmetaOpenHelper = new SmetaOpenHelper(this);
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
 
@@ -44,7 +49,7 @@ public class SmetaCategoryElectro extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //находим имя категории в адаптере
-                    TextView tv = view.findViewById(R.id.base_text_category);
+                    TextView tv = view.findViewById(R.id.base_text_two);
                     String cat_name = tv.getText().toString();
                     //находим id по имени категории
                     long cat_id = mSmetaOpenHelper.getIdFromCategoryName(cat_name);
@@ -95,8 +100,29 @@ public class SmetaCategoryElectro extends AppCompatActivity {
             data.add(m);
         }
         String[] from = new String[]{P.ATTR_CATEGORY_MARK,P.ATTR_CATEGORY_NAME};
-        int[] to = new int[]{R.id.checkBoxCategory, R.id.base_text_category};
-        sara =  new SimpleAdapter(this, data, R.layout.list_itrm_category, from, to);
+        int[] to = new int[]{R.id.checkBoxTwo, R.id.base_text_two};
+        sara =  new SimpleAdapter(this, data, R.layout.list_item_two, from, to);
         mListView.setAdapter(sara);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                   Intent intent = new Intent(SmetaCategoryElectro.this, MainActivity.class);
+                   startActivity(intent);
+                   //finish();
+                    return true;
+                case R.id.navigation_smetas:
+                    //mTextMessage.setText(R.string.title_dashboard);
+                    return true;
+                case R.id.navigation_costs:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };
 }

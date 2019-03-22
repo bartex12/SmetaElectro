@@ -52,7 +52,7 @@ public class SmetaTypeElectro extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //находим имя типа работы в адаптере
-                TextView tv = view.findViewById(R.id.base_text_type);
+                TextView tv = view.findViewById(R.id.base_text_two );
                 String type_name = tv.getText().toString();
                 //находим id по имени типа
                 long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name);
@@ -90,10 +90,10 @@ public class SmetaTypeElectro extends AppCompatActivity {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_smetas:
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_costs:
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
             }

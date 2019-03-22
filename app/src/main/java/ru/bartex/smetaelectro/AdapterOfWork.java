@@ -48,8 +48,8 @@ public class AdapterOfWork {
             data.add(m);
         }
         String[] from = new String[]{P.ATTR_WORK_MARK, P.ATTR_WORK_NAME};
-        int[] to = new int[]{R.id.checkBoxWork, R.id.base_text_work};
-        SimpleAdapter sara = new SimpleAdapter(ctx, data, R.layout.list_item_work, from, to);
+        int[] to = new int[]{R.id.checkBoxTwo, R.id.base_text_two};
+        SimpleAdapter sara = new SimpleAdapter(ctx, data, R.layout.list_item_two, from, to);
         mListView.setAdapter(sara);
     }
 }

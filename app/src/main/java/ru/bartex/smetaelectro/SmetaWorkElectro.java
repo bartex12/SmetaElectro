@@ -18,7 +18,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 public class SmetaWorkElectro extends AppCompatActivity {
 
     public static final String TAG = "33333";
-
     ListView mListView;
     SmetaOpenHelper mSmetaOpenHelper;
     long file_id;
@@ -45,7 +44,7 @@ public class SmetaWorkElectro extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //находим имя типа работы в адаптере
-                TextView tv = view.findViewById(R.id.base_text_work);
+                TextView tv = view.findViewById(R.id.base_text_two);
                 String type_name = tv.getText().toString();
 
                 //находим id по имени работы
@@ -85,10 +84,10 @@ public class SmetaWorkElectro extends AppCompatActivity {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_smetas:
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_costs:
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
             }

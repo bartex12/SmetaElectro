@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">SmetaElectro</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">В начало</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_smeta_type">SmetaType</string>
+    <string name="Saved">Saved</string>
+    <string name="title_smetas">Сметы</string>
+    <string name="title_costs">Расценки</string>
+
 
     <string-array name="MenuMain">
         <item>Оценочная смета на работу</item>
@@ -489,5 +493,12 @@
         <item>1</item>
 
     </string-array>
+    <string name="title_activity_smetas">Smetas</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_smetas1">Smetas</string>
+    <string name="tab_text_1">Работа</string>
+    <string name="tab_text_2">Материалы</string>
+    <string name="tab_text_3">Tab 3</string>
 
 </resources>

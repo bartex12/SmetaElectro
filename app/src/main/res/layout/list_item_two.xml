@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginBottom="3dp"
               android:background="@drawable/rect">
 
     <CheckBox
-        android:id="@+id/checkBoxWork"
+        android:id="@+id/checkBoxTwo"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -17,13 +16,13 @@
         android:text="        "/>
 
     <TextView
-        android:id="@+id/base_text_work"
+        android:id="@+id/base_text_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
-        android:maxLines="5"
-        android:text="Работа"
+        android:maxLines="3"
+        android:text="Наименование"
         android:textSize="18sp"
         android:textStyle="italic"/>
 

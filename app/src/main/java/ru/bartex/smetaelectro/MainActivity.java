@@ -85,11 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
-                    //mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_smetas:
+                    Intent intent_smetas = new Intent(MainActivity.this, ListOfSmetasNames.class);
+                    startActivity(intent_smetas);
                     return true;
-                case R.id.navigation_notifications:
-                    //mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_costs:
+                    Intent intent_costs = new Intent(MainActivity.this, CostCategory.class);
+                    startActivity(intent_costs);
                     return true;
             }
             return false;

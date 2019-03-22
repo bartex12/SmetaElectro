@@ -47,8 +47,8 @@ public class AdapterOfType {
             data.add(m);
         }
         String[] from = new String[]{P.ATTR_TYPE_MARK, P.ATTR_TYPE_NAME};
-        int[] to = new int[]{R.id.checkBoxType, R.id.base_text_type};
-        SimpleAdapter sara = new SimpleAdapter(ctx, data, R.layout.list_item_type, from, to);
+        int[] to = new int[]{R.id.checkBoxTwo, R.id.base_text_two};
+        SimpleAdapter sara = new SimpleAdapter(ctx, data, R.layout.list_item_two, from, to);
         mListView.setAdapter(sara);
     }
 }

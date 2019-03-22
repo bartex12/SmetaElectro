@@ -5,25 +5,16 @@
               android:layout_marginBottom="3dp"
               android:background="@drawable/rect">
 
-    <CheckBox
-        android:id="@+id/checkBoxType"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:enabled="true"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:text="        "/>
 
     <TextView
-        android:id="@+id/base_text_type"
-
+        android:id="@+id/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
-        android:maxLines="3"
-        android:text="Тип эл/монт работ"
+        android:maxLines="5"
+        android:paddingLeft="16dp"
+        android:text="Данные"
         android:textSize="18sp"
         android:textStyle="italic"/>
 
