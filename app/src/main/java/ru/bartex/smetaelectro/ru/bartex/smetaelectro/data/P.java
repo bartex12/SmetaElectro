@@ -23,6 +23,20 @@ public class P {
     //id выбранной работы
     public static final String ID_WORK ="ID выбранной работы";
 
+    // номер выбранной работы
+    public static final String WORK_NUMBER ="Номер выбранной работы";
+    // Имя выбранной работы
+    public static final String WORK_NAME ="Имя выбранной работы";
+    // Расценка для выбранной работы
+    public static final String WORK_COST ="Расценка для выбранной работы";
+    // Количество выбранной работы
+    public static final String WORK_AMOUNT ="Количество выбранной работы";
+    // Единицы измерения выбранной работы
+    public static final String WORK_UNITS ="Единицы измерения выбранной работы";
+    // Стоимшсть выбранной работы
+    public static final String WORK_SUMMA ="Стоимшсть выбранной работы";
+
+
     //Ключ имени категории
     public static final String ATTR_CATEGORY_NAME ="ATTR_CATEGORY_NAME";
     //Ключ чекбокса  категории

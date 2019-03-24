@@ -98,7 +98,7 @@ public class SmetaDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long FW_ID = mSmetaOpenHelper.insertRowInFW(file_id, work_id,
+                long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,
                         type_id, cat_id, cost, count, unit, count*cost);
 
                 Log.d(TAG, "SmetaDetail-mButtonSave-onClick FW_ID = " + FW_ID);
