@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -53,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
                 }else if (position == 2){
 
-                    Intent intent = new Intent(MainActivity.this, SmetaCategoryElectro.class);
-                    intent.putExtra(P.ID_FILE_DEFAULT, file_id);
-                    startActivity(intent);
+                    dialogNewOrCurrentFragment();
+                    //Intent intent = new Intent(MainActivity.this, SmetaCategoryElectro.class);
+                    //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                   // startActivity(intent);
 
                 }else if (position == 3){
 
@@ -117,5 +119,9 @@ public class MainActivity extends AppCompatActivity {
         mListView.setAdapter(sara);
     }
 
-
+    //диалог сохранения, оформленный как класс с указанием имени файла
+    private void dialogNewOrCurrentFragment() {
+        DialogFragment dialogFragment = new DialogNewOrCurrentFragment();
+        dialogFragment.show(getSupportFragmentManager(),"NewOrCurrentSmeta");
+    }
 }

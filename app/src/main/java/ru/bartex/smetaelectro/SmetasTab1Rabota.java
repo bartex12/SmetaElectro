@@ -91,8 +91,6 @@ public class SmetasTab1Rabota extends Fragment {
 
 
     public void updateAdapter() {
-        //потом будет более сложный макет списка  с позицией, названием работы, ценой, количеством,
-        //суммой, типом и категорией работы
 
         //Массив работ в файле с file_id
         String[] work_name = mSmetaOpenHelper.getNameOfWork(file_id);

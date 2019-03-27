@@ -77,8 +77,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + FileWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FileWork.COLUMN_FILE_NAME + " TEXT NOT NULL, "
                 + FileWork.COLUMN_ADRESS + " TEXT, "
-                + FileWork.COLUMN_FILE_NAME_DATE + " TEXT NOT NULL, "
-                + FileWork.COLUMN_FILE_NAME_TIME + " TEXT NOT NULL, "
+                + FileWork.COLUMN_FILE_NAME_DATE + " TEXT NOT NULL DEFAULT current_date, "
+                + FileWork.COLUMN_FILE_NAME_TIME + " TEXT NOT NULL DEFAULT current_time, "
                 + FileWork.COLUMN_DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE);
@@ -272,6 +272,29 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         long ID = db.insert(FileWork.TABLE_NAME, null, cv);
         // закрываем соединение с базой
         db.close();
+        return ID;
+    }
+
+    // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
+    public long addFile(String fileName, String adress, String description) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        //получаем дату и время в нужном для базы данных формате
+        String dateFormat = this.getDateString();
+        String timeFormat = this.getTimeString();
+
+        ContentValues cv = new ContentValues();
+        cv.put(FileWork.COLUMN_FILE_NAME, fileName);
+        cv.put(FileWork.COLUMN_ADRESS, adress);
+        cv.put(FileWork.COLUMN_FILE_NAME_DATE, dateFormat);
+        cv.put(FileWork.COLUMN_FILE_NAME_TIME, timeFormat);
+        cv.put(FileWork.COLUMN_DESCRIPTION_OF_FILE, description);
+        // вставляем строку
+        long ID = db.insert(FileWork.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
         return ID;
     }
 
@@ -977,7 +1000,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     public String getFileNameById( long file_id, SQLiteDatabase db) throws SQLException {
         Cursor mCursor = db.query(true, FileWork.TABLE_NAME,
                 null,
-                Work._ID + "=" + file_id,
+                FileWork._ID + "=" + file_id,
                 null, null, null, null, null);
         if ((mCursor != null) && (mCursor.getCount() != 0)) {
             mCursor.moveToFirst();

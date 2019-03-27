@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class Smetas extends AppCompatActivity {
 
@@ -49,8 +51,15 @@ public class Smetas extends AppCompatActivity {
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
 
+        //Получаем имя файла с текущей  сметой
+        SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String fileName = mDbHelper.getFileNameById(file_id, db);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //показываем имя текущей сметы в заголовке экрана
+        toolbar.setTitle("Смета: " + fileName);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,12 +74,16 @@ public class Smetas extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.hide();
+        //fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Intent intent = new Intent(Smetas.this, SmetaCategoryElectro.class);
+                intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                 startActivity(intent);
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
             }
         });
 

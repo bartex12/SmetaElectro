@@ -496,7 +496,8 @@
     <string name="title_activity_smetas">Smetas</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_smetas1">Smetas</string>
+    <string name="title_activity_smetas1">Сметы</string>
+    <string name="title_activity_ListOfSmetasNames">Список названий смет </string>
     <string name="tab_text_1">Работа</string>
     <string name="tab_text_2">Материалы</string>
     <string name="tab_text_3">Tab 3</string>

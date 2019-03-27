@@ -1,8 +1,10 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +34,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_smetas_names);
 
+
         mSmetaOpenHelper = new SmetaOpenHelper(this);
 
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
@@ -53,6 +56,20 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_list_of_smetas);
+        //fab.hide();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(ListOfSmetasNames.this, SmetaNewName.class);
+                startActivity(intent);
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+            }
+        });
+
     }
 
     @Override
