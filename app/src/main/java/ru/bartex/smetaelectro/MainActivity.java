@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_main);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mListView = findViewById(R.id.listViewMain);
@@ -84,14 +84,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_smetas:
+                case R.id.navigation_smetas_main:
                     Intent intent_smetas = new Intent(MainActivity.this, ListOfSmetasNames.class);
                     startActivity(intent_smetas);
                     return true;
-                case R.id.navigation_costs:
+                case R.id.navigation_costs_main:
                     Intent intent_costs = new Intent(MainActivity.this, CostCategory.class);
                     startActivity(intent_costs);
                     return true;

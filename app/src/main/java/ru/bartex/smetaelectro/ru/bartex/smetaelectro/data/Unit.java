@@ -9,6 +9,6 @@ public class Unit {
     public final static String TABLE_NAME = "Unit";
 
     public final static String _ID = BaseColumns._ID;
-    public final static String COLUMN_UNIT_NAME = "UnitName";
+    public final static String UNIT_NAME = "UnitName";
 
 }

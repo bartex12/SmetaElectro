@@ -16,31 +16,36 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 public class AdapterOfWork {
 
     SmetaOpenHelper mSmetaOpenHelper;
+    long file_id;
     long type_id;
     Context ctx;
     ListView mListView;
 
 
-    public AdapterOfWork(Context ctx,long type_id, ListView mListView){
+    public AdapterOfWork(Context ctx,long file_id,long type_id, ListView mListView){
         this.ctx = ctx;
+        this.file_id = file_id;
         this.type_id = type_id;
         this.mListView = mListView;
         this.mSmetaOpenHelper  = new SmetaOpenHelper(ctx);
     }
 
     public void updateAdapter(){
+        //Курсор с именами работ с типом type_id
         Cursor cursor = mSmetaOpenHelper.getWorkNames(type_id);
+        //Строковый массив с именами работы из таблицы FW для файла с file_id
+        String[] workNamesFW = mSmetaOpenHelper.getWorkNamesFW(file_id);
+
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Map<String,Object> m;
 
         while (cursor.moveToNext()){
-            String name_work = cursor.getString(cursor.getColumnIndex(Work.COLUMN_WORK_NAME));
-            int mark = cursor.getInt(cursor.getColumnIndex(Work.COLUMN_WORK_DONE));
-            boolean  check_mark = false;
-            if (mark == 0){
-                check_mark = false;
-            }else {
-                check_mark = true;
+            String name_work = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
+            boolean check_mark = false;
+            for (int i = 0; i < workNamesFW.length; i++){
+                if (name_work.equalsIgnoreCase(workNamesFW[i])){
+                    check_mark = true;
+                }
             }
             m = new HashMap<>();
             m.put(P.ATTR_WORK_NAME,name_work);

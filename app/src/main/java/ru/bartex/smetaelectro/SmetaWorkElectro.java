@@ -1,5 +1,7 @@
 package ru.bartex.smetaelectro;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -43,35 +45,34 @@ public class SmetaWorkElectro extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                //находим имя типа работы в адаптере
+                //находим имя работы в адаптере
                 TextView tv = view.findViewById(R.id.base_text_two);
-                String type_name = tv.getText().toString();
+                String work_name = tv.getText().toString();
 
                 //находим id по имени работы
-                long work_id = mSmetaOpenHelper.getIdFromWorkName(type_name);
-
-                //отмечаем в базе, что был заход в работу для файла с file_id, cat_id и type_id
-                mSmetaOpenHelper.updateWorkMark(1, work_id);
-                Log.d(TAG, "SmetaWorkDemontag - onItemClick  work_id = " + work_id +
-                        "  Name = " + type_name);
-                //обновляем отметку
-                mAdapterOfWork.updateAdapter();
+                final long work_id = mSmetaOpenHelper.getIdFromWorkName(work_name);
+                Log.d(TAG, "SmetaWorkElectro - onItemClick  work_id = " + work_id +
+                        "  Name = " + work_name);
+                final boolean isWork = mSmetaOpenHelper.isWork(file_id, work_id);
+                Log.d(TAG, "SmetaWorkElectro - onItemClick  isWork = " + isWork);
 
                 Intent intent = new Intent(SmetaWorkElectro.this, SmetaDetail.class);
                 intent.putExtra(P.ID_FILE_DEFAULT, file_id);
                 intent.putExtra(P.ID_CATEGORY, cat_id);
                 intent.putExtra(P.ID_TYPE, type_id);
                 intent.putExtra(P.ID_WORK, work_id);
+                intent.putExtra(P.IS_WORK, isWork);
                 startActivity(intent);
             }
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         //конструктор класса адаптера списка работ
-        mAdapterOfWork = new AdapterOfWork(getApplicationContext(), type_id, mListView);
+        mAdapterOfWork = new AdapterOfWork(getApplicationContext(), file_id, type_id, mListView);
         //обновляем данные
         mAdapterOfWork.updateAdapter();
     }

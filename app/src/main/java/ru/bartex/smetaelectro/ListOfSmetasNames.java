@@ -1,11 +1,20 @@
 package ru.bartex.smetaelectro;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,6 +44,9 @@ public class ListOfSmetasNames extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_smetas_names);
 
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_smetas_list);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         mSmetaOpenHelper = new SmetaOpenHelper(this);
 
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
@@ -45,7 +57,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 //находим имя файла в адаптере
                 TextView tv = view.findViewById(R.id.base_text);
                 String file_name = tv.getText().toString();
-                //находим id по имени категории
+                //находим id по имени файла
                 long file_id = mSmetaOpenHelper.getIdFromFileName(file_name);
 
                 Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id +
@@ -62,15 +74,34 @@ public class ListOfSmetasNames extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(ListOfSmetasNames.this, SmetaNewName.class);
                 startActivity(intent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
             }
         });
 
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(mListViewNames);
+
     }
+
+   private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener=
+           new BottomNavigationView.OnNavigationItemSelectedListener() {
+               @Override
+               public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                   switch (item.getItemId()){
+                       case R.id.navigation_home_smetas_list:
+                            finish();
+                           return true;
+
+                       case R.id.navigation_costs_smetas_list:
+                           Intent intent_costs = new Intent(ListOfSmetasNames.this,
+                                   CostCategory.class);
+                           startActivity(intent_costs);
+                           return true;
+                   }
+                   return false;
+               }
+           };
 
     @Override
     public void onResume() {
@@ -78,6 +109,109 @@ public class ListOfSmetasNames extends AppCompatActivity {
         updateAdapter();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_list_of_smetas, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        Log.d(TAG, "ListOfSmetasNames onOptionsItemSelected id = " + id);
+        switch (id){
+
+            case R.id.action_settings:
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.SPECIFIC_ID, 0, R.string.action_detail);
+        menu.add(0, P.CHANGE_NAME_ID, 0, R.string.action_change_name);
+        menu.add(0, P.DELETE_ID, 0, R.string.action_delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // получаем инфу о пункте списка
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        int id = item.getItemId();
+        Log.d(TAG, "ListOfSmetasNames onContextItemSelected id = " + id +
+                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
+
+        switch (id){
+            case P.SPECIFIC_ID:
+                //получаем имя файла из строки списка файлов
+                TextView tvSpecific = acmi.targetView.findViewById(R.id.base_text);
+                String file_name_specific = tvSpecific.getText().toString();
+                //находим id по имени файла
+                long file_id_specific = mSmetaOpenHelper.getIdFromFileName(file_name_specific);
+                Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name_specific = " + file_name_specific +
+                        " file_id_cpecific =" + file_id_specific);
+                //отправляем интент с id файла
+                Intent intentSpecific = new Intent(ListOfSmetasNames.this, SmetaSpecific.class);
+                intentSpecific.putExtra(P.ID_FILE, file_id_specific);
+                startActivity(intentSpecific);
+                return true;
+
+            case P.CHANGE_NAME_ID:
+                //получаем имя файла из строки списка файлов
+                TextView tvChang = acmi.targetView.findViewById(R.id.base_text);
+                String file_name_chang = tvChang.getText().toString();
+                //находим id по имени файла
+                long file_id_Change = mSmetaOpenHelper.getIdFromFileName(file_name_chang);
+                Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name_chang +
+                        " file_id_Change =" + file_id_Change);
+                //отправляем интент с id файла
+                Intent intent = new Intent(ListOfSmetasNames.this, SmetaChangeData.class);
+                intent.putExtra(P.ID_FILE, file_id_Change);
+                startActivity(intent);
+                return true;
+
+            case P.DELETE_ID:
+
+                Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.DeleteYesNo);
+                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TextView tv = acmi.targetView.findViewById(R.id.base_text);
+                        String file_name = tv.getText().toString();
+                        //находим id по имени файла
+                        long file_id = mSmetaOpenHelper.getIdFromFileName(file_name);
+                        Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name +
+                                " file_id =" + file_id);
+
+                        //Удаляем файл из таблицы FileWork и данные из таблицы FW по file_id
+                        mSmetaOpenHelper.deleteFile(file_id);
+
+                        updateAdapter();
+                    }
+                });
+
+                builder.show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 
     public void updateAdapter() {
         //Курсор с именами файлов

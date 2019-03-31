@@ -69,7 +69,7 @@ public class CostCategory extends AppCompatActivity {
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.COLUMN_CATEGORY_NAME));
+            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
 
             Log.d(TAG, "SmetaCategory - updateAdapter  name_cat = " + name_cat);
             m = new HashMap<>();

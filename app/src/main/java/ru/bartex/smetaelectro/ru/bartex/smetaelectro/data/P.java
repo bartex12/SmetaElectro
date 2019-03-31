@@ -9,7 +9,7 @@ public class P {
     public static final String TAG = "33333";
 
     //имя файла  по умолчанию
-    public static final String FILENAME_DEFAULT = "Новая смета";
+    public static final String FILENAME_DEFAULT = "Первая смета";
     //имя текущего файла сметы
     public static final String FILENAME_CURRENT = "Имя файла сметы";
     //Название объекта по умолчанию
@@ -26,6 +26,8 @@ public class P {
     public static final String ID_TYPE = "ID типа работ";
     //id выбранной работы
     public static final String ID_WORK = "ID выбранной работы";
+    //есть ли в смете такой пункт с работой
+    public static final String IS_WORK = "Есть такой пункт?";
 
     // номер выбранной работы
     public static final String WORK_NUMBER = "Номер выбранной работы";
@@ -55,6 +57,10 @@ public class P {
     public static final String ATTR_WORK_NAME = "ATTR_WORK_NAME";
     //Ключ чекбокса   работ
     public static final String ATTR_WORK_MARK = "ATTR_WORK_MARK";
+
+    public static final int SPECIFIC_ID = 1;
+    public static final int CHANGE_NAME_ID = 2;
+    public static final int DELETE_ID = 3;
 
     public static String setDateTimeString() {
         Calendar calendar = new GregorianCalendar();

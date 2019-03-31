@@ -53,13 +53,8 @@ public class SmetaCategoryElectro extends AppCompatActivity {
                     String cat_name = tv.getText().toString();
                     //находим id по имени категории
                     long cat_id = mSmetaOpenHelper.getIdFromCategoryName(cat_name);
-                    //отмечаем в базе, что был заход в категорию для файла с file_id
-                    mSmetaOpenHelper.updateCategoryMark(1, cat_id);
                     Log.d(TAG, "SmetaCategory - onItemClick  cat_id = " + cat_id +
                          "  Name = " + tv.getText());
-
-                    //обновляем отметку
-                    updateAdapter();
 
                     Intent intent = new Intent(SmetaCategoryElectro.this, SmetaTypeElectro.class);
                     intent.putExtra(P.ID_FILE_DEFAULT, file_id); //передаём дальше id файла
@@ -76,24 +71,22 @@ public class SmetaCategoryElectro extends AppCompatActivity {
     }
 
     public void updateAdapter() {
-        //Курсор с именами категорий
+        //Курсор с именами категорий из таблицы категорий CategoryWork
         Cursor cursor = mSmetaOpenHelper.getCategoryNames();
-        //такой (SimpleAdapter) адаптер, чтобы чекбокс работал -  надо попробовать по-другому -
-        // с картинкой или расширить SimpleCursorAdapter
+        //Строковый массив с именами категорий из таблицы FW для файла с file_id
+        String[] catNamesFW = mSmetaOpenHelper.getCategoryNamesFW(file_id);
+
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.COLUMN_CATEGORY_NAME));
-            int mark = cursor.getInt(cursor.getColumnIndex(CategoryWork.COLUMN_CATEGORY_MARK));
+            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
             boolean chek_mark = false;
-            if (mark == 0){
-                chek_mark= false;
-            }else {
-                chek_mark = true;
+            for (int i = 0; i<catNamesFW.length; i++){
+                if (name_cat.equalsIgnoreCase(catNamesFW[i])){
+                    chek_mark = true;
+                }
             }
-            Log.d(TAG, "SmetaCategory - onResume  name_cat = " + name_cat +
-                    "  mark = " + mark );
             m = new HashMap<>();
             m.put(P.ATTR_CATEGORY_MARK,chek_mark);
             m.put(P.ATTR_CATEGORY_NAME,name_cat);

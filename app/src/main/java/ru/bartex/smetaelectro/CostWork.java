@@ -73,7 +73,7 @@ public class CostWork extends AppCompatActivity {
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_work = cursor.getString(cursor.getColumnIndex(Work.COLUMN_WORK_NAME));
+            String name_work = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
             Log.d(TAG, "CostWork - updateAdapter  name_work = " + name_work);
             m = new HashMap<>();
             m.put(P.ATTR_WORK_NAME,name_work);

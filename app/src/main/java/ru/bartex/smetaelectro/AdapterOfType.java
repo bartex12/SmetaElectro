@@ -15,31 +15,36 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class AdapterOfType {
     SmetaOpenHelper mSmetaOpenHelper;
+    long file_id;
     long cat_id;
     Context ctx;
     ListView mListView;
 
 
-    public AdapterOfType(Context ctx,long cat_id, ListView mListView){
+    public AdapterOfType(Context ctx, long file_id, long cat_id, ListView mListView){
         this.ctx = ctx;
+        this.file_id = file_id;
         this.cat_id = cat_id;
         this.mListView = mListView;
         this.mSmetaOpenHelper  = new SmetaOpenHelper(ctx);
     }
 
     public void updateAdapter(){
+        //курсор с именами типов работы для категорий с cat_id
         Cursor cursor = mSmetaOpenHelper.getTypeNames(cat_id);
+        //Строковый массив с именами типов из таблицы FW для файла с file_id
+        String[] typetNamesFW = mSmetaOpenHelper.getTypeNamesFW(file_id);
+
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Map<String,Object> m;
 
         while (cursor.moveToNext()){
-            String name_type = cursor.getString(cursor.getColumnIndex(TypeWork.COLUMN_TYPE_NAME));
-            int mark = cursor.getInt(cursor.getColumnIndex(TypeWork.COLUMN_TYPE_MARK));
-            boolean  check_mark = false;
-            if (mark == 0){
-                check_mark = false;
-            }else {
-                check_mark = true;
+            String name_type = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+            boolean check_mark = false;
+            for (int i = 0; i<typetNamesFW.length; i++){
+                if (name_type.equalsIgnoreCase(typetNamesFW[i])){
+                    check_mark = true;
+                }
             }
             m = new HashMap<>();
             m.put(P.ATTR_TYPE_NAME,name_type);

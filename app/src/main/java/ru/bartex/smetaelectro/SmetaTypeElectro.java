@@ -56,13 +56,9 @@ public class SmetaTypeElectro extends AppCompatActivity {
                 String type_name = tv.getText().toString();
                 //находим id по имени типа
                 long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name);
-                //отмечаем в базе, что был заход в тип для файла с file_id и cat_id
 
-                mSmetaOpenHelper.updateTypeMark(1, type_id);
                 Log.d(TAG, "SmetaTypeElectro - onItemClick  type_id = " + type_id +
                         "  Name = " + type_name);
-                //обновляем отметку
-                mAdapterOfType.updateAdapter();
 
                 Intent intent = new Intent(SmetaTypeElectro.this, SmetaWorkElectro.class);
                 intent.putExtra(P.ID_FILE_DEFAULT, file_id);
@@ -77,7 +73,7 @@ public class SmetaTypeElectro extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //конструктор класса адаптера списка работ
-        mAdapterOfType = new AdapterOfType(getApplicationContext(), cat_id, mListView);
+        mAdapterOfType = new AdapterOfType(getApplicationContext(), file_id, cat_id, mListView);
         //обновляем данные
         mAdapterOfType.updateAdapter();
     }

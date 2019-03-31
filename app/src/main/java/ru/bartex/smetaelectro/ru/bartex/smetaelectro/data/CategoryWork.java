@@ -10,7 +10,6 @@ public class CategoryWork {
     public final static String TABLE_NAME = "Category";
 
     public final static String _ID = BaseColumns._ID;
-    public final static String COLUMN_CATEGORY_MARK = "Category_Mark";
-    public final static String COLUMN_CATEGORY_NAME = "CategoryName";
-    public final static String COLUMN_CATEGORY_DESCRIPTION = "DescriptionOfCategory";
+    public final static String CATEGORY_NAME = "CategoryName";
+    public final static String CATEGORY_DESCRIPTION = "DescriptionOfCategory";
 }

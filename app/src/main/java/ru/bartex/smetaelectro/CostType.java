@@ -71,7 +71,7 @@ protected void onResume() {
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_type = cursor.getString(cursor.getColumnIndex(TypeWork.COLUMN_TYPE_NAME));
+            String name_type = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
             Log.d(TAG, "CostType - updateAdapter  name_type = " + name_type);
             m = new HashMap<>();
             m.put(P.ATTR_TYPE_NAME,name_type);

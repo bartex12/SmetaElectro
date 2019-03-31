@@ -11,9 +11,9 @@ public class FileWork {
     public final static String TABLE_NAME = "FileWork";
 
     public final static String _ID = BaseColumns._ID;
-    public final static String COLUMN_FILE_NAME = "FileName";
-    public final static String COLUMN_ADRESS = "FileAdress";
-    public final static String COLUMN_FILE_NAME_DATE = "FileNameDate";
-    public final static String COLUMN_FILE_NAME_TIME = "FileNameTime";
-    public final static String COLUMN_DESCRIPTION_OF_FILE = "DescriptionOfFile";
+    public final static String FILE_NAME = "FileName";
+    public final static String ADRESS = "FileAdress";
+    public final static String FILE_NAME_DATE = "FileNameDate";
+    public final static String FILE_NAME_TIME = "FileNameTime";
+    public final static String DESCRIPTION_OF_FILE = "DescriptionOfFile";
 }
