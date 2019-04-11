@@ -104,7 +104,7 @@ public class SmetaChangeData extends AppCompatActivity {
                     smetaOpenHelper.updateFileData(file_id, nameFile, adress, description);
 
                     Toast.makeText(SmetaChangeData.this,"Обновлено ",
-                           Toast.LENGTH_LONG).show();
+                           Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

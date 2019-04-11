@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".SmetaSpecific">
-        </activity>
-
+        <activity android:name=".TypeChangeData"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".TypeSpecific" />
+        <activity
+            android:name=".CategoryChangeData"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".CategorySpecific" />
+        <activity android:name=".SmetaSpecific" />
         <activity
             android:name=".SmetaChangeData"
             android:label="@string/title_activity_changeDataFile"
@@ -23,30 +27,48 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SmetaCategoryElectro" />
-        <activity android:name=".SmetaTypeElectro" />
-        <activity android:name=".SmetaWorkElectro" />
-        <activity android:name=".SmetaDetail"
+        <activity
+            android:name=".SmetaCategoryElectro"
+            android:label="@string/title_activity_SmetaNewCategory" />
+        <activity
+            android:name=".SmetaTypeElectro"
+            android:label="@string/title_activity_SmetaNewType" />
+        <activity
+            android:name=".SmetaWorkElectro"
+            android:label="@string/title_activity_SmetaNewWork" />
+        <activity
+            android:name=".SmetaDetail"
             android:label="@string/title_activity_details"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
-        <activity android:name=".CostCategory" />
-        <activity android:name=".CostType" />
-        <activity android:name=".CostWork" />
-        <activity android:name=".CostDetail" />
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".CostCategory"
+            android:label="@string/title_activity_CostCategory" />
+        <activity
+            android:name=".CostType"
+            android:label="@string/title_activity_CostType" />
+        <activity
+            android:name=".CostWork"
+            android:label="@string/title_activity_CostWork" />
+        <activity
+            android:name=".CostDetail"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Smetas"
             android:label="@string/title_activity_smetas1"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListOfSmetasNames"
-            android:label="@string/title_activity_ListOfSmetasNames" />
+            android:label="@string/title_activity_ListOfSmetasNames"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

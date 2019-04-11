@@ -2,9 +2,12 @@ package ru.bartex.smetaelectro;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -33,6 +36,9 @@ public class CostCategory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_costs_category);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
        // file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
@@ -81,5 +87,29 @@ public class CostCategory extends AppCompatActivity {
         sara =  new SimpleAdapter(this, data, R.layout.list_item_single, from, to);
         mListView.setAdapter(sara);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home_cost:
+                    // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
+                    Intent intentHome = new Intent(CostCategory.this, MainActivity.class);
+                    // установка флагов- создаём новую задачу и убиваем старую вместе
+                    // со всеми предыдущими переходами - работает дёргано по сравнению с манифестом
+                    //intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                      //      Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentHome);
+                    return true;
+                case R.id.navigation_smetas_cost:
+                    // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
+                    Intent intent_smetas = new Intent(CostCategory.this, ListOfSmetasNames.class);
+                    startActivity(intent_smetas);
+                    return true;
+            }
+            return false;
+        }
+    };
 
 }

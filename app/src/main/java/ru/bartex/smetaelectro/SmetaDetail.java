@@ -78,6 +78,7 @@ public class SmetaDetail extends AppCompatActivity {
 
         //находим поле Сумма
         mTextViewSumma = findViewById(R.id.textView_summa);
+        mTextViewSumma.setText(String.valueOf(count*cost));
 
         //смотрим, что записано в поле Количество
         mEditTextCount = findViewById(R.id.editText_count);
@@ -99,7 +100,7 @@ public class SmetaDetail extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                String str =  mEditTextCount.getText().toString();
-               if (str.equals("")){
+               if ((str.equals(""))||(str.equals("."))){
                     str = "0";
                 }
                 count = Float.parseFloat(str);
@@ -113,8 +114,9 @@ public class SmetaDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //проверка на 0, чтобы не было нулевых строк в смете
-                if ((mEditTextCount.getText().toString()).equals("0")||
-                        (mEditTextCount.getText().toString()).equals("")){
+                if ((mEditTextCount.getText().toString()).equals(".")||
+                        (mEditTextCount.getText().toString()).equals("")||
+                        Float.parseFloat(mEditTextCount.getText().toString())==0){
 
                     //Snackbar заслонён клавиатурой, поэтому в манифесте пишем
                     //android:windowSoftInputMode="stateVisible|adjustResize"
@@ -126,7 +128,8 @@ public class SmetaDetail extends AppCompatActivity {
                 }else {
                     if (isWork){
                         //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
-                        mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, count, count*cost);
+                        //но сначала нужно посмотреть, не изменилась ли расценка, поэтому cost входит
+                        mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, cost, count, count*cost);
 
                     }else {
                         long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,

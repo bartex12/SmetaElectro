@@ -22,6 +22,10 @@ public class P {
     public static final String ID_FILE = "ID файла сметы";
     //id категории из таблицы категорий
     public static final String ID_CATEGORY = "ID категории работ";
+    //позиция категории в списке категорий
+    public static final String POSITION_CATEGORY = "POSITION_CATEGORY";
+    //позиция типа работы  в списке типов
+    public static final String POSITION_TYPE = "POSITION_TYPE";
     //id типа работ
     public static final String ID_TYPE = "ID типа работ";
     //id выбранной работы
@@ -43,6 +47,7 @@ public class P {
     public static final String WORK_SUMMA = "Стоимшсть выбранной работы";
 
 
+
     //Ключ имени категории
     public static final String ATTR_CATEGORY_NAME = "ATTR_CATEGORY_NAME";
     //Ключ чекбокса  категории
@@ -61,6 +66,12 @@ public class P {
     public static final int SPECIFIC_ID = 1;
     public static final int CHANGE_NAME_ID = 2;
     public static final int DELETE_ID = 3;
+
+    // Удалить пункт сметы
+    public static final int DELETE_ITEM_SMETA = 1;
+    // Отменить
+    public static final int CANCEL = 4;
+
 
     public static String setDateTimeString() {
         Calendar calendar = new GregorianCalendar();

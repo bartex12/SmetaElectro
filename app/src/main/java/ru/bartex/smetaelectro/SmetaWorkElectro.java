@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro;
 
 import android.app.AlertDialog;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +28,8 @@ public class SmetaWorkElectro extends AppCompatActivity {
     long cat_id;
     long type_id;
     AdapterOfWork mAdapterOfWork;
+    int positionCategory;
+    int positionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class SmetaWorkElectro extends AppCompatActivity {
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
+        positionCategory = getIntent().getIntExtra(P.POSITION_CATEGORY, 1);
+        positionType = getIntent().getIntExtra(P.POSITION_TYPE, 1);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -72,27 +78,70 @@ public class SmetaWorkElectro extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //конструктор класса адаптера списка работ
-        mAdapterOfWork = new AdapterOfWork(getApplicationContext(), file_id, type_id, mListView);
+        mAdapterOfWork = new AdapterOfWork(this, file_id, type_id, mListView);
         //обновляем данные
         mAdapterOfWork.updateAdapter();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_work_of_work, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_add:
+                openSaveWorkDialogFragment(cat_id, positionCategory, positionType);
+                return true;
+
+            case R.id.action_settings:
+
+                return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_home_smetas_work:
+                    // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
+                    Intent intentHome = new Intent(SmetaWorkElectro.this, MainActivity.class);
+                    // установка флагов- создаём новую задачу и убиваем старую вместе
+                    // со всеми предыдущими переходами Для первого экрана это подходит
+                    //Но  - работает дёргано по сравнению с манифестом
+                    //intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                      //      Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentHome);
                     return true;
-                case R.id.navigation_smetas:
-                    //mTextMessage.setText(R.string.title_dashboard);
+
+                case R.id.navigation_smetas_smetas_work:
+                    // Для данного варианта в манифесте указан режим singlTask для активности Smetas
+                    Intent intent = new Intent(SmetaWorkElectro.this, Smetas.class);
+                    intent.putExtra(P.ID_FILE, file_id);
+                    startActivity(intent);
                     return true;
-                case R.id.navigation_costs:
-                    //mTextMessage.setText(R.string.title_notifications);
+
+                case R.id.navigation_costs_smetas_work:
+                    Intent intent_costs = new Intent(SmetaWorkElectro.this, CostCategory.class);
+                    startActivity(intent_costs);
                     return true;
             }
             return false;
         }
     };
+
+    private void openSaveWorkDialogFragment(long cat_id, int positionCategory, int  positionType){
+        DialogFragment dialogFragment = DialogSaveWorkName.newInstance(cat_id, positionCategory, positionType);
+        dialogFragment.show(getSupportFragmentManager(), "SaveWorkName");
+    }
+
 }

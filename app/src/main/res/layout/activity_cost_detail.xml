@@ -12,40 +12,43 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="Руб"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/edittext_cost_cost"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toEndOf="@+id/edittext_cost_cost"/>
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toEndOf="@+id/edittext_cost_cost" />
 
     <Button
-        android:id="@+id/button_cost_delete"
+        android:id="@+id/button_cost_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:text="Удалить"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Отмена"
         app:layout_constraintBottom_toBottomOf="@+id/button_cost_save"
         app:layout_constraintEnd_toStartOf="@+id/button_cost_save"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_cost_workName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="Название работы"
@@ -54,62 +57,59 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_cost_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="ед"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toStartOf="@+id/edittext_cost_cost"
         app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toEndOf="@+id/textView4"/>
+        app:layout_constraintStart_toEndOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="48dp"
         android:text="Цена за"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_cost_delete"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cost_workName"
-        app:layout_constraintVertical_bias="0.120000005"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_cost_workName" />
 
     <EditText
         android:id="@+id/edittext_cost_cost"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
         android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
         android:inputType="numberDecimal"
         android:text="200"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_cost_unit"
-        app:layout_constraintStart_toEndOf="@+id/tv_cost_unit"/>
+        app:layout_constraintStart_toEndOf="@+id/tv_cost_unit" />
 
     <Button
         android:id="@+id/button_cost_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="332dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Сохранить"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_cost_delete"
-        />
+        app:layout_constraintStart_toEndOf="@+id/button_cost_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_cost_cost" />
 
 </android.support.constraint.ConstraintLayout>

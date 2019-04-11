@@ -16,9 +16,10 @@ public class CostDetail extends AppCompatActivity {
     public static final String TAG = "33333";
 
     TextView mTextViewWorkName;
-    TextView mTextViewCost;
+    EditText mTextViewCost;
     TextView mTextViewUnit;
     Button mButtonSave;
+    Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
     long cat_id;
     long type_id;
@@ -54,6 +55,8 @@ public class CostDetail extends AppCompatActivity {
         mTextViewCost = findViewById(R.id.edittext_cost_cost);
         cost = mSmetaOpenHelper.getWorkCostById(work_id);
         mTextViewCost.setText(Float.toString(cost));
+        mTextViewCost.requestFocus();
+        mTextViewCost.selectAll();
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.tv_cost_unit);
@@ -73,6 +76,14 @@ public class CostDetail extends AppCompatActivity {
                 //обновляем стоимость работы
                 mSmetaOpenHelper.updateWorkCost(work_id, cost);
                 Log.d(TAG, "CostDetail-onCreate work_id = " + work_id);
+                finish();
+            }
+        });
+
+        mButtonCancel = findViewById(R.id.button_cost_cancel);
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

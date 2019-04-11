@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
     ArrayList<Map<String, Object>> data;
     Map<String,Object> m;
     SimpleAdapter sara;
+    Button newSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +68,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
 
                 Intent intent = new Intent(ListOfSmetasNames.this, Smetas.class);
                 intent.putExtra(P.ID_FILE, file_id);
-                startActivity(intent);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_list_of_smetas);
-        //fab.hide();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ListOfSmetasNames.this, SmetaNewName.class);
                 startActivity(intent);
             }
         });
@@ -122,6 +115,10 @@ public class ListOfSmetasNames extends AppCompatActivity {
         int id = item.getItemId();
         Log.d(TAG, "ListOfSmetasNames onOptionsItemSelected id = " + id);
         switch (id){
+            case R.id.action_add:
+                Intent intent = new Intent(ListOfSmetasNames.this, SmetaNewName.class);
+                startActivity(intent);
+                return true;
 
             case R.id.action_settings:
                 return true;
@@ -137,6 +134,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         menu.add(0, P.SPECIFIC_ID, 0, R.string.action_detail);
         menu.add(0, P.CHANGE_NAME_ID, 0, R.string.action_change_name);
         menu.add(0, P.DELETE_ID, 0, R.string.action_delete);
+        menu.add(0, P.CANCEL, 0, R.string.action_cancel);
     }
 
     @Override
@@ -180,7 +178,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 return true;
 
             case P.DELETE_ID:
-
                 Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.DeleteYesNo);
@@ -208,6 +205,9 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 });
 
                 builder.show();
+                return true;
+
+            case P.CANCEL:
                 return true;
         }
         return super.onContextItemSelected(item);

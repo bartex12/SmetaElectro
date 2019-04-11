@@ -10,9 +10,9 @@
     <ListView
         android:id="@+id/listViewSmetasRabota"
         android:layout_width="match_parent"
-        android:layout_height="449dp"
+        android:layout_height="0dp"
         android:choiceMode="singleChoice"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNewSmeta"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="46dp" />
@@ -27,21 +27,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation_smetas_list" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_list_of_smetas"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_gravity="end|bottom"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+    <Button
+        android:id="@+id/buttonNewSmeta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:backgroundTint="@color/colorAccent"
+        android:text="Новая смета"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/navigation_smetas_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_add_black_48dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
