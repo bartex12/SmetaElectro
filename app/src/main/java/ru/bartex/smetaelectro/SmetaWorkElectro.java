@@ -19,7 +19,8 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaWorkElectro extends AppCompatActivity {
+public class SmetaWorkElectro extends AppCompatActivity
+        implements DialogSaveWorkName.WorkCategoryTypeWorkNameListener{
 
     public static final String TAG = "33333";
     ListView mListView;
@@ -30,6 +31,20 @@ public class SmetaWorkElectro extends AppCompatActivity {
     AdapterOfWork mAdapterOfWork;
     int positionCategory;
     int positionType;
+
+    @Override
+    public void workCategoryTypeWorkNameTransmit(String workName, String typeName, String catName) {
+        Log.d(TAG, "SmetaWorkElectro - workCategoryTypeWorkNameTransmit  workName = " + workName +
+                "  typeName = " + typeName + "  catName = " + catName);
+        //определяем id типа по его имени
+        long work_type_Id = mSmetaOpenHelper.getIdFromTypeName(typeName);
+        //вставляем имя  работы в таблицу Work
+        long newWorkNameId = mSmetaOpenHelper.insertWorkName(workName, work_type_Id);
+        Log.d(TAG, "SmetaWorkElectro-workCategoryTypeWorkNameTransmit newWorkNameId = " + newWorkNameId);
+        //обновляем адаптер
+        mAdapterOfWork.updateAdapter();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,5 +158,6 @@ public class SmetaWorkElectro extends AppCompatActivity {
         DialogFragment dialogFragment = DialogSaveWorkName.newInstance(cat_id, positionCategory, positionType);
         dialogFragment.show(getSupportFragmentManager(), "SaveWorkName");
     }
+
 
 }

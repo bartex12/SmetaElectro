@@ -1647,4 +1647,20 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return type_name;
     }
 
+    //Добавляем вид работы
+    public long  insertWorkName(String workName, long work_type_Id){
+        Log.i(TAG, "SmetaOpenHelper.insertWorkName ... ");
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Work.WORK_NAME,workName);
+        cv.put(Work.WORK_TYPE_ID, work_type_Id);
+        // вставляем строку
+        long ID = db.insert(Work.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertWorkName  Work._ID = " + ID);
+        return ID;
+    }
+
 }
