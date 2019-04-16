@@ -107,7 +107,12 @@ public class Smetas extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if (id == R.id.action_struct) {
+            Intent intent = new Intent(Smetas.this, SmetaListStructured.class);
+            intent.putExtra(P.ID_FILE, file_id);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

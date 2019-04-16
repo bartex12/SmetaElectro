@@ -9,6 +9,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -1149,7 +1151,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем имена работ  по смете с id файла file_id
-    public String[]  getNameOfWorkStructured(long file_id){
+    public ArrayList<String>  getNameOfTypesAndWorkStructured(long file_id){
+
+  /*
         String select_work_name = " SELECT " + FW.FW_WORK_NAME +
                 " FROM " +  FW.TABLE_NAME  +
                 " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
@@ -1167,20 +1171,58 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         FW.FW_CATEGORY_ID + " , " +  FW.FW_TYPE_ID +  " from " + FW.TABLE_NAME +
                         " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id) +
                         " order by " + " CatID " + "," + " TypeID " + "," + " Title " + " desc ";
+
+        String select_work_name_structured =
+                " select  distinct " + FW.FW_CATEGORY_NAME  + " as Title " +
+                        " from " +  FW.TABLE_NAME  + " where " +  FW.FW_FILE_ID + " = " +  String.valueOf(file_id) +
+                        " union " +
+                        " select distinct " + FW.FW_TYPE_NAME  + " as Title " +
+                        " from " + FW.TABLE_NAME +  " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id) +
+                        " union " +
+                        " select distinct " + FW.FW_WORK_NAME  + " as Title "  +
+                        " from " + FW.TABLE_NAME + " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id);
+*/
+        String select_type_name_structured =
+                " select  distinct " + FW.FW_TYPE_NAME  +
+                        " from " + FW.TABLE_NAME +
+                        " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id)+
+                " order by " + FW.FW_TYPE_ID ;
+
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(select_work_name, null);
-        Log.i(TAG, "TempDBHelper.getNameOfWorkStructured cursor.getCount()  " + cursor.getCount());
-        String[] work_name = new String[cursor.getCount()];
+        Cursor cursor = db.rawQuery(select_type_name_structured, null);
+        Log.i(TAG, "TempDBHelper.getNameOfTypesAndWorkStructured cursor.getCount()  " + cursor.getCount());
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        String[] type_name = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
         while (cursor.moveToNext()){
             int position = cursor.getPosition();
-            work_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getNameOfWorkStructured work_name[position] = " + work_name[position]);
+            type_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
+            arrayList.add((position+1) + " " + type_name[position]);
+            long type_id = this.getIdFromTypeName(type_name[position]);
+            Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[position] = " +
+                    type_name[position] + " type_id = " + type_id);
+
+            String select_work_name_structured =
+                    " select distinct " + FW.FW_WORK_NAME  +
+                            " from " + FW.TABLE_NAME +
+                            " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id)+
+                            " and " +  FW.FW_TYPE_ID + " = " +  String.valueOf(type_id);
+            Cursor cursor1 = db.rawQuery(select_work_name_structured, null);
+            Log.i(TAG, "TempDBHelper.getNameOfTypesAndWorkStructured cursor1.getCount()  " + cursor1.getCount());
+
+            String[] work_name = new String[cursor1.getCount()];
+            while (cursor1.moveToNext()){
+                int position1 = cursor1.getPosition();
+                work_name[position1] = cursor1.getString(cursor1.getColumnIndex(FW.FW_WORK_NAME));
+                arrayList.add("   " + (position+1)+ "." + (position1+1) + " " + work_name[position1]);
+                Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured work_name[position1] = " + work_name[position1]);
+            }
+            cursor1.close();
         }
-        if (cursor != null) {
             cursor.close();
-        }
-        return work_name;
+
+        return arrayList;
     }
 
     //получаем имена работ  по смете с id файла file_id

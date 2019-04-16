@@ -179,6 +179,10 @@ public class SmetasTab1Rabota extends Fragment {
                     //удаляем пункт сметы из таблицы FW
                     mSmetaOpenHelper.deleteWorkItemFromFW(file_id, work_id);
 
+                    //иначе почему то дублируются
+                    lvSmetasRabota.removeHeaderView(header);
+                    lvSmetasRabota.removeFooterView(footer);
+
                     //обновляем данные списка фрагмента активности
                     updateAdapter();
                     //обновляем общую сумму сметы

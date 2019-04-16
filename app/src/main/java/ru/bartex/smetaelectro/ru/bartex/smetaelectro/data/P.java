@@ -46,6 +46,9 @@ public class P {
     // Стоимшсть выбранной работы
     public static final String WORK_SUMMA = "Стоимость выбранной работы";
 
+    // имя типа или ваботы в списке пунктов сметы
+    public static final String TYPE_WORK_NAME = "Имя типа или работы";
+
     // Стоимость выбранной работы
     public static final String COST_OF_WORK = "Расценка для выбранной работы";
 
