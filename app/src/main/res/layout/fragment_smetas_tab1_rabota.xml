@@ -24,23 +24,24 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:choiceMode="singleChoice"
-        app:layout_constraintTop_toTopOf="parent"
+        android:divider="@color/greenDivider"
+        android:dividerHeight="@dimen/twodp"
+        android:headerDividersEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/llSumma"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/llSumma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_weight="1"
+        android:background="@drawable/rect"
         android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
-            android:text="Общая сумма"
-            android:textSize="14sp" />
+            android:text="Итого: "
+            android:textSize="18sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvSumma"
@@ -71,6 +73,7 @@
             android:layout_marginRight="16dp"
             android:text="  руб"
             android:textSize="14sp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

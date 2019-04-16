@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#26316F</color>
     <color name="colorAccent">#F8454E</color>
     <color name="colorFab">#72f5a4</color>
+    <color name="reddivider">#FF0000</color>
+    <color name="greenDivider">#04CD33</color>
+    <color name="greenLigth">#E9F9EF</color>
 </resources>

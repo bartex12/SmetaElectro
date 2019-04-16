@@ -89,6 +89,7 @@ public class SmetasTab1Rabota extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota, container, false);
         tvSumma = rootView.findViewById(R.id.tvSumma);
         lvSmetasRabota = rootView.findViewById(R.id.listViewSmetasRabota);
+
         lvSmetasRabota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
