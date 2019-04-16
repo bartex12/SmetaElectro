@@ -1,6 +1,12 @@
 package ru.bartex.smetaelectro;
 
+import android.app.Dialog;
+import android.support.v4.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,14 +35,16 @@ public class SmetaDetail extends AppCompatActivity {
     Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
     long file_id;
-    long cat_id;
-    long type_id;
-    long work_id;
+    static long cat_id;
+    static long type_id;
+    static long work_id;
     boolean isWork;
 
     float count; //количество для работы
     float cost; //цена работы
     String unit; //единицы измерения
+
+    static final int request_code_add_cost = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,7 @@ public class SmetaDetail extends AppCompatActivity {
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
         work_id = getIntent().getLongExtra(P.ID_WORK, 1);
         isWork = getIntent().getBooleanExtra(P.IS_WORK, false);
+        //Если такая работа есть в FW, то считываем из таблицы количество для file_id и work_id
         if (isWork){
             count = mSmetaOpenHelper.getCountWork(file_id, work_id);
         }else {
@@ -56,7 +65,8 @@ public class SmetaDetail extends AppCompatActivity {
         }
 
         Log.d(TAG, "SmetaDetail - onCreate  file_id = " + file_id +
-                "  cat_id = " + cat_id + "  type_id = " + type_id + "  work_id = " + work_id);
+                "  cat_id = " + cat_id + "  type_id = " + type_id + "  work_id = " + work_id +
+                "isWork" + isWork);
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
@@ -70,6 +80,14 @@ public class SmetaDetail extends AppCompatActivity {
         mTextViewCost = findViewById(R.id.edittext_cost_cost);
         cost = mSmetaOpenHelper.getWorkCostById(work_id);
         mTextViewCost.setText(Float.toString(cost));
+        if ((mTextViewCost.getText().toString()).equals("0.0")){
+            Log.d(TAG, "SmetaDetail.(mTextViewCost.getText().toString()).equals");
+
+            //если для work_id в таблице расценок ничего нет (цена =0), то вызываем диалог
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            DialogFragment dialogFragment = new CostDialogFragment();
+            dialogFragment.show(fragmentManager,"Save_Cost");
+        }
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
@@ -89,14 +107,10 @@ public class SmetaDetail extends AppCompatActivity {
         mEditTextCount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                String str =  mEditTextCount.getText().toString();
@@ -110,7 +124,7 @@ public class SmetaDetail extends AppCompatActivity {
         });
 
         mButtonSave = findViewById(R.id.button_cost_save);
-        mButtonSave.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener onButtonSave = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //проверка на 0, чтобы не было нулевых строк в смете
@@ -122,26 +136,32 @@ public class SmetaDetail extends AppCompatActivity {
                     //android:windowSoftInputMode="stateVisible|adjustResize"
                     Snackbar.make(getCurrentFocus(), "Введите количество, не равное нулю",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    //Toast.makeText(SmetaDetail.this,"Введите количество ",
-                           // Toast.LENGTH_LONG).show();
-
                 }else {
                     if (isWork){
                         //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
                         //но сначала нужно посмотреть, не изменилась ли расценка, поэтому cost входит
                         mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, cost, count, count*cost);
-
+                        finish();
                     }else {
-                        long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,
-                                type_id, cat_id, cost, count, unit, count*cost);
-                        Log.d(TAG, "SmetaDetail-mButtonSave-onClick FW_ID = " + FW_ID);
-                        //выводим таблицу FW в лог для проверки
-                        mSmetaOpenHelper.displayFW();
+                        if ((mTextViewCost.getText().toString()).equals("0.0")){
+                            Log.d(TAG, "SmetaDetail.if ((mTextViewCost.getText().toString()).eq...");
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            DialogFragment dialogFragment = new CostDialogFragment();
+                            dialogFragment.show(fragmentManager,"Save_Cost");
+                        }else{
+                            long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,
+                                    type_id, cat_id, cost, count, unit, count*cost);
+                            Log.d(TAG, "SmetaDetail-mButtonSave-onClick FW_ID = " + FW_ID);
+                            //выводим таблицу FW в лог для проверки
+                            mSmetaOpenHelper.displayFW();
+                            finish();
+                        }
                     }
-                    finish();
                 }
             }
-        });
+        };
+        mButtonSave.setOnClickListener(onButtonSave);
+
 
         mButtonCancel = findViewById(R.id.button_cost_cancel);
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
@@ -150,5 +170,41 @@ public class SmetaDetail extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "SmetaDetail.onActivityResult...  resultCode = "+ (resultCode == RESULT_OK?true:false) +
+                "  requestCode = " +(requestCode==P.REQUEST_COST));
+        if (resultCode == RESULT_OK) {
+                Log.d(TAG, "SmetaDetail.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
+                cost = mSmetaOpenHelper.getWorkCostById(work_id);
+                mTextViewCost.setText(Float.toString(cost));
+                mTextViewSumma.setText(String.valueOf(count*cost));
+        }
+    }
+
+    public static class CostDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Log.d(TAG, "SmetaDetail.CostDialogFragment...");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.CostZero);
+            builder.setPositiveButton(R.string.CostOk, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(getActivity(), CostDetail.class);
+                    intent.putExtra(P.ID_CATEGORY, cat_id);
+                    intent.putExtra(P.ID_TYPE, type_id);
+                    intent.putExtra(P.ID_WORK, work_id);
+                    intent.putExtra(CostDetail.REQUEST_CODE, request_code_add_cost);
+                    startActivityForResult(intent, P.REQUEST_COST);
+                }
+            });
+            return builder.create();
+        }
+
     }
 }

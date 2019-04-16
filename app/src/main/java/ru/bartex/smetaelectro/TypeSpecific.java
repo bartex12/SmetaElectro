@@ -20,6 +20,7 @@ public class TypeSpecific extends AppCompatActivity {
     DataType dataType;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

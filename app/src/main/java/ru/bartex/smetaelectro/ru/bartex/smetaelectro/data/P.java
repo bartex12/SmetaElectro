@@ -44,8 +44,10 @@ public class P {
     // Единицы измерения выбранной работы
     public static final String WORK_UNITS = "Единицы измерения выбранной работы";
     // Стоимшсть выбранной работы
-    public static final String WORK_SUMMA = "Стоимшсть выбранной работы";
+    public static final String WORK_SUMMA = "Стоимость выбранной работы";
 
+    // Стоимость выбранной работы
+    public static final String COST_OF_WORK = "Расценка для выбранной работы";
 
 
     //Ключ имени категории
@@ -71,6 +73,8 @@ public class P {
     public static final int DELETE_ITEM_SMETA = 1;
     // Отменить
     public static final int CANCEL = 4;
+    // для SmetaDetail риквест код
+    public static final int REQUEST_COST = 5;
 
 
     public static String setDateTimeString() {

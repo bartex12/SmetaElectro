@@ -50,12 +50,12 @@ public class CostWork extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                //находим имя типа работы в адаптере
+                //находим имя  работы в адаптере
                 TextView tv = view.findViewById(R.id.base_text);
-                String type_name = tv.getText().toString();
+                String work_name = tv.getText().toString();
 
                 //находим id по имени работы
-                long work_id = mSmetaOpenHelper.getIdFromWorkName(type_name);
+                long work_id = mSmetaOpenHelper.getIdFromWorkName(work_name);
 
                 Intent intent = new Intent(CostWork.this, CostDetail.class);
                 intent.putExtra(P.ID_CATEGORY, cat_id);

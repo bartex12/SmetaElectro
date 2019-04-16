@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TypeChangeData"
-            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".WorkSpesific"></activity>
+        <activity android:name=".WorkChangeData" />
+        <activity
+            android:name=".TypeChangeData"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".TypeSpecific" />
         <activity
             android:name=".CategoryChangeData"
@@ -59,6 +62,7 @@
             android:label="@string/title_activity_CostWork" />
         <activity
             android:name=".CostDetail"
+            android:label="@string/title_activity_CostDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Smetas"

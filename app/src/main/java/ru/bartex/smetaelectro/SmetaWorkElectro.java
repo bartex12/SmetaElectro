@@ -1,14 +1,15 @@
 package ru.bartex.smetaelectro;
 
-import android.app.AlertDialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetaWorkElectro extends AppCompatActivity
-        implements DialogSaveWorkName.WorkCategoryTypeWorkNameListener{
+        implements DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
     ListView mListView;
@@ -33,7 +34,7 @@ public class SmetaWorkElectro extends AppCompatActivity
     int positionType;
 
     @Override
-    public void workCategoryTypeWorkNameTransmit(String workName, String typeName, String catName) {
+    public void workCategoryTypeNameTransmit(String workName, String typeName, String catName) {
         Log.d(TAG, "SmetaWorkElectro - workCategoryTypeWorkNameTransmit  workName = " + workName +
                 "  typeName = " + typeName + "  catName = " + catName);
         //определяем id типа по его имени
@@ -74,7 +75,8 @@ public class SmetaWorkElectro extends AppCompatActivity
                 final long work_id = mSmetaOpenHelper.getIdFromWorkName(work_name);
                 Log.d(TAG, "SmetaWorkElectro - onItemClick  work_id = " + work_id +
                         "  Name = " + work_name);
-                final boolean isWork = mSmetaOpenHelper.isWork(file_id, work_id);
+                // проверяем есть ли такая работа в FW для файла с file_id
+                final boolean isWork = mSmetaOpenHelper.isWorkInFW(file_id, work_id);
                 Log.d(TAG, "SmetaWorkElectro - onItemClick  isWork = " + isWork);
 
                 Intent intent = new Intent(SmetaWorkElectro.this, SmetaDetail.class);
@@ -86,8 +88,129 @@ public class SmetaWorkElectro extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(mListView);
     }
 
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.SPECIFIC_ID, 0, R.string.action_detail);
+        menu.add(0, P.CHANGE_NAME_ID, 0, R.string.action_change_name);
+        menu.add(0, P.DELETE_ID, 0, R.string.action_delete);
+        menu.add(0, P.CANCEL, 0, R.string.action_cancel);
+
+        // получаем инфу о пункте списка
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        //получаем имя работы  из строки списка видов работ
+        TextView tvWork = acmi.targetView.findViewById(R.id.base_text_two);
+        String workName = tvWork.getText().toString();
+        //находим id вида  по имени вида работ
+        long work_id = mSmetaOpenHelper.getIdFromWorkName(workName);
+
+        //находим количество строк видов работы в таблице FW для work_id
+        int countLineWorkFW = mSmetaOpenHelper.getCountLineWorkInFW(work_id);
+        //находим количество строк расценок работы в таблице CostWork для work_id
+        int countCostLineWork = mSmetaOpenHelper.getCountLineWorkInCost(work_id);
+        Log.d(TAG, "onContextItemSelected - countLineWorkFW = " + countLineWorkFW +
+                " countCostLineWork =" + countCostLineWork);
+
+        mSmetaOpenHelper.displayTableCost();
+
+        if(countLineWorkFW > 0) {
+            menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+            //menu.findItem(P.DELETE_ID).setVisible(false);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // получаем инфу о пункте списка
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        int id = item.getItemId();
+        Log.d(TAG, "SmetaWorkElectro onContextItemSelected id = " + id +
+                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
+
+        switch (id){
+            case P.SPECIFIC_ID:
+
+                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID");
+                //получаем имя типа из строки списка типов работ
+                TextView tvSpecificWork = acmi.targetView.findViewById(R.id.base_text_two);
+                String work_name_specific = tvSpecificWork.getText().toString();
+                //находим id по имени типа
+                long work_id_specific = mSmetaOpenHelper.getIdFromWorkName(work_name_specific);
+                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID " +
+                        "work_name_specific = " + work_name_specific +  " work_id_specific =" + work_id_specific);
+                //отправляем интент с id типа
+                Intent intentSpecificWork = new Intent(SmetaWorkElectro.this, WorkSpesific.class);
+                intentSpecificWork.putExtra(P.ID_WORK, work_id_specific);
+                startActivity(intentSpecificWork);
+
+                return true;
+
+            case P.CHANGE_NAME_ID:
+
+                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.CHANGE_NAME_ID");
+                //получаем имя типа из строки списка типов работ
+                TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text_two);
+                String work_name_chang = tvChangWork.getText().toString();
+                //находим id по имени работы
+                long work_id_Change = mSmetaOpenHelper.getIdFromWorkName(work_name_chang);
+                Log.d(TAG, "SmetaWorkElectro onContextItemSelected  case P.CHANGE_NAME_ID " +
+                        "work_name_chang = " + work_name_chang + " work_id_Change =" + work_id_Change);
+                //отправляем интент с id работы
+                Intent intent = new Intent(SmetaWorkElectro.this, WorkChangeData.class);
+                intent.putExtra(P.ID_WORK, work_id_Change);
+                startActivity(intent);
+                return true;
+
+            case P.DELETE_ID:
+                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.DeleteKind);
+                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TextView tv = acmi.targetView.findViewById(R.id.base_text_two);
+                        String work_Name = tv.getText().toString();
+                        //находим id по имени файла
+                        long work_id = mSmetaOpenHelper.getIdFromWorkName(work_Name);
+                        Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
+                                " work_Name = " + work_Name + " work_id =" + work_id);
+
+                        //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
+                        // проверка в onCreateContextMenu
+                        mSmetaOpenHelper.deleteWork(work_id);
+                        //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                        // проверка в onCreateContextMenu
+                        mSmetaOpenHelper.deleteCostOfWork(work_id);
+                        //обновляем данные
+                        mAdapterOfWork.updateAdapter();
+                    }
+                });
+                builder.show();
+
+                return true;
+
+            case P.CANCEL:
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 
     @Override
     protected void onResume() {

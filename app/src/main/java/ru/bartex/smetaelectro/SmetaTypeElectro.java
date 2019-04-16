@@ -28,7 +28,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class SmetaTypeElectro extends AppCompatActivity
-        implements DialogSaveTypeName.CategoryTypeWorkNameListener {
+        implements DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
     ListView mListView;
@@ -42,14 +42,14 @@ public class SmetaTypeElectro extends AppCompatActivity
     int positionCategory;
 
     @Override
-    public void categoryTypeWorkNameTransmit(String typeName, String catName) {
-        Log.d(TAG, "SmetaTypeElectro - categoryTypeWorkNameTransmit  typeName = " + typeName +
-                "  catName = " + catName);
+    public void workCategoryTypeNameTransmit(String workName, String typeName, String catName) {
+        Log.d(TAG, "SmetaTypeElectro - workCategoryTypeNameTransmit  workName = " + workName +
+                "  typeName = " + typeName +"  catName = " + catName);
         //определяем id категории по её имени
         long type_category_Id = mSmetaOpenHelper.getIdFromCategoryName(catName);
         //вставляем имя типа работы в таблицу TypeWork
         long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
-        Log.d(TAG, "SmetaTypeElectro-categoryTypeWorkNameTransmit newTypeNameId = " + newTypeNameId);
+        Log.d(TAG, "SmetaTypeElectro-workCategoryTypeNameTransmit newTypeNameId = " + newTypeNameId);
         //обновляем адаптер
         mAdapterOfType.updateAdapter();
     }
@@ -142,7 +142,7 @@ public class SmetaTypeElectro extends AppCompatActivity
         //получаем имя типа из строки списка типов
         TextView tvType = acmi.targetView.findViewById(R.id.base_text_two);
         String typeName = tvType.getText().toString();
-        //находим id категории по имени категории
+        //находим id типа по имени типа
         long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
         //находим количество строк видов работы для type_id
         int countLineWork = mSmetaOpenHelper.getCountLineWork(type_id);

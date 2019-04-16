@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import ru.bartex.smetaelectro.DataCategory;
 import ru.bartex.smetaelectro.DataFile;
 import ru.bartex.smetaelectro.DataType;
+import ru.bartex.smetaelectro.DataWork;
 import ru.bartex.smetaelectro.R;
 
 
@@ -591,6 +592,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
     //получаем ID по имени категории
     public long getIdFromCategoryName(String name) {
+        Log.i(TAG, "SmetaOpenHelper.getIdFromCategoryName ... ");
         long currentID;
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
@@ -602,7 +604,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't group the rows
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
-
+        Log.i(TAG, " SmetaOpenHelper.getIdFromCategoryName - cursor.getCount()=" + cursor.getCount());
         if ((cursor != null) && (cursor.getCount() != 0)) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
@@ -723,7 +725,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             // Используем индекс для получения строки или числа
             currentWorkName = cursor.getString(idColumnIndex);
         }
-        Log.d(TAG, "getIdFromWorkName currentWorkName = " + currentWorkName);
+        Log.d(TAG, "getWorkNameById currentWorkName = " + currentWorkName);
         if (cursor != null) {
             cursor.close();
         }
@@ -735,8 +737,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     //получаем стоимость работы по её id
     public float getWorkCostById(long work_id){
         Log.i(TAG, "SmetaOpenHelper.getWorkCostById ... ");
-       float costOfWork = -1;
-        String cost = " SELECT " + CostWork._ID + " , " +  CostWork.COST_COST +
+       float costOfWork = 0;
+        String cost = " SELECT " + CostWork.COST_COST +
                 " FROM " + CostWork.TABLE_NAME +
                 " WHERE " + CostWork.COST_WORK_ID  + " = ?" ;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -876,7 +878,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             int idColumnIndex = cursor.getColumnIndex(Unit.UNIT_NAME);
             // Используем индекс для получения строки или числа
             unitName = cursor.getString(idColumnIndex);
-            Log.d(TAG, "getWorkCostById unitName = " + unitName);
+            Log.d(TAG, "getCostUnitById unitName = " + unitName);
         }
         if (cursor != null) {
             cursor.close();
@@ -921,16 +923,16 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         //получаем имя файла по его id
-        String fileName = this.getFileNameById(file_id,db);
+        String fileName = this.getFileNameById(file_id);
         Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name fileName =  " + fileName);
         //получаем имя работы по id работы
-        String workName = this.getWorkNameById(work_id, db);
+        String workName = this.getWorkNameById(work_id);
         Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name workName =  " + workName);
         //получаем имя типа работы по id типа работы
-        String typeName = this.getTypeNameById(type_id, db);
+        String typeName = this.getTypeNameById(type_id);
         Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name typeName =  " + typeName);
         //получаем имя категории работы по id категории работы
-        String catName = this.getCategoryNameById(category_id,db);
+        String catName = this.getCategoryNameById(category_id);
         Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name catName =  " + catName);
 
                 ContentValues cv = new ContentValues();
@@ -979,7 +981,10 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     /**
      * Возвращает имя файла работы по его ID
      */
-    public String getFileNameById( long file_id, SQLiteDatabase db) throws SQLException {
+    public String getFileNameById( long file_id)  {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
         Cursor mCursor = db.query(true, FileWork.TABLE_NAME,
                 null,
                 FileWork._ID + "=" + file_id,
@@ -992,26 +997,12 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         mCursor.close();
         return fileName;
     }
-    /**
-     * Возвращает имя работы по его ID
-     */
-    public String getWorkNameById( long work_id, SQLiteDatabase db) throws SQLException {
-        Cursor mCursor = db.query(true, Work.TABLE_NAME,
-                null,
-                Work._ID + "=" + work_id,
-                null, null, null, null, null);
-        if ((mCursor != null) && (mCursor.getCount() != 0)) {
-            mCursor.moveToFirst();
-        }
-        String workName = mCursor.getString(mCursor.getColumnIndex(Work.WORK_NAME));
-        Log.d(TAG, "getWorkNameById workName = " + workName);
-        mCursor.close();
-        return workName;
-    }
+
     /**
      * Возвращает имя типа работы по его ID
      */
-    public String getTypeNameById( long type_id, SQLiteDatabase db) throws SQLException {
+    public String getTypeNameById( long type_id){
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor mCursor = db.query(true, TypeWork.TABLE_NAME,
                 null,
                 TypeWork._ID + "=" + type_id,
@@ -1024,10 +1015,12 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         mCursor.close();
         return typeName;
     }
+
     /**
      * Возвращает имя категории работы по его ID
      */
-    public String getCategoryNameById( long cat_id, SQLiteDatabase db) throws SQLException {
+    public String getCategoryNameById( long cat_id) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor mCursor = db.query(true, CategoryWork.TABLE_NAME,
                 null,
                 TypeWork._ID + "=" + cat_id,
@@ -1123,14 +1116,17 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //обновляем цену работы
-    public void updateWorkCost(long work_Id, float cost){
+    public void updateWorkCost(long work_Id, float cost, long unit_Id){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(CostWork.COST_COST, cost);
-        db.update(CostWork.TABLE_NAME, updatedValues,
+        updatedValues.put(CostWork.COST_UNIT_ID, unit_Id);
+        updatedValues.put(CostWork.COST_NUMBER, 1);
+
+        int countLine = db.update(CostWork.TABLE_NAME, updatedValues,
                 CostWork.COST_WORK_ID + "=" + work_Id, null);
-        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost + "  work_Id = " + work_Id);
+        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost + "  countLine = " + countLine);
     }
 
     //получаем все имена файлов со сметами
@@ -1153,6 +1149,41 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем имена работ  по смете с id файла file_id
+    public String[]  getNameOfWorkStructured(long file_id){
+        String select_work_name = " SELECT " + FW.FW_WORK_NAME +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+
+        String select_work_name_structured =
+                " select  distinct " + FW.FW_CATEGORY_NAME  + " as Title "  + " , " +
+                        FW.FW_CATEGORY_ID + " as CatID " + " ," + " 0 " + " as TypeID " +
+                        " from " +  FW.TABLE_NAME  + " where " +  FW.FW_FILE_ID + " = " +  String.valueOf(file_id) +
+                        " union " +
+        " select distinct " + '-' + " || " + FW.FW_TYPE_NAME  + " as Title " + " , " +
+                         FW.FW_CATEGORY_ID + " , " +  FW.FW_TYPE_ID + " from " +
+                        FW.TABLE_NAME +  " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id) +
+                        " union " +
+        " select distinct " + '-' + '-' + " || " + FW.FW_WORK_NAME  + " as Title "  + " , " +
+        FW.FW_CATEGORY_ID + " , " +  FW.FW_TYPE_ID +  " from " + FW.TABLE_NAME +
+                        " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id) +
+                        " order by " + " CatID " + "," + " TypeID " + "," + " Title " + " desc ";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_work_name, null);
+        Log.i(TAG, "TempDBHelper.getNameOfWorkStructured cursor.getCount()  " + cursor.getCount());
+        String[] work_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getNameOfWorkStructured work_name[position] = " + work_name[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return work_name;
+    }
+
+    //получаем имена работ  по смете с id файла file_id
     public String[]  getNameOfWork(long file_id){
         String select_work_name = " SELECT " + FW.FW_WORK_NAME +
                 " FROM " +  FW.TABLE_NAME  +
@@ -1170,6 +1201,29 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.close();
         }
+        return work_name;
+    }
+
+    //получаем имена работ  по смете с id файла file_id и id типа type_id
+    public String[]  getNameOfWorkSelectedType(long file_id, long type_id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String select_work_name = " SELECT " + FW.FW_WORK_NAME +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+        Cursor cursor = db.rawQuery(select_work_name, null);
+        Log.i(TAG, "TempDBHelper.getNameOfWorkSelectedType cursor.getCount()  " + cursor.getCount());
+        String[] work_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getNameOfWorkSelectedType work_name[position] = " + work_name[position]);
+        }
+            cursor.close();
+
         return work_name;
     }
 
@@ -1194,6 +1248,26 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_cost;
     }
 
+    //получаем расценки работ  по смете с id файла file_id
+    public float[]  getCostOfWorkSelectedType(long file_id, long type_id){
+        String select_work_cost = " SELECT " + FW.FW_COST +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_work_cost, null);
+        Log.i(TAG, "TempDBHelper.getCostOfWorkSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] work_cost = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
+            Log.i(TAG, "SmetaOpenHelper.getCostOfWorkSelectedType work_cost[position] = " + work_cost[position]);
+        }
+            cursor.close();
+        return work_cost;
+    }
+
     //получаем количество работ  по смете с id файла file_id
     public float[]  getAmountOfWork(long file_id){
         String select_work_amount = " SELECT " + FW.FW_COUNT +
@@ -1209,9 +1283,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
             Log.i(TAG, "SmetaOpenHelper.getAmountOfWork work_amount[position] = " + work_amount[position]);
         }
-        if (cursor != null) {
             cursor.close();
+        return work_amount;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public float[]  getAmountOfWorkSelectedType(long file_id, long type_id){
+        String select_work_amount = " SELECT " + FW.FW_COUNT +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_work_amount, null);
+        Log.i(TAG, "TempDBHelper.getAmountOfWorkSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] work_amount = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
+            Log.i(TAG, "SmetaOpenHelper.getAmountOfWorkSelectedType work_amount[position] = " + work_amount[position]);
         }
+            cursor.close();
         return work_amount;
     }
 
@@ -1236,6 +1328,28 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_units;
     }
 
+    //получаем единицы измерения для  работ  по смете с id файла file_id
+    public String[]  getUnitsOfWorkSelectedType(long file_id, long type_id){
+        String select_work_units = " SELECT " + FW.FW_UNIT +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_work_units, null);
+        Log.i(TAG, "TempDBHelper.getUnitsOfWorkSelectedType cursor.getCount()  " + cursor.getCount());
+        String[] work_units = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
+            Log.i(TAG, "SmetaOpenHelper.getUnitsOfWorkSelectedType work_units[position] = " + work_units[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return work_units;
+    }
+
     //получаем количество работ  по смете с id файла file_id
     public float[]  getSummaOfWork(long file_id){
         String select_work_summa = " SELECT " + FW.FW_SUMMA +
@@ -1250,6 +1364,28 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             int position = cursor.getPosition();
             work_summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
             Log.i(TAG, "SmetaOpenHelper.getSummaOfWork work_summa[position] = " + work_summa[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return work_summa;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public float[]  getSummaOfWorkSelectedType(long file_id, long type_id){
+        String select_work_summa = " SELECT " + FW.FW_SUMMA +
+                " FROM " +  FW.TABLE_NAME  +
+                " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_work_summa, null);
+        Log.i(TAG, "TempDBHelper.getSummaOfWorkSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] work_summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            work_summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
+            Log.i(TAG, "SmetaOpenHelper.getSummaOfWorkSelectedType work_summa[position] = " + work_summa[position]);
         }
         if (cursor != null) {
             cursor.close();
@@ -1374,7 +1510,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.i(TAG, "SmetaOpenHelper.updateFileData - name =" + name + "  file_id = " + file_id);
     }
 
-    public boolean isWork(long file_id, long work_id){
+    public boolean isWorkInFW(long file_id, long work_id){
         Log.i(TAG, "SmetaOpenHelper.isWork ... ");
 
         String select = " SELECT " + FW.FW_WORK_NAME + " FROM " + FW.TABLE_NAME +
@@ -1630,7 +1766,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //получаем курсор с Category._id  и делаем массив id
+    //получаем массив названий типов работы
     public String[] getArrayTypeNames(long cat_id) {
         SQLiteDatabase db = getReadableDatabase();
         Log.i(TAG, "SmetaOpenHelper.getArrayTypeNames ... ");
@@ -1663,4 +1799,154 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return ID;
     }
 
+    //получаем количество видов работ с  work_id в таблице FW
+    public int getCountLineWorkInFW(long work_id){
+        Log.i(TAG, "SmetaOpenHelper.getCountLineWorkInFW ... ");
+
+        String select = " SELECT " + FW._ID + " FROM " + FW.TABLE_NAME +
+                " where " + FW.FW_WORK_ID + " =? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(work_id)});
+        Log.i(TAG, "SmetaOpenHelper.getCountLineWorkInFW cursor.getCount() = " + cursor.getCount());
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    //Смотрим, есть ли расценка на работу с work_id в таблице CostWork
+    public int getCountLineWorkInCost(long work_id){
+        Log.i(TAG, "SmetaOpenHelper.getCountLineWorkInCost ... ");
+
+        String select = " SELECT " + CostWork._ID + " FROM " + CostWork.TABLE_NAME +
+                " where " + CostWork.COST_WORK_ID + " =? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(work_id)});
+        Log.i(TAG, "SmetaOpenHelper.getCountLineWorkInCost cursor.getCount() = " + cursor.getCount());
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    //удаляем вид работы из  Work (если в таблице FW нет записей с work_Id - это проверяется в другом месте)
+    public void deleteWork(long work_Id) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Work.TABLE_NAME, Work._ID + " =? ",
+                new String[]{String.valueOf(work_Id)});
+        db.close();
+    }
+
+    //Добавляем вид работы
+    public long  insertCostZero(long work_Id){
+        Log.i(TAG, "SmetaOpenHelper.insertCostZero ... ");
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CostWork.COST_WORK_ID,work_Id);
+        cv.put(CostWork.COST_UNIT_ID, 1);
+        cv.put(CostWork.COST_COST,0);
+        cv.put(CostWork.COST_NUMBER,1);
+        // вставляем строку
+        long ID = db.insert(CostWork.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertCostZero  CostWork._ID = " + ID);
+        return ID;
+    }
+
+    //удаляем расценку работы (если в таблице FW нет записей с work_Id - это проверяется в другом месте)
+    public void deleteCostOfWork(long work_Id) {
+        Log.i(TAG, "SmetaOpenHelper.deleteCostOfWork ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        int countDelete = db.delete(CostWork.TABLE_NAME, CostWork.COST_WORK_ID + " =? ",
+                new String[]{String.valueOf(work_Id)});
+        Log.i(TAG, "SmetaOpenHelper.deleteCostOfWork countDelete =" + countDelete);
+        db.close();
+    }
+
+    //получаем массив названий типов работы
+    public String[] getArrayUnitsNames() {
+        SQLiteDatabase db = getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames ... ");
+        String unitsName  = " SELECT " + Unit.UNIT_NAME  + " FROM " + Unit.TABLE_NAME;
+        Cursor cursor = db.rawQuery(unitsName, null);
+        String[] units_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            units_name[position] = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
+        }
+        return units_name;
+    }
+
+    //получаем ID по имени  работы
+    public long getIdFromUnitName(String unitName) {
+        long currentID;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                Unit.TABLE_NAME,   // таблица
+                new String[]{Unit._ID},            // столбцы
+                Unit.UNIT_NAME + "=?",                  // столбцы для условия WHERE
+                new String[]{unitName},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(Unit._ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getIdFromUnitName currentID = " + currentID);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return currentID;
+    }
+
+    //получаем данные по категории по её id
+    public DataWork getWorkData(long work_id){
+        Log.i(TAG, "SmetaOpenHelper.getWorkData ... ");
+        DataWork dataWork = new DataWork();
+
+        String workData = " SELECT  * FROM " +  Work.TABLE_NAME +
+                " WHERE " + Work._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
+            String currentWorkName = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
+            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(Work.WORK_DESCRIPTION));
+            Log.d(TAG, "getWorkData currentWorkName = " + currentWorkName);
+            //создаём экземпляр класса DataWork в конструкторе
+            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return dataWork;
+    }
+
+
+    //Обновляем данные по типам работ
+    public void updateWorkData(long work_id, String nameWork, String descriptionWork){
+        Log.i(TAG, "SmetaOpenHelper.updateWorkData ...");
+        SQLiteDatabase db = this.getWritableDatabase();
+        //заполняем данные для обновления в базе
+        ContentValues values = new ContentValues();
+        values.put(Work.WORK_NAME, nameWork);
+        values.put(Work.WORK_DESCRIPTION, descriptionWork);
+
+        db.update(Work.TABLE_NAME, values,
+                Work._ID + "=" + work_id, null);
+        Log.i(TAG, "SmetaOpenHelper.updateWorkData - nameWork =" + nameWork + "  work_id = " + work_id);
+    }
 }

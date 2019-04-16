@@ -28,7 +28,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetaCategoryElectro extends AppCompatActivity
-        implements DialogSaveCatName.CategoryWorkNameListener {
+        implements DialogSaveName.WorkCategoryTypeNameListener {
 
     public static final String TAG = "33333";
     ListView mListView;
@@ -39,9 +39,10 @@ public class SmetaCategoryElectro extends AppCompatActivity
     long file_id;
 
     @Override
-    public void categoryWorkNameTransmit(String catName) {
+    public void workCategoryTypeNameTransmit(String workName,String typeName, String catName) {
         long newCatNameId = mSmetaOpenHelper.insertCatName(catName);
-        Log.d(TAG, "categoryWorkNameTransmit - newCatNameId = " + newCatNameId);
+        Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                " typeName=" + typeName + " catName=" + catName +  " newCatNameId=" + newCatNameId);
         updateAdapter();
     }
 

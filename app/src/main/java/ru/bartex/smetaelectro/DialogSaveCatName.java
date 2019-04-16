@@ -2,42 +2,23 @@ package ru.bartex.smetaelectro;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class DialogSaveCatName extends DialogFragment {
+public class DialogSaveCatName extends DialogSaveName {
 
     static String TAG = "33333";
-    SmetaOpenHelper smetaOpenHelper;
 
     public DialogSaveCatName(){};
-
-    public interface CategoryWorkNameListener {
-        void categoryWorkNameTransmit(String catName);
-    }
-
-    private CategoryWorkNameListener categoryWorkNameListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        categoryWorkNameListener = (CategoryWorkNameListener)context;
-        smetaOpenHelper = new SmetaOpenHelper(context);
-    }
 
     @NonNull
     @Override
@@ -48,21 +29,42 @@ public class DialogSaveCatName extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.dialog_save_cat_name, null);
-        final EditText etCatName = view.findViewById(R.id.etCatName);
-        etCatName.requestFocus();
-        etCatName.setInputType(InputType.TYPE_CLASS_TEXT);
+        final View view = inflater.inflate(R.layout.dialog_save_name, null);
         builder.setView(view);
-        builder.setTitle("Сохранить категорию");
+        builder.setTitle("Сохранить");
         builder.setIcon(R.drawable.ic_save_black_24dp);
 
-        Button btnSaveName = view.findViewById(R.id.buttonSaveCatName);
+
+        TextView tvKind  = view.findViewById(R.id.tvKind);
+        tvKind.setVisibility(View.GONE);
+
+        EditText etSaveNameWork = view.findViewById(R.id.etSaveNameWork);
+        etSaveNameWork.setVisibility(View.GONE);
+
+        TextView tvType  = view.findViewById(R.id.tvType);
+        tvType.setVisibility(View.GONE);
+
+        TextView tvTypeName  = view.findViewById(R.id.tvTypeName);
+        tvTypeName.setVisibility(View.GONE);
+
+        EditText typeName = view.findViewById(R.id.etSaveNameType);
+        typeName.setVisibility(View.GONE);
+
+        TextView tvCatName  = view.findViewById(R.id.tvCatName);
+        tvCatName.setVisibility(View.GONE);
+
+        final EditText etSaveNameCat = view.findViewById(R.id.etSaveNameCat);
+        etSaveNameCat.requestFocus();
+        etSaveNameCat.setInputType(InputType.TYPE_CLASS_TEXT);
+
+
+        Button btnSaveName = view.findViewById(R.id.buttonSaveName);
         btnSaveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //читаем имя файла в строке ввода
-                String nameCat = etCatName.getText().toString();
+                String nameCat = etSaveNameCat.getText().toString();
                 Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
@@ -88,42 +90,26 @@ public class DialogSaveCatName extends DialogFragment {
                     Log.d(TAG, "Такое название отсутствует catId = " + catId);
 
                     //Вызываем метод интерфейса, передаём название категории в SmetaCategoryElectro
-                    categoryWorkNameListener.categoryWorkNameTransmit(nameCat);
+                    workCategoryTypeNameListener.workCategoryTypeNameTransmit(null,null, nameCat);
 
-                    //getActivity().finish(); //закрывает и диалог и активность
-                    getDialog().dismiss();  //закрывает только диалог
-                    //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                    takeOnAndOffSoftInput();
+                    fiishDialog();
                 }
 
             }
         });
 
-        Button btnCancel = view.findViewById(R.id.buttonCancelCatName);
+        Button btnCancel = view.findViewById(R.id.buttonCancelName);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //getActivity().finish(); //закрывает и диалог и активность
-                getDialog().dismiss();  //закрывает только диалог
-                //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                takeOnAndOffSoftInput();
+                fiishDialog();
             }
         });
 
         //если не делать запрет на закрытие окна при щелчке за пределами окна, то можно так
         return builder.create();
-        //А если делать запрет, то так
-       // Dialog  dialog = builder.create();
-        //запрет на закрытие окна при щелчке за пределами окна
-        //dialog.setCanceledOnTouchOutside(false);
-        //return dialog;
     }
 
-    //принудительно вызываем клавиатуру - повторный вызов ее скроет
-    private void takeOnAndOffSoftInput(){
-        InputMethodManager imm = (InputMethodManager) getActivity().
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
+
 }

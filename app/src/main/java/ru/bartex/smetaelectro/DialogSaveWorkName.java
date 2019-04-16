@@ -2,46 +2,27 @@ package ru.bartex.smetaelectro;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class DialogSaveWorkName extends DialogFragment {
+public class DialogSaveWorkName extends DialogSaveName {
 
-    int positionCategory;
-    int  positionType;
-    long cat_id;
     static String TAG = "33333";
-    SmetaOpenHelper smetaOpenHelper;
-    String selCategoryName = "";
-    String selTypeName = "";
-
 
     public DialogSaveWorkName(){
         //пустой конструктор
     }
-
-    public interface WorkCategoryTypeWorkNameListener{
-        void workCategoryTypeWorkNameTransmit(String workName,String typeName, String catName);
-    }
-    WorkCategoryTypeWorkNameListener workCategoryTypeWorkNameListener;
-
 
     public static DialogSaveWorkName newInstance(long cat_id,int positionCategory, int  positionType){
         DialogSaveWorkName dialogSaveWorkName = new DialogSaveWorkName();
@@ -61,13 +42,6 @@ public class DialogSaveWorkName extends DialogFragment {
         cat_id = getArguments().getLong(P.ID_CATEGORY);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        smetaOpenHelper = new SmetaOpenHelper(context);
-        workCategoryTypeWorkNameListener = (WorkCategoryTypeWorkNameListener)context;
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -78,69 +52,45 @@ public class DialogSaveWorkName extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_save_work_name, null);
+        View view = inflater.inflate(R.layout.dialog_save_name, null);
         builder.setView(view);
 
-        builder.setTitle("Сохранить работу");
+        builder.setTitle("Сохранить");
         builder.setIcon(R.drawable.ic_save_black_24dp);
 
-        final EditText workName = view.findViewById(R.id.etWorkName);
-        workName.requestFocus();
-        workName.setInputType(InputType.TYPE_CLASS_TEXT);
+        final EditText etWorkName = view.findViewById(R.id.etSaveNameWork);
+        etWorkName.requestFocus();
+        etWorkName.setInputType(InputType.TYPE_CLASS_TEXT);
 
-        final String[] arrayTypeNames = smetaOpenHelper.getArrayTypeNames(cat_id);
-        Spinner  spinnerType = view.findViewById(R.id.spinnerTypeName);
-        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, arrayTypeNames);
-        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerType.setAdapter(adapterType);
-        spinnerType.setSelection(positionType);
+        TextView tvTypeName = view.findViewById(R.id.tvTypeName);
+        String[] arrayTypeNames = smetaOpenHelper.getArrayTypeNames(cat_id);
+        final String typeName = arrayTypeNames[positionType];
+        tvTypeName.setText(typeName);
 
-        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selTypeName = arrayTypeNames[position];
-                Log.d(TAG, "onItemSelected selTypeName = " + selTypeName);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        EditText etSaveNameType = view.findViewById(R.id.etSaveNameType);
+        etSaveNameType.setVisibility(View.GONE);
 
-        final String[] arrayCatNames = smetaOpenHelper.getArrayCategoryNames();
-        Spinner  spinnerCat  = view.findViewById(R.id.spinnerCatName);
-        ArrayAdapter<String> adapterCat = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, arrayCatNames);
-        adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCat.setAdapter(adapterCat);
-        spinnerCat.setSelection(positionCategory);
+        TextView tvCatName = view.findViewById(R.id.tvCatName);
+        String[] arrayCatNames = smetaOpenHelper.getArrayCategoryNames();
+        final String catName = arrayCatNames[positionCategory];
+        tvCatName.setText(catName);
 
-        spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selCategoryName = arrayCatNames[position];
-                Log.d(TAG, "onItemSelected selCategoryName = " + selCategoryName);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        EditText etSaveNameCat = view.findViewById(R.id.etSaveNameCat);
+        etSaveNameCat.setVisibility(View.GONE);
 
-        Button btnSaveType = view.findViewById(R.id.buttonSaveWorkName);
-        btnSaveType.setOnClickListener(new View.OnClickListener() {
+        Button buttonSaveName = view.findViewById(R.id.buttonSaveName);
+        buttonSaveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //читаем имя работы в строке ввода
-                String nameWork = workName.getText().toString();
-                Log.d(TAG, " onCreateDialog nameWork = " + nameWork);
+                String workName = etWorkName.getText().toString();
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long workId = smetaOpenHelper.getIdFromWorkName(nameWork);
-                Log.d(TAG, "nameWork = " + nameWork + "  workId = " + workId);
+                long workId = smetaOpenHelper.getIdFromWorkName(workName);
+                Log.d(TAG, "workName = " + workName + "  workId = " + workId);
 
                 //если имя - пустая строка
-                if (nameWork.trim().isEmpty()){
+                if (workName.trim().isEmpty()){
                     Snackbar.make(v, "Введите непустое название работы", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название работы ");
@@ -156,46 +106,24 @@ public class DialogSaveWorkName extends DialogFragment {
                     //если имя не повторяется, оно не пустое то
                 }else {
                     Log.d(TAG, "Такое название отсутствует workId = " + workId);
-/*
-                    //проверка, если ничего ещё не выбрано - не нужна, так как слушатель отрабатывает
-                    //на утановленной по умолчанию позиции - у нас это позиция 0
-                    String nameCategory  = "";
-                    if (selCategoryName.equals("")){
-                        nameCategory = categoryNames[0];
-                    }else {
-                        nameCategory = selCategoryName;
-                    }
-                    Log.d(TAG, "nameCategory = " + nameCategory);
-*/
 
-                    //Вызываем метод интерфейса, передаём название категории в SmetaCategoryElectro
-                    workCategoryTypeWorkNameListener.workCategoryTypeWorkNameTransmit
-                            (nameWork, selTypeName, selCategoryName);
+                    //Вызываем метод интерфейса, передаём название категории в SmetaWorkElectro
+                    workCategoryTypeNameListener.workCategoryTypeNameTransmit
+                            (workName, typeName, catName);
 
-                    //getActivity().finish(); //закрывает и диалог и активность
-                    getDialog().dismiss();  //закрывает только диалог
-                    //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                    takeOnAndOffSoftInput();
+                    fiishDialog();
                 }
             }
         });
 
-        Button btnCancelType = view.findViewById(R.id.buttonCancelWorkName);
-        btnCancelType.setOnClickListener(new View.OnClickListener() {
+        Button buttonCancelName = view.findViewById(R.id.buttonCancelName);
+        buttonCancelName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getActivity().finish(); //закрывает и диалог и активность
-                getDialog().dismiss();  //закрывает только диалог
-                takeOnAndOffSoftInput();
+                fiishDialog();
             }
         });
-        return builder.create();
-    }
 
-    //принудительно вызываем клавиатуру - повторный вызов ее скроет
-    private void takeOnAndOffSoftInput(){
-        InputMethodManager imm = (InputMethodManager) getActivity().
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        return builder.create();
     }
 }
