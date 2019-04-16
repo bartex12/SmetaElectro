@@ -36,7 +36,7 @@ public class SmetasTab1Rabota extends Fragment {
 
     public static final String TAG = "33333";
 
-    ExpandableListView lvSmetasRabota;
+    ListView lvSmetasRabota;
     TextView tvSumma;
     SmetaOpenHelper mSmetaOpenHelper;
     ArrayList<Map<String, Object>> data;
@@ -86,9 +86,9 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota_exp, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota, container, false);
         tvSumma = rootView.findViewById(R.id.tvSumma);
-        lvSmetasRabota = rootView.findViewById(R.id.listViewSmetasRabotaExp);
+        lvSmetasRabota = rootView.findViewById(R.id.listViewSmetasRabota);
         lvSmetasRabota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,11 +114,10 @@ public class SmetasTab1Rabota extends Fragment {
     public void onResume() {
         super.onResume();
         //обновляем данные списка фрагмента активности
-        updateExpandableAdapter();
+        updateAdapter();
         //обновляем общую сумму сметы
         totalSumma = updateTotalSumma(work_summa);
         tvSumma.setText("" + totalSumma);
-
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasRabota);
     }
@@ -180,7 +179,7 @@ public class SmetasTab1Rabota extends Fragment {
                     mSmetaOpenHelper.deleteWorkItemFromFW(file_id, work_id);
 
                     //обновляем данные списка фрагмента активности
-                    updateExpandableAdapter();
+                    updateAdapter();
                     //обновляем общую сумму сметы
                     totalSumma = updateTotalSumma(work_summa);
                     tvSumma.setText("" + totalSumma);
@@ -196,7 +195,7 @@ public class SmetasTab1Rabota extends Fragment {
         return super.onContextItemSelected(item);
     }
 
-/*
+
     public void updateAdapter() {
 
         //Массив категорий работ для сметы с file_id
@@ -239,7 +238,11 @@ public class SmetasTab1Rabota extends Fragment {
        }
             //добавляем футер
             footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)footer.findViewById(R.id.base_text)).setText("Итоги");
+            //обновляем общую сумму сметы
+            totalSumma = updateTotalSumma(work_summa);
+            Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
+            ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
+                    Float.toString(totalSumma) + " руб");
             lvSmetasRabota.addFooterView(footer);
         }
         String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
@@ -249,8 +252,8 @@ public class SmetasTab1Rabota extends Fragment {
         sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
         lvSmetasRabota.setAdapter(sara);
     }
-*/
 
+/*
     public void updateExpandableAdapter() {
 
         //Массив категорий работ для сметы с file_id
@@ -326,9 +329,8 @@ public class SmetasTab1Rabota extends Fragment {
         //разворачиваем все группы
         for(int i=0; i < adapter.getGroupCount(); i++)
             lvSmetasRabota.expandGroup(i);
-
     }
-
+*/
 
     public float updateTotalSumma(float[] work_summa) {
         float totalSumma = 0;
