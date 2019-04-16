@@ -1290,7 +1290,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_cost;
     }
 
-    //получаем расценки работ  по смете с id файла file_id
+    //получаем расценки работ  по смете с id файла file_id и id типа type_id
     public float[]  getCostOfWorkSelectedType(long file_id, long type_id){
         String select_work_cost = " SELECT " + FW.FW_COST +
                 " FROM " +  FW.TABLE_NAME  +
@@ -1329,7 +1329,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_amount;
     }
 
-    //получаем количество работ  по смете с id файла file_id
+    //получаем количество работ  по смете с id файла file_id и id типа type_id
     public float[]  getAmountOfWorkSelectedType(long file_id, long type_id){
         String select_work_amount = " SELECT " + FW.FW_COUNT +
                 " FROM " +  FW.TABLE_NAME  +
@@ -1370,7 +1370,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_units;
     }
 
-    //получаем единицы измерения для  работ  по смете с id файла file_id
+    //получаем единицы измерения для  работ  по смете с id файла file_id  и id типа type_id
     public String[]  getUnitsOfWorkSelectedType(long file_id, long type_id){
         String select_work_units = " SELECT " + FW.FW_UNIT +
                 " FROM " +  FW.TABLE_NAME  +
@@ -1413,7 +1413,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_summa;
     }
 
-    //получаем количество работ  по смете с id файла file_id
+    //получаем стоимость работы  по смете с id файла file_id  и id типа type_id
     public float[]  getSummaOfWorkSelectedType(long file_id, long type_id){
         String select_work_summa = " SELECT " + FW.FW_SUMMA +
                 " FROM " +  FW.TABLE_NAME  +
