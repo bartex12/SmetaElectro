@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".SmetaListStructured"></activity>
+            android:name=".SmetaListStructured"
+            android:label="@string/title_activity_SmetaListStructured"></activity>
 
         <activity android:name=".WorkSpesific" />
         <activity android:name=".WorkChangeData" />

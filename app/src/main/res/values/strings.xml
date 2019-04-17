@@ -530,6 +530,7 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="complex_list">Данные</string>
     <string name="complex_list_group">Работа</string>
+
     <string name="ru_rub"> руб</string>
     <string name="count_sht">шт</string>
     <string name="smetas_name">Название сметы</string>
@@ -549,7 +550,7 @@
     <string name="action_create_add_name">Новая смета</string>
     <string name="work_hint_name">Работа</string>
     <string name="description_work">Описание работы</string>
-    <string name="description_work">Описание работы</string>
+
 
 
 </resources>
