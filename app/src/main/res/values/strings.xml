@@ -515,6 +515,7 @@
     <string name="title_activity_CostWork">Расценки: виды работ</string>
     <string name="title_activity_CostDetail">Цена</string>
     <string name="title_activity_changeDataFile">Изменение</string>
+    <string name="title_activity_SmetaListStructured">Подробно</string>
     <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
     <string name="CostZero">Цена работы не указана</string>
     <string name="DeleteCategory">Удалить эту категорию?</string>
@@ -528,6 +529,7 @@
     <string name="tab_text_2">Материалы</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="complex_list">Данные</string>
+    <string name="complex_list_group">Работа</string>
     <string name="ru_rub"> руб</string>
     <string name="count_sht">шт</string>
     <string name="smetas_name">Название сметы</string>
@@ -546,6 +548,7 @@
     <string name="ok">OK</string>
     <string name="action_create_add_name">Новая смета</string>
     <string name="work_hint_name">Работа</string>
+    <string name="description_work">Описание работы</string>
     <string name="description_work">Описание работы</string>
 
 

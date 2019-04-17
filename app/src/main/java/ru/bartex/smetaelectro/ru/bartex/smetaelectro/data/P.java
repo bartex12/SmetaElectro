@@ -91,4 +91,13 @@ public class P {
         return String.format(Locale.ENGLISH, "%02d.%02d.%04d_%02d:%02d:%02d",
                 date, month + 1, year, hour, min, sec);
     }
+
+    public static float updateTotalSumma(float[] work_summa) {
+        float totalSumma = 0;
+        for (int i = 0; i < work_summa.length; i++) {
+            totalSumma += work_summa[i];
+        }
+        return totalSumma;
+    }
+
 }

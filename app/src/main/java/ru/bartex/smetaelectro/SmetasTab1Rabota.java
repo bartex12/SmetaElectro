@@ -117,7 +117,7 @@ public class SmetasTab1Rabota extends Fragment {
         //обновляем данные списка фрагмента активности
         updateAdapter();
         //обновляем общую сумму сметы
-        totalSumma = updateTotalSumma(work_summa);
+        totalSumma = P.updateTotalSumma(work_summa);
         tvSumma.setText("" + totalSumma);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasRabota);
@@ -186,7 +186,7 @@ public class SmetasTab1Rabota extends Fragment {
                     //обновляем данные списка фрагмента активности
                     updateAdapter();
                     //обновляем общую сумму сметы
-                    totalSumma = updateTotalSumma(work_summa);
+                    totalSumma = P.updateTotalSumma(work_summa);
                     tvSumma.setText("" + totalSumma);
                 }
             });
@@ -244,11 +244,11 @@ public class SmetasTab1Rabota extends Fragment {
             //добавляем футер
             footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
             //обновляем общую сумму сметы
-            totalSumma = updateTotalSumma(work_summa);
+            totalSumma = P.updateTotalSumma(work_summa);
             Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
             ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
                     Float.toString(totalSumma) + " руб");
-            lvSmetasRabota.addFooterView(footer);
+            lvSmetasRabota.addFooterView(footer, null, false);
         }
         String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
                 P.WORK_UNITS, P.WORK_SUMMA};
@@ -336,14 +336,5 @@ public class SmetasTab1Rabota extends Fragment {
             lvSmetasRabota.expandGroup(i);
     }
 */
-
-    public float updateTotalSumma(float[] work_summa) {
-        float totalSumma = 0;
-        for (int i = 0; i < work_summa.length; i++) {
-            totalSumma += work_summa[i];
-        }
-        return totalSumma;
-    }
-
 
 }
