@@ -132,9 +132,15 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         //иначе почему то дублируются
         lvSmetasRabota.removeHeaderView(header);
         lvSmetasRabota.removeFooterView(footer);
+
     }
 
     //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
