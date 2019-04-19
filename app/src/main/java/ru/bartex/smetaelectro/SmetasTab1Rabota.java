@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -37,7 +38,7 @@ public class SmetasTab1Rabota extends Fragment {
     public static final String TAG = "33333";
 
     ListView lvSmetasRabota;
-    TextView tvSumma;
+    //TextView tvSumma;
     SmetaOpenHelper mSmetaOpenHelper;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
@@ -71,7 +72,7 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "SmetasTab1Rabota: onCreate  ");
+        Log.d(TAG, "// SmetasTab1Rabota onCreate // " );
         //получаем id файла из аргументов
         file_id = getArguments().getLong(P.ID_FILE);
     }
@@ -79,6 +80,7 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "//SmetasTab1Rabota  onActivityCreated // " );
         mSmetaOpenHelper = new SmetaOpenHelper(getActivity());
     }
 
@@ -86,8 +88,9 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "// SmetasTab1Rabota onCreateView // " );
         View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota, container, false);
-        tvSumma = rootView.findViewById(R.id.tvSumma);
+        //tvSumma = rootView.findViewById(R.id.tvSumma);
         lvSmetasRabota = rootView.findViewById(R.id.listViewSmetasRabota);
 
         lvSmetasRabota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,11 +117,11 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "//  SmetasTab1Rabota onResume // " );
+
         //обновляем данные списка фрагмента активности
         updateAdapter();
-        //обновляем общую сумму сметы
-        totalSumma = P.updateTotalSumma(work_summa);
-        tvSumma.setText("" + totalSumma);
+
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasRabota);
     }
@@ -126,21 +129,22 @@ public class SmetasTab1Rabota extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        Log.d(TAG, "//SmetasTab1Rabota onDestroy // " );
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "//SmetasTab1Rabota onPause // " );
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "//SmetasTab1Rabota onStop // " );
         //иначе почему то дублируются
         lvSmetasRabota.removeHeaderView(header);
         lvSmetasRabota.removeFooterView(footer);
-
     }
 
     //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
@@ -188,12 +192,8 @@ public class SmetasTab1Rabota extends Fragment {
                     //иначе почему то дублируются
                     lvSmetasRabota.removeHeaderView(header);
                     lvSmetasRabota.removeFooterView(footer);
-
                     //обновляем данные списка фрагмента активности
                     updateAdapter();
-                    //обновляем общую сумму сметы
-                    totalSumma = P.updateTotalSumma(work_summa);
-                    tvSumma.setText("" + totalSumma);
                 }
             });
             builder.show();
@@ -209,6 +209,7 @@ public class SmetasTab1Rabota extends Fragment {
 
     public void updateAdapter() {
 
+        Log.d(TAG, "//SmetasTab1Rabota updateAdapter // " );
         //Массив категорий работ для сметы с file_id
         String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
         Log.d(TAG, "SmetasTab1Rabota - updateAdapter  cat_name.length = " + cat_name.length);
@@ -229,17 +230,22 @@ public class SmetasTab1Rabota extends Fragment {
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(work_name.length);
 
-        for (int j=0; j<cat_name.length; j++){
             //добавляем хедер
             header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)header.findViewById(R.id.base_text)).setText((j+1) +" "+ cat_name[j]);
-            lvSmetasRabota.addHeaderView(header, null, false);
+            ((TextView)header.findViewById(R.id.base_text)).setText("Электромонтаж");
+            if (lvSmetasRabota.getHeaderViewsCount()>0){
+                lvSmetasRabota.removeHeaderView(header);
+            }else {
+                lvSmetasRabota.addHeaderView(header, null, false);
+            }
+            Log.d(TAG, "***********getHeaderViewsCount*********** = " +
+                    lvSmetasRabota.getHeaderViewsCount());
 
         for (int i = 0; i < work_name.length; i++) {
             Log.d(TAG, "SmetasTab1Rabota - updateAdapter  work_name = " + work_name[i]);
 
                 m = new HashMap<>();
-                m.put(P.WORK_NUMBER, (j+1) + "." +(i + 1));
+                m.put(P.WORK_NUMBER, (i + 1));
                 m.put(P.WORK_NAME, work_name[i]);
                 m.put(P.WORK_COST, work_cost[i]);
                 m.put(P.WORK_AMOUNT, work_amount[i]);
@@ -249,13 +255,20 @@ public class SmetasTab1Rabota extends Fragment {
        }
             //добавляем футер
             footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            //обновляем общую сумму сметы
-            totalSumma = P.updateTotalSumma(work_summa);
-            Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-            ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
-                    Float.toString(totalSumma) + " руб");
-            lvSmetasRabota.addFooterView(footer, null, false);
-        }
+        Log.d(TAG, "*********  getFooterViewsCount1  ********* = " + lvSmetasRabota.getFooterViewsCount());
+            if (lvSmetasRabota.getFooterViewsCount()>0){
+                Log.d(TAG, "*********  removeFooterView2  ********* >0 ");
+                lvSmetasRabota.removeFooterView(footer);
+            }else {
+                Log.d(TAG, "*********  addFooterView3  ********* <=0 ");
+                lvSmetasRabota.addFooterView(footer, null, false);
+            }
+        totalSumma = P.updateTotalSumma(work_summa);
+        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
+        ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
+                Float.toString(totalSumma) + " руб");
+            Log.d(TAG, "*********  getFooterViewsCount4  ********* = " + lvSmetasRabota.getFooterViewsCount());
+
         String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
                 P.WORK_UNITS, P.WORK_SUMMA};
         int[] to = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
@@ -263,84 +276,4 @@ public class SmetasTab1Rabota extends Fragment {
         sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
         lvSmetasRabota.setAdapter(sara);
     }
-
-/*
-    public void updateExpandableAdapter() {
-
-        //Массив категорий работ для сметы с file_id
-        //String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
-
-        //массив типов работ для сметы с file_id
-        String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  type_name.length = " + type_name.length);
-
-        //создаём список групп
-        groupData = new ArrayList<Map<String,String>>();
-
-        for (String type:type_name) {
-            mm = new HashMap<String, String>();
-            mm.put("groupName", type);
-            groupData.add(mm);
-        }
-        // список атрибутов групп для чтения
-        String[] groupFrom = new String[]{"groupName"};
-        // список ID view-элементов, в которые будет помещены атрибуты групп
-        int[] groupTo = new int[]{android.R.id.text1};
-
-        //сначала создаём список групп элементов, чтобы в него добавлять списки элементов
-        childData = new ArrayList<ArrayList<Map<String,String>>>();
-
-        //теперь создаём список элементов для всех групп
-        for (int i=0; i< type_name.length;i++) {
-
-            childDataItem = new ArrayList<Map<String, String>>();
-
-            //массив типов работ для сметы с file_id
-            long tipe_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
-            //Массив работ в файле с file_id и типом tipe_id
-            String[] workNames = mSmetaOpenHelper.getNameOfWorkSelectedType(file_id,tipe_id );
-            //Массив расценок для работ в файле с file_id и типом tipe_id
-            float[] workCost = mSmetaOpenHelper.getCostOfWorkSelectedType(file_id, tipe_id );
-            //Массив количества работ для работ в файле с file_id и типом tipe_id
-            float[] workАmount = mSmetaOpenHelper.getAmountOfWorkSelectedType(file_id, tipe_id );
-            //Массив единиц измерения для работ в файле с file_id и типом tipe_id
-            String[] workUnits = mSmetaOpenHelper.getUnitsOfWorkSelectedType(file_id, tipe_id );
-            //Массив стоимости работы  для работ в файле с file_id и типом tipe_id
-            float[] workSumma = mSmetaOpenHelper.getSummaOfWorkSelectedType(file_id, tipe_id );
-            //Массив стоимости работы  для работ в файле с file_id
-            work_summa = mSmetaOpenHelper.getSummaOfWork(file_id);
-
-            for (int j = 0; j < workNames.length; j++) {
-                mm = new HashMap<String, String>();
-                mm.put("workName", workNames[j]);
-                mm.put("workCost", Float.toString(workCost[j]));
-                mm.put("workАmount", Float.toString(workАmount[j]));
-                mm.put("workUnit", workUnits[j]);
-                mm.put("workSumma", Float.toString(workSumma[j]));
-                childDataItem.add(mm);
-            }
-            childData.add(childDataItem);
-        }
-
-        // список атрибутов элементов для чтения
-        String[] childFrom = new String[]{"workName", "workCost", "workАmount", "workUnit", "workSumma"};
-        // список ID view-элементов, в которые будет помещены атрибуты элементов
-        int[] childTo = new int[]{R.id.base_text, R.id.tvCost, R.id.tvAmount, R.id.tvUnits, R.id.tvSumma};
-
-        SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
-                getActivity(),
-                groupData,
-                android.R.layout.simple_expandable_list_item_1,
-                groupFrom,groupTo,
-                childData,
-                R.layout.list_item_complex, //можно свой макет с android:id="@android:id/text1"
-                childFrom,childTo);
-
-        lvSmetasRabota.setAdapter(adapter);
-        //разворачиваем все группы
-        for(int i=0; i < adapter.getGroupCount(); i++)
-            lvSmetasRabota.expandGroup(i);
-    }
-*/
-
 }

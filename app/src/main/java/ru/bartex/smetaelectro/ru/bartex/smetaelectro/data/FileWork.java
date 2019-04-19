@@ -12,6 +12,7 @@ public class FileWork {
 
     public final static String _ID = BaseColumns._ID;
     public final static String FILE_NAME = "FileName";
+    public final static String WORK_OR_MATERIAL = "WorkOrMaterial";
     public final static String ADRESS = "FileAdress";
     public final static String FILE_NAME_DATE = "FileNameDate";
     public final static String FILE_NAME_TIME = "FileNameTime";

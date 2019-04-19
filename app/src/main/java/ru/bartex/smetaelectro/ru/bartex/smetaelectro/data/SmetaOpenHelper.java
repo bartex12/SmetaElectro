@@ -359,6 +359,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+
     //получаем курсор с Category._id  и делаем массив id
     public int[] getArrayCategoryId(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId ... ");
@@ -426,8 +427,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         String[] work_name_type_soputstv = res.getStringArray(R.array.work_name_type_soputstv);
         String[] work_name_type_primechania = res.getStringArray(R.array.work_name_type_primechania);
 
-        String[] work_name_type_hren = res.getStringArray(R.array.work_name_type_hren);
-        String[] work_name_type_full_hren = res.getStringArray(R.array.work_name_type_full_hren);
+        String[] work_name_type_musor = res.getStringArray(R.array.work_name_type_musor);
+        String[] work_name_type_tovary = res.getStringArray(R.array.work_name_type_tovary);
 
         //получаем массив type_id  таблицы типов Types
         int[] type_id = this.getArrayTypeId(db);
@@ -485,12 +486,12 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             this.InsertWork(db, values, type_id[ii],  work_name_type_primechania[i]);
         }
         ii = 13; //work_name_type_hren
-        for (int i = 0; i <work_name_type_hren.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_hren[i]);
+        for (int i = 0; i <work_name_type_musor.length; i++ ){
+            this.InsertWork(db, values, type_id[ii],  work_name_type_musor[i]);
         }
         ii = 14; //work_name_type_full_hren
-        for (int i = 0; i <work_name_type_full_hren.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_full_hren[i]);
+        for (int i = 0; i <work_name_type_tovary.length; i++ ){
+            this.InsertWork(db, values, type_id[ii],  work_name_type_tovary[i]);
         }
     }
 

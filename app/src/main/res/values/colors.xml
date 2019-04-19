@@ -9,4 +9,7 @@
     <color name="greenLigth">#E9F9EF</color>
     <color name="colorBlue">#0000FF</color>
     <color name="colorBlack">#000000</color>
+    <color name="actionbar_background">#ffffff</color>
+    <color name="actionbar_text_color">#FF0000</color>
+
 </resources>

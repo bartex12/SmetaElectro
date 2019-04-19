@@ -88,7 +88,7 @@ public class SmetaListStructured extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home_cost:
+                case R.id.navigation_home:
                     // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
                     Intent intentHome = new Intent(SmetaListStructured.this, MainActivity.class);
                     // установка флагов- создаём новую задачу и убиваем старую вместе
@@ -97,10 +97,15 @@ public class SmetaListStructured extends AppCompatActivity {
                     //      Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intentHome);
                     return true;
-                case R.id.navigation_smetas_cost:
+                case R.id.navigation_smetas:
                     // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
                     Intent intent_smetas = new Intent(SmetaListStructured.this, ListOfSmetasNames.class);
                     startActivity(intent_smetas);
+                    return true;
+                case R.id.navigation_costs:
+                    // Для данного варианта в манифесте
+                    Intent intent_costs = new Intent(SmetaListStructured.this, CostCategory.class);
+                    startActivity(intent_costs);
                     return true;
             }
             return false;
@@ -116,7 +121,7 @@ public class SmetaListStructured extends AppCompatActivity {
 
         //добавляем хедер
         header = getLayoutInflater().inflate(R.layout.list_item_single, null);
-        ((TextView)header.findViewById(R.id.base_text)).setText(cat_name[0]);
+        ((TextView)header.findViewById(R.id.base_text)).setText("Электромонтаж");
         mListViewNames.addHeaderView(header, null, false);
 
         for (int i = 0; i<type_name.length; i++){

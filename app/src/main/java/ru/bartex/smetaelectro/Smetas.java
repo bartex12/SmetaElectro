@@ -2,6 +2,9 @@ package ru.bartex.smetaelectro;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,6 +51,9 @@ public class Smetas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas);
 
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
 
@@ -58,7 +64,8 @@ public class Smetas extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //показываем имя текущей сметы в заголовке экрана
-        toolbar.setTitle("Смета: " + fileName);
+        toolbar.setTitle(fileName);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorFab));
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -188,6 +195,34 @@ public class Smetas extends AppCompatActivity {
             // Show 3 total pages.
             return 2;
         }
-
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
+                    Intent intentHome = new Intent(Smetas.this, MainActivity.class);
+                    // установка флагов- создаём новую задачу и убиваем старую вместе
+                    // со всеми предыдущими переходами - работает дёргано по сравнению с манифестом
+                    //intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    //      Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentHome);
+                    return true;
+                case R.id.navigation_smetas:
+                    // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
+                    Intent intent_smetas = new Intent(Smetas.this, ListOfSmetasNames.class);
+                    startActivity(intent_smetas);
+                    return true;
+                case R.id.navigation_costs:
+                    // Для данного варианта в манифесте
+                    Intent intent_costs = new Intent(Smetas.this, CostCategory.class);
+                    startActivity(intent_costs);
+                    return true;
+            }
+            return false;
+        }
+    };
 }
