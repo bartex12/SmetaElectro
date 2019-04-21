@@ -33,6 +33,12 @@ public class P {
     //есть ли в смете такой пункт с работой
     public static final String IS_WORK = "Есть такой пункт?";
 
+    //id категории материалов
+    public static final String ID_CATEGORY_MAT = "ID_CATEGORY_MAT";
+    //id типа материалов
+    public static final String ID_TYPE_MAT = "ID_TYPE_MAT";
+
+
     // номер выбранной работы
     public static final String WORK_NUMBER = "Номер выбранной работы";
     // Имя выбранной работы
@@ -45,13 +51,28 @@ public class P {
     public static final String WORK_UNITS = "Единицы измерения выбранной работы";
     // Стоимшсть выбранной работы
     public static final String WORK_SUMMA = "Стоимость выбранной работы";
-
     // имя типа или ваботы в списке пунктов сметы
     public static final String TYPE_WORK_NAME = "Имя типа или работы";
-
     // Стоимость выбранной работы
     public static final String COST_OF_WORK = "Расценка для выбранной работы";
 
+    // номер выбранного материала
+    public static final String MAT_NUMBER = "Номер выбранного материала";
+    // Имя выбранного материала
+    public static final String MAT_NAME = "Имя выбранного материала";
+    // Цена для выбранного материала
+    public static final String MAT_COST = "Цена для выбранного материала";
+    // Количество выбранного материала
+    public static final String MAT_AMOUNT = "Количество выбранного материала";
+    // Единицы измерения выбранного материала
+    public static final String MAT_UNITS = "Единицы измерения выбранного материала";
+    // Стоимшсть выбранного материала
+    public static final String MAT_SUMMA = "Стоимость выбранного материала";
+
+    //выбранная в материалах вкладка
+    public static final String TAB_POSITION = "Выбранная_вкладка";
+    //выбран тип материалов?
+    public static final String IS_SELECTED_TYPE = "IS_SELECTED_TYPE";
 
     //Ключ имени категории
     public static final String ATTR_CATEGORY_NAME = "ATTR_CATEGORY_NAME";
@@ -62,6 +83,17 @@ public class P {
     public static final String ATTR_TYPE_NAME = "ATTR_TYPE_NAME";
     //Ключ чекбокса  типа работ
     public static final String ATTR_TYPE_MARK = "ATTR_TYPE_MARK";
+
+    //Ключ имени типа материалов
+    public static final String ATTR_TYPE_MAT_NAME = "ATTR_TYPE_MAT_NAME";
+    //Ключ чекбокса  типа материалов
+    public static final String ATTR_TYPE_MAT_MARK = "ATTR_TYPE_MAT_MARK";
+
+    //Ключ имени материалов
+    public static final String ATTR_MAT_NAME = "ATTR_MAT_NAME";
+    //Ключ чекбокса  материалов
+    public static final String ATTR_MAT_MARK = "ATTR_MAT_MARK";
+
 
     //Ключ имени  работ
     public static final String ATTR_WORK_NAME = "ATTR_WORK_NAME";

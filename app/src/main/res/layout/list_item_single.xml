@@ -18,7 +18,7 @@
         android:id="@+id/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:maxLines="5"
         android:paddingLeft="8dp"

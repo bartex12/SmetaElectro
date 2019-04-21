@@ -1,28 +1,21 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -44,7 +37,7 @@ public class Smetas extends AppCompatActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
+    public ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +62,12 @@ public class Smetas extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsWork);
+        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -84,17 +77,24 @@ public class Smetas extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int currentItem = mViewPager.getCurrentItem();
+                switch (currentItem){
+                    case 0:
+                        Intent intent = new Intent(Smetas.this, SmetaCategoryElectro.class);
+                        intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                        startActivity(intent);
+                        break;
 
-                Intent intent = new Intent(Smetas.this, SmetaCategoryElectro.class);
-                intent.putExtra(P.ID_FILE_DEFAULT, file_id);
-                 startActivity(intent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
+                    case 1:
+                        Intent intent2 = new Intent(Smetas.this, SmetasMat.class);
+                        intent2.putExtra(P.ID_FILE_DEFAULT, file_id);
+                        startActivity(intent2);
+                        break;
+                }
+
             }
         });
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,12 +105,7 @@ public class Smetas extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -130,22 +125,15 @@ public class Smetas extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      * Так как созданы классы для вкладок, этот класс не нужен
      */
-
   /*
     public static class PlaceholderFragment extends Fragment {
-
           //The fragment argument representing the section number for this
          //fragment.
-
         private static final String ARG_SECTION_NUMBER = "section_number";
-
         public PlaceholderFragment() {
         }
-
-
           //Returns a new instance of this fragment for the given section
           //number.
-
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -163,7 +151,6 @@ public class Smetas extends AppCompatActivity {
             return rootView;
         }
     }
-
     */
 
     /**
@@ -180,10 +167,10 @@ public class Smetas extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id);
+                    SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id,position);
                     return tab1Rabota;
                 case 1:
-                    SmetasTab2Materialy tab2Materialy = new SmetasTab2Materialy();
+                    SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id,position);
                     return tab2Materialy;
                 default:
                     return null;
@@ -192,7 +179,7 @@ public class Smetas extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
     }

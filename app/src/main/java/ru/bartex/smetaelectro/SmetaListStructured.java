@@ -113,57 +113,62 @@ public class SmetaListStructured extends AppCompatActivity {
     };
 
     public void updateAdapter() {
-        Log.d(TAG, "SmetaListStructured - updateAdapter2 /////////////////////");
+
+        Log.d(TAG, "SmetaListStructured - updateAdapter /////////////////////");
         //Массив категорий работ для сметы с file_id
         String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
+        Log.d(TAG, "SmetaListStructured - updateAdapter  cat_name.length = " + cat_name.length);
         //массив типов работ для сметы с file_id
         String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
+        Log.d(TAG, "SmetaListStructured - updateAdapter  type_name.length = " + type_name.length);
+        //получаем суммарную стоимомть работ  по смете с id файла file_id
+        work_summas = mSmetaOpenHelper.getSummaOfWork(file_id);
 
         //добавляем хедер
         header = getLayoutInflater().inflate(R.layout.list_item_single, null);
-        ((TextView)header.findViewById(R.id.base_text)).setText("Электромонтаж");
+        ((TextView)header.findViewById(R.id.base_text)).setText(R.string.smeta_of_work);
         mListViewNames.addHeaderView(header, null, false);
+        int length = type_name.length;
 
-        for (int i = 0; i<type_name.length; i++){
-            mm = new HashMap<>();
-            mm.put("typeName", (i+1) + " " + type_name[i]);
-            arrayListType.add(mm);
-            Log.d(TAG, "SmetaListStructured - updateAdapter  arrayListType.size()1 = " + arrayListType.size());
-
-            long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
-            Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[i] = " +
-                    type_name[i] + " type_id = " + type_id);
-
-            //получаем имена работ  по смете с id файла file_id и id типа type_id
-            String[] work_names = mSmetaOpenHelper.getNameOfWorkSelectedType(file_id, type_id);
-            //получаем расценки работ  по смете с id файла file_idи id типа type_id
-            float[] work_cost = mSmetaOpenHelper.getCostOfWorkSelectedType(file_id, type_id);
-            //получаем количество работ  по смете с id файла file_id и id типа type_id
-            float[] work_amount = mSmetaOpenHelper.getAmountOfWorkSelectedType(file_id, type_id);
-            //получаем единицы измерения для  работ  по смете с id файла file_id
-            String[]  work_units = mSmetaOpenHelper.getUnitsOfWorkSelectedType(file_id, type_id);
-            //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
-            float[] work_summa =  mSmetaOpenHelper.getSummaOfWorkSelectedType(file_id, type_id);
-            //получаем суммарную стоимомть работ  по смете с id файла file_id
-            work_summas = mSmetaOpenHelper.getSummaOfWork(file_id);
-
-            for (int k = 0; k<work_names.length; k++){
+        if (length >0){
+            for (int i = 0; i<length; i++){
                 mm = new HashMap<>();
-               //mm.put("typeName", (i+1) + " " + type_name[i]);
-                mm.put("workName", "   " + (i+1)+ "." + (k+1) + " " + work_names[k]);
-                mm.put("workCost", Float.toString(work_cost[k]));
-                mm.put("workАmount", Float.toString(work_amount[k]));
-                mm.put("workUnit", work_units[k]);
-                mm.put("workSumma", Float.toString(work_summa[k]));
+                mm.put("typeName", (i+1) + " " + type_name[i]);
                 arrayListType.add(mm);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  arrayListType.size()2 = " + arrayListType.size());
-                Map<String,String> from_mm =  arrayListType.get(0);
-                String t_n = from_mm.get("typeName");
-                String w_n = from_mm.get("workName");
-                Log.d(TAG, "SmetaListStructured - updateAdapter  t_n = " + t_n + " w_n =" + w_n);
-            }
-            }
+                Log.d(TAG, "SmetaListStructured - updateAdapter  arrayListType.size()1 = " + arrayListType.size());
 
+                long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
+                Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[i] = " +
+                        type_name[i] + " type_id = " + type_id);
+
+                //получаем имена работ  по смете с id файла file_id и id типа type_id
+                String[] work_names = mSmetaOpenHelper.getNameOfWorkSelectedType(file_id, type_id);
+                //получаем расценки работ  по смете с id файла file_idи id типа type_id
+                float[] work_cost = mSmetaOpenHelper.getCostOfWorkSelectedType(file_id, type_id);
+                //получаем количество работ  по смете с id файла file_id и id типа type_id
+                float[] work_amount = mSmetaOpenHelper.getAmountOfWorkSelectedType(file_id, type_id);
+                //получаем единицы измерения для  работ  по смете с id файла file_id
+                String[]  work_units = mSmetaOpenHelper.getUnitsOfWorkSelectedType(file_id, type_id);
+                //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
+                float[] work_summa =  mSmetaOpenHelper.getSummaOfWorkSelectedType(file_id, type_id);
+
+                for (int k = 0; k<work_names.length; k++){
+                    mm = new HashMap<>();
+                    //mm.put("typeName", (i+1) + " " + type_name[i]);
+                    mm.put("workName", "   " + (i+1)+ "." + (k+1) + " " + work_names[k]);
+                    mm.put("workCost", Float.toString(work_cost[k]));
+                    mm.put("workАmount", Float.toString(work_amount[k]));
+                    mm.put("workUnit", work_units[k]);
+                    mm.put("workSumma", Float.toString(work_summa[k]));
+                    arrayListType.add(mm);
+                    Log.d(TAG, "SmetaListStructured - updateAdapter  arrayListType.size()2 = " + arrayListType.size());
+                    Map<String,String> from_mm =  arrayListType.get(0);
+                    String t_n = from_mm.get("typeName");
+                    String w_n = from_mm.get("workName");
+                    Log.d(TAG, "SmetaListStructured - updateAdapter  t_n = " + t_n + " w_n =" + w_n);
+                }
+            }
+        }
         // список атрибутов элементов для чтения
         String[] from = new String[]{"typeName","workName", "workCost", "workАmount",
                 "workUnit", "workSumma", "typeName"};
@@ -175,8 +180,9 @@ public class SmetaListStructured extends AppCompatActivity {
         footer = getLayoutInflater().inflate(R.layout.list_item_single, null);
         //обновляем общую сумму сметы
         totalSumma = P.updateTotalSumma(work_summas);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-        ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
+        Log.d(TAG, "SmetasTab1Rabota - updateAdapter - footer - totalSumma = " + totalSumma);
+        ((TextView)footer.findViewById(R.id.base_text)).setText(
+                getResources().getString(R.string.itogo_of_work) + "   " +
                 Float.toString(totalSumma) + " руб");
         mListViewNames.addFooterView(footer, null, false);
 

@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
-    android:background="@drawable/rect">
+    >
 
     <CheckBox
-        android:id="@+id/checkBoxTwo"
+        android:id="@+id/checkBoxTwoMat"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:clickable="false"
         android:enabled="true"
         android:focusable="false"
@@ -19,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/base_text_two"
+        android:id="@+id/base_text_two_mat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

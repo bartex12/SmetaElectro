@@ -8,7 +8,66 @@
     <string name="Saved">Saved</string>
     <string name="title_smetas">Сметы</string>
     <string name="title_costs">Расценки</string>
-
+    <string name="title_activity_smetas">Smetas</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_struct">Структура</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_change_name">Изменить</string>
+    <string name="action_add">Добавить </string>
+    <string name="action_detail">Подробности</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_smetas1">Сметы</string>
+    <string name="title_activity_details">Добавить/изменить пункт</string>
+    <string name="title_activity_ListOfSmetasNames">Сметы</string>
+    <string name="title_activity_SmetaNewCategory">Выбор категории </string>
+    <string name="title_activity_SmetaNewType">Выбор типа работы</string>
+    <string name="title_activity_SmetaNewWork">Выбор работы </string>
+    <string name="title_activity_SmetaNewName">Новая смета</string>
+    <string name="title_activity_CostCategory">Расценки: категории работ</string>
+    <string name="title_activity_CostType">Расценки: типы работ</string>
+    <string name="title_activity_CostWork">Расценки: виды работ</string>
+    <string name="title_activity_CostDetail">Цена</string>
+    <string name="title_activity_changeDataFile">Изменение</string>
+    <string name="title_activity_SmetaListStructured">Подробно</string>
+    <string name="title_activity_MatActivity">Материалы</string>
+    <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
+    <string name="CostZero">Цена работы не указана</string>
+    <string name="DeleteCategory">Удалить эту категорию?</string>
+    <string name="DeleteType">Удалить этот тип работ?</string>
+    <string name="DeleteKind">Удалить этот вид работ?</string>
+    <string name="DeleteYes">Да</string>
+    <string name="CostOk">Указать</string>
+    <string name="DeleteNo">Нет</string>
+    <string name="Delete_Item">Удалить пункт?</string>
+    <string name="tab_text_1">Работа</string>
+    <string name="tab_text_2">Материалы</string>
+    <string name="tab_text_1_mat">Категория</string>
+    <string name="tab_text_2_mat">Тип</string>
+    <string name="tab_text_3_mat">Название</string>
+    <string name="complex_list">Данные</string>
+    <string name="complex_list_group">Работа</string>
+    <string name="ru_rub"> руб</string>
+    <string name="count_sht">шт</string>
+    <string name="smetas_name">Название сметы</string>
+    <string name="category_name">Название категории </string>
+    <string name="type_name">Название типа работы </string>
+    <string name="type_work">Название работы </string>
+    <string name="type_hint_name">Тип работы </string>
+    <string name="date_creation">Дата и время создания</string>
+    <string name="date_time">Дата и время</string>
+    <string name="adress">Адрес объекта</string>
+    <string name="adress_no">Без адреса</string>
+    <string name="description">Опиcание</string>
+    <string name="description_category">Опиcание категории</string>
+    <string name="description_type">Опиcание типа работы</string>
+    <string name="description_no">Без описания</string>
+    <string name="ok">OK</string>
+    <string name="action_create_add_name">Новая смета</string>
+    <string name="work_hint_name">Работа</string>
+    <string name="description_work">Описание работы</string>
+    <string name="smeta_of_work">Смета на работу</string>
+    <string name="itogo_of_work">Итого по работе:   </string>
 
     <string-array name="MenuMain">
         <item>Оценочная смета на работу</item>
@@ -38,20 +97,20 @@
     </string-array>
 
     <string-array name="type_name_electro">
-    <item>Демонтаж</item>
-    <item>Подготовительные работы</item>
-    <item>Пробивка штроб и отверстий под коробки</item>
-    <item>Прокладка кабеля</item>
-    <item>Установка и расключение коробок</item>
-    <item>Сверление отверстий</item>
-    <item>Работа со щитом</item>
-    <item>Установка розеток и выключателей</item>
-    <item>Установка и подключение светильников</item>
-    <item>Светодиодная подсветка</item>
-    <item>Установка и подключение оборудования</item>
-    <item>Сопутствующие работы</item>
-    <item>Примечания к смете</item>
-</string-array>
+        <item>Демонтаж</item>
+        <item>Подготовительные работы</item>
+        <item>Пробивка штроб и отверстий под коробки</item>
+        <item>Прокладка кабеля</item>
+        <item>Установка и расключение коробок</item>
+        <item>Сверление отверстий</item>
+        <item>Работа со щитом</item>
+        <item>Установка розеток и выключателей</item>
+        <item>Установка и подключение светильников</item>
+        <item>Светодиодная подсветка</item>
+        <item>Установка и подключение оборудования</item>
+        <item>Сопутствующие работы</item>
+        <item>Примечания к смете</item>
+    </string-array>
 
     <string-array name="type_name_electro_mat">
         <item>Кабели, гофра</item>
@@ -203,25 +262,27 @@
     </string-array>
 
     <string-array name="mat_name_type_vremianki">
-    <item> Изолента шириной 19 мм белая</item>
+        <item> Изолента шириной 19 мм белая</item>
         <item> Изолента шириной 19 мм синяя</item>
         <item> Изолента шириной 19 мм чёрная</item>
         <item> Изолента шириной 19 мм красная</item>
         <item> Изолента шириной 19 мм жёлтая</item>
         <item> Изолента шириной 19 мм зелёная</item>
         <item> Изолента шириной 19 мм жёлто-зелёная</item>
-    <item>Лампочки для времянок</item>
-    <item>Патроны для времянок</item>
-    <item>Розетки, выключатели</item>
-    <item>Розетки четверные открытые для времянок</item>
-    <item>Вилки электрические с заземлением</item>
-    <item>Кабель ПВС 2х0,75 кв. мм для времянок</item>
-    <item>Кабель ПВС 2х1,5 кв. мм для времянок</item>
-    <item>Клеммники 6 кв мм</item>
+        <item>Лампочки для времянок</item>
+        <item>Патроны для времянок</item>
+        <item>Розетки, выключатели</item>
+        <item>Розетки четверные открытые для времянок</item>
+        <item>Вилки электрические с заземлением</item>
+
+        <item>Кабель ПВС 2х0,75 кв. мм для времянок</item>
+        <item>Кабель ПВС 2х1,5 кв. мм для времянок</item>
+
+        <item>Клеммники 6 кв мм</item>
         <item>Клеммники 10 кв мм</item>
         <item>Клеммники 6 кв мм</item>
         <item>Клеммники 4 кв мм</item>
-    <item>Гильзы с пластиковой рубашкой</item>
+        <item>Гильзы с пластиковой рубашкой</item>
         <item>Клеммники WAGO на 2 контакта для времянок</item>
         <item>Клеммники WAGO на 3 контакта для времянок</item>
     </string-array>
@@ -232,14 +293,12 @@
         <item>Розетка четверная наружная</item>
         <item>Выключатель одиночный наружный</item>
         <item>Выключатель двойной наружный</item>
-        <item>Вилка 015 3Р+РЕ+N 16А 380В переносная IP44 (PSR02-016-5) ИЭК</item>
-        <item>Розетка 215 переносная 3Р+РЕ+N 16А 380В IP44 (PSR22-016-5) ИЭК</item>
-        <item>Розетка 115 стационарная 3Р+РЕ+N 16А 380В IP44 (PSR12-016-5) ИЭК</item>
-
-        <item>Вилка 025 3Р+РЕ+N 32А 380В переносная IP44 (PSR02-032-5) ИЭК</item>
-        <item>Розетка 225 переносная 3Р+РЕ+N 32А 380В IP44 (PSR22-032-5) ИЭК</item>
-        <item>Розетка 125 стационарная 3Р+РЕ+N 32А 380В IP44 (PSR12-032-5) ИЭК</item>
-
+        <item>Вилка 015 3Р+РЕ+N 16А 380В переносная IP44  ИЭК</item>
+        <item>Розетка 215 переносная 3Р+РЕ+N 16А 380В IP44  ИЭК</item>
+        <item>Розетка 115 стационарная 3Р+РЕ+N 16А 380В IP44  ИЭК</item>
+        <item>Вилка 025 3Р+РЕ+N 32А 380В переносная IP44  ИЭК</item>
+        <item>Розетка 225 переносная 3Р+РЕ+N 32А 380В IP44  ИЭК</item>
+        <item>Розетка 125 стационарная 3Р+РЕ+N 32А 380В IP44  ИЭК</item>
         <item>Силовой разъём наружный для плиты в сборе 32 А Белоруссия</item>
         <item>Силовой разъём скрытый для плиты в сборе 32 А Белоруссия</item>
         <item>Розетка силовая скрытая для плиты Legrand 32 А 250 В</item>
@@ -248,8 +307,8 @@
     </string-array>
 
     <string-array name="mat_name_type_shchity">
-        <item>Бокс КМПн 1/2 навесной. Типоразмер: 1 ряд, 2 модуля (MKP31-N-02-30-252) ИЭК</item>
-        <item>Бокс КМПн 1 для четырех модулей IP20 (MKP31-N-04-30-135) ИЭК</item>
+        <item>Бокс КМПн навесной. Типоразмер: 1 ряд, 2 модуля  ИЭК</item>
+        <item>Бокс КМПн 1 для четырех модулей IP20  ИЭК</item>
         <item>Бокс ЩРН-П-6 IP40 (pb40-n-6) EKF</item>
         <item>Щит EASY9 1ряд 8модулей навесной прозрачный 200х184х94 EZ9E108S2SRU SE</item>
         <item>Щит EASY9 1ряд 12модулей навесной прозрачный 200х256х94 EZ9E112S2SRU SE</item>
@@ -262,7 +321,7 @@
         <item>Щит KAEDRA IP65 1ряд 12 модулей навесной 280х340х160 13981 SE</item>
         <item>Щит KAEDRA IP65 2ряд 24 модулей навесной 460х340х160 13983 SE</item>
         <item>Щит KAEDRA IP65 2ряд 36 модулей навесной 460х448х160 13984 SE</item>
-        <item>Бокс КМПн-48 для 48 модулей IP66 (MKP73-N-48-66) ИЭК</item>
+        <item>Бокс КМПн 48 для 48 модулей IP66  ИЭК</item>
         <item>Щит KAEDRA IP65 3ряд 54 модулей навесной 610х448х160 13986 SE</item>
 
         <item>Щит EASY9 1ряд 8модулей встраиваемый прозрачный 214х208х92 EZ9E108S2FRU SE</item>
@@ -306,9 +365,8 @@
         <item>Устройство защитного отключения (УЗО) 4п 25А 30 мА 411702 DX3 Legrand</item>
 
         <item>Счетчик однофазный  (2 тарифа) НЕВА МТ 124 5(60)A 220В 6,3х9х9,2 оптопорт DIN ЖКИ Тайпит</item>
-        <item>Счетчик  однофазный  (2 тарифа) ЦЭ 2726 6,5х7,8х11,5 5-60А 220В DIN ЖКИ ПЗИП</item>
+        <item>Счетчик  однофазный  (2 тарифа) ЦЭ 2726 6,5х7,8х11,5 5_60А 220В DIN ЖКИ ПЗИП</item>
         <item>Счетчик  трехфазный (2 тарифа) НЕВА "МТ 324  3х230/400V 5(60)A, 6,6x12,1x11,4 оптопорт, рейка Тайпит, </item>
-
         <item>Выключатель сумеречный ABB</item>
         <item>Выключатель сумеречный Legrand</item>
 
@@ -322,7 +380,6 @@
 
         <item>Шина гребенчатая один полюс 12 автоматов 10387 SE Домовой SE</item>
         <item>Шина гребенчатая три полюса 12 автоматов типа "штырь"</item>
-
         <item>Шина медная твердая М1т/ШМТ 3*20*3000</item>
         <item>Шина медная твердая М1т/ШМТ 4*40*3000</item>
         <item>Изолятор SM 40 475А 12кВ с болтом (plc-sm-40) EKF</item>
@@ -331,13 +388,14 @@
         <item>Шина "0" 8х12 мм 125 Ампер (12 отверстий/крепеж по центру) латунь EKF PROxima</item>
         <item>Шина "0" 8х12 мм 125 Ампер (14 отверстий/крепеж по краям) латунь EKF PROxima</item>
         <item>Шина "0" 8х12 мм 125 Ампер (20 отверстий/крепеж по краям) латунь EKF PROxima</item>
-        <item>Шина PE "земля" на DIN-изол ШНИ-6х9-8-Д-Ж ИЭК</item>
+        <item>Шина PE "земля" на DIN_изол ШНИ_6х9_8_Д_Ж ИЭК</item>
 
-        <item>DIN-рейка 300 мм оцинкованная (YDN10-0030) ИЭК</item>
-        <item>DIN-Рейка 600 мм профильная перфорированная Высота 15, M6 РП 35/15-0.6-6 Хегель</item>
+        <item>DIN-рейка 300 мм оцинкованная  ИЭК</item>
+        <item>DIN-Рейка 600 мм профильная перфорированная Высота 15, Хегель</item>
         <item>ИЭК Ограничитель на DIN-рейку (металл) (YXD10)</item>
-        <item>ИЭК Заглушка 12 модулей серая пластиковая (YZM10-12)</item>
+        <item>ИЭК Заглушка 12 модулей серая пластиковая )</item>
         <item>Изолятор DIN для нулевой шины на 35-мм рейку</item>
+        <item>Замок для щита</item>
 
     </string-array>
 
@@ -347,6 +405,7 @@
         <item> Лента тёпло белый 9,6 Вт/м 24В</item>
         <item> Лента RGB 12В, 7,2 Вт/м</item>
         <item> Лента RGB 24В, 14,4 Вт/м</item>
+
         <item>RGB-усилитель (12/24V)</item>
         <item>RGB-kонтроллер (12/24V)</item>
         <item>Диммер для одноцветной ленты</item>
@@ -360,21 +419,25 @@
         <item>Блок питания 24V, 4.2A, 100W</item>
         <item>Блок питания 24V, 6,25A, 150W</item>
         <item>Блок питания HTS-300L-24 (24V, 12.5A, 300W)</item>
+
         <item>Провод ПВС  5x0.75кв.мм.</item>
         <item>Провод ПВС  4x0.75кв.мм.</item>
         <item>Провод ПВС  3x0.75кв.мм.</item>
         <item>Провод ПВС  2x0.75кв.мм.</item>
         <item>Провод ПВС 3х1,5 кв мм</item>
         <item>Провод ПВС 2х1,5 кв мм</item>
+
         <item>Коннекторы RGB</item>
         <item>Коннекторы 3528</item>
         <item>Коннекторы 5060</item>
+
         <item>Полоса для лент ARH-W12-2000</item>
         <item>Профиль плоский MIC-2000    2000х15.2х6</item>
         <item>Профиль плоский с экраном SL-LINE</item>
         <item>Профиль угловой PDS45-T-2000</item>
-        <item> Крепеж монтажный для MIC-2000 плоский</item>
-        <item> Крепеж монтажный для PDS45-T угловой</item>
+
+        <item>Крепеж монтажный для MIC-2000 плоский</item>
+        <item>Крепеж монтажный для PDS45-T угловой</item>
         <item>Двухсторонний скотч 3М шириной 10мм</item>
         <item>Клей Момент прозрачный, 135г</item>
         <item>Саморезы универсальные 3х25</item>
@@ -415,6 +478,7 @@
         <item>Зубило по бетону плоское SDS-plus 20х250 мм</item>
         <item>Зубило по бетону П-образное SDS-plus 22х250 мм</item>
         <item>Пика  SDS-plus </item>
+
         <item>Круг отрезной по металлу 125х1.2х22 мм</item>
         <item>Диск отрезной по металлу, 180х22 мм</item>
         <item>Диск алмазный по бетону, 125x22.2 мм</item>
@@ -423,12 +487,15 @@
         <item>Коронка по бетону SDS-plus D75 мм</item>
         <item>Коронка для металла Matrix Bi-Metall D68 мм</item>
         <item>Коронка алмазная по керамике/граниту Matrix D68 мм</item>
+
         <item>Сверло по металлу</item>
         <item>Сверло по дереву</item>
         <item>Сверло перьевое по дереву</item>
         <item>Сверло балочное по дереву</item>
         <item>Сверло по плитке Dexter 6x100 мм</item>
         <item>Сверло ктупенчатое по металлу</item>
+        <item>Пилки для лобзика по дереву</item>
+        <item>Пилки для лобзика по металлу</item>
     </string-array>
 
     <string-array name="mat_name_type_krepez">
@@ -463,6 +530,7 @@
         <item>Ремонтная смесь</item>
         <item>Клей для плитки</item>
         <item>Литой бетон</item>
+
         <item>Ёмкость для разведения гипса 5л</item>
         <item>Ведро для воды 15л</item>
         <item>Шпатель 30 мм</item>
@@ -496,7 +564,6 @@
         <item>Скотч</item>
         <item>Плёнка</item>
         <item>Одноразовый комбинезон</item>
-
         <item>Респиратор со сменными фильтрами</item>
         <item>Нож строительный</item>
         <item>Рулетка</item>
@@ -509,7 +576,19 @@
         <item>Силикон</item>
         <item>Монтажный клей</item>
         <item>Пистолет для силикона</item>
+        <item>Уровень</item>
+        <item>Угольник</item>
+    </string-array>
 
+    <string-array name="mat_name_type_instr">
+        <item>Щётки для перфоратора</item>
+        <item>Смазка для буров</item>
+    </string-array>
+
+    <string-array name="mat_name_type_obschestroy">
+        <item>Рабочая одежда</item>
+        <item>Каска</item>
+        <item>Аптечка</item>
     </string-array>
 
     <string-array name="work_name_type_demontag">
@@ -668,7 +747,6 @@
         <item>м</item>
         <item>кв.м</item>
         <item>кг</item>
-        <item> </item>
     </string-array>
 
 
@@ -790,11 +868,85 @@
         <item>150</item>
         <item>200</item>
         <item>250</item>
-
     </string-array>
 
+    <string-array name="cost_of_mat">
 
-    <string-array name="unit_of_work">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <string-array name="unit_id_of_work">
         <item>1</item>
         <item>2</item>
 
@@ -926,63 +1078,406 @@
         <item>1</item>
 
     </string-array>
-    <string name="title_activity_smetas">Smetas</string>
-    <string name="action_settings">Настройки</string>
-    <string name="action_struct">Структура</string>
-    <string name="action_delete">Удалить</string>
-    <string name="action_cancel">Отмена</string>
-    <string name="action_change_name">Изменить</string>
-    <string name="action_add">Добавить </string>
-    <string name="action_detail">Подробности</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_smetas1">Сметы</string>
-    <string name="title_activity_details">Добавить/изменить пункт</string>
-    <string name="title_activity_ListOfSmetasNames">Выберите смету </string>
-    <string name="title_activity_SmetaNewCategory">Выбор категории </string>
-    <string name="title_activity_SmetaNewType">Выбор типа работы</string>
-    <string name="title_activity_SmetaNewWork">Выбор работы </string>
-    <string name="title_activity_SmetaNewName">Новая смета</string>
-    <string name="title_activity_CostCategory">Расценки: категории работ</string>
-    <string name="title_activity_CostType">Расценки: типы работ</string>
-    <string name="title_activity_CostWork">Расценки: виды работ</string>
-    <string name="title_activity_CostDetail">Цена</string>
-    <string name="title_activity_changeDataFile">Изменение</string>
-    <string name="title_activity_SmetaListStructured">Подробно</string>
-    <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
-    <string name="CostZero">Цена работы не указана</string>
-    <string name="DeleteCategory">Удалить эту категорию?</string>
-    <string name="DeleteType">Удалить этот тип работ?</string>
-    <string name="DeleteKind">Удалить этот вид работ?</string>
-    <string name="DeleteYes">Да</string>
-    <string name="CostOk">Указать</string>
-    <string name="DeleteNo">Нет</string>
-    <string name="Delete_Item">Удалить пункт?</string>
-    <string name="tab_text_1">Работа</string>
-    <string name="tab_text_2">Материалы</string>
-    <string name="tab_text_3">Tab 3</string>
-    <string name="complex_list">Данные</string>
-    <string name="complex_list_group">Работа</string>
 
-    <string name="ru_rub"> руб</string>
-    <string name="count_sht">шт</string>
-    <string name="smetas_name">Название сметы</string>
-    <string name="category_name">Название категории </string>
-    <string name="type_name">Название типа работы </string>
-    <string name="type_work">Название работы </string>
-    <string name="type_hint_name">Тип работы </string>
-    <string name="date_creation">Дата и время создания</string>
-    <string name="date_time">Дата и время</string>
-    <string name="adress">Адрес объекта</string>
-    <string name="adress_no">Без адреса</string>
-    <string name="description">Опиcание</string>
-    <string name="description_category">Опиcание категории</string>
-    <string name="description_type">Опиcание типа работы</string>
-    <string name="description_no">Без описания</string>
-    <string name="ok">OK</string>
-    <string name="action_create_add_name">Новая смета</string>
-    <string name="work_hint_name">Работа</string>
-    <string name="description_work">Описание работы</string>
+    <string-array name="unit_id_of_mat">
 
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+    </string-array>
+
+    <string name="title_activity_SmetasMat">Материалы</string>
 
 
 </resources>

@@ -56,8 +56,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         //получаем ID по имени типа работы
     //public long getIdFromTypeName(String name)
 
-
-
     public static final String TAG = "33333";
     private final Context fContext;
 
@@ -80,6 +78,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         // Строка для создания таблицы наименований смет FileData
         String SQL_CREATE_TAB_FILE = "CREATE TABLE " + FileWork.TABLE_NAME + " ("
                 + FileWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FileWork.WORK_OR_MATERIAL + " INTEGER NOT NULL DEFAULT 0, "
                 + FileWork.FILE_NAME + " TEXT NOT NULL, "
                 + FileWork.ADRESS + " TEXT, "
                 + FileWork.FILE_NAME_DATE + " TEXT NOT NULL DEFAULT current_date, "
@@ -87,10 +86,11 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + FileWork.DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FileData");
         // Если файлов в базе нет, вносим запись с именем файла по умолчанию P.FILENAME_DEFAULT
         this.createDefaultFile(db);
 
-        // Строка для создания основной таблицы базы, записи добавляются только программно
+        // Строка для создания основной таблицы базы по работе, записи добавляются только программно
            String SQL_CREATE_TAB_FILE_AND_WORK  = "CREATE TABLE " + FW.TABLE_NAME + " ("
                 + FW._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FW.FW_FILE_ID + " INTEGER NOT NULL, "
@@ -107,6 +107,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + FW.FW_SUMMA + " REAL NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE_AND_WORK);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FW");
+
+
+        // Строка для создания основной таблицы базы по материалам, записи добавляются только программно
+        String SQL_CREATE_TAB_FILE_AND_MATERIALS  = "CREATE TABLE " + FM.TABLE_NAME + " ("
+                + FM._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FM.FM_FILE_ID+ " INTEGER NOT NULL, "
+                + FM.FM_FILE_NAME + " TEXT NOT NULL, "
+                + FM.FM_MAT_ID + " INTEGER NOT NULL, "
+                + FM.FM_MAT_NAME + " TEXT NOT NULL, "
+                + FM.FM_MAT_TYPE_ID + " INTEGER NOT NULL, "
+                + FM.FM_MAT_TYPE_NAME + " TEXT NOT NULL, "
+                + FM.FM_MAT_CATEGORY_ID + " INTEGER NOT NULL, "
+                + FM.FM_MAT_CATEGORY_NAME + " TEXT NOT NULL, "
+                + FM.FM_MAT_COST + " REAL NOT NULL, "
+                + FM.FM_MAT_COUNT + " INTEGER NOT NULL, "
+                + FM.FM_MAT_UNIT + " TEXT NOT NULL, "
+                + FM.FM_MAT_SUMMA + " REAL NOT NULL);";
+        // Запускаем создание таблицы
+        db.execSQL(SQL_CREATE_TAB_FILE_AND_MATERIALS);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FM");
 
         // Строка для создания таблицы категорий работ CategoryWork
         String SQL_CREATE_TAB_CATEGORY = "CREATE TABLE " + CategoryWork.TABLE_NAME + " ("
@@ -115,10 +136,22 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + CategoryWork.CATEGORY_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы категорий работ
         db.execSQL(SQL_CREATE_TAB_CATEGORY);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CategoryWork");
         // Если файлов в базе нет, вносим записи названий категорий работ (добавление из программы)
         this.createDefaultCategory(db);
 
-        // Строка для создания таблицы разделов (типов) работ TypeWork
+        // Строка для создания таблицы категорий материалов CategoryMat
+        String SQL_CREATE_TAB_CATEGORY_MAT = "CREATE TABLE " + CategoryMat.TABLE_NAME + " ("
+                + CategoryMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + CategoryMat.CATEGORY_MAT_NAME + " TEXT NOT NULL, "
+                + CategoryMat.CATEGORY_MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
+        // Запускаем создание таблицы категорий работ
+        db.execSQL(SQL_CREATE_TAB_CATEGORY_MAT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CategoryMat");
+        // Если файлов в базе нет, вносим записи названий категорий материалов (добавление из программы)
+        this.createDefaultCategoryMat(db);
+
+        // Строка для создания таблицы типов работ TypeWork
         String SQL_CREATE_TAB_TYPE = "CREATE TABLE " + TypeWork.TABLE_NAME + " ("
                 + TypeWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TypeWork.TYPE_CATEGORY_ID + " INTEGER NOT NULL, "
@@ -126,8 +159,22 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + TypeWork.TYPE_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы разделов (типов) работ TypeWork
         db.execSQL(SQL_CREATE_TAB_TYPE);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы TypeWork");
         // Если файлов в базе нет, вносим записи названия типов работ (добавление из программы)
         this.createDefaultType(db);
+
+        // Строка для создания таблицы типов материалов TypeMat
+        String SQL_CREATE_TAB_TYPE_MAT = "CREATE TABLE " + TypeMat.TABLE_NAME + " ("
+                + TypeMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TypeMat.TYPE_MAT_CATEGORY_ID + " INTEGER NOT NULL, "
+                + TypeMat.TYPE_MAT_NAME + " TEXT NOT NULL, "
+                + TypeMat.TYPE_MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
+        // Запускаем создание таблицы разделов (типов) работ TypeWork
+        db.execSQL(SQL_CREATE_TAB_TYPE_MAT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы TypeMat");
+        // Если файлов в базе нет, вносим записи названия типов работ (добавление из программы)
+        this.createDefaultTypeMat(db);
+
 
         // Строка для создания таблицы конкретных работ Work
         String SQL_CREATE_TAB_WORK = "CREATE TABLE " + Work.TABLE_NAME + " ("
@@ -137,17 +184,41 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + Work.WORK_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_WORK);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Work");
         // Если файлов в базе нет, вносим записи названия  работ (добавление из программы)
         this.createDefaultWork(db);
 
-        // Строка для создания таблицы единиц измерения Unit
+        // Строка для создания таблицы конкретных материалов Mat
+        String SQL_CREATE_TAB_MAT = "CREATE TABLE " + Mat.TABLE_NAME + " ("
+                + Mat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Mat.MAT_TYPE_ID + " INTEGER NOT NULL, "
+                + Mat.MAT_NAME + " TEXT NOT NULL, "
+                + Mat.MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
+        // Запускаем создание таблицы
+        db.execSQL(SQL_CREATE_TAB_MAT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Mat");
+        // Если файлов в базе нет, вносим записи названия  материалов (добавление из программы)
+        this.createDefaultMat(db);
+
+        // Строка для создания таблицы единиц измерения Unit для работ
         String SQL_CREATE_TAB_UNIT = "CREATE TABLE " + Unit.TABLE_NAME + " ("
                 + Unit._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Unit.UNIT_NAME + " TEXT NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_UNIT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Unit");
         // Если файлов в базе нет, вносим записи единиц измерения
         this.createDefaultUnit(db);
+
+        // Строка для создания таблицы единиц измерения UnitMat для материалов
+        String SQL_CREATE_TAB_UNIT_MAT = "CREATE TABLE " + UnitMat.TABLE_NAME + " ("
+                + UnitMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + UnitMat.UNIT_MAT_NAME + " TEXT NOT NULL);";
+        // Запускаем создание таблицы
+        db.execSQL(SQL_CREATE_TAB_UNIT_MAT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы UnitMat");
+        // Если файлов в базе нет, вносим записи единиц измерения
+        this.createDefaultUnitMat(db);
 
         // Строка для создания таблицы расценок CostWork
         String SQL_CREATE_TAB_COST = "CREATE TABLE " + CostWork.TABLE_NAME + " ("
@@ -158,8 +229,23 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + CostWork.COST_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_COST);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostWork");
         // Если файлов в базе нет, вносим записи расценок
         this.createDefaultCost(db);
+
+
+        // Строка для создания таблицы расценок CostMat
+        String SQL_CREATE_TAB_COST_MAT = "CREATE TABLE " + CostMat.TABLE_NAME + " ("
+                + CostMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + CostMat.COST_MAT_ID + " INTEGER NOT NULL, "
+                + CostMat.COST_MAT_UNIT_ID + " INTEGER NOT NULL, "
+                + CostMat.COST_MAT_COST + " REAL NOT NULL DEFAULT 0, "
+                + CostMat.COST_MAT_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
+        // Запускаем создание таблицы
+        db.execSQL(SQL_CREATE_TAB_COST_MAT);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostMat");
+        // Если файлов в базе нет, вносим записи расценок
+        this.createDefaultCostMat(db);
 
         // Строка для создания таблицы смет TotalTab
         String SQL_CREATE_TAB_TOTAL = "CREATE TABLE " + TotalTab.TABLE_NAME + " ("
@@ -175,9 +261,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_TOTAL);
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы TotalTab");
 
-        Log.d(TAG, "Создана база данных  " + DATABASE_NAME);
-
+        Log.d(TAG, "++++++++++++  Создана база данных  " + DATABASE_NAME + "  ++++++++++++++++");
     }
 
     @Override
@@ -187,14 +273,13 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
     // Когда файлов в базе нет, вносим запись с именем файла по умолчанию (Используем здесь)
     public void createDefaultFile(SQLiteDatabase db) {
+        Log.d(TAG, "MyDatabaseHelper.createDefaultFile..." );
             //получаем дату и время в нужном для базы данных формате
             String dateFormat = this.getDateString();
             String timeFormat = this.getTimeString();
-            //создаём экземпляр класса DataFile в конструкторе
-            //DataFile file = new DataFile(P.FILENAME_DEFAULT, P.ADRESS_DEFAULT,
-            //        dateFormat, timeFormat, P.DESCRIPTION_DEFAULT);
 
         ContentValues cv = new ContentValues();
+        cv.put(FileWork.WORK_OR_MATERIAL, 0);
         cv.put(FileWork.FILE_NAME, P.FILENAME_DEFAULT);
         cv.put(FileWork.ADRESS, P.ADRESS_DEFAULT);
         cv.put(FileWork.FILE_NAME_DATE, dateFormat);
@@ -347,6 +432,26 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             // Добавляем записи в таблицу
             db.insert(CategoryWork.TABLE_NAME, null, values);
         }
+        Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name.length);
+    }
+
+    //создаём категории из ресурсов
+    public void createDefaultCategoryMat(SQLiteDatabase db) {
+
+        ContentValues values = new ContentValues();
+        // Получим массив строк из ресурсов
+        Resources res = fContext.getResources();
+        String[] cat_name_mat = res.getStringArray(R.array.category_name_mat);
+        String[] cat_descr_mat = res.getStringArray(R.array.category_descr_mat);
+        // проходим через массив и вставляем записи в таблицу
+        int length = cat_name_mat.length;
+        for (int i = 0; i<length ; i++){
+            values.put(CategoryMat.CATEGORY_MAT_NAME, cat_name_mat[i]);
+            values.put(CategoryMat.CATEGORY_MAT_DESCRIPTION, cat_descr_mat[i]);
+            // Добавляем записи в таблицу
+            db.insert(CategoryMat.TABLE_NAME, null, values);
+        }
+        Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name_mat.length);
     }
 
     //получаем курсор с названиями категорий и отметкой о заходе в категорию
@@ -359,6 +464,16 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //получаем курсор с названиями категорий и отметкой о заходе в категорию
+    public Cursor getMatCategoryNames() {
+        Log.i(TAG, "SmetaOpenHelper.getMatCategoryNames ... ");
+        String matCategoryNames = " SELECT " + CategoryMat._ID + " , " +
+                CategoryMat.CATEGORY_MAT_NAME + " FROM " + CategoryMat.TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(matCategoryNames, null);
+        Log.i(TAG, "SmetaOpenHelper.getMatCategoryNames cursor.getCount() = " + cursor.getCount());
+        return cursor;
+    }
 
     //получаем курсор с Category._id  и делаем массив id
     public int[] getArrayCategoryId(SQLiteDatabase db) {
@@ -373,6 +488,22 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId position = " + position);
         }
         return category_id;
+    }
+
+    //получаем курсор с Category._id  и делаем массив id
+    public int[] getArrayCategoryIdMat( SQLiteDatabase db) {
+
+        Log.i(TAG, "SmetaOpenHelper.getArrayCategoryIdMat ... ");
+        String categoryIdMat = " SELECT " + CategoryMat._ID  + " FROM " + CategoryMat.TABLE_NAME;
+        Cursor cursor = db.rawQuery(categoryIdMat, null);
+        int[] category_id_mat = new int[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            category_id_mat[position] = cursor.getInt(cursor.getColumnIndex(CategoryMat._ID));
+            Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId position = " + position);
+        }
+        return category_id_mat;
     }
 
     //создаём типы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
@@ -397,6 +528,34 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         for (int i = 0; i <type_name_category_drugoe.length; i++ ){
             this.InsertType(db, values, category_id[ii], type_name_category_drugoe[i]);
         }
+        Log.d(TAG, "createDefaultType type_name_category_electro.length = " + type_name_category_electro.length);
+    }
+
+    //создаём типы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
+    public void createDefaultTypeMat(SQLiteDatabase db) {
+
+        Log.i(TAG, "SmetaOpenHelper.createDefaultTypeMat...");
+        // Добавляем записи в таблицу
+        ContentValues values = new ContentValues();
+
+        // Получим массив строк из ресурсов
+        Resources res = fContext.getResources();
+        String[] type_mat_name_electro = res.getStringArray(R.array.type_name_electro_mat);
+        String[] type_mat_name_drugoe = res.getStringArray(R.array.type_name_drugoe_mat);
+
+        //получаем массив Category._id  таблицы категорий Category
+        int[] category_id_mat = this.getArrayCategoryIdMat(db);
+        // проходим через массив и вставляем записи в таблицу
+        int ii = 0; //type_mat_name_electro
+        for (int i = 0; i <type_mat_name_electro.length; i++ ){
+            this.InsertTypeMat(db, values, category_id_mat[ii], type_mat_name_electro[i]);
+        }
+        ii = 1; //type_mat_name_drugoe
+        for (int i = 0; i <type_mat_name_drugoe.length; i++ ){
+            this.InsertTypeMat(db, values, category_id_mat[ii], type_mat_name_drugoe[i]);
+        }
+        Log.d(TAG, "createDefaultTypeMat type_mat_name_electro.length = " +
+                type_mat_name_electro.length + " type_mat_name_drugoe.length = " +type_mat_name_drugoe.length);
     }
 
     public void InsertType( SQLiteDatabase db,ContentValues values,
@@ -404,6 +563,13 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         values.put(TypeWork.TYPE_CATEGORY_ID, category_id);
         values.put(TypeWork.TYPE_NAME, type_name);
         db.insert(TypeWork.TABLE_NAME, null, values);
+    }
+
+    public void InsertTypeMat( SQLiteDatabase db,ContentValues values,
+                            int category_id,  String type_name){
+        values.put(TypeMat.TYPE_MAT_CATEGORY_ID, category_id);
+        values.put(TypeMat.TYPE_MAT_NAME, type_name);
+        db.insert(TypeMat.TABLE_NAME, null, values);
     }
 
     //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
@@ -493,6 +659,95 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         for (int i = 0; i <work_name_type_tovary.length; i++ ){
             this.InsertWork(db, values, type_id[ii],  work_name_type_tovary[i]);
         }
+        Log.d(TAG, "createDefaultWork type_id.length = " +
+                type_id.length + " work_name_type_demontag.length = " +work_name_type_demontag.length);
+    }
+
+    //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
+    public void createDefaultMat(SQLiteDatabase db) {
+
+        Log.i(TAG, "SmetaOpenHelper.createDefaultMat...");
+        // Добавляем записи в таблицу
+        ContentValues values = new ContentValues();
+        // Получим массив строк из ресурсов
+        Resources res = fContext.getResources();
+        String[] mat_name_type_kabeli = res.getStringArray(R.array.mat_name_type_kabeli);
+        String[] mat_name_type_kabel_kanali = res.getStringArray(R.array.mat_name_type_kabel_kanali);
+        String[] mat_name_type_korobki = res.getStringArray(R.array.mat_name_type_korobki);
+        String[] mat_name_type_vremianki = res.getStringArray(R.array.mat_name_type_vremianki);
+        String[] mat_name_type_rozetki = res.getStringArray(R.array.mat_name_type_rozetki);
+        String[] mat_name_type_shchity = res.getStringArray(R.array.mat_name_type_shchity);
+        String[] mat_name_type_led = res.getStringArray(R.array.mat_name_type_led);
+        String[] mat_name_type_svetilniki = res.getStringArray(R.array.mat_name_type_svetilniki);
+        String[] mat_name_type_bury = res.getStringArray(R.array.mat_name_type_bury);
+        String[] mat_name_type_krepez = res.getStringArray(R.array.mat_name_type_krepez);
+        String[] mat_name_type_sypuchie = res.getStringArray(R.array.mat_name_type_sypuchie);
+        String[] mat_name_type_vspomogat = res.getStringArray(R.array.mat_name_type_vspomogat);
+
+        String[] mat_name_type_instr = res.getStringArray(R.array.mat_name_type_instr);
+        String[] mat_name_type_obschestroy = res.getStringArray(R.array.mat_name_type_obschestroy);
+
+        //получаем массив type_id  таблицы типов Types
+        int[] type_id = this.getArrayTypeIdMat(db);
+        // проходим через массив и вставляем записи в таблицу
+        int ii = 0; //mat_name_type_kabeli
+        for (int i = 0; i <mat_name_type_kabeli.length; i++ ){
+            this.InsertMat(db, values, type_id[ii], mat_name_type_kabeli[i]);
+        }
+        ii = 1; //mat_name_type_kabel_kanali
+        for (int i = 0; i <mat_name_type_kabel_kanali.length; i++ ){
+            this.InsertMat(db, values, type_id[ii], mat_name_type_kabel_kanali[i]);
+        }
+        ii = 2; //mat_name_type_korobki
+        for (int i = 0; i <mat_name_type_korobki.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_korobki[i]);
+        }
+        ii = 3; //mat_name_type_vremianki
+        for (int i = 0; i <mat_name_type_vremianki.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_vremianki[i]);
+        }
+        ii = 4; //mat_name_type_rozetki
+        for (int i = 0; i <mat_name_type_rozetki.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_rozetki[i]);
+        }
+        ii = 5; //mat_name_type_shchity
+        for (int i = 0; i <mat_name_type_shchity.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_shchity[i]);
+        }
+        ii = 6; //mat_name_type_led
+        for (int i = 0; i <mat_name_type_led.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_led[i]);
+        }
+        ii = 7; //mat_name_type_svetilniki
+        for (int i = 0; i <mat_name_type_svetilniki.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_svetilniki[i]);
+        }
+        ii = 8; //mat_name_type_bury
+        for (int i = 0; i <mat_name_type_bury.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_bury[i]);
+        }
+        ii = 9; //mat_name_type_krepez
+        for (int i = 0; i <mat_name_type_krepez.length; i++ ){
+            this.InsertMat(db, values, type_id[ii], mat_name_type_krepez[i]);
+        }
+        ii = 10; //mat_name_type_sypuchie
+        for (int i = 0; i <mat_name_type_sypuchie.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_sypuchie[i]);
+        }
+        ii = 11; //mat_name_type_vspomogat
+        for (int i = 0; i <mat_name_type_vspomogat.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_vspomogat[i]);
+        }
+        ii = 12; //mat_name_type_instr
+        for (int i = 0; i <mat_name_type_instr.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_instr[i]);
+        }
+        ii = 13; //mat_name_type_obschestroy
+        for (int i = 0; i <mat_name_type_obschestroy.length; i++ ){
+            this.InsertMat(db, values, type_id[ii],  mat_name_type_obschestroy[i]);
+        }
+        Log.d(TAG, "createDefaultMat type_id.length = " +
+                type_id.length + " mat_name_type_kabeli.length = " + mat_name_type_kabeli.length);
     }
 
     public void InsertWork( SQLiteDatabase db,ContentValues values,
@@ -502,7 +757,15 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         db.insert(Work.TABLE_NAME, null, values);
     }
 
+    public void InsertMat( SQLiteDatabase db,ContentValues values,
+                            int type_id,  String work_name){
+        values.put(Mat.MAT_TYPE_ID, type_id);
+        values.put(Mat.MAT_NAME, work_name);
+        db.insert(Mat.TABLE_NAME, null, values);
+    }
+
     public void createDefaultUnit(SQLiteDatabase db){
+        Log.i(TAG, "SmetaOpenHelper.createDefaultUnit...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
@@ -514,43 +777,98 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             // Добавляем записи в таблицу
             db.insert(Unit.TABLE_NAME, null, values);
         }
+        Log.d(TAG, "createDefaultUnit unit_name.length = " + unit_name.length );
+    }
+
+    public void createDefaultUnitMat(SQLiteDatabase db){
+        Log.i(TAG, "SmetaOpenHelper.createDefaultUnitMat...");
+        ContentValues values = new ContentValues();
+        // Получим массив строк из ресурсов
+        Resources res = fContext.getResources();
+        String[] unit_name = res.getStringArray(R.array.unit_name);
+        // проходим через массив и вставляем записи в таблицу
+        int length = unit_name.length;
+        for (int i = 0; i<length ; i++){
+            values.put(UnitMat.UNIT_MAT_NAME, unit_name[i]);
+            // Добавляем записи в таблицу
+            db.insert(UnitMat.TABLE_NAME, null, values);
+        }
+        Log.d(TAG, "createDefaultUnitMat unit_name.length = " + unit_name.length );
     }
 
     public void createDefaultCost(SQLiteDatabase db){
-
+        Log.i(TAG, "SmetaOpenHelper.createDefaultCost...");
         ContentValues values = new ContentValues();
-
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
 
         int [] work_id = this.getIdFromWorks(db);
         int length = work_id.length;
 
-        String[] unit_name = res.getStringArray(R.array.unit_of_work);
-        int[] unit_id =new int[unit_name.length];
+        String[] unitIdOfWork = res.getStringArray(R.array.unit_id_of_work);
+        int[] unit_id =new int[unitIdOfWork.length];
         for (int i = 0; i<length; i++){
-            unit_id[i] = Integer.valueOf(unit_name[i]);
+            unit_id[i] = Integer.valueOf(unitIdOfWork[i]);
         }
-
         String[] cost = res.getStringArray(R.array.cost_of_work);
         float[] cost_of_work = new float[cost.length];
         for (int i = 0; i < length; i++){
             cost_of_work[i] = Float.valueOf(cost[i]);
         }
+        // проходим через массив и вставляем записи в таблицу
+        for (int i = 0; i < length; i++){
+            // Добавляем записи в таблицу
+            this.InsertCost(db, values, work_id[i], unit_id[i], cost_of_work[i]);
+        }
+        Log.d(TAG, "createDefaultCost unit_id.length = " + unit_id.length );
+    }
+
+    public void createDefaultCostMat(SQLiteDatabase db){
+        Log.i(TAG, "SmetaOpenHelper.createDefaultCostMat...");
+        ContentValues values = new ContentValues();
+
+        // Получим ресурс
+        Resources res = fContext.getResources();
+
+        int [] mat_id = this.getIdFromMats(db);
+        int length = mat_id.length;
+        // Получим массив строк из ресурсов
+        String[] unitIdOfMat = res.getStringArray(R.array.unit_id_of_mat);
+        int[] unit_id =new int[unitIdOfMat.length];
+        for (int i = 0; i<length; i++){
+            unit_id[i] = Integer.valueOf(unitIdOfMat[i]);
+        }
+        //*******ИСПРАВИТЬ ПОСЛЕ НАЗНАЧЕНИЯ ЦЕН************
+        /*
+        String[] costMat = res.getStringArray(R.array.cost_of_mat);
+        float[] cost_of_mat = new float[costMat.length];
+        for (int i = 0; i < length; i++){
+            cost_of_mat[i] = Float.valueOf(costMat[i]);
+        }
+        */
 
         // проходим через массив и вставляем записи в таблицу
         for (int i = 0; i < length; i++){
             // Добавляем записи в таблицу
-            this.InsertCost(db, values, work_id[i], unit_name[i], cost_of_work[i]);
+            this.InsertCostMat(db, values, mat_id[i], unit_id[i], 0);
         }
+        Log.d(TAG, "createDefaultCost unit_id.length = " + unit_id.length );
     }
 
     public void InsertCost( SQLiteDatabase db,ContentValues values,
-                            long work_id,  String unit_name, float cost){
+                            long work_id,  long unit_id, float cost){
         values.put(CostWork.COST_WORK_ID, work_id);
-        values.put(CostWork.COST_UNIT_ID, unit_name);
+        values.put(CostWork.COST_UNIT_ID, unit_id);
         values.put(CostWork.COST_COST, cost);
         db.insert(CostWork.TABLE_NAME, null, values);
+    }
+
+    public void InsertCostMat( SQLiteDatabase db,ContentValues values,
+                            long work_id,  long unit_id, float cost){
+        values.put(CostMat.COST_MAT_ID, work_id);
+        values.put(CostMat.COST_MAT_UNIT_ID, unit_id);
+        values.put(CostMat.COST_MAT_COST, cost);
+        db.insert(CostMat.TABLE_NAME, null, values);
     }
 
     //получаем курсор с Work_Type_id  и делаем массив id
@@ -569,6 +887,23 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return type_id;
     }
 
+    //получаем курсор с Work_Type_id  и делаем массив id
+    public int[] getArrayTypeIdMat(SQLiteDatabase db) {
+
+        Log.i(TAG, "SmetaOpenHelper.getArrayTypeIdMat ... ");
+        String typeIdMat = " SELECT " + TypeMat._ID  + " FROM " + TypeMat.TABLE_NAME;
+        Cursor cursor = db.rawQuery(typeIdMat, null);
+        Log.i(TAG, "SmetaOpenHelper.getArrayTypeIdMat cursor.getCount() = " + cursor.getCount());
+        int[] type_id_mat = new int[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            type_id_mat[position] = cursor.getInt(cursor.getColumnIndex(TypeMat._ID));
+            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
+        }
+        return type_id_mat;
+    }
+
     //получаем курсор с названиями типов работ
     public Cursor getTypeNames(long cat_id) {
         Log.i(TAG, "SmetaOpenHelper.getTypeNames ... ");
@@ -581,6 +916,29 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //получаем курсор с названиями типов работ
+    public Cursor getTypeMatNames(long cat_id) {
+        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames ... ");
+        String typeMatNames = " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
+                " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME +
+                " WHERE " + TypeMat.TYPE_MAT_CATEGORY_ID  + " = ?" ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(typeMatNames, new String[]{String.valueOf(cat_id)});
+        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с названиями типов работ по всем категориям
+    public Cursor getTypeMatNamesAllTypes() {
+        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames ... ");
+        String typeMatNames = " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
+                " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(typeMatNames, null);
+        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
     //получаем курсор с названиями  работ  и отметкой о заходе в тип для типа с type_id
     public Cursor getWorkNames(long type_id) {
         Log.i(TAG, "SmetaOpenHelper.getWorkNames ... ");
@@ -590,6 +948,17 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(typeNames, new String[]{String.valueOf(type_id)});
         Log.i(TAG, "SmetaOpenHelper.getWorkNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с названиями  материалов
+    public Cursor getMatNamesAllTypes() {
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes ... ");
+        String matNames = " SELECT " + Mat._ID + " , " +
+                Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(matNames, null);
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
@@ -709,6 +1078,33 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         Log.d(TAG, "getIdFromWorks currentID.length = " + currentID.length);
+        return currentID;
+    }
+
+    //получаем  все ID таблицы Mat
+    public int[] getIdFromMats(SQLiteDatabase db) {
+
+        Log.d(TAG, "getIdFromMats...");
+        Cursor cursor = db.query(
+                Mat.TABLE_NAME,   // таблица
+                new String[]{Mat._ID},            // столбцы
+                null,                  // столбцы для условия WHERE
+                null,                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+        int[] currentID = null;
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            currentID = new int[cursor.getCount()];
+            while (cursor.moveToNext()) {
+                // Узнаем индекс каждого столбца
+                int idColumnIndex = cursor.getColumnIndex(Mat._ID);
+                // Используем индекс для получения строки или числа
+                currentID[cursor.getPosition()] = cursor.getInt(idColumnIndex);
+            }
+        }
+            cursor.close();
+        Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
         return currentID;
     }
 
@@ -1247,6 +1643,25 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_name;
     }
 
+    //получаем имена материалов  по смете с id файла file_id
+    public String[]  getNameOfMat(long file_id){
+        String select_mat_name = " SELECT " + FM.FM_MAT_NAME +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_name, null);
+        Log.i(TAG, "TempDBHelper.getNameOfMat cursor.getCount()  " + cursor.getCount());
+        String[] mat_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getNameOfMat work_name[position] = " + mat_name[position]);
+        }
+            cursor.close();
+        return mat_name;
+    }
+
     //получаем имена работ  по смете с id файла file_id и id типа type_id
     public String[]  getNameOfWorkSelectedType(long file_id, long type_id){
 
@@ -1291,6 +1706,25 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_cost;
     }
 
+    //получаем цены материалов  по смете с id файла file_id
+    public float[]  getCostOfMat(long file_id){
+        String select_mat_cost = " SELECT " + FM.FM_MAT_COST +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_cost, null);
+        Log.i(TAG, "TempDBHelper.getCostOfMat cursor.getCount()  " + cursor.getCount());
+        float[] mat_cost = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
+            Log.i(TAG, "SmetaOpenHelper.getCostOfMat mat_cost[position] = " + mat_cost[position]);
+        }
+            cursor.close();
+        return mat_cost;
+    }
+
     //получаем расценки работ  по смете с id файла file_id и id типа type_id
     public float[]  getCostOfWorkSelectedType(long file_id, long type_id){
         String select_work_cost = " SELECT " + FW.FW_COST +
@@ -1328,6 +1762,25 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }
             cursor.close();
         return work_amount;
+    }
+
+    //получаем количество материалов  по смете с id файла file_id
+    public float[]  getAmountOfMat(long file_id){
+        String select_mat_amount = " SELECT " + FM.FM_MAT_COUNT +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_amount, null);
+        Log.i(TAG, "TempDBHelper.getAmountOfWork cursor.getCount()  " + cursor.getCount());
+        float[] mat_amount = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
+            Log.i(TAG, "SmetaOpenHelper.getAmountOfWork work_amount[position] = " + mat_amount[position]);
+        }
+        cursor.close();
+        return mat_amount;
     }
 
     //получаем количество работ  по смете с id файла file_id и id типа type_id
@@ -1369,6 +1822,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return work_units;
+    }
+
+    //получаем единицы измерения для  материалов  по смете с id файла file_id
+    public String[]  getUnitsOfMat(long file_id){
+        String select_maat_units = " SELECT " + FM.FM_MAT_UNIT +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_maat_units, null);
+        Log.i(TAG, "TempDBHelper.getUnitsOfMat cursor.getCount()  " + cursor.getCount());
+        String[] mat_units = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+            Log.i(TAG, "SmetaOpenHelper.getUnitsOfMat mat_units[position] = " + mat_units[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return mat_units;
     }
 
     //получаем единицы измерения для  работ  по смете с id файла file_id  и id типа type_id
@@ -1414,6 +1888,25 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_summa;
     }
 
+    //получаем количество материалов  по смете с id файла file_id
+    public float[]  getSummaOfMat(long file_id){
+        String select_mat_summa = " SELECT " + FM.FM_MAT_SUMMA +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_summa, null);
+        Log.i(TAG, "TempDBHelper.getSummaOfMat cursor.getCount()  " + cursor.getCount());
+        float[] mat_summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+            Log.i(TAG, "SmetaOpenHelper.getSummaOfMat mat_summa[position] = " + mat_summa[position]);
+        }
+            cursor.close();
+        return mat_summa;
+    }
+
     //получаем стоимость работы  по смете с id файла file_id  и id типа type_id
     public float[]  getSummaOfWorkSelectedType(long file_id, long type_id){
         String select_work_summa = " SELECT " + FW.FW_SUMMA +
@@ -1451,10 +1944,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             categoryNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
             Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFW catNamesFW[position] = " + categoryNamesFW[position]);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return categoryNamesFW;
+    }
+
+    //получаем список категорий материалов по id файла из таблицы FM
+    public String[] getCategoryNamesFM(long file_id){
+        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM ... ");
+        String selectCategoryNamesFM =  " select DISTINCT " + FM.FM_MAT_CATEGORY_NAME +
+                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectCategoryNamesFM, null);
+        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM cursor.getCount()  " + cursor.getCount());
+        String[] categoryNamesFM = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            categoryNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM catNamesFW[position] = " + categoryNamesFM[position]);
+        }
+        cursor.close();
+        return categoryNamesFM;
     }
 
     //получаем список типов по id файла из таблицы FW
@@ -1472,10 +1982,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             typeNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
             Log.i(TAG, "SmetaOpenHelper.getTypeNamesFW typeNamesFW[position] = " + typeNamesFW[position]);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return typeNamesFW;
+    }
+
+    //получаем список типов материалов по id файла из таблицы FM
+    public String[] getTypeNamesFM(long file_id){
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM ... ");
+        String selectTypeNamesFM =  " select DISTINCT " + FM.FM_MAT_TYPE_NAME +
+                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectTypeNamesFM, null);
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM cursor.getCount()  " + cursor.getCount());
+        String[] typeNamesFM = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            typeNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM typeNamesFW[position] = " + typeNamesFM[position]);
+        }
+            cursor.close();
+        return typeNamesFM;
     }
 
     //получаем список работ по id файла из таблицы FW
@@ -1497,6 +2024,25 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return workNamesFW;
+    }
+
+    //получаем список материалов по id файла из таблицы FM
+    public String[] getMatNamesFM(long file_id){
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesFM ... ");
+        String selectMatNamesFM =  " select DISTINCT " + FM.FM_MAT_NAME +
+                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectMatNamesFM, null);
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+        String[] matNamesFW = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            matNamesFW[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getMatNamesFM workNamesFW[position] = " + matNamesFW[position]);
+        }
+            cursor.close();
+        return matNamesFW;
     }
 
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
@@ -1992,4 +2538,105 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 Work._ID + "=" + work_id, null);
         Log.i(TAG, "SmetaOpenHelper.updateWorkData - nameWork =" + nameWork + "  work_id = " + work_id);
     }
+
+    //получаем ID по имени  материала
+    public long getIdFromMatName(String matName) {
+        long currentID;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                Mat.TABLE_NAME,   // таблица
+                new String[]{Unit._ID},            // столбцы
+                Mat.MAT_NAME + "=?",                  // столбцы для условия WHERE
+                new String[]{matName},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(Unit._ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getIdFromUnitName currentID = " + currentID);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return currentID;
+    }
+
+    //получаем ID по имени типа материалов
+    public long getIdFromMatTypeName(String matTypeName) {
+        Log.d(TAG, "getIdFromMatTypeName ...");
+        long currentID;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TypeMat.TABLE_NAME,   // таблица
+                new String[]{TypeMat._ID},            // столбцы
+                TypeMat.TYPE_MAT_NAME + "=?",   // столбцы для условия WHERE
+                new String[]{matTypeName},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(TypeMat._ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getIdFromMatTypeName currentID = " + currentID);
+            cursor.close();
+        return currentID;
+    }
+
+
+    //получаем ID категории по имени типа материалов
+    public long getCatIdFromTypeMat(long type_id) {
+        Log.d(TAG, "getCatIdFromTypeMat ...");
+        long currentID;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TypeMat.TABLE_NAME,   // таблица
+                new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
+                TypeMat._ID + "=?",   // столбцы для условия WHERE
+                new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getCatIdFromTypeMat currentID = " + currentID);
+        cursor.close();
+        return currentID;
+    }
+    //получаем курсор с названиями  материалов
+    public Cursor getMatNamesOneType(long type_id) {
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes ... ");
+        String matNames = " SELECT " + Mat._ID + " , " +
+                Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME +
+                " WHERE " + Mat.MAT_TYPE_ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(matNames, new String[]{String.valueOf(type_id)});
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
 }

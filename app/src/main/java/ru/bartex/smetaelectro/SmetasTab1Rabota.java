@@ -1,11 +1,13 @@
 package ru.bartex.smetaelectro;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -38,7 +40,6 @@ public class SmetasTab1Rabota extends Fragment {
     public static final String TAG = "33333";
 
     ListView lvSmetasRabota;
-    //TextView tvSumma;
     SmetaOpenHelper mSmetaOpenHelper;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
@@ -47,24 +48,18 @@ public class SmetasTab1Rabota extends Fragment {
     float totalSumma; // общая стоимость работ по смете
 
     long file_id;
+    int position;
 
     View header;
     View footer;
 
-    //список для групп
-    ArrayList<Map<String,String>> groupData;
-    //список для элементов
-    ArrayList<Map<String,String>> childDataItem;
-    //список для групп элементов
-    ArrayList<ArrayList<Map<String,String>>> childData;
+    ViewPager viewPager;
 
-    Map<String,String> mm;
-
-
-    public static SmetasTab1Rabota newInstance(long file_id) {
+    public static SmetasTab1Rabota newInstance(long file_id, int position) {
         SmetasTab1Rabota fragment = new SmetasTab1Rabota();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
+        args.putInt(P.TAB_POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,6 +70,16 @@ public class SmetasTab1Rabota extends Fragment {
         Log.d(TAG, "// SmetasTab1Rabota onCreate // " );
         //получаем id файла из аргументов
         file_id = getArguments().getLong(P.ID_FILE);
+        position = getArguments().getInt(P.TAB_POSITION);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //получаем  ViewPager viewPager
+        viewPager = getActivity().findViewById(R.id.container);
+        //устанавливаем нужную вкладку в открытое состояние
+        viewPager.setCurrentItem(position);
     }
 
     @Override
@@ -118,10 +123,8 @@ public class SmetasTab1Rabota extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "//  SmetasTab1Rabota onResume // " );
-
         //обновляем данные списка фрагмента активности
         updateAdapter();
-
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasRabota);
     }
@@ -210,21 +213,21 @@ public class SmetasTab1Rabota extends Fragment {
     public void updateAdapter() {
 
         Log.d(TAG, "//SmetasTab1Rabota updateAdapter // " );
-        //Массив категорий работ для сметы с file_id
+        //Массив категорий материалов для сметы с file_id
         String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
         Log.d(TAG, "SmetasTab1Rabota - updateAdapter  cat_name.length = " + cat_name.length);
-        //массив типов работ для сметы с file_id
+        //массив типов материалов для сметы с file_id
         String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
         Log.d(TAG, "SmetasTab1Rabota - updateAdapter  type_name.length = " + type_name.length);
-        //Массив работ в файле с file_id
+        //Массив материалов в файле с file_id
         String[] work_name = mSmetaOpenHelper.getNameOfWork(file_id);
-        //Массив расценок для работ в файле с file_id
+        //Массив цен для материалов в файле с file_id
         float[] work_cost = mSmetaOpenHelper.getCostOfWork(file_id);
-        //Массив количества работ для работ в файле с file_id
+        //Массив количества материалов для материалов в файле с file_id
         float[] work_amount = mSmetaOpenHelper.getAmountOfWork(file_id);
-        //Массив единиц измерения для работ в файле с file_id
+        //Массив единиц измерения для материалов в файле с file_id
         String[] work_units = mSmetaOpenHelper.getUnitsOfWork(file_id);
-        //Массив стоимости работы  для работ в файле с file_id
+        //Массив стоимости материалов  для материалов в файле с file_id
         work_summa = mSmetaOpenHelper.getSummaOfWork(file_id);
 
         //Список с данными для адаптера
@@ -232,7 +235,7 @@ public class SmetasTab1Rabota extends Fragment {
 
             //добавляем хедер
             header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)header.findViewById(R.id.base_text)).setText("Электромонтаж");
+            ((TextView)header.findViewById(R.id.base_text)).setText(R.string.smeta_of_work);
             if (lvSmetasRabota.getHeaderViewsCount()>0){
                 lvSmetasRabota.removeHeaderView(header);
             }else {
@@ -265,7 +268,8 @@ public class SmetasTab1Rabota extends Fragment {
             }
         totalSumma = P.updateTotalSumma(work_summa);
         Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-        ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
+        ((TextView)footer.findViewById(R.id.base_text)).setText(
+                getResources().getString(R.string.itogo_of_work)  + "   " +
                 Float.toString(totalSumma) + " руб");
             Log.d(TAG, "*********  getFooterViewsCount4  ********* = " + lvSmetasRabota.getFooterViewsCount());
 
