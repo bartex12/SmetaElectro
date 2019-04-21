@@ -114,7 +114,8 @@ public class SmetasMatTab2Type extends Fragment {
         Log.d(TAG, " SmetasMatTab2Type updateAdapter cursor.getCount() = "+ cursor.getCount() );
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            Log.d(TAG, " SmetasMatTab2Type updateAdapter tipe_mat_name  = " + tipe_mat_name );
+            Log.d(TAG, " SmetasMatTab2Type updateAdapter tipe_mat_name  = " +
+                    (cursor.getPosition()+1) + "  " + tipe_mat_name );
             boolean check_mark = false;
             for (int i=0; i<typetMatNamesFM.length; i++){
                 if (typetMatNamesFM[i].equals(tipe_mat_name)){
@@ -134,6 +135,12 @@ public class SmetasMatTab2Type extends Fragment {
 
         sara = new SimpleAdapter(context, data, R.layout.list_item_two_mat, from, to);
         listView.setAdapter(sara);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "--------  SmetasMatTab2Type onDestroy -----------" );
     }
 
 }

@@ -55,17 +55,12 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
         this.type_id = type_mat_id;
         Log.d(TAG, "SmetasMat  typeAndCatTransmit type_id =" +
                 type_id + "  isSelectedType = " + isSelectedType);
-        //mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        //mViewPager.setAdapter(mSectionsPagerAdapter);
-        //smetasMatTab3Mat.onAttach(this);
-        //smetasMatTab3Mat.onResume();
-        //mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        //mSectionsPagerAdapter.notifyDataSetChanged();
-        // НУЖНО СНАЧАЛА КАК ТО ПОМЕНЯТЬ СОДЕРЖИМОЕ ВКЛАДКИ
+        //гениально простой способ заставить обновляться соседнюю вкладку
+        //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(2);
-        mSectionsPagerAdapter.getItem(2);
-        //tab3Mat =  SmetasMatTab3Mat.NewInstance(file_id, 3,true, 3);
-
+        mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -80,13 +75,14 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
         //показываем заголовокмв заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasMat);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorFab));
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        //Создаём адаптер для фрагментов
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Привязываем ViewPager к адаптеру
         mViewPager = (ViewPager) findViewById(R.id.containerMat);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        //средняя вкладка открыта
+        mViewPager.setCurrentItem(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMat);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
@@ -123,8 +119,6 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
         return super.onOptionsItemSelected(item);
     }
 
-
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -137,6 +131,7 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
 
         @Override
         public Fragment getItem(int position) {
+
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
@@ -148,8 +143,8 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
                     return tab2Type;
                 case 2:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
+                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
                     tab3Mat = SmetasMatTab3Mat.NewInstance(file_id, position, isSelectedType, type_id);
-                    //SmetasMatTab3Mat tab3Mat = SmetasMatTab3Mat.NewInstance(file_id, position, true, 3);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id);
                     return tab3Mat;
@@ -163,6 +158,8 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
             // Show 3 total pages.
             return 3;
         }
+
+
     }
 
 }

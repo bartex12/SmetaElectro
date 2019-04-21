@@ -137,6 +137,16 @@ public class SmetasMatTab3Mat extends Fragment {
         sara = new SimpleAdapter(context, data, R.layout.list_item_two_mat_small, from, to);
         listView.setAdapter(sara);
     }
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "--------  SmetasMatTab3Mat onDestroy -------" );
+    }
+/*
+    public  void update(long type_id) {
+        isSelectedType = true;
+        this.type_id =type_id;
+        updateAdapter();
+    }
+    */
 }

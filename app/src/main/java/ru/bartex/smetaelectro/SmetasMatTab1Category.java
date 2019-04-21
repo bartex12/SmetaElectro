@@ -77,6 +77,7 @@ public class SmetasMatTab1Category extends Fragment {
 
 
     public void updateAdapter(){
+        Log.d(TAG, "//  SmetasMatTab1Type updateAdapter // " );
         //Курсор с именами категорий из таблицы категорий CategoryMat
         Cursor cursor = mSmetaOpenHelper.getMatCategoryNames();
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
@@ -84,9 +85,12 @@ public class SmetasMatTab1Category extends Fragment {
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
+        Log.d(TAG, " SmetasMatTab1Type updateAdapter cursor.getCount() = "+ cursor.getCount() );
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_cat_mat = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
+            Log.d(TAG, " SmetasMatTab1Type updateAdapter name_cat_mat  = " +
+                    (cursor.getPosition()+1) + "  " + name_cat_mat );
             boolean chek_mark = false;
             for (int i = 0; i<catMatNamesFM.length; i++){
                 if (name_cat_mat.equalsIgnoreCase(catMatNamesFM[i])){
@@ -98,10 +102,17 @@ public class SmetasMatTab1Category extends Fragment {
             m.put(P.ATTR_CATEGORY_NAME,name_cat_mat);
             data.add(m);
         }
+        Log.d(TAG, " SmetasMatTab1Type updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_CATEGORY_MARK,P.ATTR_CATEGORY_NAME};
         int[] to = new int[]{R.id.checkBoxTwoMat, R.id.base_text_two_mat};
 
         sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat, from, to);
         lvSmetasMatCategory.setAdapter(sara);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "---------  SmetasMatTab1Category onDestroy -----------" );
     }
 }
