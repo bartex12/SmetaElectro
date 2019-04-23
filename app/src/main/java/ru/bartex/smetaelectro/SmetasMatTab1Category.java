@@ -71,8 +71,8 @@ public class SmetasMatTab1Category extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "//  SmetasMatTab1Category onCreateView // " );
-        View rootView = inflater.inflate(R.layout.fragment_smetas_mat_tab1_category, container, false);
-        lvSmetasMatCategory = rootView.findViewById(R.id.listViewSmetasMatCategory);
+        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
+        lvSmetasMatCategory = rootView.findViewById(R.id.listViewFragmentTabs);
         lvSmetasMatCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -127,41 +127,6 @@ public class Smetas extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-     */
-
-    /**
-     * A placeholder fragment containing a simple view.
-     * Так как созданы классы для вкладок, этот класс не нужен
-     */
-  /*
-    public static class PlaceholderFragment extends Fragment {
-          //The fragment argument representing the section number for this
-         //fragment.
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        public PlaceholderFragment() {
-        }
-          //Returns a new instance of this fragment for the given section
-          //number.
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-    */
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -213,10 +178,23 @@ public class Smetas extends AppCompatActivity {
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs:
+                    int curItem = mViewPager.getCurrentItem();
+                    switch (curItem){
+                        case 0:
+                            Intent intent_costs_work = new Intent(
+                                    Smetas.this, CostCategory.class);
+                            startActivity(intent_costs_work);
+                            return true;
+
+                        case 1:
+                            //Intent intent_costs_mat = new Intent(
+                            //        Smetas.this, CostCategory.class);
+                            //startActivity(intent_costs_mat);
+                            return true;
+                    }
+
                     // Для данного варианта в манифесте
-                    Intent intent_costs = new Intent(Smetas.this, CostCategory.class);
-                    startActivity(intent_costs);
-                    return true;
+
             }
             return false;
         }

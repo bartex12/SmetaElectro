@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
@@ -89,14 +90,13 @@ public class SmetasTab1Rabota extends Fragment {
         mSmetaOpenHelper = new SmetaOpenHelper(getActivity());
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "// SmetasTab1Rabota onCreateView // " );
-        View rootView = inflater.inflate(R.layout.fragment_smetas_tab1_rabota, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         //tvSumma = rootView.findViewById(R.id.tvSumma);
-        lvSmetasRabota = rootView.findViewById(R.id.listViewSmetasRabota);
+        lvSmetasRabota = rootView.findViewById(R.id.listViewFragmentTabs);
 
         lvSmetasRabota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -167,7 +167,7 @@ public class SmetasTab1Rabota extends Fragment {
         //если удалить из контекстного меню
         if (item.getItemId() == P.DELETE_ITEM_SMETA) {
 
-            Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
+            Log.d(TAG, "SmetasTab1Rabota P.DELETE_CHANGETEMP");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.Delete_Item);
             builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
@@ -179,14 +179,14 @@ public class SmetasTab1Rabota extends Fragment {
             builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP acmi.position + 1 =" +
+                    Log.d(TAG, "SmetasTab1Rabota P.DELETE_CHANGETEMP acmi.position + 1 =" +
                             (acmi.position + 1));
 
                     TextView tv = acmi.targetView.findViewById(R.id.base_text);
                     String work_name = tv.getText().toString();
                     //находим id по имени работы
                     long work_id = mSmetaOpenHelper.getIdFromWorkName(work_name);
-                    Log.d(TAG, "ListOfSmetasNames onContextItemSelected work_name = " +
+                    Log.d(TAG, "SmetasTab1Rabota onContextItemSelected work_name = " +
                             work_id + " file_id =" + file_id);
 
                     //удаляем пункт сметы из таблицы FW
@@ -208,7 +208,6 @@ public class SmetasTab1Rabota extends Fragment {
         }
         return super.onContextItemSelected(item);
     }
-
 
     public void updateAdapter() {
 
@@ -233,17 +232,6 @@ public class SmetasTab1Rabota extends Fragment {
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(work_name.length);
 
-            //добавляем хедер
-            header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)header.findViewById(R.id.base_text)).setText(R.string.smeta_of_work);
-            if (lvSmetasRabota.getHeaderViewsCount()>0){
-                lvSmetasRabota.removeHeaderView(header);
-            }else {
-                lvSmetasRabota.addHeaderView(header, null, false);
-            }
-            Log.d(TAG, "***********getHeaderViewsCount*********** = " +
-                    lvSmetasRabota.getHeaderViewsCount());
-
         for (int i = 0; i < work_name.length; i++) {
             Log.d(TAG, "SmetasTab1Rabota - updateAdapter  work_name = " + work_name[i]);
 
@@ -256,27 +244,31 @@ public class SmetasTab1Rabota extends Fragment {
                 m.put(P.WORK_SUMMA, work_summa[i]);
                 data.add(m);
        }
-            //добавляем футер
-            footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-        Log.d(TAG, "*********  getFooterViewsCount1  ********* = " + lvSmetasRabota.getFooterViewsCount());
-            if (lvSmetasRabota.getFooterViewsCount()>0){
-                Log.d(TAG, "*********  removeFooterView2  ********* >0 ");
-                lvSmetasRabota.removeFooterView(footer);
-            }else {
-                Log.d(TAG, "*********  addFooterView3  ********* <=0 ");
-                lvSmetasRabota.addFooterView(footer, null, false);
-            }
-        totalSumma = P.updateTotalSumma(work_summa);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-        ((TextView)footer.findViewById(R.id.base_text)).setText(
-                getResources().getString(R.string.itogo_of_work)  + "   " +
-                Float.toString(totalSumma) + " руб");
-            Log.d(TAG, "*********  getFooterViewsCount4  ********* = " + lvSmetasRabota.getFooterViewsCount());
-
         String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
                 P.WORK_UNITS, P.WORK_SUMMA};
         int[] to = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
                 R.id.tvUnits, R.id.tvSumma};
+
+        lvSmetasRabota.removeHeaderView(header);
+        //добавляем хедер
+        header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+        ((TextView)header.findViewById(R.id.base_text)).setText("Смета на работу");
+        lvSmetasRabota.addHeaderView(header, null, false);
+        Log.d(TAG, "***********getHeaderViewsCount*********** = " +
+                lvSmetasRabota.getHeaderViewsCount());
+
+        lvSmetasRabota.removeFooterView(footer);
+        Log.d(TAG, "*********  removeFooterView2  ********* ");
+        //добавляем футер
+        footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+        totalSumma = P.updateTotalSumma(work_summa);
+        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
+        ((TextView)footer.findViewById(R.id.base_text)).
+                setText(String.format(Locale.ENGLISH,"За работу: %.0f руб", totalSumma ));
+        lvSmetasRabota.addFooterView(footer, null, false);
+        Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
+                lvSmetasRabota.getFooterViewsCount());
+
         sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
         lvSmetasRabota.setAdapter(sara);
     }

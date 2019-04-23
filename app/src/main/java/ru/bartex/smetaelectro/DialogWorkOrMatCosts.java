@@ -10,15 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-public class DialogNewOrCurrentFragment extends DialogFragment {
+public class DialogWorkOrMatCosts extends DialogFragment {
 
     static String TAG = "33333";
-    public DialogNewOrCurrentFragment(){}
+
+    public DialogWorkOrMatCosts(){}
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
@@ -26,32 +26,34 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater =getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.dialog_new_or_current_smeta, null);
+        final View view = inflater.inflate(R.layout.dialog_work_or_mat_cost, null);
         builder.setView(view);
         builder.setTitle("Выберите вариант");
         //builder.setIcon(R.drawable.ic_save_black_24dp);
 
-        Button newButton = view.findViewById(R.id.btnNew);
+        Button newButton = view.findViewById(R.id.btnWork);
         //действия при нажатии кнопки "Новая смета" в диалоге
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getActivity().finish(); //закрывает и диалог и активность
                 //getDialog().dismiss();  //закрывает только диалог
-                Intent intent = new Intent(getActivity(), SmetaNewName.class);
+                //Intent intent_costs = new Intent(SmetasMat.this, CostCategory.class);
+                // startActivity(intent_costs);
+                Intent intent = new Intent(getActivity(), CostCategory.class);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
             }
         });
 
-        Button currentButton = view.findViewById(R.id.btnCurrent);
+        Button currentButton = view.findViewById(R.id.btnCost);
         //действия при нажатии кнопки "Нет" в диалоге сохранения данных в базу
         currentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getActivity().finish(); //закрывает и диалог и активность
                 //getDialog().dismiss();  //закрывает только диалог
-                Intent intent = new Intent(getActivity(), ListOfSmetasNames.class);
+                Intent intent = new Intent(getActivity(), CostCategory.class);
                 //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
@@ -65,5 +67,4 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
         //dialog.setCanceledOnTouchOutside(false);
         return builder.create();
     }
-
 }

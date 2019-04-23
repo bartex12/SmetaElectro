@@ -1,21 +1,27 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
@@ -24,7 +30,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 public class SmetasTab2Materialy extends Fragment {
 
     public static final String TAG ="33333";
-
 
     long file_id;
     int position;
@@ -68,9 +73,9 @@ public class SmetasTab2Materialy extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_smetas_tab2_materialy, container, false);
-        lvSmetasMaterials = rootView.findViewById(R.id.listViewSmetasMaterial);
-
+        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
+        //tvSumma = rootView.findViewById(R.id.tvSumma);
+        lvSmetasMaterials = rootView.findViewById(R.id.listViewFragmentTabs);
         return rootView;
     }
 
@@ -78,10 +83,11 @@ public class SmetasTab2Materialy extends Fragment {
     public void onResume() {
         super.onResume();
         updateAdapter();
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(lvSmetasMaterials);
     }
 
     public void updateAdapter() {
-
         Log.d(TAG, "//SmetasTab2Materialy updateAdapter // " );
         //Массив категорий материалов для сметы с file_id
         String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
@@ -103,17 +109,6 @@ public class SmetasTab2Materialy extends Fragment {
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(mat_name.length);
 
-        //добавляем хедер
-        header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-        ((TextView)header.findViewById(R.id.base_text)).setText("Смета на материалы");
-        if (lvSmetasMaterials.getHeaderViewsCount()>0){
-            lvSmetasMaterials.removeHeaderView(header);
-        }else {
-            lvSmetasMaterials.addHeaderView(header, null, false);
-        }
-        Log.d(TAG, "***********getHeaderViewsCount*********** = " +
-                lvSmetasMaterials.getHeaderViewsCount());
-
         for (int i = 0; i < mat_name.length; i++) {
             Log.d(TAG, "SmetasTab1Rabota - updateAdapter  mat_name = " + mat_name[i]);
 
@@ -126,27 +121,97 @@ public class SmetasTab2Materialy extends Fragment {
             m.put(P.MAT_SUMMA, mat_summa[i]);
             data.add(m);
         }
-        //добавляем футер
-        footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-        Log.d(TAG, "*********  getFooterViewsCount1  ********* = " + lvSmetasMaterials.getFooterViewsCount());
-        if (lvSmetasMaterials.getFooterViewsCount()>0){
-            Log.d(TAG, "*********  removeFooterView2  ********* >0 ");
-            lvSmetasMaterials.removeFooterView(footer);
-        }else {
-            Log.d(TAG, "*********  addFooterView3  ********* <=0 ");
-            lvSmetasMaterials.addFooterView(footer, null, false);
-        }
-        totalSumma = P.updateTotalSumma(mat_summa);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-        ((TextView)footer.findViewById(R.id.base_text)).setText("За материалы:  " +
-                Float.toString(totalSumma) + " руб");
-        Log.d(TAG, "*********  getFooterViewsCount4  ********* = " + lvSmetasMaterials.getFooterViewsCount());
 
         String[] from = new String[]{P.MAT_NUMBER, P.MAT_NAME, P.MAT_COST, P.MAT_AMOUNT,
                 P.MAT_UNITS, P.MAT_SUMMA};
         int[] to = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
                 R.id.tvUnits, R.id.tvSumma};
+
+        //***************************Header and Footer***************
+        lvSmetasMaterials.removeHeaderView(header);
+        //добавляем хедер
+        header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+        ((TextView)header.findViewById(R.id.base_text)).setText("Смета на материалы");
+        lvSmetasMaterials.addHeaderView(header, null, false);
+        Log.d(TAG, "***********getHeaderViewsCount*********** = " +
+                lvSmetasMaterials.getHeaderViewsCount());
+
+        lvSmetasMaterials.removeFooterView(footer);
+        Log.d(TAG, "*********  removeFooterView2  ********* ");
+        //добавляем футер
+        footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+        totalSumma = P.updateTotalSumma(mat_summa);
+        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
+        ((TextView)footer.findViewById(R.id.base_text)).
+                setText(String.format(Locale.ENGLISH,"За материалы: %.0f руб", totalSumma ));
+        lvSmetasMaterials.addFooterView(footer, null, false);
+        Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
+                lvSmetasMaterials.getFooterViewsCount());
+        //***************************Header and Footer***************
+
         sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
         lvSmetasMaterials.setAdapter(sara);
     }
+
+    //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.DELETE_ITEM_SMETA_MAT, 0, "Удалить пункт");
+        menu.add(0, P.CANCEL_MAT, 0, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        //если удалить из контекстного меню
+        if (item.getItemId() == P.DELETE_ITEM_SMETA_MAT) {
+
+            Log.d(TAG, "SmetasTab2Materialy P.DELETE_CHANGETEMP");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.Delete_Item);
+            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "SmetasTab2Materialy P.DELETE_CHANGETEMP acmi.position + 1 =" +
+                            (acmi.position + 1));
+
+                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
+                    String mat_name = tv.getText().toString();
+                    //находим id по имени работы
+                    long mat_id = mSmetaOpenHelper.getIdFromMatName(mat_name);
+                    Log.d(TAG, "SmetasTab2Materialy onContextItemSelected file_id = " +
+                            file_id + " mat_id =" + mat_id + " mat_name =" + mat_name);
+
+                    mSmetaOpenHelper.displayFM();
+
+                    //удаляем пункт сметы из таблицы FM
+                    mSmetaOpenHelper.deleteMatItemFromFM(file_id, mat_id);
+
+                    //иначе почему то дублируются
+                    //lvSmetasMaterials.removeHeaderView(header);
+                   // lvSmetasMaterials.removeFooterView(footer);
+                    //обновляем данные списка фрагмента активности
+                    updateAdapter();
+                }
+            });
+            builder.show();
+            return true;
+            //если изменить из контекстного меню
+        } else if (item.getItemId() == P.CANCEL_MAT) {
+            //getActivity().finish();
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 }

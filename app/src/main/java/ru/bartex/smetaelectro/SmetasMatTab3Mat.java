@@ -85,8 +85,8 @@ public class SmetasMatTab3Mat extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "//  SmetasMatTab3Mat onCreateView // " );
-        View rootView = inflater.inflate(R.layout.fragment_smetas_mat_tab3_mat, container, false);
-        listView = rootView.findViewById(R.id.listViewSmetasMat);
+        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
+        listView = rootView.findViewById(R.id.listViewFragmentTabs);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -164,7 +164,7 @@ public class SmetasMatTab3Mat extends Fragment {
         String[] from = new String[]{P.ATTR_MAT_NAME, P.ATTR_MAT_MARK};
         int [] to = new int[]{R.id.base_text_two_mat, R.id.checkBoxTwoMat};
 
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat_small, from, to);
+        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat_small_coord, from, to);
         listView.setAdapter(sara);
     }
     @Override

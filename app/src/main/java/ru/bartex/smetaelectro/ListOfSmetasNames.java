@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -87,9 +88,8 @@ public class ListOfSmetasNames extends AppCompatActivity {
                            return true;
 
                        case R.id.navigation_costs_smetas_list:
-                           Intent intent_costs = new Intent(ListOfSmetasNames.this,
-                                   CostCategory.class);
-                           startActivity(intent_costs);
+                           DialogFragment dialogFragment = new DialogWorkOrMatCosts();
+                           dialogFragment.show(getSupportFragmentManager(), "dialogWorkOrMatCosts");
                            return true;
                    }
                    return false;

@@ -1769,6 +1769,29 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_name;
     }
 
+    //получаем имена работ  по смете с id файла file_id и id типа type_id
+    public String[]  getNameOfMatkSelectedType(long file_id, long type_mat_id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String select_mat_name = " SELECT " + FM.FM_MAT_NAME +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_mat_id);
+        Cursor cursor = db.rawQuery(select_mat_name, null);
+        Log.i(TAG, "TempDBHelper.getNameOfMatkSelectedType cursor.getCount()  " + cursor.getCount());
+        String[] mat_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getNameOfMatkSelectedType mat_name[position] = " + mat_name[position]);
+        }
+        cursor.close();
+        return mat_name;
+    }
+
+
     //получаем расценки работ  по смете с id файла file_id
     public float[]  getCostOfWork(long file_id){
         String select_work_cost = " SELECT " + FW.FW_COST +
@@ -1829,6 +1852,27 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_cost;
     }
 
+    //получаем расценки работ  по смете с id файла file_id и id типа type_id
+    public float[]  getCostOfMatSelectedType(long file_id, long type_mat_id){
+        String select_mat_cost = " SELECT " + FM.FM_MAT_COST +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_mat_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_cost, null);
+        Log.i(TAG, "TempDBHelper.getCostOfMatSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] mat_cost = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
+            Log.i(TAG, "SmetaOpenHelper.getCostOfMatSelectedType mat_cost[position] = " + mat_cost[position]);
+        }
+        cursor.close();
+        return mat_cost;
+    }
+
+
     //получаем количество работ  по смете с id файла file_id
     public float[]  getAmountOfWork(long file_id){
         String select_work_amount = " SELECT " + FW.FW_COUNT +
@@ -1885,6 +1929,26 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }
             cursor.close();
         return work_amount;
+    }
+
+    //получаем количество работ  по смете с id файла file_id и id типа type_id
+    public float[]  getAmountOfMatSelectedType(long file_id, long type_mat_id){
+        String select_mat_amount = " SELECT " + FM.FM_MAT_COUNT +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_mat_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_amount, null);
+        Log.i(TAG, "TempDBHelper.getAmountOfMatSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] mat_amount = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
+            Log.i(TAG, "SmetaOpenHelper.getAmountOfMatSelectedType mat_amount[position] = " + mat_amount[position]);
+        }
+        cursor.close();
+        return mat_amount;
     }
 
     //получаем единицы измерения для  работ  по смете с id файла file_id
@@ -1951,6 +2015,28 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return work_units;
     }
 
+    //получаем единицы измерения для  работ  по смете с id файла file_id  и id типа type_id
+    public String[]  getUnitsOfMatSelectedType(long file_id, long type_mat_id){
+        String select_mat_units = " SELECT " + FM.FM_MAT_UNIT +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_mat_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_units, null);
+        Log.i(TAG, "TempDBHelper.getUnitsOfMatSelectedType cursor.getCount()  " + cursor.getCount());
+        String[] mat_units = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+            Log.i(TAG, "SmetaOpenHelper.getUnitsOfMatSelectedType mat_units[position] = " + mat_units[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return mat_units;
+    }
+
     //получаем количество работ  по смете с id файла file_id
     public float[]  getSummaOfWork(long file_id){
         String select_work_summa = " SELECT " + FW.FW_SUMMA +
@@ -2011,6 +2097,28 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return work_summa;
+    }
+
+    //получаем стоимость работы  по смете с id файла file_id  и id типа type_id
+    public float[]  getSummaOfMatSelectedType(long file_id, long type_mat_id){
+        String select_mat_summa = " SELECT " + FM.FM_MAT_SUMMA +
+                " FROM " +  FM.TABLE_NAME  +
+                " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_mat_id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_mat_summa, null);
+        Log.i(TAG, "TempDBHelper.getSummaOfMatSelectedType cursor.getCount()  " + cursor.getCount());
+        float[] mat_summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            mat_summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+            Log.i(TAG, "SmetaOpenHelper.getSummaOfMatSelectedType mat_summa[position] = " + mat_summa[position]);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return mat_summa;
     }
 
     //получаем список категорий по id файла из таблицы FW
@@ -2979,5 +3087,15 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getCategoryMatNameById catMatName = " + catMatName);
         mCursor.close();
         return catMatName;
+    }
+
+    //удаляем работу из сметы FW по file_id и mat_id
+    public void deleteMatItemFromFM(long file_id, long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.deleteMatItemFromFM ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        int del = db.delete(
+                FM.TABLE_NAME, FM.FM_FILE_ID + " =? " + " AND " + FM.FM_MAT_ID + " =? ",
+                new String[]{String.valueOf(file_id), String.valueOf(mat_id)});
+        Log.i(TAG, "SmetaOpenHelper.deleteMatItemFromFM  - del =  " + del);
     }
 }

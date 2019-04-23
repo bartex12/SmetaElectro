@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs_main:
-                    Intent intent_costs = new Intent(MainActivity.this, CostCategory.class);
-                    startActivity(intent_costs);
+                    DialogFragment dialogFragment = new DialogWorkOrMatCosts();
+                    dialogFragment.show(getSupportFragmentManager(), "dialogWorkOrMatCosts");
                     return true;
             }
             return false;

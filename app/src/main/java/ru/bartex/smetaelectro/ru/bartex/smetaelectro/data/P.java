@@ -1,8 +1,12 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
 
+import android.support.v4.app.DialogFragment;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import ru.bartex.smetaelectro.DialogWorkOrMatCosts;
 
 public class P {
 
@@ -110,12 +114,17 @@ public class P {
     public static final int CHANGE_NAME_ID = 2;
     public static final int DELETE_ID = 3;
 
-    // Удалить пункт сметы
-    public static final int DELETE_ITEM_SMETA = 1;
-    // Отменить
-    public static final int CANCEL = 4;
+    // Удалить пункт сметы работы
+    public static final int DELETE_ITEM_SMETA = 4;
+    // Отменить пункт сметы работы
+    public static final int CANCEL = 5;
+    // Удалить пункт сметы материалов
+    public static final int DELETE_ITEM_SMETA_MAT = 6;
+    // Отменить пункт сметы материалов
+    public static final int CANCEL_MAT = 7;
     // для SmetaDetail риквест код
-    public static final int REQUEST_COST = 5;
+    public static final int REQUEST_COST = 8;
+
 
 
     public static String setDateTimeString() {
@@ -137,5 +146,7 @@ public class P {
         }
         return totalSumma;
     }
+
+
 
 }
