@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,11 @@ public class SmetasMatTab1Category extends Fragment {
     HashMap<String, Object> m;
     SimpleAdapter sara;
 
+    public interface OnClickTCategoryMatListener{
+        void catAndClickTransmit(long cat_mat_id, boolean isSelectedType);
+    }
+    SmetasMatTab1Category.OnClickTCategoryMatListener onClickCategoryMatListener;
+
     public static SmetasMatTab1Category NewInstance(long file_id, int position){
         Log.d(TAG, "//  SmetasMatTab1Category NewInstance // " );
         SmetasMatTab1Category fragment = new SmetasMatTab1Category();
@@ -48,12 +55,13 @@ public class SmetasMatTab1Category extends Fragment {
         super.onAttach(context);
         Log.d(TAG, "//  SmetasMatTab1Category onAttach // " );
         mSmetaOpenHelper = new SmetaOpenHelper(context);
+        onClickCategoryMatListener = (OnClickTCategoryMatListener)context;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  SmetasMatTab2Type onCreate // " );
+        Log.d(TAG, "//  SmetasMatTab1Category onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
     }
@@ -65,6 +73,21 @@ public class SmetasMatTab1Category extends Fragment {
         Log.d(TAG, "//  SmetasMatTab1Category onCreateView // " );
         View rootView = inflater.inflate(R.layout.fragment_smetas_mat_tab1_category, container, false);
         lvSmetasMatCategory = rootView.findViewById(R.id.listViewSmetasMatCategory);
+        lvSmetasMatCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "//  SmetasMatTab1Category onItemClick // " );
+                TextView tv_smeta_item = view.findViewById(R.id.base_text_two_mat);
+                String smeta_item_name = tv_smeta_item.getText().toString();
+
+                //long type_id = mSmetaOpenHelper.getIdFromMatTypeName(smeta_item_name);
+                long cat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(smeta_item_name);
+                Log.d(TAG, "SmetasMatTab1Category onItemClick  cat_id = " + cat_id);
+                //Вызываем метод интерфейса для передачи Id категории материалов
+                onClickCategoryMatListener.catAndClickTransmit(cat_id, true);
+            }
+        });
+
         return rootView;
     }
 
@@ -85,20 +108,23 @@ public class SmetasMatTab1Category extends Fragment {
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SmetasMatTab1Type updateAdapter cursor.getCount() = "+ cursor.getCount() );
+        Log.d(TAG, " SmetasMatTab1Type updateAdapter Всего категорий материалов = "+ cursor.getCount() );
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_cat_mat = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
-            Log.d(TAG, " SmetasMatTab1Type updateAdapter name_cat_mat  = " +
-                    (cursor.getPosition()+1) + "  " + name_cat_mat );
-            boolean chek_mark = false;
+
+            boolean check_mark = false;
             for (int i = 0; i<catMatNamesFM.length; i++){
                 if (name_cat_mat.equalsIgnoreCase(catMatNamesFM[i])){
-                    chek_mark = true;
+                    check_mark = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
                 }
             }
+            Log.d(TAG, " SmetasMatTab2Type updateAdapter tipe_mat_name  = " +
+                    (cursor.getPosition()+1) + "  " + name_cat_mat + "  check_mark = " + check_mark);
             m = new HashMap<>();
-            m.put(P.ATTR_CATEGORY_MARK,chek_mark);
+            m.put(P.ATTR_CATEGORY_MARK,check_mark);
             m.put(P.ATTR_CATEGORY_NAME,name_cat_mat);
             data.add(m);
         }

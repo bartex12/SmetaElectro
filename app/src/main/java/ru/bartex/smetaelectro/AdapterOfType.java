@@ -44,6 +44,7 @@ public class AdapterOfType {
             for (int i = 0; i<typetNamesFW.length; i++){
                 if (name_type.equalsIgnoreCase(typetNamesFW[i])){
                     check_mark = true;
+                    break;
                 }
             }
             m = new HashMap<>();

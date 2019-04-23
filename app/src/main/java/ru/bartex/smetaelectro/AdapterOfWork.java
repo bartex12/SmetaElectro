@@ -45,6 +45,7 @@ public class AdapterOfWork {
             for (int i = 0; i < workNamesFW.length; i++){
                 if (name_work.equalsIgnoreCase(workNamesFW[i])){
                     check_mark = true;
+                    break;
                 }
             }
             m = new HashMap<>();

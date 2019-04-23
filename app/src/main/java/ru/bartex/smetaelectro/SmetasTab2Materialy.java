@@ -84,13 +84,13 @@ public class SmetasTab2Materialy extends Fragment {
 
         Log.d(TAG, "//SmetasTab2Materialy updateAdapter // " );
         //Массив категорий материалов для сметы с file_id
-        String[] mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
-        Log.d(TAG, "SmetasTab2Materialy - updateAdapter  cat_name.length = " + mat_name.length);
+        String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
+        Log.d(TAG, "SmetasTab2Materialy - updateAdapter  cat_name.length = " + cat_mat_name.length);
         //массив типов материалов для сметы с file_id
         String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
         Log.d(TAG, "SmetasTab2Materialy - updateAdapter  type_name.length = " + type_mat_name.length);
         //Массив материалов в файле с file_id
-        String[] work_mat_name = mSmetaOpenHelper.getNameOfMat(file_id);
+        String[] mat_name = mSmetaOpenHelper.getNameOfMat(file_id);
         //Массив цен для материалов в файле с file_id
         float[] mat_cost = mSmetaOpenHelper.getCostOfMat(file_id);
         //Массив количества работ для работ в файле с file_id
@@ -138,7 +138,7 @@ public class SmetasTab2Materialy extends Fragment {
         }
         totalSumma = P.updateTotalSumma(mat_summa);
         Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
-        ((TextView)footer.findViewById(R.id.base_text)).setText("Итого по работе:  " +
+        ((TextView)footer.findViewById(R.id.base_text)).setText("За материалы:  " +
                 Float.toString(totalSumma) + " руб");
         Log.d(TAG, "*********  getFooterViewsCount4  ********* = " + lvSmetasMaterials.getFooterViewsCount());
 

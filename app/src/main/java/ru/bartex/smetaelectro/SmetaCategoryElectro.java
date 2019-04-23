@@ -229,6 +229,7 @@ public class SmetaCategoryElectro extends AppCompatActivity
             for (int i = 0; i<catNamesFW.length; i++){
                 if (name_cat.equalsIgnoreCase(catNamesFW[i])){
                     chek_mark = true;
+                    break;
                 }
             }
             m = new HashMap<>();

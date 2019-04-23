@@ -24,12 +24,16 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.OnClickTypeMatListener{
+public class SmetasMat extends AppCompatActivity implements
+        SmetasMatTab2Type.OnClickTypeMatListener, SmetasMatTab1Category.OnClickTCategoryMatListener{
 
     public static final String TAG = "33333";
     long file_id;
     boolean isSelectedType = false;
+    boolean isSelectedCat =  false;
     long type_id;
+    long cat_id;
+    SmetaOpenHelper mSmetaOpenHelper;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,23 +48,39 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    SmetasMatTab3Mat tab3Mat;
-
 
 
     @Override
-    public void typeAndCatTransmit(long cat_mat_id, long type_mat_id, boolean isSelectedTypeMat) {
+    public void catAndClickTransmit(long cat_mat_id, boolean isSelectedCatMat) {
+        Log.d(TAG, "//  SmetasMat  catAndClickTransmit  // " );
+        this.isSelectedCat = isSelectedCatMat;
+        this.cat_id = cat_mat_id;
+        Log.d(TAG, "SmetasMat  catAndClickTransmit cat_id =" +
+                cat_id + "  isSelectedCat = " + isSelectedCat);
+        //гениально простой способ заставить обновляться соседнюю вкладку
+        //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1);
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void typeAndClickTransmit(long type_mat_id, boolean isSelectedTypeMat) {
         Log.d(TAG, "//  SmetasMat  typeAndCatTransmit  // " );
         this.isSelectedType = isSelectedTypeMat;
         this.type_id = type_mat_id;
         Log.d(TAG, "SmetasMat  typeAndCatTransmit type_id =" +
                 type_id + "  isSelectedType = " + isSelectedType);
-        //гениально простой способ заставить обновляться соседнюю вкладку
-        //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
+
+        // обновляем соседнюю вкладку типов материалов и показываем её
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(2);
         mSectionsPagerAdapter.notifyDataSetChanged();
+        //вспомогательная функция на этапе отладки смотрим сколько строк в таблице цен на материалы
+        //их должно быть = количеству материалов = 354
+        //mSmetaOpenHelper.getCountLineInCostMat();
     }
 
     @Override
@@ -69,6 +89,8 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
         setContentView(R.layout.activity_smetas_mat);
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
+        Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
+        mSmetaOpenHelper = new SmetaOpenHelper(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMat);
         setSupportActionBar(toolbar);
@@ -119,6 +141,8 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -136,17 +160,25 @@ public class SmetasMat extends AppCompatActivity implements SmetasMatTab2Type.On
                 case 0:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
                     SmetasMatTab1Category tab1Category = SmetasMatTab1Category.NewInstance(file_id,position);
+                    Log.d(TAG, "SmetasMat  Fragment getItem case 0: file_id = " +
+                            file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 1: " );
-                    SmetasMatTab2Type  tab2Type = SmetasMatTab2Type.NewInstance(file_id,position);
+                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/1: " );
+                    SmetasMatTab2Type  tab2Type = SmetasMatTab2Type.NewInstance(
+                            file_id, position, isSelectedCat, cat_id);
+                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/2: isSelectedCat = " +
+                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
+                            "  position = " +  position);
                     return tab2Type;
                 case 2:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    tab3Mat = SmetasMatTab3Mat.NewInstance(file_id, position, isSelectedType, type_id);
+                    SmetasMatTab3Mat tab3Mat = SmetasMatTab3Mat.NewInstance(
+                            file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
-                            isSelectedType + "  type_id = " +  type_id);
+                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
+                            "  position = " +  position);
                     return tab3Mat;
                 default:
                     return null;

@@ -45,6 +45,7 @@ public class SmetaListStructured extends AppCompatActivity {
     long file_id;
     View header;
     View footer;
+    int position_tab;
 
     float[] work_summas; //массив стоимости работ
     float totalSumma; // общая стоимость работ по смете
@@ -66,6 +67,8 @@ public class SmetaListStructured extends AppCompatActivity {
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
+        position_tab = getIntent().getExtras().getInt(P.TAB_POSITION);
+        Log.d(TAG, "SmetaListStructured - onCreate file_id = " + file_id  + "  position_tab = " + position_tab);
 
         llWork = findViewById(R.id.llWork);
 

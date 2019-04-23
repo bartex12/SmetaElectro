@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_struct"
         android:orderInCategory="10"
-        android:icon="@drawable/ic_format_list_numbered_white_24dp"
+        android:icon="@drawable/ic_zoom_in_black_24dp"
         android:title="@string/action_struct"
         app:showAsAction="always"/>
 

@@ -67,7 +67,7 @@
     <string name="work_hint_name">Работа</string>
     <string name="description_work">Описание работы</string>
     <string name="smeta_of_work">Смета на работу</string>
-    <string name="itogo_of_work">Итого по работе:   </string>
+    <string name="itogo_of_work">За работу:   </string>
 
     <string-array name="MenuMain">
         <item>Оценочная смета на работу</item>
@@ -269,22 +269,22 @@
         <item> Изолента шириной 19 мм жёлтая</item>
         <item> Изолента шириной 19 мм зелёная</item>
         <item> Изолента шириной 19 мм жёлто-зелёная</item>
-        <item>Лампочки для времянок</item>
+        <item>Термоизлучатель 150Вт Е27 Т 240-150 Е27 Лисма</item>
         <item>Патроны для времянок</item>
         <item>Розетки, выключатели</item>
         <item>Розетки четверные открытые для времянок</item>
-        <item>Вилки электрические с заземлением</item>
+        <item> Вилка угловая с заземлением 16А белая 10027 Makel</item>
 
         <item>Кабель ПВС 2х0,75 кв. мм для времянок</item>
         <item>Кабель ПВС 2х1,5 кв. мм для времянок</item>
 
-        <item>Клеммники 6 кв мм</item>
-        <item>Клеммники 10 кв мм</item>
+        <item>Клеммники 16 кв мм</item>
+        <item> Legrand Nybloc Клеммник 12х10,0 мм2 белый полипропилен 57А 034225 </item>
         <item>Клеммники 6 кв мм</item>
         <item>Клеммники 4 кв мм</item>
         <item>Гильзы с пластиковой рубашкой</item>
-        <item>Клеммники WAGO на 2 контакта для времянок</item>
-        <item>Клеммники WAGO на 3 контакта для времянок</item>
+        <item>Клемма на 2 провод. 0,5-2,5 мм2 медь-медь WAGO</item>
+        <item>Клемма на 3 провод. 0,5-2,5 мм2 медь-медь WAGO</item>
     </string-array>
 
     <string-array name="mat_name_type_rozetki">
@@ -386,7 +386,7 @@
         <item>Шина "0" 8х12 мм 125 Ампер 10 отверстий изолятор на DIN-рейку (латунь) EKF PROxima</item>
         <item>Шина "0" N 63.14 изолятор на DIN-рейку (латунь) EKF PROxima</item>
         <item>Шина "0" 8х12 мм 125 Ампер (12 отверстий/крепеж по центру) латунь EKF PROxima</item>
-        <item>Шина "0" 8х12 мм 125 Ампер (14 отверстий/крепеж по краям) латунь EKF PROxima</item>
+        <item>Шина 0 8х12 мм 125 Ампер (14 отверстий/крепеж по краям) латунь EKF PROxima</item>
         <item>Шина "0" 8х12 мм 125 Ампер (20 отверстий/крепеж по краям) латунь EKF PROxima</item>
         <item>Шина PE "земля" на DIN_изол ШНИ_6х9_8_Д_Ж ИЭК</item>
 
@@ -411,9 +411,9 @@
         <item>Диммер для одноцветной ленты</item>
         <item>Пульт для цветной ленты</item>
         <item>Пульт для одноцветной ленты</item>
-        <item>Блок питания 12V, 1A, 12W</item>
+        <item>Блок питания 12V, 1,25A, 15W</item>
         <item>Блок питания 12V, 1,5A, 20W</item>
-        <item>Блок питания 12V, 3A, 35W</item>
+        <item> Блок питания 12V, 3,3A, 40W</item>
         <item>Блок питания 12V, 4A, 50W</item>
         <item>Блок питания 12V, 8.3A, 100W</item>
         <item>Блок питания 24V, 4.2A, 100W</item>
@@ -458,15 +458,15 @@
         <item>Шина потолочная для светильников</item>
         <item>Лампочка Е27</item>
         <item>Лампочка Е14</item>
-        <item>Лампочка GU5.3</item>
+        <item>Лампа светодиодная 7.0Вт PLED-SP GU10 Jazzway</item>
         <item>Лампочка диммируемая</item>
         <item>Крюк для люстры</item>
     </string-array>
 
     <string-array name="mat_name_type_bury">
-        <item>Бур диаметром 4 мм общей длиной 100мм</item>
-        <item>Бур диаметром 5 мм общей длиной 100мм</item>
-        <item>Бур диаметром 6 мм общей длиной 100мм</item>
+        <item>Бур диаметром 4 мм общей длиной 110мм</item>
+        <item>Бур диаметром 5 мм общей длиной 110мм</item>
+        <item>Бур диаметром 6 мм общей длиной 110мм</item>
         <item>Бур диаметром 6 мм общей длиной 160мм</item>
         <item>Бур диаметром 8 мм общей длиной 160мм</item>
         <item>Бур диаметром 10 мм общей длиной 160мм</item>
@@ -493,7 +493,7 @@
         <item>Сверло перьевое по дереву</item>
         <item>Сверло балочное по дереву</item>
         <item>Сверло по плитке Dexter 6x100 мм</item>
-        <item>Сверло ктупенчатое по металлу</item>
+        <item>Сверло Archimede ступенчатое 4-20х75 мм</item>
         <item>Пилки для лобзика по дереву</item>
         <item>Пилки для лобзика по металлу</item>
     </string-array>
@@ -542,12 +542,12 @@
     <string-array name="mat_name_type_vspomogat">
 
         <item>Перчатки х/б</item>
-        <item>Карандаш строительный</item>
-        <item>Лезвия для ножа</item>
+        <item>Набор карандашей плотника 12 шт.</item>
+        <item>Лезвия для ножа, набор 10шт</item>
         <item>Респиратор</item>
         <item>Мешки для мусора зелёные</item>
         <item>Мешки для мусора белые</item>
-        <item>Батарейки для лазера</item>
+        <item>Батарейка алкалиновая Energizer MAX AA, 4 шт. для лазера</item>
         <item>Стяжки 20 см</item>
         <item>Стяжки 30 см</item>
         <item>Стяжки 40 см</item>
@@ -564,7 +564,7 @@
         <item>Скотч</item>
         <item>Плёнка</item>
         <item>Одноразовый комбинезон</item>
-        <item>Респиратор со сменными фильтрами</item>
+        <item>Респиратор со сменными фильтрами Archimedes РПГ-67</item>
         <item>Нож строительный</item>
         <item>Рулетка</item>
         <item>Противогаз</item>
@@ -871,80 +871,373 @@
     </string-array>
 
     <string-array name="cost_of_mat">
+        <item>398</item>
+        <item>239</item>
+        <item>165</item>
+        <item>108</item>
+        <item>72</item>
+        <item>38</item>
+        <item>82</item>
+        <item>59</item>
+        <item>31</item>
+        <item>147</item>
+        <item>104</item>
+        <item>64</item>
+        <item>42</item>
+        <item>24</item>
+        <item>45</item>
+        <item>31</item>
+        <item>18</item>
+        <item>57</item>
+        <item>25</item>
+        <item>82</item>
+        <item>82</item>
+        <item>82</item>
+        <item>48.5</item>
+        <item>48.5</item>
+        <item>48.5</item>
+        <item>32</item>
+        <item>32</item>
+        <item>32</item>
+        <item>276</item>
+        <item>42.2</item>
+        <item>34</item>
+        <item>20</item>
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>1.2</item>
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>1</item>
+        <item>0.8</item>
+        <item>1</item>
+        <item>1.2</item>
 
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
+        <item>6.8</item>
+        <item>8.6</item>
+        <item>16.3</item>
+        <item>23.2</item>
+        <item>31.4</item>
+        <item>2.1</item>
+        <item>2.7</item>
+        <item>3.5</item>
+        <item>7.1</item>
+        <item>10.3</item>
+        <item>15.4</item>
+        <item>25.7</item>
+        <item>14</item>
+        <item>16</item>
+        <item>26</item>
+        <item>48.2</item>
+        <item>57.7</item>
+        <item>75.7</item>
+        <item>28.4</item>
+        <item>57.7</item>
+        <item>18.6</item>
+        <item>16.3</item>
+        <item>52.2</item>
+        <item>52.2</item>
+        <item>52.2</item>
+        <item>52.2</item>
+        <item>46.1</item>
+        <item>46.1</item>
+        <item>222.6</item>
+        <item>183.5</item>
+
+        <item>7</item>
+        <item>12</item>
+        <item>12</item>
+        <item>54</item>
+        <item>93</item>
+        <item>43</item>
+        <item>49</item>
+        <item>84</item>
+        <item>20</item>
+        <item>20</item>
+
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>60.2</item>
+        <item>25</item>
+        <item>21</item>
+        <item>200</item>
+        <item>253</item>
+        <item>69</item>
+        <item>18</item>
+        <item>31</item>
+        <item>100</item>
+        <item>317</item>
+        <item>100</item>
+        <item>80</item>
+        <item>2</item>
+        <item>7.8</item>
+        <item>8.4</item>
+
+        <item>97</item>
+        <item>125</item>
+        <item>330</item>
+        <item>77</item>
+        <item>117</item>
+        <item>265</item>
+        <item>332</item>
+        <item>364</item>
+        <item>348</item>
+        <item>422</item>
+        <item>435</item>
+        <item>370</item>
+        <item>353</item>
+        <item>772</item>
+        <item>616</item>
+
+        <item>32</item>
+        <item>52</item>
+        <item>357</item>
+        <item>453</item>
+        <item>604</item>
+        <item>1207</item>
+        <item>1088</item>
+        <item>1665</item>
+        <item>1708</item>
+        <item>1686</item>
+        <item>3265</item>
+        <item>5433</item>
+        <item>6000</item>
+        <item>7888</item>
+        <item>7574</item>
+        <item>530</item>
+        <item>683</item>
+        <item>1060</item>
+        <item>1268</item>
+        <item>2006</item>
+        <item>1217</item>
+        <item>1429</item>
+        <item>1508</item>
+        <item>1964</item>
+        <item>2256</item>
+        <item>2727</item>
+        <item>3654</item>
+        <item>4215</item>
+        <item>758</item>
+        <item>496</item>
+        <item>458</item>
+        <item>395</item>
+        <item>410</item>
+        <item>380</item>
+        <item>389</item>
+        <item>3901</item>
+        <item>4905</item>
+        <item>1758</item>
+        <item>3413</item>
+        <item>14262</item>
+        <item>2397</item>
+        <item>2461</item>
+        <item>2001</item>
+        <item>1748</item>
+        <item>1317</item>
+        <item>1381</item>
+        <item>1353</item>
+        <item>1416</item>
+        <item>5049</item>
+        <item>4131</item>
+        <item>5233</item>
+        <item>1429</item>
+        <item>1474</item>
+        <item>2782</item>
+        <item>6025</item>
+        <item>8152</item>
+        <item>5483</item>
+        <item>1771</item>
+        <item>1819</item>
+        <item>282</item>
+        <item>445</item>
+        <item>148</item>
+        <item>1876</item>
+        <item>308</item>
+        <item>698</item>
+        <item>515</item>
+        <item>1373</item>
+        <item>79</item>
+        <item>100</item>
+        <item>120</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>73</item>
+        <item>33</item>
+        <item>138</item>
+        <item>18</item>
+        <item>54</item>
+        <item>21</item>
+        <item>128</item>
+
+
+        <item>331</item>
+        <item>464</item>
+        <item>464</item>
+        <item>401</item>
+        <item>591</item>
+        <item>613</item>
+        <item>2700</item>
+        <item>2184</item>
+        <item>1712</item>
+        <item>2243</item>
+        <item>590</item>
+        <item>803</item>
+        <item>944</item>
+        <item>885</item>
+        <item>1216</item>
+        <item>1216</item>
+        <item>1357</item>
+        <item>2691</item>
+        <item>37</item>
+        <item>31</item>
+        <item>25</item>
+        <item>18</item>
+        <item>42</item>
+        <item>31</item>
+        <item>47</item>
+        <item>40</item>
+        <item>26</item>
+        <item>102</item>
+        <item>472</item>
+        <item>1564</item>
+        <item>590</item>
+        <item>53</item>
+        <item>59</item>
+        <item>150</item>
+        <item>150</item>
+        <item>0.6</item>
+        <item>0.8</item>
+        <item>0.8</item>
+
+        <item>600</item>
+        <item>1000</item>
+        <item>600</item>
+        <item>600</item>
+        <item>1000</item>
+        <item>1000</item>
+        <item>500</item>
+        <item>3000</item>
+        <item>2052</item>
+        <item>1000</item>
+        <item>30</item>
+        <item>16</item>
+        <item>75</item>
+        <item>180</item>
+        <item>20</item>
+
+        <item>160</item>
+        <item>138</item>
+        <item>83</item>
+        <item>92</item>
+        <item>108</item>
+        <item>128</item>
+        <item>145</item>
+        <item>126</item>
+        <item>364</item>
+        <item>648</item>
+        <item>575</item>
+        <item>122</item>
+        <item>174</item>
+        <item>122</item>
+        <item>18</item>
+        <item>78</item>
+        <item>198</item>
+        <item>608</item>
+        <item>528</item>
+        <item>1932</item>
+        <item>456</item>
+        <item>1281</item>
+        <item>120</item>
+        <item>45</item>
+        <item>68</item>
+        <item>417</item>
+        <item>60</item>
+        <item>405</item>
+        <item>56</item>
+        <item>102</item>
+
+        <item>0.7</item>
+        <item>0.7</item>
+        <item>1</item>
+        <item>0.6</item>
+        <item>0.6</item>
+        <item>0.7</item>
+        <item>0.5</item>
+        <item>1</item>
+        <item>0.6</item>
+        <item>1</item>
+        <item>1.5</item>
+        <item>0.5</item>
+        <item>0.6</item>
+        <item>0.4</item>
+        <item>0.5</item>
+        <item>0.55</item>
+        <item>0.6</item>
+        <item>0.7</item>
+        <item>0.75</item>
+        <item>0.8</item>
+        <item>1</item>
+        <item>0.5</item>
+
+        <item>10</item>
+        <item>25</item>
+        <item>15</item>
+        <item>150</item>
+        <item>15</item>
+        <item>266</item>
+        <item>100</item>
+        <item>100</item>
+        <item>43</item>
+        <item>58</item>
+        <item>70</item>
+        <item>150</item>
+        <item>8</item>
+        <item>46</item>
+        <item>63</item>
+        <item>27</item>
+        <item>7</item>
+        <item>15</item>
+        <item>208</item>
+        <item>1.4</item>
+        <item>3.6</item>
+        <item>3.4</item>
+        <item>25</item>
+        <item>50</item>
+        <item>50</item>
+        <item>1500</item>
+        <item>922</item>
+        <item>928</item>
+        <item>1703</item>
+        <item>86</item>
+        <item>61</item>
+        <item>258</item>
+        <item>94</item>
+        <item>378</item>
+        <item>50</item>
+        <item>311</item>
+        <item>700</item>
+        <item>300</item>
+        <item>75</item>
+        <item>360</item>
+        <item>110</item>
+        <item>370</item>
+        <item>140</item>
+        <item>160</item>
+        <item>114</item>
+        <item>720</item>
+        <item>100</item>
+        <item>300</item>
+        <item>100</item>
+        <item>500</item>
+        <item>115</item>
+        <item>300</item>
     </string-array>
+
 
     <string-array name="unit_id_of_work">
         <item>1</item>

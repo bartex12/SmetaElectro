@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class Smetas extends AppCompatActivity {
+
+    public static final String TAG = "33333";
 
     long file_id;
 
@@ -49,6 +52,8 @@ public class Smetas extends AppCompatActivity {
 
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
+
+        Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
         //Получаем имя файла с текущей  сметой
         SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
@@ -87,7 +92,8 @@ public class Smetas extends AppCompatActivity {
 
                     case 1:
                         Intent intent2 = new Intent(Smetas.this, SmetasMat.class);
-                        intent2.putExtra(P.ID_FILE_DEFAULT, file_id);
+                        intent2.putExtra(P.ID_FILE, file_id);
+                        Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
                         startActivity(intent2);
                         break;
                 }
@@ -110,7 +116,10 @@ public class Smetas extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_struct) {
+            int currentItem = mViewPager.getCurrentItem();
+            Log.d(TAG, "Smetas - onOptionsItemSelected    currentItem = " + currentItem);
             Intent intent = new Intent(Smetas.this, SmetaListStructured.class);
+            intent.putExtra(P.TAB_POSITION, currentItem);
             intent.putExtra(P.ID_FILE, file_id);
             startActivity(intent);
             return true;

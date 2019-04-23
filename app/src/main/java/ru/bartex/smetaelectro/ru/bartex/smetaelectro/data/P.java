@@ -26,6 +26,7 @@ public class P {
     public static final String POSITION_CATEGORY = "POSITION_CATEGORY";
     //позиция типа работы  в списке типов
     public static final String POSITION_TYPE = "POSITION_TYPE";
+
     //id типа работ
     public static final String ID_TYPE = "ID типа работ";
     //id выбранной работы
@@ -37,7 +38,10 @@ public class P {
     public static final String ID_CATEGORY_MAT = "ID_CATEGORY_MAT";
     //id типа материалов
     public static final String ID_TYPE_MAT = "ID_TYPE_MAT";
-
+    //ID выбранного  материала
+    public static final String ID_MAT = "ID выбранного  материала";
+    //есть ли в смете такой пункт материала
+    public static final String IS_MAT = "Есть такой пункт материала?";
 
     // номер выбранной работы
     public static final String WORK_NUMBER = "Номер выбранной работы";
@@ -73,6 +77,8 @@ public class P {
     public static final String TAB_POSITION = "Выбранная_вкладка";
     //выбран тип материалов?
     public static final String IS_SELECTED_TYPE = "IS_SELECTED_TYPE";
+    //выбрана категория   материала?
+    public static final String IS_SELECTED_CAT = "IS_SELECTED_MAT";
 
     //Ключ имени категории
     public static final String ATTR_CATEGORY_NAME = "ATTR_CATEGORY_NAME";

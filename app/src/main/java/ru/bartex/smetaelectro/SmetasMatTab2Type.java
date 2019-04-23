@@ -34,19 +34,24 @@ public class SmetasMatTab2Type extends Fragment {
     Map<String, Object> m;
     SmetaOpenHelper mSmetaOpenHelper;
     Context context;
+    boolean isSelectedCat;
+    long cat_id;
 
     public interface OnClickTypeMatListener{
-        void typeAndCatTransmit(long cat_mat_id,long type_mat_id, boolean isSelectedType);
+        void typeAndClickTransmit(long type_mat_id, boolean isSelectedType);
     }
     OnClickTypeMatListener onClickTypeMatListener;
 
 
-    public static SmetasMatTab2Type NewInstance(long file_id, int position){
+    public static SmetasMatTab2Type NewInstance(
+            long file_id, int position, boolean isSelectedCat, long cat_id){
         Log.d(TAG, "//  SmetasMatTab2Type NewInstance // " );
         SmetasMatTab2Type fragment = new SmetasMatTab2Type();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
-        args.putLong(P.TAB_POSITION, position);
+        args.putInt(P.TAB_POSITION, position);
+        args.putBoolean(P.IS_SELECTED_CAT, isSelectedCat);
+        args.putLong(P.ID_CATEGORY_MAT, cat_id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,6 +71,8 @@ public class SmetasMatTab2Type extends Fragment {
         Log.d(TAG, "//  SmetasMatTab2Type onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
+        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
+        cat_id = getArguments().getLong(P.ID_CATEGORY_MAT);
     }
 
     @Nullable
@@ -82,10 +89,10 @@ public class SmetasMatTab2Type extends Fragment {
                 String smeta_item_name = tv_smeta_item.getText().toString();
 
                 long type_id = mSmetaOpenHelper.getIdFromMatTypeName(smeta_item_name);
-                long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
+                //long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
                 Log.d(TAG, "SmetasMatTab2Type onItemClick  type_id = " + type_id);
 
-                onClickTypeMatListener.typeAndCatTransmit(cat_id, type_id, true);
+                onClickTypeMatListener.typeAndClickTransmit(type_id, true);
             }
         });
         return rootView;
@@ -95,8 +102,6 @@ public class SmetasMatTab2Type extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "//  SmetasMatTab2Type onResume // " );
-        //adapterOfTypeMat = new AdapterOfTypeMat(context, file_id, listView);
-        //adapterOfTypeMat.updateAdapter();
 
         updateAdapter();
     }
@@ -104,26 +109,34 @@ public class SmetasMatTab2Type extends Fragment {
     public void updateAdapter(){
         Log.d(TAG, "//  SmetasMatTab2Type updateAdapter // " );
 
-        //Курсор с именами категорий материалов из таблицы категорий CategoryMat
-        //Cursor cursor1 = smetaOpenHelper.getTypeMatNames(cat_mat_id);
-        Cursor cursor = mSmetaOpenHelper.getTypeMatNamesAllTypes();
+        Cursor cursor;
+        if (isSelectedCat){
+            Log.d(TAG, "SmetasMatTab2Type updateAdapter isSelectedCat = true " );
+            //Курсор с именами  всех материалов из таблицы Mat
+            cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
+        }else {
+            Log.d(TAG, "SmetasMatTab2Type updateAdapter isSelectedCat = false " );
+            //получаем курсор с названиями типов работ по всем категориям
+            cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
+        }
         //Строковый массив с именами типов материалов из таблицы FM для файла с file_id
         String[] typetMatNamesFM = mSmetaOpenHelper.getTypeNamesFM(file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SmetasMatTab2Type updateAdapter cursor.getCount() = "+ cursor.getCount() );
+        Log.d(TAG, " SmetasMatTab2Type updateAdapter Всего типов материалов = "+ cursor.getCount() );
+
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            Log.d(TAG, " SmetasMatTab2Type updateAdapter tipe_mat_name  = " +
-                    (cursor.getPosition()+1) + "  " + tipe_mat_name );
             boolean check_mark = false;
             for (int i=0; i<typetMatNamesFM.length; i++){
                 if (typetMatNamesFM[i].equals(tipe_mat_name)){
                     check_mark = true;
-                }else {
-                    check_mark = false;
+                    //если есть совпадение, прекращаем перебор
+                    break;
                 }
             }
+            Log.d(TAG, " SmetasMatTab2Type updateAdapter tipe_mat_name  = " +
+                    (cursor.getPosition()+1) + "  " + tipe_mat_name + "  check_mark = " + check_mark);
             m =new HashMap<>();
             m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
             m.put(P.ATTR_TYPE_MAT_MARK, check_mark);
@@ -133,7 +146,7 @@ public class SmetasMatTab2Type extends Fragment {
         String[] from = new String[]{P.ATTR_TYPE_MAT_NAME, P.ATTR_TYPE_MAT_MARK};
         int [] to = new int[]{R.id.base_text_two_mat, R.id.checkBoxTwoMat};
 
-        sara = new SimpleAdapter(context, data, R.layout.list_item_two_mat, from, to);
+        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat, from, to);
         listView.setAdapter(sara);
     }
 
