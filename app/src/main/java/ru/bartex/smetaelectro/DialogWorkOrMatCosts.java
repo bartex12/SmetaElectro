@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+
 public class DialogWorkOrMatCosts extends DialogFragment {
 
     static String TAG = "33333";
@@ -53,8 +55,7 @@ public class DialogWorkOrMatCosts extends DialogFragment {
             public void onClick(View v) {
                 //getActivity().finish(); //закрывает и диалог и активность
                 //getDialog().dismiss();  //закрывает только диалог
-                Intent intent = new Intent(getActivity(), CostCategory.class);
-                //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                Intent intent = new Intent(getActivity(), SmetasMatCost.class);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
             }

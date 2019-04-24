@@ -106,8 +106,15 @@ public class SmetaListStructured extends AppCompatActivity {
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs:
-                    DialogFragment dialogFragment = new DialogWorkOrMatCosts();
-                    dialogFragment.show(getSupportFragmentManager(), "dialogWorkOrMatCosts");
+                    if (position_tab == 0){
+                        Intent intent_costs_work = new Intent(SmetaListStructured.this, CostCategory.class);
+                        startActivity(intent_costs_work);
+                    }else if (position_tab == 1){
+                        Intent intent_costs_mat = new Intent(SmetaListStructured.this, SmetasMatCost.class);
+                        intent_costs_mat.putExtra(P.ID_FILE, file_id);
+                        startActivity(intent_costs_mat);
+                    }
+
                     return true;
             }
             return false;
@@ -116,10 +123,10 @@ public class SmetaListStructured extends AppCompatActivity {
 
     public void updateAdapter() {
 
+        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+
         switch (position_tab){
-
             case 0:
-
                 data = new  ArrayList<Map<String, String>>();
 
                 Log.d(TAG, "SmetaListStructured - updateAdapter /////////////////////");
@@ -172,7 +179,8 @@ public class SmetaListStructured extends AppCompatActivity {
                 mListViewNames.removeHeaderView(header);
                 //добавляем хедер
                 header = getLayoutInflater().inflate(R.layout.list_item_single, null);
-                ((TextView)header.findViewById(R.id.base_text)).setText("Смета на работу");
+                ((TextView)header.findViewById(R.id.base_text)).setText(
+                        String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
                 mListViewNames.addHeaderView(header, null, false);
                 Log.d(TAG, "***********getHeaderViewsCount*********** = " +
                         mListViewNames.getHeaderViewsCount());
@@ -245,7 +253,8 @@ public class SmetaListStructured extends AppCompatActivity {
                 mListViewNames.removeHeaderView(header);
                 //добавляем хедер
                 header = getLayoutInflater().inflate(R.layout.list_item_single, null);
-                ((TextView)header.findViewById(R.id.base_text)).setText("Смета на материалы");
+                ((TextView)header.findViewById(R.id.base_text)).setText(
+                        String.format(Locale.ENGLISH,"Смета на материалы:   %s", fileName));
                 mListViewNames.addHeaderView(header, null, false);
                 Log.d(TAG, "***********getHeaderViewsCount*********** = " +
                         mListViewNames.getHeaderViewsCount());

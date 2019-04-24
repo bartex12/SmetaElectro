@@ -39,20 +39,8 @@ public class SmetasMat extends AppCompatActivity implements
     long cat_id;
     SmetaOpenHelper mSmetaOpenHelper;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
-
 
     @Override
     public void catAndClickTransmit(long cat_mat_id, boolean isSelectedCatMat) {
@@ -96,14 +84,14 @@ public class SmetasMat extends AppCompatActivity implements
         Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
         mSmetaOpenHelper = new SmetaOpenHelper(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMat);
         setSupportActionBar(toolbar);
         //показываем заголовокмв заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasMat);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorFab));
+        toolbar.setTitleTextColor(Color.GREEN);
 
         //Создаём адаптер для фрагментов
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -147,8 +135,6 @@ public class SmetasMat extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -204,7 +190,7 @@ public class SmetasMat extends AppCompatActivity implements
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_home_smetas_mat:
                     // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
                     Intent intentHome = new Intent(SmetasMat.this, MainActivity.class);
                     // установка флагов- создаём новую задачу и убиваем старую вместе
@@ -213,14 +199,16 @@ public class SmetasMat extends AppCompatActivity implements
                     //      Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intentHome);
                     return true;
-                case R.id.navigation_smetas:
+                case R.id.navigation_smetas_smetas_mat:
                     // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
-                    Intent intent_smetas = new Intent(SmetasMat.this, ListOfSmetasNames.class);
-                    startActivity(intent_smetas);
+                    Intent intent = new Intent(SmetasMat.this, Smetas.class);
+                    intent.putExtra(P.ID_FILE, file_id);
+                    startActivity(intent);
                     return true;
-                case R.id.navigation_costs:
-                    DialogFragment dialogFragment = new DialogWorkOrMatCosts();
-                    dialogFragment.show(getSupportFragmentManager(), "dialogWorkOrMatCosts");
+                case R.id.navigation_costs_smetas_mat:
+                    Intent intent_costs_mat = new Intent(SmetasMat.this, SmetasMatCost.class);
+                    intent_costs_mat.putExtra(P.ID_FILE, file_id);
+                    startActivity(intent_costs_mat);
                     return true;
             }
             return false;

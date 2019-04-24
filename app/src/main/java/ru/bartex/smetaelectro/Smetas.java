@@ -26,20 +26,7 @@ public class Smetas extends AppCompatActivity {
     public static final String TAG = "33333";
 
     long file_id;
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     public ViewPager mViewPager;
 
     @Override
@@ -62,8 +49,8 @@ public class Smetas extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //показываем имя текущей сметы в заголовке экрана
-        toolbar.setTitle(fileName);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorFab));
+        toolbar.setTitle(R.string.smetas_name_on_bar);
+        toolbar.setTitleTextColor(Color.GREEN);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -187,9 +174,9 @@ public class Smetas extends AppCompatActivity {
                             return true;
 
                         case 1:
-                            //Intent intent_costs_mat = new Intent(
-                            //        Smetas.this, CostCategory.class);
-                            //startActivity(intent_costs_mat);
+                            Intent intent_costs_mat = new Intent(Smetas.this, SmetasMatCost.class);
+                            intent_costs_mat.putExtra(P.ID_FILE, file_id);
+                            startActivity(intent_costs_mat);
                             return true;
                     }
 

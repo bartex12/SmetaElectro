@@ -252,7 +252,9 @@ public class SmetasTab1Rabota extends Fragment {
         lvSmetasRabota.removeHeaderView(header);
         //добавляем хедер
         header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-        ((TextView)header.findViewById(R.id.base_text)).setText("Смета на работу");
+        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        ((TextView)header.findViewById(R.id.base_text)).setText(
+                String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
         lvSmetasRabota.addHeaderView(header, null, false);
         Log.d(TAG, "***********getHeaderViewsCount*********** = " +
                 lvSmetasRabota.getHeaderViewsCount());

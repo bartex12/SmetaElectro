@@ -31,6 +31,7 @@
     <string name="title_activity_changeDataFile">Изменение</string>
     <string name="title_activity_SmetaListStructured">Подробно</string>
     <string name="title_activity_MatActivity">Материалы</string>
+    <string name="title_activity_SmetasMatCost">Цены на материалы</string>
     <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
     <string name="CostZero">Цена работы не указана</string>
     <string name="DeleteCategory">Удалить эту категорию?</string>
@@ -43,13 +44,16 @@
     <string name="tab_text_1">Работа</string>
     <string name="tab_text_2">Материалы</string>
     <string name="tab_text_1_mat">Категория</string>
-    <string name="tab_text_2_mat">Тип</string>
     <string name="tab_text_3_mat">Название</string>
+    <string name="tab_text_2_mat">Тип</string>
+    <string name="tab_text_1_mat_cost">Тип материала</string>
+    <string name="tab_text_2_mat_cost">Название материала</string>
     <string name="complex_list">Данные</string>
     <string name="complex_list_group">Работа</string>
     <string name="ru_rub"> руб</string>
     <string name="count_sht">шт</string>
     <string name="smetas_name">Название сметы</string>
+    <string name="smetas_name_on_bar">Смета</string>
     <string name="category_name">Название категории </string>
     <string name="type_name">Название типа работы </string>
     <string name="type_work">Название работы </string>
@@ -1771,6 +1775,7 @@
     </string-array>
 
     <string name="title_activity_SmetasMat">Материалы</string>
+    <string name="title_activity_smetas_mat_cost">SmetasMatCost</string>
 
 
 </resources>

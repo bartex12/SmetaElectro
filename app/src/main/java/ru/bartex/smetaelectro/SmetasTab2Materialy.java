@@ -2,6 +2,7 @@ package ru.bartex.smetaelectro;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.annotation.Nullable;
@@ -76,6 +77,24 @@ public class SmetasTab2Materialy extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         //tvSumma = rootView.findViewById(R.id.tvSumma);
         lvSmetasMaterials = rootView.findViewById(R.id.listViewFragmentTabs);
+        lvSmetasMaterials.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv_smeta_item = view.findViewById(R.id.base_text);
+                String smeta_item_name = tv_smeta_item.getText().toString();
+                long mat_id = mSmetaOpenHelper.getIdFromMatName(smeta_item_name);
+                long type_mat_id = mSmetaOpenHelper.getTypeIdMat(file_id, mat_id);
+                long cat_mat_id = mSmetaOpenHelper.getCateIdMat(file_id, mat_id);
+
+                Intent intent = new Intent(getActivity(), SmetaMatDetail.class);
+                intent.putExtra(P.ID_FILE, file_id);
+                intent.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                intent.putExtra(P.ID_TYPE_MAT, type_mat_id);
+                intent.putExtra(P.ID_MAT, mat_id);
+                intent.putExtra(P.IS_MAT, true);  // такой материал есть
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -131,7 +150,9 @@ public class SmetasTab2Materialy extends Fragment {
         lvSmetasMaterials.removeHeaderView(header);
         //добавляем хедер
         header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-        ((TextView)header.findViewById(R.id.base_text)).setText("Смета на материалы");
+        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        ((TextView)header.findViewById(R.id.base_text)).setText(
+                String.format(Locale.ENGLISH,"Смета на материалы:   %s", fileName));
         lvSmetasMaterials.addHeaderView(header, null, false);
         Log.d(TAG, "***********getHeaderViewsCount*********** = " +
                 lvSmetasMaterials.getHeaderViewsCount());

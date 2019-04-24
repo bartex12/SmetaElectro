@@ -1388,6 +1388,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,
                 FileWork._ID + "=" + file_id,
                 null, null, null, null, null);
+        Log.d(TAG, "getFileNameById mCursor.getCount() = " + mCursor.getCount());
         if ((mCursor != null) && (mCursor.getCount() != 0)) {
             mCursor.moveToFirst();
         }
@@ -3098,4 +3099,43 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(file_id), String.valueOf(mat_id)});
         Log.i(TAG, "SmetaOpenHelper.deleteMatItemFromFM  - del =  " + del);
     }
+
+    //получаем id типа работы
+    public long getTypeIdMat(long file_id, long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getTypeIdMat ... ");
+        String select = " SELECT " + FM.FM_MAT_TYPE_ID + " FROM " + FM.TABLE_NAME +
+                " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
+        Log.i(TAG, "SmetaOpenHelper.getTypeIdMat cursor.getCount() = " + cursor.getCount());
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // Узнаем индекс столбца и Используем индекс для получения количества работы
+            long type_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
+            Log.i(TAG, "SmetaOpenHelper.getTypeIdMat type_id = " + type_id );
+            return type_id;
+        }
+            cursor.close();
+        return -1;
+    }
+
+    //получаем id категории работы
+    public long getCateIdMat(long file_id, long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getCateIdMat ... ");
+        String select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
+                " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
+        Log.i(TAG, "SmetaOpenHelper.getCateIdMat cursor.getCount() = " + cursor.getCount());
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // Узнаем индекс столбца и Используем индекс для получения количества работы
+            long cat_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
+            Log.i(TAG, "SmetaOpenHelper.getCateIdMat cat_id = " + cat_id );
+            return cat_id;
+        }
+            cursor.close();
+        return -1;
+    }
+
 }

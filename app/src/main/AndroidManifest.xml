@@ -10,8 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".SmetasMatCost"
+            android:label="@string/title_activity_smetas_mat_cost"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".SmetaMatDetail"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".SmetasMat"
             android:label="@string/title_activity_SmetasMat"
