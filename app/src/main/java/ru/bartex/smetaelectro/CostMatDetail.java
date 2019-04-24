@@ -13,13 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class CostDetail extends AppCompatActivity {
-
+public class CostMatDetail extends AppCompatActivity {
     public static final String TAG = "33333";
 
     TextView mTextViewWorkName;
@@ -29,11 +27,9 @@ public class CostDetail extends AppCompatActivity {
     SmetaOpenHelper mSmetaOpenHelper;
     long cat_id;
     long type_id;
-    long work_id;
+    long mat_id;
     int requestCode;
-
     float cost; //цена работы
-    String unit; //единицы измерения
 
     public static final String REQUEST_CODE = "request_codeCostDetail";
 
@@ -43,38 +39,38 @@ public class CostDetail extends AppCompatActivity {
         setContentView(R.layout.activity_cost_detail);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
-        cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
-        type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
-        work_id = getIntent().getLongExtra(P.ID_WORK, 1);
+        cat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);
+        type_id = getIntent().getLongExtra(P.ID_TYPE_MAT, 1);
+        mat_id = getIntent().getLongExtra(P.ID_MAT, 1);
 
-        Log.d(TAG, "CostDetail - onCreate  cat_id = " +
-                 cat_id + "  type_id = " + type_id + "  work_id = " + work_id);
+        Log.d(TAG, "CostMatDetail - onCreate  cat_id = " +
+                cat_id + "  type_id = " + type_id + "  mat_id = " + mat_id);
 
-        //выводим название работы
+        //выводим название материала
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = mSmetaOpenHelper.getWorkNameById(work_id);
-        mTextViewWorkName.setText(workName);
+        String matName = mSmetaOpenHelper.getMatNameById(mat_id);
+        mTextViewWorkName.setText(matName);
 
         //выводим таблицу CostWork
         //mSmetaOpenHelper.displayTableCost();
 
         //выводим стоимость работы
         mTextViewCost = findViewById(R.id.edittext_cost_cost);
-        cost = mSmetaOpenHelper.getWorkCostById(work_id);
+        cost = mSmetaOpenHelper.getCostMatById(mat_id);
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost
             // при нажатии кнопки Сохранить
-            mSmetaOpenHelper.insertCostZero(work_id);
+            mSmetaOpenHelper.insertCostMatZero(mat_id);
         }
         mTextViewCost.setText(Float.toString(cost));
         mTextViewCost.requestFocus();
         mTextViewCost.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
-        String[] unins = mSmetaOpenHelper.getArrayUnitsNames();
+        String[] uninsMat = mSmetaOpenHelper.getArrayUnitsMatNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,unins);
+                android.R.layout.simple_spinner_item,uninsMat);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         final Spinner spinner = (Spinner)findViewById(R.id.spinnerUnits);
@@ -83,9 +79,9 @@ public class CostDetail extends AppCompatActivity {
         if (cost == 0){
             spinner.setSelection(0);
         }else {
-            String unitName = mSmetaOpenHelper.getCostUnitById(work_id);
-            long unitId = mSmetaOpenHelper.getIdFromUnitName(unitName);
-            Log.d(TAG, "CostDetail- Spinner -unitName = " + unitName + "  unitId = " + unitId);
+            String unitMatName = mSmetaOpenHelper.getCostUnitMatById(mat_id);
+            long unitId = mSmetaOpenHelper.getIdFromUnitMatName(unitMatName);
+            Log.d(TAG, "CostMatDetail- Spinner -unitMatName = " + unitMatName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
             spinner.setSelection((int)unitId - 1);
         }
@@ -109,34 +105,34 @@ public class CostDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String costOfWork =  mTextViewCost.getText().toString();
-                if ((costOfWork.equals(""))||(costOfWork.equals("."))){
-                    costOfWork = "0";
+                String costOfMat =  mTextViewCost.getText().toString();
+                if ((costOfMat.equals(""))||(costOfMat.equals("."))){
+                    costOfMat = "0";
                 }
-                Log.d(TAG, "CostDetail-mButtonSave.setOnClickListener costOfWork = " + costOfWork);
+                Log.d(TAG, "CostMatDetail-mButtonSave.setOnClickListener costOfMat = " + costOfMat);
                 //проверка на 0, чтобы не было нулевых строк в смете
-                if (Float.parseFloat(costOfWork)==0) {
+                if (Float.parseFloat(costOfMat)==0) {
                     //Snackbar заслонён клавиатурой, поэтому в манифесте пишем
                     //android:windowSoftInputMode="stateVisible|adjustResize"
                     Snackbar.make(getCurrentFocus(), "Введите число, не равное нулю",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
                 }else {
-                    cost =  Float.parseFloat(costOfWork);
+                    cost =  Float.parseFloat(costOfMat);
                     String unit = spinner.getSelectedItem().toString();
-                    long unit_id = mSmetaOpenHelper.getIdFromUnitName(unit);
-                    Log.d(TAG, "CostDetail-mButtonSave.setOnClickListener work_id = " +
-                            work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
+                    long unit_mat_id = mSmetaOpenHelper.getIdFromUnitMatName(unit);
+                    Log.d(TAG, "CostMatDetail-mButtonSave.setOnClickListener mat_id = " +
+                            mat_id + " cost = " + cost + " unit = " + unit + " unit_mat_id = " + unit_mat_id);
 
                     //обновляем стоимость работы с единицами измерения
-                    mSmetaOpenHelper.updateWorkCost(work_id, cost, unit_id);
+                    mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
 
                     Bundle extras = getIntent().getExtras();
                     if(extras != null) {
                         requestCode = extras.getInt(REQUEST_CODE);
                         //если пришло из изменить запись
                         if (requestCode == 111) {
-                            Log.d(TAG, "CostDetail-mButtonSave requestCode =  " + requestCode);
+                            Log.d(TAG, "CostMatDetail-mButtonSave requestCode =  " + requestCode);
                             Intent intent = new Intent();
                             setResult(RESULT_OK, intent);
                         }
@@ -158,19 +154,19 @@ public class CostDetail extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "CostDetail-onDestroy..." );
-        String costOfWork =  mTextViewCost.getText().toString();
-        if ((costOfWork.equals(""))||(costOfWork.equals("."))){
-            costOfWork = "0";
+        Log.d(TAG, "CostMatDetail-onDestroy..." );
+        String costOfMat =  mTextViewCost.getText().toString();
+        if ((costOfMat.equals(""))||(costOfMat.equals("."))){
+            costOfMat = "0";
         }
         //если Cost = 0, то стираем строку в случае отмены кнопкой Cancel или Назад
         //это надо будет изменить - не писать строку, чтобы ее потом изменять,
         // а вставлять тогда, когда это будет нужно вместе с единицами измерения ,
         // для чего переделать макет CostDetail
         //---макет переделан а вставка не сделана пока---
-        if (Float.parseFloat(costOfWork)==0){
-            mSmetaOpenHelper.deleteCostOfWork(work_id);
+        if (Float.parseFloat(costOfMat)==0){
+            mSmetaOpenHelper.deleteCostOfMat(mat_id);
         }
-
     }
 }
+

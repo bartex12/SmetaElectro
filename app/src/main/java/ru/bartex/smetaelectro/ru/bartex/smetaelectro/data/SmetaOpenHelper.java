@@ -2828,7 +2828,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + Mat.MAT_TYPE_ID  + " = ? " ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(matNames, new String[]{String.valueOf(type_id)});
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesOneType cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesOneType cursor.getCount() =  " +
+                cursor.getCount() + " type_id = " + type_id);
         return cursor;
     }
 
@@ -3137,5 +3138,141 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return -1;
     }
+    //получаем стоимость материала по её id
+    public float getCostMatById(long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getCostMatById ... ");
+        float costOfMat = 0;
+        String cost = " SELECT " + CostMat.COST_MAT_COST +
+                " FROM " + CostMat.TABLE_NAME +
+                " WHERE " + CostMat.COST_MAT_ID  + " = ?" ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(mat_id)});
+        Log.d(TAG, "getCostMatById cursor.getCount() = " + cursor.getCount());
 
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
+            // Используем индекс для получения строки или числа
+            costOfMat = cursor.getFloat(idColumnIndex);
+        }
+        Log.d(TAG, "getCostMatById costOfMat = " + costOfMat);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return costOfMat;
+    }
+
+    //Добавляем вид материала с левыми параметрами, чобы удалить при отказе пользователя
+    public long  insertCostMatZero(long mat_Id){
+        Log.i(TAG, "SmetaOpenHelper.insertCostMatZero ... ");
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CostMat.COST_MAT_ID, mat_Id);
+        cv.put(CostMat.COST_MAT_UNIT_ID, 1);
+        cv.put(CostMat.COST_MAT_COST,0);
+        cv.put(CostMat.COST_MAT_NUMBER,1);
+        // вставляем строку
+        long ID = db.insert(CostMat.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertCostMatZero  CostMat._ID = " + ID);
+        return ID;
+    }
+
+    //получаем массив названий типов материала
+    public String[] getArrayUnitsMatNames() {
+        SQLiteDatabase db = getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getArrayUnitsMatNames ... ");
+        String unitsMatName  = " SELECT " + UnitMat.UNIT_MAT_NAME  + " FROM " + UnitMat.TABLE_NAME;
+        Cursor cursor = db.rawQuery(unitsMatName, null);
+        String[] units_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            units_name[position] = cursor.getString(cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getArrayUnitsMatNames position = " + position);
+        }
+        return units_name;
+    }
+
+    //получаем единицы измерения материала с помощью вложенного запроса
+    public String getCostUnitMatById(long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getCostUnitMatById ... ");
+        String unitMatName = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String unit = " SELECT " +  UnitMat.UNIT_MAT_NAME +
+                " FROM " + UnitMat.TABLE_NAME  +
+                " WHERE " + UnitMat._ID + " IN " +
+                "(" + " SELECT " + CostMat.COST_MAT_UNIT_ID +
+                " FROM " + CostMat.TABLE_NAME +
+                " WHERE " + CostMat.COST_MAT_ID  + " = " +  String.valueOf(mat_id) + ")";
+
+        Cursor cursor = db.rawQuery(unit, null);
+
+        Log.d(TAG, "getCostUnitMatById cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // Узнаем индекс  столбца
+            int idColumnIndex = cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME);
+            // Используем индекс для получения строки или числа
+            unitMatName = cursor.getString(idColumnIndex);
+            Log.d(TAG, "getCostUnitMatById unitName = " + unitMatName);
+        }
+            cursor.close();
+        return unitMatName;
+    }
+
+    //получаем ID по имени  материала
+    public long getIdFromUnitMatName(String unitMatName) {
+        long currentID;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                UnitMat.TABLE_NAME,   // таблица
+                new String[]{UnitMat._ID},            // столбцы
+                UnitMat.UNIT_MAT_NAME + "=?",                  // столбцы для условия WHERE
+                new String[]{unitMatName},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(UnitMat._ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getIdFromUnitName currentID = " + currentID);
+            cursor.close();
+        return currentID;
+    }
+
+    //обновляем цену материала
+    public void updateMatkCost(long mat_Id, float costMat, long unit_mat_Id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(CostMat.COST_MAT_COST, costMat);
+        updatedValues.put(CostMat.COST_MAT_UNIT_ID, unit_mat_Id);
+        updatedValues.put(CostMat.COST_MAT_NUMBER, 1);
+
+        int countLine = db.update(CostMat.TABLE_NAME, updatedValues,
+                CostMat.COST_MAT_ID + "=" + mat_Id, null);
+        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - costMat =" + costMat + "  countLine = " + countLine);
+    }
+
+    //удаляем цену материала (если в таблице FM нет записей с mat_Id - это проверяется в другом месте)
+    public void deleteCostOfMat(long mat_Id) {
+        Log.i(TAG, "SmetaOpenHelper.deleteCostOfMat ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        int countDelete = db.delete(CostMat.TABLE_NAME, CostMat.COST_MAT_ID + " =? ",
+                new String[]{String.valueOf(mat_Id)});
+        Log.i(TAG, "SmetaOpenHelper.deleteCostOfMat countDelete =" + countDelete);
+        db.close();
+    }
 }

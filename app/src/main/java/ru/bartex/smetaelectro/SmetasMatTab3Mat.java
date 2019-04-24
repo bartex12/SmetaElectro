@@ -164,7 +164,7 @@ public class SmetasMatTab3Mat extends Fragment {
         String[] from = new String[]{P.ATTR_MAT_NAME, P.ATTR_MAT_MARK};
         int [] to = new int[]{R.id.base_text_two_mat, R.id.checkBoxTwoMat};
 
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat_small_coord, from, to);
+        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat, from, to);
         listView.setAdapter(sara);
     }
     @Override

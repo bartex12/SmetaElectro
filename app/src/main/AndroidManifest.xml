@@ -9,10 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CostMatDetail"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:label="@string/title_activity_smetas_mat_cost"/>
         <activity
             android:name=".SmetasMatCost"
             android:label="@string/title_activity_smetas_mat_cost"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SmetaMatDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />

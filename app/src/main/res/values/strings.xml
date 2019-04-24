@@ -1775,7 +1775,6 @@
     </string-array>
 
     <string name="title_activity_SmetasMat">Материалы</string>
-    <string name="title_activity_smetas_mat_cost">SmetasMatCost</string>
-
+    <string name="title_activity_smetas_mat_cost">Цена материала</string>
 
 </resources>

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
-    android:background="@drawable/rect"
+    android:background="@color/greenLigth"
     android:orientation="vertical">
-    
+
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
@@ -23,8 +23,8 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="Данные"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:textSize="14sp"
+        android:textStyle="bold|italic" />
 
     <View
         android:id="@+id/divider"

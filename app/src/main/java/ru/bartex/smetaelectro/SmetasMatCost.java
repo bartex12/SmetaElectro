@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -27,13 +28,30 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
-public class SmetasMatCost extends AppCompatActivity {
+public class SmetasMatCost extends AppCompatActivity implements SmetasMatTab1Type.OnClickTypeMatListener{
 
     public static final String TAG = "33333";
     long file_id;
+    boolean isSelectedType = false;
+    long type_id;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    @Override
+    public void typeAndClickTransmit(long type_mat_id, boolean isSelectedTypeMat) {
+        Log.d(TAG, "//  SmetasMatCost  typeAndClickTransmit  // " );
+        this.isSelectedType = isSelectedTypeMat;
+        this.type_id = type_mat_id;
+        Log.d(TAG, "SmetasMatCost  typeAndClickTransmit type_id =" +
+                type_id + "  isSelectedType = " + isSelectedType);
+
+        // обновляем соседнюю вкладку  материалов и показываем её
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1);
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +59,7 @@ public class SmetasMatCost extends AppCompatActivity {
         setContentView(R.layout.activity_smetas_mat_cost);
         Log.d(TAG, "//  SmetasMatCost onCreate // " );
 
-        Intent intent = getIntent();
-        if (intent!=null){
-           file_id = getIntent().getIntExtra(P.ID_FILE,-1);
-        }
+        file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasMatCost onCreate file_id =" + file_id);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
@@ -81,7 +96,6 @@ public class SmetasMatCost extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -100,50 +114,16 @@ public class SmetasMatCost extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_smetas_mat_cost, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -151,10 +131,26 @@ public class SmetasMatCost extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
+            Log.d(TAG, "####### SmetasMatCost  Fragment getItem: ####### " );
+            switch (position){
+                case 0:
+                    Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 0: ####### " );
+                    SmetasMatTab1Type  smetasMatTab1Type = SmetasMatTab1Type.
+                            NewInstance(file_id, position);
+                    return smetasMatTab1Type;
+                case 1:
+                    Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 1/1: #######" );
+                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
+                    SmetasMatTab2Mat smetasMatTab2Mat = SmetasMatTab2Mat.
+                            NewInstance(file_id, position, isSelectedType, type_id);
+                    Log.d(TAG, " ####### SmetasMatCost  Fragment getItem case 1/2: isSelectedType = ####### " +
+                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
+                            "  position = " +  position);
+                   return smetasMatTab2Mat;
+                default:
+                    return null;
+            }
+    }
 
         @Override
         public int getCount() {
@@ -182,11 +178,13 @@ public class SmetasMatCost extends AppCompatActivity {
                         // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
                         Intent intent_smetas = new Intent(SmetasMatCost.this, ListOfSmetasNames.class);
                         startActivity(intent_smetas);
+                        Log.d(TAG, "1 SmetasMatCost onNavigationItemSelected file_id =" + file_id);
                     }else {
                         // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
                         Intent intent = new Intent(SmetasMatCost.this, Smetas.class);
                         intent.putExtra(P.ID_FILE, file_id);
                         startActivity(intent);
+                        Log.d(TAG, "2 SmetasMatCost onNavigationItemSelected file_id =" + file_id);
                     }
                     return true;
                 case R.id.navigation_smetas_mat_cost:

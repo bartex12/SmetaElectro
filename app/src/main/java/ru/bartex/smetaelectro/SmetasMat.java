@@ -206,9 +206,9 @@ public class SmetasMat extends AppCompatActivity implements
                     startActivity(intent);
                     return true;
                 case R.id.navigation_costs_smetas_mat:
-                    Intent intent_costs_mat = new Intent(SmetasMat.this, SmetasMatCost.class);
-                    intent_costs_mat.putExtra(P.ID_FILE, file_id);
-                    startActivity(intent_costs_mat);
+                    Intent intentCostMat = new Intent(SmetasMat.this, SmetasMatCost.class);
+                    intentCostMat.putExtra(P.ID_FILE, file_id);
+                    startActivity(intentCostMat);
                     return true;
             }
             return false;

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
-    android:background="@drawable/rect"
+    android:background="@color/greenLigth"
     android:orientation="vertical">
-    
+
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
@@ -17,6 +17,8 @@
         android:id="@+id/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:maxLines="5"
