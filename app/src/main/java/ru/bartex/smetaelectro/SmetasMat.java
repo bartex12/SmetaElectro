@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.app.Fragment;
@@ -17,19 +20,23 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMat extends AppCompatActivity implements
-        SmetasMatTab2Type.OnClickTypeMatListener, SmetasMatTab1Category.OnClickTCategoryMatListener{
+        SmetasMatTab2Type.OnClickTypeMatListener, SmetasMatTab1Category.OnClickTCategoryMatListener,
+        DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
     long file_id;
@@ -51,28 +58,61 @@ public class SmetasMat extends AppCompatActivity implements
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку
         //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(1);
-        mSectionsPagerAdapter.notifyDataSetChanged();
+        updateAdapter(1);
     }
 
     @Override
-    public void typeAndClickTransmit(long type_mat_id, boolean isSelectedTypeMat) {
+    public void typeAndClickTransmit(long cat_mat_id, long type_mat_id, boolean isSelectedTypeMat) {
         Log.d(TAG, "//  SmetasMat  typeAndCatTransmit  // " );
         this.isSelectedType = isSelectedTypeMat;
         this.type_id = type_mat_id;
-        Log.d(TAG, "SmetasMat  typeAndCatTransmit type_id =" +
-                type_id + "  isSelectedType = " + isSelectedType);
+        this.cat_id = cat_mat_id;
+        Log.d(TAG, "SmetasMat  typeAndCatTransmit cat_id ="  +
+                cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
         // обновляем соседнюю вкладку типов материалов и показываем её
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(2);
-        mSectionsPagerAdapter.notifyDataSetChanged();
-        //вспомогательная функция на этапе отладки смотрим сколько строк в таблице цен на материалы
-        //их должно быть = количеству материалов = 354
-        //mSmetaOpenHelper.getCountLineInCostMat();
+        updateAdapter(2);
+    }
+
+    @Override
+    public void workCategoryTypeNameTransmit(String workName, String typeName, String catName) {
+        int position = mViewPager.getCurrentItem();
+        Log.d(TAG, " ++++++++SmetasMat  workCategoryTypeNameTransmit ++++++");
+        switch (position){
+            case 0:
+                Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 0");
+
+                long newCatMatNameId = mSmetaOpenHelper.insertCatMatName(catName);
+                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                        " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
+
+                // обновляем соседнюю вкладку типов материалов и показываем её
+                updateAdapter(0);
+                break;
+
+            case 1:
+                Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 1");
+                //определяем id категории по её имени
+                long type_category_Id = mSmetaOpenHelper.getCatIdFromCategoryMatName(catName);
+                long newTypeWorkNameId = mSmetaOpenHelper.insertTypeMatName(typeName, type_category_Id);
+                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                        " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
+                // обновляем соседнюю вкладку типов материалов и показываем её
+                updateAdapter(1);
+                break;
+
+            case 2:
+                Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 2");
+                //определяем id типа по его имени
+                long work_type_Id = mSmetaOpenHelper.getIdFromMatTypeName(typeName);
+                long newWorkNameId = mSmetaOpenHelper.insertMatName(workName, work_type_Id);
+                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                        " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
+
+                // обновляем соседнюю вкладку типов материалов и показываем её
+                updateAdapter(2);
+                break;
+        }
     }
 
     @Override
@@ -100,12 +140,28 @@ public class SmetasMat extends AppCompatActivity implements
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
+       // mViewPager.setOffscreenPageLimit(0);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMat);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
-
+        //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+       //добавляем слушатель нажатий на заголовки вкладок
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
+        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                invalidateOptionsMenu();
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -116,30 +172,332 @@ public class SmetasMat extends AppCompatActivity implements
             }
         });
 
+        //добираемся до списка фрагмента ___________пока нет_____________
+        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
+        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
+        Log.d(TAG, " SmetasMat  onCreate mViewPager.getCurrentItem() = " +
+                mViewPager.getCurrentItem() + "  view = " + view );
+        //ListView mListView = view.findViewById(R.id.listViewFragmentTabs);
+        //ListView mListView = mViewPager.getRootView().findViewById(R.id.listViewFragmentTabs);
+        //объявляем о регистрации контекстного меню
+        //registerForContextMenu(mListView);
+        Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  **************************");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, " ))))))))SmetasMat  onCreateOptionsMenu(((((((( ///");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_smeta_mat, menu);
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu(((((((( ///");
+        ActionBar acBar = getSupportActionBar();
+        int position = mViewPager.getCurrentItem();
+        Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu(((((((( position = " + position +
+                "  isSelectedCat = " + isSelectedCat + "  isSelectedType = " + isSelectedType);
+        switch (position){
+            case 0:
+                Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu case 0");
+                menu.findItem(R.id.action_add).setVisible(true);
+                break;
+            case 1:
+                Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu case 1");
+                menu.findItem(R.id.action_add).setVisible(isSelectedCat);
+                break;
+            case 2:
+                Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu case 2");
+                menu.findItem(R.id.action_add).setVisible(isSelectedType);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected(((((((( ///");
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }else if (id == R.id.action_add){
+            int position = mViewPager.getCurrentItem();
+            Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected(((((((( position = " + position );
+            switch (position){
+                case 0:
+                    Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 0");
+                    DialogFragment saveCat = DialogSaveCatName.newInstance(false);
+                    saveCat.show(getSupportFragmentManager(),"SaveCatName");
+                    break;
+                case 1:
+                    Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 1");
+                    if (isSelectedCat){
+                        DialogFragment saveType = DialogSaveTypeName.newInstance(cat_id, false);
+                        saveType.show(getSupportFragmentManager(), "saveType");
+                    }
+                    break;
+                case 2:
+                    //long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
+                    Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 2");
+                    Log.d(TAG, " SmetasMat  onOptionsItemSelected case 2 cat_id = " + cat_id +
+                            "  type_id = " + type_id);
+                    DialogFragment saveMat = DialogSaveWorkName.newInstance(cat_id, type_id, false);
+                    saveMat.show(getSupportFragmentManager(), "SaveWorkName");
+                    break;
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.SPECIFIC_ID, 0, R.string.action_detail);
+        menu.add(0, P.CHANGE_NAME_ID, 0, R.string.action_change_name);
+        menu.add(0, P.DELETE_ID, 0, R.string.action_delete);
+        menu.add(0, P.CANCEL, 0, R.string.action_cancel);
+
+        // получаем инфу о пункте списка
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        switch (mViewPager.getCurrentItem()){
+            case 0:
+                //получаем имя категории из строки списка категории
+                TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                String name = tvName.getText().toString();
+                //находим id категории по имени категории
+                long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                //находим количество строк типов материала для cat_mat_id
+                int countType_mat = mSmetaOpenHelper.getCountTypeMat(cat_mat_id);
+                Log.d(TAG, "onCreateContextMenu - countType = " + countType_mat);
+                if(countType_mat > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+            case 1:
+                //получаем имя типа из строки списка типов материала
+                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                String typeMatName = tvType.getText().toString();
+                //находим id типа по имени типа
+                long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(typeMatName);
+                //находим количество строк видов материала для type_mat_id
+                int countLineMat = mSmetaOpenHelper.getCountLineMat(type_mat_id);
+                Log.d(TAG, "onContextItemSelected - countLineMat = " + countLineMat);
+                if(countLineMat > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+            case 2:
+                //получаем имя материала  из строки списка видов материала
+                TextView tvMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                String matName = tvMat.getText().toString();
+                //находим id вида  по имени вида материала
+                long mat_id = mSmetaOpenHelper.getIdFromMatName(matName);
+                //находим количество строк видов материала в таблице FM для mat_id
+                int countLineWorkFM = mSmetaOpenHelper.getCountLineMatInFM(mat_id);
+                Log.d(TAG, "SmetasMatTab3Mat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
+                //mSmetaOpenHelper.displayTableCost();
+                if(countLineWorkFM > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // получаем инфу о пункте списка
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        int id = item.getItemId();
+        Log.d(TAG, "SmetasMat onContextItemSelected id = " + id +
+                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
+
+        switch (id){
+            case P.SPECIFIC_ID:
+                Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID");
+
+                switch (mViewPager.getCurrentItem()){
+                    case 0:
+                        //получаем имя категории из строки списка категории
+                        TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        final String name = tvName.getText().toString();
+                        //находим id категории по имени категории
+                        final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                        Log.d(TAG, "SmetasMat onContextItemSelected  " +
+                                " name = " + name +  " cat_mat_id =" + cat_mat_id);
+
+                        //отправляем интент с id категории
+                        Intent intentSpecificCat = new Intent(
+                                SmetasMat.this, CategoryMatSpecific.class);
+                        intentSpecificCat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                        startActivity(intentSpecificCat);
+                        break;
+                    case 1:
+
+                        //получаем имя типа из строки списка типов материала
+                        TextView tvSpecificTypeMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        String type_mat_name_specific = tvSpecificTypeMat.getText().toString();
+                        //находим id по имени типа
+                        long type_mat_id_specific = mSmetaOpenHelper.getIdFromMatTypeName(type_mat_name_specific);
+                        Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID " +
+                                "type_mat_name_specific = " + type_mat_name_specific +
+                                " type_mat_id_specific =" + type_mat_id_specific);
+                        //отправляем интент с id типа
+                        Intent intentSpecificTypeMat = new Intent(SmetasMat.this, TypeMatSpecific.class);
+                        intentSpecificTypeMat.putExtra(P.ID_TYPE_MAT, type_mat_id_specific);
+                        startActivity(intentSpecificTypeMat);
+                        break;
+
+                    case 2:
+
+                        Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID");
+                        //получаем имя типа из строки списка материала
+                        TextView tvSpecificMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        String mat_name_specific = tvSpecificMat.getText().toString();
+                        //находим id по имени типа
+                        long mat_id_specific = mSmetaOpenHelper.getIdFromMatName(mat_name_specific);
+                        Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID " +
+                                "mat_name_specific = " + mat_name_specific +  " mat_id_specific =" + mat_id_specific);
+                        //отправляем интент с id материала
+                        Intent intentSpecificMat = new Intent(SmetasMat.this, MatSpesific.class);
+                        intentSpecificMat.putExtra(P.ID_MAT, mat_id_specific);
+                        startActivity(intentSpecificMat);
+                        break;
+                }
+                return true;
+
+            case P.CHANGE_NAME_ID:
+                Log.d(TAG, "SmetasMat onContextItemSelected case P.CHANGE_NAME_ID");
+                switch (mViewPager.getCurrentItem()){
+                    case 0:
+
+                        //получаем имя категории из строки списка категории
+                        TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        final String name = tvName.getText().toString();
+                        //находим id категории по имени категории
+                        final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                        Log.d(TAG, "SmetasMat onContextItemSelected  " +
+                                " name = " + name +  " cat_mat_id =" + cat_mat_id);
+
+                        Intent intentCat = new Intent(
+                                SmetasMat.this, CategoryMatChangeData.class);
+                        intentCat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                        startActivity(intentCat);
+                        break;
+
+                    case 1:
+                        //получаем имя типа из строки списка типов материала
+                        TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        String tvTypeMatName = tvType.getText().toString();
+                        //находим id по имени типа
+                        long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(tvTypeMatName);
+                        Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID " +
+                                "tvTypeMatName = " + tvTypeMatName +
+                                " type_mat_id =" + type_mat_id);
+
+                        Intent intentType = new Intent(
+                                SmetasMat.this, TypeMatChangeData.class);
+                        intentType.putExtra(P.ID_TYPE_MAT, type_mat_id);
+                        startActivity(intentType);
+                        break;
+                    case 2:
+                        //получаем имя материала из строки списка типов материала
+                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        String mat_name_chang = tvChangWork.getText().toString();
+                        //находим id по имени материала
+                        long mat_id_Change = mSmetaOpenHelper.getIdFromMatName(mat_name_chang);
+                        Log.d(TAG, "SmetasMat onContextItemSelected  case P.CHANGE_NAME_ID " +
+                                "mat_name_chang = " + mat_name_chang + " mat_id_Change =" + mat_id_Change);
+                        //отправляем интент с id материала
+                        Intent intent = new Intent(SmetasMat.this, MatChangeData.class);
+                        intent.putExtra(P.ID_MAT, mat_id_Change);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+
+            case P.DELETE_ID:
+                Log.d(TAG, "SmetasMat onContextItemSelected case P.DELETE_ID");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.Delete);
+                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (mViewPager.getCurrentItem()){
+                            case 0:
+                                //получаем имя категории из строки списка категории
+                                TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                final String name = tvName.getText().toString();
+                                //находим id категории по имени категории
+                                final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 0" +
+                                        " name = " + name +  " cat_mat_id =" + cat_mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteCategoryMat(cat_mat_id);
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(0);
+                                break;
+
+                            case 1:
+                                //получаем имя типа из строки списка типов
+                                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                final String type = tvType.getText().toString();
+                                //находим id типа по имени типа
+                                final long type_mat_id = mSmetaOpenHelper.getTypeIdFromTypeMatName(type);
+                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 1" +
+                                        " type = " + type +  " type_mat_id =" + type_mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteTypeMat(type_mat_id);
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(1);
+                                break;
+
+                            case 2:
+                                //получаем имя материала из строки списка материала
+                                TextView tvmat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                final String mat = tvmat.getText().toString();
+                                //находим id типа по имени типа
+                                final long mat_id = mSmetaOpenHelper.getMatIdFromMatName(mat);
+                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 1" +
+                                        " mat = " + mat +  " mat_id =" + mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteMat(mat_id);
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(2);
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+
+            case P.CANCEL:
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -149,6 +507,7 @@ public class SmetasMat extends AppCompatActivity implements
         @Override
         public Fragment getItem(int position) {
 
+            Log.d(TAG, " ))))))))SmetasMat Fragment getItem ((((((((");
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
@@ -214,5 +573,13 @@ public class SmetasMat extends AppCompatActivity implements
             return false;
         }
     };
+
+    private void updateAdapter(int currentItem){
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(currentItem);
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
 
 }

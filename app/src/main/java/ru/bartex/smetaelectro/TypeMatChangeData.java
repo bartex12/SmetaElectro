@@ -12,39 +12,35 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class WorkChangeData extends AppCompatActivity {
+public class TypeMatChangeData extends AppCompatActivity {
+    static String TAG = "33333";
 
-    public static final String TAG = "33333";
-
-    EditText etWorkName;
-    EditText etWorkDescription;
-    Button btnCancelChangeWork;
-    Button btnSaveChangeWork;
-    long work_id;
+    EditText etTypeName;
+    EditText etTypeDescription;
+    Button btnCancelChangeType;
+    Button btnSaveChangeType;
+    long type_id;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_work_change_data);
+        setContentView(R.layout.activity_type_change_data);
 
+        //получаем id выбранного типа материала из интента
+        type_id = getIntent().getExtras().getLong(P.ID_TYPE_MAT);
+        Log.d(TAG, "TypeChangeData onCreate type_id = " + type_id);
+        DataTypeMat dataTypeMat = smetaOpenHelper.getTypeMatData((type_id));
 
-        //получаем id выбранного типа работы из интента
-        work_id = getIntent().getExtras().getLong(P.ID_WORK);
-        Log.d(TAG, "WorkChangeData onCreate work_id = " + work_id);
-        DataWork dataWork  = smetaOpenHelper.getWorkData(work_id);
+        etTypeName = findViewById(R.id.etChangeTypeName);
+        etTypeName.setText(dataTypeMat.getmTypeMatName());
 
-        etWorkName = findViewById(R.id.etChangeWorkName);
-        etWorkName.setText(dataWork.getmWorkName());
+        etTypeDescription = findViewById(R.id.etChangeTypeDescription);
+        etTypeDescription.setText(dataTypeMat.getmTypeMatDescription());
+        Log.d(TAG, "TypeChangeData onCreate etTypeDescription = " + etTypeDescription.getText().toString());
 
-        etWorkDescription = findViewById(R.id.etChangeWorkDescription);
-        etWorkDescription.setText(dataWork.getmWorkDescription());
-        Log.d(TAG, "WorkChangeData onCreate etWorkDescription = " + etWorkDescription.getText().toString());
-
-        btnCancelChangeWork = findViewById(R.id.btnCancelChangeWork);
-        btnCancelChangeWork.setOnClickListener(new View.OnClickListener() {
+        btnCancelChangeType = findViewById(R.id.btnCancelChangeType);
+        btnCancelChangeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //принудительно прячем  клавиатуру - повторный вызов ее покажет
@@ -52,33 +48,33 @@ public class WorkChangeData extends AppCompatActivity {
                 finish();
             }
         });
-        btnSaveChangeWork = findViewById(R.id.btnSaveChangeWork);
-        btnSaveChangeWork.setOnClickListener(new View.OnClickListener() {
+        btnSaveChangeType = findViewById(R.id.btnSaveChangeType);
+        btnSaveChangeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //читаем имя типа работы в строке ввода
-                String nameWork = etWorkName.getText().toString();
-                Log.d(TAG, "WorkChangeData nameWork = " + nameWork);
+                String nameType = etTypeName.getText().toString();
+                Log.d(TAG, "TypeChangeData nameType = " + nameType);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
                 //если имя - пустая строка
-                if (nameWork.trim().isEmpty()) {
+                if (nameType.trim().isEmpty()) {
                     //Чтобы Snackbar появлялся над клавиатурой, в манифесте в активности
                     // написано android:windowSoftInputMode="adjustResize"
-                    Snackbar.make(v, "Введите непустое название работы",
+                    Snackbar.make(v, "Введите непустое название типа материала",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    Log.d(TAG, "Введите непустое название работы ");
+                    Log.d(TAG, "Введите непустое название ");
                     return;
                     //если имя  не пустое то
                 } else {
                     Log.d(TAG, " OK, Название не пустое");
-                    String description = etWorkDescription.getText().toString();
+                    String description = etTypeDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateWorkData(work_id, nameWork, description);
+                    smetaOpenHelper.updateTypeMatData(type_id, nameType, description);
 
-                    Toast.makeText(WorkChangeData.this,"Обновлено ",
+                    Toast.makeText(TypeMatChangeData.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

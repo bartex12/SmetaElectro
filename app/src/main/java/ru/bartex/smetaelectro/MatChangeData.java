@@ -12,8 +12,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class WorkChangeData extends AppCompatActivity {
-
+public class MatChangeData extends AppCompatActivity {
     public static final String TAG = "33333";
 
     EditText etWorkName;
@@ -23,25 +22,23 @@ public class WorkChangeData extends AppCompatActivity {
     long work_id;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_change_data);
 
 
-        //получаем id выбранного типа работы из интента
-        work_id = getIntent().getExtras().getLong(P.ID_WORK);
-        Log.d(TAG, "WorkChangeData onCreate work_id = " + work_id);
-        DataWork dataWork  = smetaOpenHelper.getWorkData(work_id);
+        //получаем id выбранного материала из интента
+        work_id = getIntent().getExtras().getLong(P.ID_MAT);
+        Log.d(TAG, "MatChangeData onCreate work_id = " + work_id);
+        DataMat dataMat  = smetaOpenHelper.getMatData(work_id);
 
         etWorkName = findViewById(R.id.etChangeWorkName);
-        etWorkName.setText(dataWork.getmWorkName());
+        etWorkName.setText(dataMat.getmMatName());
 
         etWorkDescription = findViewById(R.id.etChangeWorkDescription);
-        etWorkDescription.setText(dataWork.getmWorkDescription());
-        Log.d(TAG, "WorkChangeData onCreate etWorkDescription = " + etWorkDescription.getText().toString());
+        etWorkDescription.setText(dataMat.getmMatDescription());
+        Log.d(TAG, "MatChangeData onCreate etWorkDescription = " + etWorkDescription.getText().toString());
 
         btnCancelChangeWork = findViewById(R.id.btnCancelChangeWork);
         btnCancelChangeWork.setOnClickListener(new View.OnClickListener() {
@@ -59,16 +56,16 @@ public class WorkChangeData extends AppCompatActivity {
 
                 //читаем имя типа работы в строке ввода
                 String nameWork = etWorkName.getText().toString();
-                Log.d(TAG, "WorkChangeData nameWork = " + nameWork);
+                Log.d(TAG, "MatChangeData nameWork = " + nameWork);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
                 //если имя - пустая строка
                 if (nameWork.trim().isEmpty()) {
                     //Чтобы Snackbar появлялся над клавиатурой, в манифесте в активности
                     // написано android:windowSoftInputMode="adjustResize"
-                    Snackbar.make(v, "Введите непустое название работы",
+                    Snackbar.make(v, "Введите непустое название материала",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    Log.d(TAG, "Введите непустое название работы ");
+                    Log.d(TAG, "Введите непустое название ");
                     return;
                     //если имя  не пустое то
                 } else {
@@ -76,9 +73,9 @@ public class WorkChangeData extends AppCompatActivity {
                     String description = etWorkDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateWorkData(work_id, nameWork, description);
+                    smetaOpenHelper.updateMatData(work_id, nameWork, description);
 
-                    Toast.makeText(WorkChangeData.this,"Обновлено ",
+                    Toast.makeText(MatChangeData.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

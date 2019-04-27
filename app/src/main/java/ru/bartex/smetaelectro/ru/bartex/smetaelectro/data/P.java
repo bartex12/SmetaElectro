@@ -37,6 +37,9 @@ public class P {
     public static final String ID_WORK = "ID выбранной работы";
     //есть ли в смете такой пункт с работой
     public static final String IS_WORK = "Есть такой пункт?";
+    //диалог вызван из работы?
+    public static final String IS_WORK_DIALOG = "Диалог вызван из работы?";
+
 
     //id категории материалов
     public static final String ID_CATEGORY_MAT = "ID_CATEGORY_MAT";

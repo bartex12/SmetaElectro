@@ -55,7 +55,7 @@ public class SmetaCategoryElectro extends AppCompatActivity
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
-        file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
+        file_id = getIntent().getLongExtra(P.ID_FILE, 1);
 
         mListView = findViewById(R.id.listViewCategory);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -275,7 +275,7 @@ public class SmetaCategoryElectro extends AppCompatActivity
     };
     //диалог сохранения, оформленный как класс с указанием имени файла
     private void openSaveCatDialogFragment() {
-        DialogFragment dialogFragment = new DialogSaveCatName();
+        DialogFragment dialogFragment = DialogSaveCatName.newInstance(true);
         dialogFragment.show(getSupportFragmentManager(),"SaveCatName");
     }
 

@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -84,6 +85,18 @@ public class SmetasMatCost extends AppCompatActivity implements SmetasMatTab1Typ
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                invalidateOptionsMenu();
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,14 +106,33 @@ public class SmetasMatCost extends AppCompatActivity implements SmetasMatTab1Typ
                         .setAction("Action", null).show();
             }
         });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_smetas_mat_cost, menu);
+        getMenuInflater().inflate(R.menu.menu_cost_mat, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d(TAG, " ))))))))SmetasMatCost  onPrepareOptionsMenu(((((((( ///");
+        ActionBar acBar = getSupportActionBar();
+        int position = mViewPager.getCurrentItem();
+        Log.d(TAG, " ))))))))SmetasMatCost  onPrepareOptionsMenu(((((((( position = " + position +
+                 "  isSelectedType = " + isSelectedType);
+        switch (position){
+            case 0:
+                Log.d(TAG, " ))))))))SmetasMatCost  onPrepareOptionsMenu case 0");
+                menu.findItem(R.id.action_add).setVisible(true);
+                break;
+            case 1:
+                Log.d(TAG, " ))))))))SmetasMatCost  onPrepareOptionsMenu case 2");
+                menu.findItem(R.id.action_add).setVisible(isSelectedType);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -117,12 +149,6 @@ public class SmetasMatCost extends AppCompatActivity implements SmetasMatTab1Typ
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

@@ -4,7 +4,7 @@
     tools:context="ru.bartex.smetaelectro.SmetasMat">
 
     <item android:id="@+id/action_add"
-        android:title="@string/action_add"
+        android:title="@string/action_create_add_name"
         android:icon="@drawable/ic_action_new"
         android:orderInCategory="10"
         app:showAsAction="always" />
@@ -15,5 +15,3 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
-
-

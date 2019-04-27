@@ -32,11 +32,14 @@
     <string name="title_activity_SmetaListStructured">Подробно</string>
     <string name="title_activity_MatActivity">Материалы</string>
     <string name="title_activity_SmetasMatCost">Цены на материалы</string>
+    <string name="title_activity_CategoryMatSpecific">Подробности</string>
+    <string name="title_activity_CategorySpecific">Подробности</string>
     <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
     <string name="CostZero">Цена работы не указана</string>
     <string name="DeleteCategory">Удалить эту категорию?</string>
     <string name="DeleteType">Удалить этот тип работ?</string>
     <string name="DeleteKind">Удалить этот вид работ?</string>
+    <string name="Delete">Удалить?</string>
     <string name="DeleteYes">Да</string>
     <string name="CostOk">Указать</string>
     <string name="DeleteNo">Нет</string>
@@ -63,6 +66,7 @@
     <string name="adress">Адрес объекта</string>
     <string name="adress_no">Без адреса</string>
     <string name="description">Опиcание</string>
+    <string name="name">Название</string>
     <string name="description_category">Опиcание категории</string>
     <string name="description_type">Опиcание типа работы</string>
     <string name="description_no">Без описания</string>
@@ -1775,6 +1779,10 @@
     </string-array>
 
     <string name="title_activity_SmetasMat">Материалы</string>
+    <string name="title_activity_SmetasWork">Работа</string>
     <string name="title_activity_smetas_mat_cost">Цена материала</string>
+    <string name="title_activity_smetas_work">SmetasWork</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

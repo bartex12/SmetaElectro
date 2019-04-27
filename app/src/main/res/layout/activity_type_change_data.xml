@@ -21,7 +21,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Название типа работы" />
+                android:text="Название типа " />
 
             <EditText
                 android:id="@+id/etChangeTypeName"
@@ -43,7 +43,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Описание типа работы" />
+                android:text="Описание типа " />
 
             <EditText
                 android:id="@+id/etChangeTypeDescription"

@@ -19,17 +19,20 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 public class DialogSaveWorkName extends DialogSaveName {
 
     static String TAG = "33333";
-
+    long cat_id;
+    long type_id;
+    boolean isWorkDialog;
     public DialogSaveWorkName(){
         //пустой конструктор
     }
 
-    public static DialogSaveWorkName newInstance(long cat_id,int positionCategory, int  positionType){
+    public static DialogSaveWorkName newInstance(long cat_id, long type_id, boolean isWorkDialog){
+        Log.d(TAG, "DialogSaveWorkName newInstance... ");
         DialogSaveWorkName dialogSaveWorkName = new DialogSaveWorkName();
         Bundle bundle = new Bundle();
-        bundle.putInt(P.POSITION_CATEGORY,positionCategory);
-        bundle.putInt(P.POSITION_TYPE,positionType);
         bundle.putLong(P.ID_CATEGORY,cat_id);
+        bundle.putLong(P.ID_TYPE,type_id);
+        bundle.putBoolean(P.IS_WORK_DIALOG,isWorkDialog);
         dialogSaveWorkName.setArguments(bundle);
         return dialogSaveWorkName;
     }
@@ -37,9 +40,14 @@ public class DialogSaveWorkName extends DialogSaveName {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        positionCategory = getArguments().getInt(P.POSITION_CATEGORY);
-        positionType = getArguments().getInt(P.POSITION_TYPE);
+        Log.d(TAG, "DialogSaveWorkName onCreate... ");
+        //positionCategory = getArguments().getInt(P.POSITION_CATEGORY);
+        //positionType = getArguments().getInt(P.POSITION_TYPE);
         cat_id = getArguments().getLong(P.ID_CATEGORY);
+        type_id = getArguments().getLong(P.ID_TYPE);
+        isWorkDialog = getArguments().getBoolean(P.IS_WORK_DIALOG);
+        Log.d(TAG, "DialogSaveWorkName onCreate.  cat_id = " + cat_id +
+                "  type_id = " + type_id + "  isWorkDialog = " + isWorkDialog);
     }
 
     @NonNull
@@ -62,18 +70,26 @@ public class DialogSaveWorkName extends DialogSaveName {
         etWorkName.requestFocus();
         etWorkName.setInputType(InputType.TYPE_CLASS_TEXT);
 
+        TextView tvCatName = view.findViewById(R.id.tvCatName);
         TextView tvTypeName = view.findViewById(R.id.tvTypeName);
-        String[] arrayTypeNames = smetaOpenHelper.getArrayTypeNames(cat_id);
-        final String typeName = arrayTypeNames[positionType];
+        final String typeName;
+        final String catName;
+        if (isWorkDialog){
+            Log.d(TAG, "DialogSaveWorkName onCreateDialog. isWorkDialog = true  cat_id = " +
+            cat_id + "  type_id = " + type_id);
+           typeName = smetaOpenHelper.getTypeNameById(type_id);
+           catName = smetaOpenHelper.getCategoryNameById(cat_id);
+        }else{
+            Log.d(TAG, "DialogSaveWorkName onCreateDialog. isWorkDialog = false  cat_id = " +
+                    cat_id + "  type_id = " + type_id);
+           typeName = smetaOpenHelper.getTypeNameMatById(type_id);
+           catName = smetaOpenHelper.getCategoryMatNameById(cat_id);
+        }
+        tvCatName.setText(catName);
         tvTypeName.setText(typeName);
 
         EditText etSaveNameType = view.findViewById(R.id.etSaveNameType);
         etSaveNameType.setVisibility(View.GONE);
-
-        TextView tvCatName = view.findViewById(R.id.tvCatName);
-        String[] arrayCatNames = smetaOpenHelper.getArrayCategoryNames();
-        final String catName = arrayCatNames[positionCategory];
-        tvCatName.setText(catName);
 
         EditText etSaveNameCat = view.findViewById(R.id.etSaveNameCat);
         etSaveNameCat.setVisibility(View.GONE);
@@ -86,9 +102,14 @@ public class DialogSaveWorkName extends DialogSaveName {
                 String workName = etWorkName.getText().toString();
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long workId = smetaOpenHelper.getIdFromWorkName(workName);
-                Log.d(TAG, "workName = " + workName + "  workId = " + workId);
-
+                long workId;
+                if (isWorkDialog){
+                    workId = smetaOpenHelper.getIdFromWorkName(workName);
+                    Log.d(TAG, "workName = " + workName + "  workId = " + workId);
+                }else{
+                    workId = smetaOpenHelper.getIdFromMatName(workName);
+                    Log.d(TAG, "workName = " + workName + "  workId = " + workId);
+                }
                 //если имя - пустая строка
                 if (workName.trim().isEmpty()){
                     Snackbar.make(v, "Введите непустое название работы", Snackbar.LENGTH_SHORT)

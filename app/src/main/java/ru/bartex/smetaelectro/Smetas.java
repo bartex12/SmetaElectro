@@ -72,8 +72,8 @@ public class Smetas extends AppCompatActivity {
                 int currentItem = mViewPager.getCurrentItem();
                 switch (currentItem){
                     case 0:
-                        Intent intent = new Intent(Smetas.this, SmetaCategoryElectro.class);
-                        intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                        Intent intent = new Intent(Smetas.this, SmetasWork.class);
+                        intent.putExtra(P.ID_FILE, file_id);
                         startActivity(intent);
                         break;
 

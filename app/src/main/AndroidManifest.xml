@@ -9,9 +9,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CostMatDetail"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:label="@string/title_activity_smetas_mat_cost"/>
+        <activity
+            android:name=".SmetasWork"
+            android:label="@string/title_activity_SmetasWork"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".MatChangeData"
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity
+            android:name=".TypeMatChangeData"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".CategoryMatChangeData"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".MatSpesific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog"/>
+        <activity android:name=".TypeMatSpecific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog" />
+        <activity
+            android:name=".CategoryMatSpecific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog" />
+        <activity
+            android:name=".CostMatDetail"
+            android:label="@string/title_activity_smetas_mat_cost"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".SmetasMatCost"
             android:label="@string/title_activity_smetas_mat_cost"
@@ -26,16 +50,22 @@
         <activity
             android:name=".SmetaListStructured"
             android:label="@string/title_activity_SmetaListStructured" />
-        <activity android:name=".WorkSpesific" />
+        <activity android:name=".WorkSpesific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog"/>
         <activity android:name=".WorkChangeData" />
         <activity
             android:name=".TypeChangeData"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".TypeSpecific" />
+        <activity android:name=".TypeSpecific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog"/>
         <activity
             android:name=".CategoryChangeData"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".CategorySpecific" />
+        <activity android:name=".CategorySpecific"
+            android:label="@string/title_activity_CategoryMatSpecific"
+            android:theme="@style/AppDialog"/>
         <activity android:name=".SmetaSpecific" />
         <activity
             android:name=".SmetaChangeData"

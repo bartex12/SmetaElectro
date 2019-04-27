@@ -56,8 +56,8 @@ public class SmetaWorkElectro extends AppCompatActivity
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
-        positionCategory = getIntent().getIntExtra(P.POSITION_CATEGORY, 1);
-        positionType = getIntent().getIntExtra(P.POSITION_TYPE, 1);
+        //positionCategory = getIntent().getIntExtra(P.POSITION_CATEGORY, 1);
+        //positionType = getIntent().getIntExtra(P.POSITION_TYPE, 1);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -110,7 +110,6 @@ public class SmetaWorkElectro extends AppCompatActivity
         String workName = tvWork.getText().toString();
         //находим id вида  по имени вида работ
         long work_id = mSmetaOpenHelper.getIdFromWorkName(workName);
-
         //находим количество строк видов работы в таблице FW для work_id
         int countLineWorkFW = mSmetaOpenHelper.getCountLineWorkInFW(work_id);
         //находим количество строк расценок работы в таблице CostWork для work_id
@@ -232,7 +231,7 @@ public class SmetaWorkElectro extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                openSaveWorkDialogFragment(cat_id, positionCategory, positionType);
+                openSaveWorkDialogFragment(cat_id, type_id);
                 return true;
 
             case R.id.action_settings:
@@ -277,8 +276,8 @@ public class SmetaWorkElectro extends AppCompatActivity
         }
     };
 
-    private void openSaveWorkDialogFragment(long cat_id, int positionCategory, int  positionType){
-        DialogFragment dialogFragment = DialogSaveWorkName.newInstance(cat_id, positionCategory, positionType);
+    private void openSaveWorkDialogFragment(long cat_id, long type_id){
+        DialogFragment dialogFragment = DialogSaveWorkName.newInstance(cat_id, type_id, true);
         dialogFragment.show(getSupportFragmentManager(), "SaveWorkName");
     }
 

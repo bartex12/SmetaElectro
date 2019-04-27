@@ -18,20 +18,20 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/category_name" />
+                android:layout_marginRight="20dp"
+                android:text="@string/name" />
 
             <TextView
-                android:id="@+id/tvNameCategory"
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:ems="10"
-                android:hint="@string/category_name"
+                android:hint="@string/name"
                 android:inputType="textMultiLine"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
@@ -41,18 +41,18 @@
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/description_category" />
+                android:layout_marginRight="20dp"
+                android:text="@string/description" />
 
             <TextView
-                android:id="@+id/tvDescriptionCategory"
+                android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="@string/description_no"
                 android:inputType="textMultiLine"
@@ -60,13 +60,14 @@
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/btnOkCategory"
+                android:id="@+id/btnOk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="30dp"
                 android:text="@string/ok" />
         </LinearLayout>
     </ScrollView>

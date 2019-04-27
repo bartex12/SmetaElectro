@@ -30,7 +30,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
  */
 public class SmetasMatTab2Mat extends Fragment {
 
-
     public static final String TAG = "33333";
     long file_id;
     int position;

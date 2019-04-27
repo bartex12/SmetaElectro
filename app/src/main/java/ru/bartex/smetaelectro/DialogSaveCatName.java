@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.InputType;
 import android.util.Log;
@@ -13,12 +14,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+
 
 public class DialogSaveCatName extends DialogSaveName {
 
     static String TAG = "33333";
-
+    boolean isWorkDialog;
     public DialogSaveCatName(){};
+
+    public static DialogSaveCatName newInstance(boolean isWorkDialog) {
+        Log.d(TAG, "DialogSaveCatName newInstance. isWorkDialog =   " + isWorkDialog);
+        DialogSaveCatName fragment = new DialogSaveCatName();
+        Bundle args = new Bundle();
+        args.putBoolean(P.IS_WORK_DIALOG, isWorkDialog);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isWorkDialog = getArguments().getBoolean(P.IS_WORK_DIALOG);
+        Log.d(TAG, "DialogSaveCatName onCreate. isWorkDialog =   " + isWorkDialog);
+    }
 
     @NonNull
     @Override
@@ -57,7 +76,6 @@ public class DialogSaveCatName extends DialogSaveName {
         etSaveNameCat.requestFocus();
         etSaveNameCat.setInputType(InputType.TYPE_CLASS_TEXT);
 
-
         Button btnSaveName = view.findViewById(R.id.buttonSaveName);
         btnSaveName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +86,14 @@ public class DialogSaveCatName extends DialogSaveName {
                 Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
-                Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
+                long catId;
+                if (isWorkDialog){
+                    catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
+                    Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
+                }else {
+                    catId = smetaOpenHelper.getCatIdFromCategoryMatName(nameCat);
+                    Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
+                }
 
                 //если имя - пустая строка
                 if (nameCat.trim().isEmpty()){
@@ -93,6 +117,7 @@ public class DialogSaveCatName extends DialogSaveName {
                     workCategoryTypeNameListener.workCategoryTypeNameTransmit(null,null, nameCat);
 
                     fiishDialog();
+                    //getDialog().dismiss();
                 }
 
             }

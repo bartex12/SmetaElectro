@@ -21,7 +21,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Название работы" />
+                android:text="Название" />
 
             <EditText
                 android:id="@+id/etChangeWorkName"
@@ -43,7 +43,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Описание работы" />
+                android:text="Описание" />
 
             <EditText
                 android:id="@+id/etChangeWorkDescription"

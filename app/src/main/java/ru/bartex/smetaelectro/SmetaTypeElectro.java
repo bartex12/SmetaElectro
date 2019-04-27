@@ -62,7 +62,8 @@ public class SmetaTypeElectro extends AppCompatActivity
         mSmetaOpenHelper = new SmetaOpenHelper(this);
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
-        positionCategory = getIntent().getExtras().getInt(P.POSITION_CATEGORY);
+        Log.d(TAG, "SmetaTypeElectro onCreate - cat_id = " + cat_id);
+        //positionCategory = getIntent().getExtras().getInt(P.POSITION_CATEGORY);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -115,7 +116,8 @@ public class SmetaTypeElectro extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                openSaveTypeDialogFragment(positionCategory);
+                openSaveTypeDialogFragment(cat_id);
+                Log.d(TAG, "SmetaTypeElectro - onOptionsItemSelected  cat_id= " + cat_id);
                 return true;
 
             case R.id.action_settings:
@@ -268,8 +270,8 @@ public class SmetaTypeElectro extends AppCompatActivity
         }
     };
 
-    private void openSaveTypeDialogFragment(int positionCategory){
-        DialogFragment saveType = DialogSaveTypeName.newInstance(positionCategory);
+    private void openSaveTypeDialogFragment(long cat_id){
+        DialogFragment saveType = DialogSaveTypeName.newInstance(cat_id, true);
         saveType.show(getSupportFragmentManager(), "saveType");
     }
 

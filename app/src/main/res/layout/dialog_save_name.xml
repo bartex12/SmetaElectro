@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:text="Вид работы" />
+        android:text="Название" />
 
     <EditText
         android:id="@+id/etSaveNameWork"
@@ -33,7 +33,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:text="Тип работы" />
+        android:text="Тип" />
 
     <TextView
         android:id="@+id/tvTypeName"
@@ -42,7 +42,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:text="Название типа работы"
+        android:text="Название типа "
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
@@ -65,7 +65,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:text="Категория работы" />
+        android:text="Категория" />
 
     <TextView
         android:id="@+id/tvCatName"
@@ -74,7 +74,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
-        android:text="Название категории работы"
+        android:text="Название категории"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
