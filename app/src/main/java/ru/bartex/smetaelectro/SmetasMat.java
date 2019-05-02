@@ -45,6 +45,7 @@ public class SmetasMat extends AppCompatActivity implements
     long type_id;
     long cat_id;
     SmetaOpenHelper mSmetaOpenHelper;
+    Menu menu;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -86,7 +87,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
-                // обновляем соседнюю вкладку типов материалов и показываем её
+                // обновляем адаптер
                 updateAdapter(0);
                 break;
 
@@ -97,7 +98,7 @@ public class SmetasMat extends AppCompatActivity implements
                 long newTypeWorkNameId = mSmetaOpenHelper.insertTypeMatName(typeName, type_category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
-                // обновляем соседнюю вкладку типов материалов и показываем её
+                // обновляем адаптер
                 updateAdapter(1);
                 break;
 
@@ -109,7 +110,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
 
-                // обновляем соседнюю вкладку типов материалов и показываем её
+                // обновляем адаптер
                 updateAdapter(2);
                 break;
         }
@@ -194,6 +195,7 @@ public class SmetasMat extends AppCompatActivity implements
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        this.menu =menu;
         Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu(((((((( ///");
         ActionBar acBar = getSupportActionBar();
         int position = mViewPager.getCurrentItem();
@@ -236,7 +238,7 @@ public class SmetasMat extends AppCompatActivity implements
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 1");
                     if (isSelectedCat){
                         DialogFragment saveType = DialogSaveTypeName.newInstance(cat_id, false);
-                        saveType.show(getSupportFragmentManager(), "saveType");
+                        saveType.show(getSupportFragmentManager(), "saveTypeName");
                     }
                     break;
                 case 2:
@@ -245,7 +247,7 @@ public class SmetasMat extends AppCompatActivity implements
                     Log.d(TAG, " SmetasMat  onOptionsItemSelected case 2 cat_id = " + cat_id +
                             "  type_id = " + type_id);
                     DialogFragment saveMat = DialogSaveWorkName.newInstance(cat_id, type_id, false);
-                    saveMat.show(getSupportFragmentManager(), "SaveWorkName");
+                    saveMat.show(getSupportFragmentManager(), "SaveMatName");
                     break;
             }
             return true;
@@ -466,8 +468,11 @@ public class SmetasMat extends AppCompatActivity implements
                                 //это проверили в onCreateContextMenu
                                 mSmetaOpenHelper.deleteTypeMat(type_mat_id);
 
+                                //после удаления в типемматериалов не даём появиться + в тулбаре
+                                isSelectedCat = false;
+
                                 // обновляем соседнюю вкладку типов материалов и показываем её
-                                updateAdapter(1);
+                                updateAdapter(0);
                                 break;
 
                             case 2:
@@ -482,8 +487,11 @@ public class SmetasMat extends AppCompatActivity implements
                                 //это проверили в onCreateContextMenu
                                 mSmetaOpenHelper.deleteMat(mat_id);
 
+                                //после удаления в материалах не даём появиться + в тулбаре
+                                isSelectedType = false;
+
                                 // обновляем соседнюю вкладку типов материалов и показываем её
-                                updateAdapter(2);
+                                updateAdapter(1);
                                 break;
                         }
                     }

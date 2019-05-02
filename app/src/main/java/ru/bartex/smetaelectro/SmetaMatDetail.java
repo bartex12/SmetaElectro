@@ -63,7 +63,6 @@ public class SmetaMatDetail extends AppCompatActivity {
         }else {
             countMat = 0;
         }
-
         Log.d(TAG, "SmetaMatDetail - onCreate  file_id = " + file_id +
                 "  cat_mat_id = " + cat_mat_id + "  type_id = " + type_mat_id +
                 "  mat_id = " + mat_id + "  isMat = " + isMat);
@@ -77,15 +76,14 @@ public class SmetaMatDetail extends AppCompatActivity {
         //mSmetaOpenHelper.displayTableCost();
 
         //выводим цену работы
-        mTextViewCost = findViewById(R.id.edittext_cost_cost);
-        costMat = mSmetaOpenHelper.geMatkCostById(mat_id);
+        mTextViewCost = findViewById(R.id.etCost);
+        costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
         mTextViewCost.setText(Float.toString(costMat));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
             Log.d(TAG, "SmetaMatDetail.(mTextViewCost.getText().toString()).equals \"0.0\"");
-
             //если для mat_id в таблице расценок ничего нет (цена =0), то вызываем диалог
             FragmentManager fragmentManager = getSupportFragmentManager();
-            DialogFragment dialogFragment = new SmetaDetail.CostDialogFragment();
+            DialogFragment dialogFragment = new CostMatDialogFragment();
             dialogFragment.show(fragmentManager,"Save_Cost_mat");
         }
 
@@ -137,21 +135,23 @@ public class SmetaMatDetail extends AppCompatActivity {
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }else {
                     if (isMat){
-                        //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
-                        //но сначала нужно посмотреть, не изменилась ли расценка, поэтому cost входит
+                        //Если такой материал уже есть в смете, то не вставлять, а обновлять строку
+                        //но сначала нужно посмотреть, не изменилась ли расценка и единица измерения,
+                        // поэтому cost и unit входит
                         mSmetaOpenHelper.updateRowInFM_Count_Summa(
-                                file_id, mat_id, costMat, countMat, countMat*costMat);
+                                file_id, mat_id, costMat, unit, countMat, countMat*costMat);
                         finish();
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
                             Log.d(TAG, "SmetaMatDetail.if ((mTextViewCost.getText().toString()).eq..\"0.0\".");
                             FragmentManager fragmentManager = getSupportFragmentManager();
-                            DialogFragment dialogFragment = new SmetaMatDetail.CostMatDialogFragment();
+                            DialogFragment dialogFragment = new CostMatDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost_mat");
                         }else{
                             long FM_ID = mSmetaOpenHelper.insertRowInFM_Name(file_id, mat_id,
                                     type_mat_id, cat_mat_id, costMat, countMat, unit, countMat*costMat);
-                            Log.d(TAG, "SmetaMatDetail-mButtonSave-onClick FM_ID = " + FM_ID);
+                            Log.d(TAG, "SmetaMatDetail-mButtonSave-onClick FM_ID = " + FM_ID +
+                                    " unit = " + unit);
                             //выводим таблицу FM в лог для проверки
                             mSmetaOpenHelper.displayFM();
                             finish();
@@ -171,25 +171,43 @@ public class SmetaMatDetail extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "SmetaMatDetail.onActivityResult...  resultCode = "+ resultCode +
+                "  requestCode = " + requestCode);
+        if (resultCode == RESULT_OK) {
+            Log.d(TAG, "SmetaDetail.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
+            //long matId = data.getExtras().getLong(P.ID_MAT);
+            costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
+            mTextViewCost.setText(Float.toString(costMat));
+
+            mTextViewSumma.setText(String.valueOf(countMat*costMat));
+
+            unit = mSmetaOpenHelper.getCostMatUnitById(mat_id);
+            mTextViewUnit.setText(unit);
+        }
+    }
+
     public static class CostMatDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Log.d(TAG, "SmetaDetail.CostDialogFragment...");
+            Log.d(TAG, "SmetaMatDetail.CostMatDialogFragment...");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.CostZero);
             builder.setPositiveButton(R.string.CostOk, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(getActivity(), CostDetail.class);
+                    Intent intent = new Intent(getActivity(), CostMatDetail.class);
                     intent.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
                     intent.putExtra(P.ID_TYPE_MAT, type_mat_id);
                     intent.putExtra(P.ID_MAT, mat_id);
-                    //intent.putExtra(CostMatDetail.REQUEST_CODE, request_code_add_cost_mat);
-                    startActivityForResult(intent, P.REQUEST_COST);
+                    intent.putExtra(CostMatDetail.REQUEST_CODE, request_code_add_cost_mat);
+                    startActivityForResult(intent, P.REQUEST_COST_MAT);
                 }
             });
             return builder.create();
         }
-
     }
 }

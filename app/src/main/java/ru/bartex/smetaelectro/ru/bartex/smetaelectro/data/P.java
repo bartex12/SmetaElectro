@@ -1,6 +1,9 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
 
+import android.app.AlertDialog;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -35,10 +38,7 @@ public class P {
     public static final String ID_TYPE = "ID типа работ";
     //id выбранной работы
     public static final String ID_WORK = "ID выбранной работы";
-    //есть ли в смете такой пункт с работой
-    public static final String IS_WORK = "Есть такой пункт?";
-    //диалог вызван из работы?
-    public static final String IS_WORK_DIALOG = "Диалог вызван из работы?";
+
 
 
     //id категории материалов
@@ -47,8 +47,20 @@ public class P {
     public static final String ID_TYPE_MAT = "ID_TYPE_MAT";
     //ID выбранного  материала
     public static final String ID_MAT = "ID выбранного  материала";
+    //ID цены выбранного  материала
+    public static final String ID_COST = "ID цены выбранного  материала";
+
+
     //есть ли в смете такой пункт материала
     public static final String IS_MAT = "Есть такой пункт материала?";
+    //есть ли в смете такая категория материала
+    public static final String IS_CAT_MAT = "Есть такая категория материала?";
+    //есть ли в смете такой тип материала
+    public static final String IS_TYPE_MAT = "Есть такой тип материала?";
+    //есть ли в смете такой пункт с работой
+    public static final String IS_WORK = "Есть такой пункт?";
+    //диалог вызван из работы?
+    public static final String IS_WORK_DIALOG = "Диалог вызван из работы?";
 
     // номер выбранной работы
     public static final String WORK_NUMBER = "Номер выбранной работы";
@@ -97,6 +109,9 @@ public class P {
     //Ключ чекбокса  типа работ
     public static final String ATTR_TYPE_MARK = "ATTR_TYPE_MARK";
 
+
+    //Ключ имени категории материалов
+    public static final String ATTR_CAT_MAT_NAME = "ATTR_CAT_MAT_NAME";
     //Ключ имени типа материалов
     public static final String ATTR_TYPE_MAT_NAME = "ATTR_TYPE_MAT_NAME";
     //Ключ чекбокса  типа материалов
@@ -127,7 +142,8 @@ public class P {
     public static final int CANCEL_MAT = 7;
     // для SmetaDetail риквест код
     public static final int REQUEST_COST = 8;
-
+    // для SmetaMatDetail риквест код
+    public static final int REQUEST_COST_MAT = 9;
 
 
     public static String setDateTimeString() {
@@ -149,7 +165,6 @@ public class P {
         }
         return totalSumma;
     }
-
 
 
 }

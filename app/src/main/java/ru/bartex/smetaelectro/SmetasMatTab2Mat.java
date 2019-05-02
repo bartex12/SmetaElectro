@@ -95,7 +95,7 @@ public class SmetasMatTab2Mat extends Fragment {
                 Log.d(TAG, "SmetasMatTab2Mat - onItemClick  mat_id = " + mat_id +
                         "  mat_name = " + mat_name);
                 // проверяем есть ли такой  материал в FM для файла с file_id
-                final boolean isMat = mSmetaOpenHelper.isWorkInFM(file_id, mat_id);
+                final boolean isMat = mSmetaOpenHelper.isMatInFM(file_id, mat_id);
                 Log.d(TAG, "SmetasMatTab2Mat - onItemClick  isMat = " + isMat);
 
                 //ищем id категории материалов, зная id типа
@@ -127,7 +127,7 @@ public class SmetasMatTab2Mat extends Fragment {
         Cursor cursor;
         if (isSelectedType){
             Log.d(TAG, "SmetasMatTab2Mat updateAdapter isSelectedType = true " );
-            //Курсор с именами  всех материалов из таблицы Mat
+            //Курсор с именами   материалов из таблицы Mat для type_id
             cursor = mSmetaOpenHelper.getMatNamesOneType(type_id);
         }else {
             Log.d(TAG, "SmetasMatTab2Mat updateAdapter isSelectedType = false " );

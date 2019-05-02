@@ -129,7 +129,7 @@ public class SmetasTab2Materialy extends Fragment {
         data = new ArrayList<Map<String, Object>>(mat_name.length);
 
         for (int i = 0; i < mat_name.length; i++) {
-            Log.d(TAG, "SmetasTab1Rabota - updateAdapter  mat_name = " + mat_name[i]);
+            Log.d(TAG, "SmetasTab2Materialy - updateAdapter  mat_name = " + mat_name[i]);
 
             m = new HashMap<>();
             m.put(P.MAT_NUMBER, (i + 1));
@@ -138,6 +138,8 @@ public class SmetasTab2Materialy extends Fragment {
             m.put(P.MAT_AMOUNT, mat_amount[i]);
             m.put(P.MAT_UNITS, mat_units[i]);
             m.put(P.MAT_SUMMA, mat_summa[i]);
+            Log.d(TAG, "SmetasTab2Materialy - updateAdapter  i+1 = "
+                    + (i+1) + " mat_units[i] = " + mat_units[i] );
             data.add(m);
         }
 

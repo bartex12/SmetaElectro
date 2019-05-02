@@ -32,13 +32,19 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItemMat"
+                android:id="@+id/tabItemMatCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_1_mat" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItem1MatCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_2_mat" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2Mat"
+                android:id="@+id/tabItem2MatCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_3_mat"/>

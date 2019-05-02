@@ -19,22 +19,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SmetasMatTab1Type extends Fragment {
+public class SmetasMatTab0Cat extends Fragment {
 
     public static final String TAG = "33333";
     long file_id;
     int position;
-    boolean isSelectedCat;
-    long cat_id;
 
     ListView mListView;
     SmetaOpenHelper mSmetaOpenHelper;
@@ -42,23 +39,21 @@ public class SmetasMatTab1Type extends Fragment {
     HashMap<String, Object> m;
     SimpleAdapter sara;
 
-    public SmetasMatTab1Type() {
+
+    public SmetasMatTab0Cat() {
         // Required empty public constructor
     }
 
-    public interface OnClickTypeMatListener{
-        void typeAndClickTransmit(long type_mat_id, boolean isSelectedType);
+    public interface OnClickCatCostMatListener{
+        void catAndClickTransmit(long cat_cost_mat_id, boolean isSelectedCatCost);
     }
-    OnClickTypeMatListener onClickTypeMatListener;
+    SmetasMatTab0Cat.OnClickCatCostMatListener onClickCatCostMatListener;
 
-    public static SmetasMatTab1Type NewInstance( long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SmetasMatTab1Type NewInstance // " );
-        SmetasMatTab1Type fragment = new SmetasMatTab1Type();
+    public static SmetasMatTab0Cat NewInstance(long file_id, int position){
+        SmetasMatTab0Cat fragment = new SmetasMatTab0Cat();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
-        args.putBoolean(P.IS_SELECTED_CAT, isSelectedCat);
-        args.putLong(P.ID_CATEGORY_MAT, cat_id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,16 +63,15 @@ public class SmetasMatTab1Type extends Fragment {
         super.onCreate(savedInstanceState);
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
-        isSelectedCat = getArguments().getBoolean(P.IS_SELECTED_CAT);
-        cat_id = getArguments().getLong(P.ID_CATEGORY_MAT);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mSmetaOpenHelper = new SmetaOpenHelper(context);
-        onClickTypeMatListener = (OnClickTypeMatListener)context;
+        onClickCatCostMatListener = (SmetasMatTab0Cat.OnClickCatCostMatListener)context;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,14 +83,14 @@ public class SmetasMatTab1Type extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "//  SmetasMatTab1Type onItemClick // " );
+                Log.d(TAG, "//  SmetasMatTab0Cat onItemClick // " );
                 TextView tv_smeta_item = view.findViewById(R.id.base_text);
                 String smeta_item_name = tv_smeta_item.getText().toString();
 
-                long type_id = mSmetaOpenHelper.getIdFromMatTypeName(smeta_item_name);
-                Log.d(TAG, "SmetasMatTab1Type onItemClick  type_id = " + type_id);
+                long cat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(smeta_item_name);
+                Log.d(TAG, "SmetasMatTab0Cat onItemClick  cat_id = " + cat_id);
 
-                onClickTypeMatListener.typeAndClickTransmit(type_id, true);
+                onClickCatCostMatListener.catAndClickTransmit(cat_id, true);
             }
         });
         return view;
@@ -110,30 +104,22 @@ public class SmetasMatTab1Type extends Fragment {
     }
 
     public void updateAdapter(){
-        Log.d(TAG, "//  SmetasMatTab1Type updateAdapter // " );
-        Cursor cursor;
-        if (isSelectedCat){
-            Log.d(TAG, "SmetasMatTab1Type updateAdapter isSelectedCat = true " );
-            //Курсор  с названиями типов материалов для cat_id
-            cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
-        }else{
-            Log.d(TAG, "SmetasMatTab1Type updateAdapter isSelectedCat = false " );
-            //получаем курсор с названиями типов материалов по всем категориям
-            cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
-        }
+        //Курсор с именами категорий материалов
+        Cursor cursor = mSmetaOpenHelper.getMatCategoryNames();
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            Log.d(TAG, "SmetasMatTab1Type - updateAdapter  name_type = " + name_type);
+            String name_cat_cost = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
+            Log.d(TAG, "SmetasMatTab0Cat - updateAdapter  name_cat_cost = " + name_cat_cost);
             m = new HashMap<>();
-            m.put(P.ATTR_TYPE_NAME,name_type);
+            m.put(P.ATTR_CAT_MAT_NAME,name_cat_cost);
             data.add(m);
         }
-        String[] from = new String[]{P.ATTR_TYPE_NAME};
+        String[] from = new String[]{P.ATTR_CAT_MAT_NAME};
         int[] to = new int[]{R.id.base_text};
         sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
         mListView.setAdapter(sara);
     }
+
 }

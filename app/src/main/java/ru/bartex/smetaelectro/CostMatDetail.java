@@ -20,8 +20,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 public class CostMatDetail extends AppCompatActivity {
     public static final String TAG = "33333";
 
-    TextView mTextViewWorkName;
-    EditText mTextViewCost;
+    TextView mTextViewMatName;
+    EditText mTextViewCostMat;
     Button mButtonSave;
     Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
@@ -31,7 +31,7 @@ public class CostMatDetail extends AppCompatActivity {
     int requestCode;
     float cost; //цена работы
 
-    public static final String REQUEST_CODE = "request_codeCostDetail";
+    public static final String REQUEST_CODE = "request_codeCostMatDetail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +47,24 @@ public class CostMatDetail extends AppCompatActivity {
                 cat_id + "  type_id = " + type_id + "  mat_id = " + mat_id);
 
         //выводим название материала
-        mTextViewWorkName = findViewById(R.id.tv_cost_workName);
+        mTextViewMatName = findViewById(R.id.tv_cost_workName);
         String matName = mSmetaOpenHelper.getMatNameById(mat_id);
-        mTextViewWorkName.setText(matName);
+        mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork
         //mSmetaOpenHelper.displayTableCost();
 
-        //выводим стоимость работы
-        mTextViewCost = findViewById(R.id.edittext_cost_cost);
+        //выводим стоимость материала
+        mTextViewCostMat = findViewById(R.id.etCost);
         cost = mSmetaOpenHelper.getCostMatById(mat_id);
         if (cost == 0){
-            //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost
+            //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateMatCost
             // при нажатии кнопки Сохранить
             mSmetaOpenHelper.insertCostMatZero(mat_id);
         }
-        mTextViewCost.setText(Float.toString(cost));
-        mTextViewCost.requestFocus();
-        mTextViewCost.selectAll();
+        mTextViewCostMat.setText(Float.toString(cost));
+        mTextViewCostMat.requestFocus();
+        mTextViewCostMat.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
         String[] uninsMat = mSmetaOpenHelper.getArrayUnitsMatNames();
@@ -105,7 +105,7 @@ public class CostMatDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String costOfMat =  mTextViewCost.getText().toString();
+                String costOfMat =  mTextViewCostMat.getText().toString();
                 if ((costOfMat.equals(""))||(costOfMat.equals("."))){
                     costOfMat = "0";
                 }
@@ -124,19 +124,24 @@ public class CostMatDetail extends AppCompatActivity {
                     Log.d(TAG, "CostMatDetail-mButtonSave.setOnClickListener mat_id = " +
                             mat_id + " cost = " + cost + " unit = " + unit + " unit_mat_id = " + unit_mat_id);
 
-                    //обновляем стоимость работы с единицами измерения
-                    mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
-
                     Bundle extras = getIntent().getExtras();
-                    if(extras != null) {
+
                         requestCode = extras.getInt(REQUEST_CODE);
-                        //если пришло из изменить запись
-                        if (requestCode == 111) {
-                            Log.d(TAG, "CostMatDetail-mButtonSave requestCode =  " + requestCode);
+                        //если пришло из SmetaMatDetail
+                        if (requestCode == 222) {
+                            //добавляем стоимость cost работы с mat_id  с единицами измерения unit_mat_id
+                            //long costId = mSmetaOpenHelper.insertCostMat(mat_id,cost,unit_mat_id);
+                            mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
                             Intent intent = new Intent();
+                            intent.putExtra(P.ID_MAT,mat_id);
                             setResult(RESULT_OK, intent);
+                            Log.d(TAG, "CostMatDetail-mButtonSave requestCode =  " + requestCode +
+                                    "  RESULT_OK = " + RESULT_OK );
+                        }else {
+                            mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
                         }
-                    }
+
+
                     finish();
                 }
             }
@@ -155,7 +160,7 @@ public class CostMatDetail extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "CostMatDetail-onDestroy..." );
-        String costOfMat =  mTextViewCost.getText().toString();
+        String costOfMat =  mTextViewCostMat.getText().toString();
         if ((costOfMat.equals(""))||(costOfMat.equals("."))){
             costOfMat = "0";
         }

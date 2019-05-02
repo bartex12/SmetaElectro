@@ -465,8 +465,11 @@ public class SmetasWork extends AppCompatActivity implements
                                         " type_name = " + type_name + " type_id =" + type_id);
                                 //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
                                 mSmetaOpenHelper.deleteType(type_id);
+
+                                //после удаления в типе работ не даём появиться + в тулбаре
+                                isSelectedCat = false;
                                 // обновляем соседнюю вкладку типов работы и показываем её
-                                updateAdapter(1);
+                                updateAdapter(0);
                                 break;
 
                             case 2:
@@ -484,7 +487,10 @@ public class SmetasWork extends AppCompatActivity implements
                                 // проверка в onCreateContextMenu
                                 mSmetaOpenHelper.deleteCostOfWork(work_id);
                                 // обновляем соседнюю вкладку работы и показываем её
-                                updateAdapter(2);
+
+                                //после удаления в работах не даём появиться + в тулбаре
+                                isSelectedType = false;
+                                updateAdapter(1);
                                 break;
                         }
                     }

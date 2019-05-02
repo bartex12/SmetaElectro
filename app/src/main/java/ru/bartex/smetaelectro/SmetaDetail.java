@@ -10,14 +10,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -77,7 +75,7 @@ public class SmetaDetail extends AppCompatActivity {
         //mSmetaOpenHelper.displayTableCost();
 
         //выводим цену работы
-        mTextViewCost = findViewById(R.id.edittext_cost_cost);
+        mTextViewCost = findViewById(R.id.etCost);
         cost = mSmetaOpenHelper.getWorkCostById(work_id);
         mTextViewCost.setText(Float.toString(cost));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
@@ -139,8 +137,9 @@ public class SmetaDetail extends AppCompatActivity {
                 }else {
                     if (isWork){
                         //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
-                        //но сначала нужно посмотреть, не изменилась ли расценка, поэтому cost входит
-                        mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, cost, count, count*cost);
+                        //но сначала нужно посмотреть, не изменилась ли расценка и единица измерения,
+                        // поэтому cost и unit входит
+                        mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, cost,unit, count, count*cost);
                         finish();
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
@@ -182,6 +181,8 @@ public class SmetaDetail extends AppCompatActivity {
                 Log.d(TAG, "SmetaDetail.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
                 cost = mSmetaOpenHelper.getWorkCostById(work_id);
                 mTextViewCost.setText(Float.toString(cost));
+                unit = mSmetaOpenHelper.getCostUnitById(work_id);
+                mTextViewUnit.setText(unit);
                 mTextViewSumma.setText(String.valueOf(count*cost));
         }
     }

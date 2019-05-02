@@ -15,10 +15,10 @@
         android:layout_marginRight="32dp"
         android:text="Руб"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edittext_cost_cost"
+        app:layout_constraintBaseline_toBaselineOf="@+id/etCost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/edittext_cost_cost" />
+        app:layout_constraintStart_toEndOf="@+id/etCost" />
 
     <Button
         android:id="@+id/button_cost_cancel"
@@ -78,13 +78,13 @@
         android:layout_marginLeft="16dp"
         android:text="Цена"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edittext_cost_cost"
-        app:layout_constraintEnd_toStartOf="@+id/edittext_cost_cost"
+        app:layout_constraintBaseline_toBaselineOf="@+id/etCost"
+        app:layout_constraintEnd_toStartOf="@+id/etCost"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edittext_cost_cost"
+        android:id="@+id/etCost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -124,6 +124,6 @@
         android:text="Единицы измерения"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_cost_cost" />
+        app:layout_constraintTop_toBottomOf="@+id/etCost" />
 
 </android.support.constraint.ConstraintLayout>

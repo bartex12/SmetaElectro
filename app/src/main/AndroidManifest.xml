@@ -39,6 +39,7 @@
         <activity
             android:name=".SmetasMatCost"
             android:label="@string/title_activity_smetas_mat_cost"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SmetaMatDetail"

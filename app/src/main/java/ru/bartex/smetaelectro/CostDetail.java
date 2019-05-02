@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -59,7 +58,7 @@ public class CostDetail extends AppCompatActivity {
         //mSmetaOpenHelper.displayTableCost();
 
         //выводим стоимость работы
-        mTextViewCost = findViewById(R.id.edittext_cost_cost);
+        mTextViewCost = findViewById(R.id.etCost);
         cost = mSmetaOpenHelper.getWorkCostById(work_id);
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost

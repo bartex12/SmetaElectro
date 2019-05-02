@@ -1275,7 +1275,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "getCostUnitById cursor.getCount() = " + cursor.getCount());
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс  столбца
             int idColumnIndex = cursor.getColumnIndex(Unit.UNIT_NAME);
@@ -1283,9 +1283,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             unitName = cursor.getString(idColumnIndex);
             Log.d(TAG, "getCostUnitById unitName = " + unitName);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return unitName;
     }
 
@@ -1365,13 +1363,14 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
      * обновляем количество и сумму в таблице FW
      */
     public void updateRowInFW_Count_Summa(
-            long file_id, long work_id, float cost_work, float count, float summa){
+            long file_id, long work_id, float cost_work, String unit_work, float count, float summa){
 
         Log.i(TAG, "SmetaOpenHelper.updateRowInFW_Count_Summa ... ");
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(FW.FW_COST, cost_work);
+        updatedValues.put(FW.FW_UNIT, unit_work);
         updatedValues.put(FW.FW_COUNT, count);
         updatedValues.put(FW.FW_SUMMA, summa);
         db.update(FW.TABLE_NAME, updatedValues,
@@ -1992,9 +1991,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             mat_units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
             Log.i(TAG, "SmetaOpenHelper.getUnitsOfMat mat_units[position] = " + mat_units[position]);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return mat_units;
     }
 
@@ -2767,7 +2764,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return currentID;
     }
 
-    //получаем ID по имени типа материалов
+    //получаем ID типа материалов по имени типа материалов
     public long getIdFromMatTypeName(String matTypeName) {
         Log.d(TAG, "getIdFromMatTypeName ...");
         long currentID;
@@ -2795,7 +2792,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return currentID;
     }
-
 
     //получаем ID категории по имени типа материалов
     public long getCatIdFromTypeMat(long type_id) {
@@ -2893,14 +2889,14 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean isWorkInFM(long file_id, long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.isWorkInFM ... ");
+    public boolean isMatInFM(long file_id, long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.isMatInFM ... ");
 
         String select = " SELECT " + FM.FM_MAT_NAME + " FROM " + FM.TABLE_NAME +
                 " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
-        Log.i(TAG, "SmetaOpenHelper.isWorkInFM cursor.getCount() = " + cursor.getCount());
+        Log.i(TAG, "SmetaOpenHelper.isMatInFM cursor.getCount() = " + cursor.getCount());
         if (cursor.getCount() != 0) {
             return true;
         }
@@ -2941,12 +2937,12 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             // Используем индекс для получения строки или числа
             currentWorkName = cursor.getString(idColumnIndex);
         }
-        Log.d(TAG, "getMatNameById currentWorkName = " + currentWorkName);
+        Log.d(TAG, "getMatNameById currentName = " + currentWorkName);
             cursor.close();
         return currentWorkName;
     }
     //получаем стоимость материала по его id
-    public float geMatkCostById(long mat_id){
+    public float getMatkCostById(long mat_id){
         Log.i(TAG, "SmetaOpenHelper.geMatkCostById ... ");
         float costOfWork = 0;
         String cost = " SELECT " + CostMat.COST_MAT_COST +
@@ -2956,7 +2952,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(mat_id)});
         Log.d(TAG, "geMatkCostById cursor.getCount() = " + cursor.getCount());
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
@@ -3000,20 +2996,22 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
      * обновляем количество и сумму в таблице FM
      */
     public void updateRowInFM_Count_Summa(
-            long file_id, long mat_id, float cost_mat, float countMat, float summaMat){
+            long file_id, long mat_id, float cost_mat, String cost_unit, float countMat, float summaMat){
 
         Log.i(TAG, "SmetaOpenHelper.updateRowInFM_Count_Summa ... ");
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(FM.FM_MAT_COST, cost_mat);
+        updatedValues.put(FM.FM_MAT_UNIT, cost_unit);
         updatedValues.put(FM.FM_MAT_COUNT, countMat);
         updatedValues.put(FM.FM_MAT_SUMMA, summaMat);
+
         db.update(FM.TABLE_NAME, updatedValues,
                 FM.FM_FILE_ID + " =? " +" AND " + FM.FM_MAT_ID + " =? ",
                 new String[]{String.valueOf(file_id), String.valueOf(mat_id)});
         Log.i(TAG, "SmetaOpenHelper.updateRowInFM_Count_Summa - cost_mat =" +
-                cost_mat + "  summa = " + summaMat);
+                cost_mat + "  summa = " + summaMat + " ");
     }
     /**
      * Вставляет строку в таблицу FW
@@ -3269,7 +3267,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         int countLine = db.update(CostMat.TABLE_NAME, updatedValues,
                 CostMat.COST_MAT_ID + "=" + mat_Id, null);
-        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - costMat =" + costMat + "  countLine = " + countLine);
+        Log.i(TAG, "SmetaOpenHelper.updateMatkCost - costMat =" + costMat + "  countLine = " + countLine);
     }
 
     //удаляем цену материала (если в таблице FM нет записей с mat_Id - это проверяется в другом месте)
@@ -3615,6 +3613,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "MyDatabaseHelper.insertTypeMatName  TypeMat._ID = " + ID);
         return ID;
     }
+
     //Добавляем тип материала
     public long  insertTypeWorkName(String typeMatName, long type_mat_category_Id){
         Log.i(TAG, "SmetaOpenHelper.insertTypeWorkName ... ");
@@ -3628,6 +3627,23 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         // закрываем соединение с базой
         db.close();
         Log.d(TAG, "MyDatabaseHelper.insertTypeWorkName  TypeMat._ID = " + ID);
+        return ID;
+    }
+
+   //Добавляем тип материала
+    public long  insertCostMat( long matID, float cost, long unit_mat_id){
+        Log.i(TAG, "SmetaOpenHelper.insertCostMat ... ");
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CostMat.COST_MAT_ID,matID);
+        cv.put(CostMat.COST_MAT_COST,cost);
+        cv.put(CostMat.COST_MAT_UNIT_ID,unit_mat_id);
+        // вставляем строку
+        long ID = db.insert(CostMat.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertCostMat  CostMat._ID = " + ID);
         return ID;
     }
 

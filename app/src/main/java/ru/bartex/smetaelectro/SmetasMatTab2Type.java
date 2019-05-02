@@ -115,11 +115,11 @@ public class SmetasMatTab2Type extends Fragment {
         Cursor cursor;
         if (isSelectedCat){
             Log.d(TAG, "SmetasMatTab2Type updateAdapter isSelectedCat = true " );
-            //Курсор с именами  всех материалов из таблицы Mat
+            //Курсор  с названиями типов материалов для cat_id
             cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
         }else {
             Log.d(TAG, "SmetasMatTab2Type updateAdapter isSelectedCat = false " );
-            //получаем курсор с названиями типов работ по всем категориям
+            //получаем курсор с названиями типов материалов по всем категориям
             cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
         }
         //Строковый массив с именами типов материалов из таблицы FM для файла с file_id

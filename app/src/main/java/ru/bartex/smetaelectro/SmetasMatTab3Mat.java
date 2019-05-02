@@ -100,16 +100,18 @@ public class SmetasMatTab3Mat extends Fragment {
                 String mat_name = tv.getText().toString();
 
                 //находим id материала по имени материала
-                final long mat_id = mSmetaOpenHelper.getIdFromCategoryName(mat_name);
-                Log.d(TAG, "SmetasMatTab3Mat - onItemClick  mat_id = " + mat_id +
+                final long mat_id = mSmetaOpenHelper.getIdFromMatName(mat_name);
+                Log.d(TAG, "SmetasMatTab3Mat - listView.onItemClick  mat_id = " + mat_id +
                         "  mat_name = " + mat_name);
                 // проверяем есть ли такой  материал в FM для файла с file_id
-                final boolean isMat = mSmetaOpenHelper.isWorkInFM(file_id, mat_id);
+                final boolean isMat = mSmetaOpenHelper.isMatInFM(file_id, mat_id);
                 Log.d(TAG, "SmetasMatTab3Mat - onItemClick  isMat = " + isMat);
-
+                Log.d(TAG, "SmetasMatTab3Mat - onItemClick  type_id = " + type_id);
                 //ищем id категории материалов, зная id типа
                 long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
-
+                Log.d(TAG, "SmetasMatTab3Mat - listView.onItemClick  file_id = " + file_id +
+                        "  cat_id = " + cat_id + "  type_id = " + type_id +
+                        "  mat_id = " + mat_id + "  isMat = " + isMat);
                 Intent intent = new Intent(getActivity(), SmetaMatDetail.class);
                 intent.putExtra(P.ID_FILE, file_id);
                 intent.putExtra(P.ID_CATEGORY_MAT, cat_id);
@@ -130,20 +132,6 @@ public class SmetasMatTab3Mat extends Fragment {
 
         //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
         registerForContextMenu(listView);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        // получаем инфу о пункте списка
-        final AdapterView.AdapterContextMenuInfo acmi =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        int id = item.getItemId();
-        Log.d(TAG, "SmetasMatTab3Mat onContextItemSelected id = " + id +
-                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
-
-        return super.onContextItemSelected(item);
     }
 
     public void updateAdapter(){
