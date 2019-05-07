@@ -42,7 +42,7 @@ public class DialogWorkOrMatCosts extends DialogFragment {
                 //getDialog().dismiss();  //закрывает только диалог
                 //Intent intent_costs = new Intent(SmetasMat.this, CostCategory.class);
                 // startActivity(intent_costs);
-                Intent intent = new Intent(getActivity(), CostCategory.class);
+                Intent intent = new Intent(getActivity(), SmetasWorkCost.class);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
             }

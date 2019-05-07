@@ -123,7 +123,7 @@ public class DialogSaveTypeName extends DialogSaveName {
                 }else {
                     Log.d(TAG, "Такое название отсутствует typeId = " + typeId);
 
-                    //Вызываем метод интерфейса, передаём название категории в SmetaCategoryElectro
+                    //Вызываем метод интерфейса, передаём название категории в SmetasWorkCost
                     workCategoryTypeNameListener.workCategoryTypeNameTransmit(null,nameType, catName);
 
                     fiishDialog();

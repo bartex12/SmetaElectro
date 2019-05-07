@@ -37,6 +37,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 public class SmetasWork extends AppCompatActivity implements
         SmetasWorkTab2Type.OnClickTypeWorkListener, SmetasWorkTab1Category.OnClickTCategoryWorkListener,
         DialogSaveName.WorkCategoryTypeNameListener {
+
     public static final String TAG = "33333";
     long file_id;
     boolean isSelectedType = false;
@@ -571,7 +572,7 @@ public class SmetasWork extends AppCompatActivity implements
                     startActivity(intent);
                     return true;
                 case R.id.navigation_costs_smetas_mat:
-                    Intent intentCostMat = new Intent(SmetasWork.this, CostCategory.class);
+                    Intent intentCostMat = new Intent(SmetasWork.this, SmetasWorkCost.class);
                     intentCostMat.putExtra(P.ID_FILE, file_id);
                     startActivity(intentCostMat);
                     return true;

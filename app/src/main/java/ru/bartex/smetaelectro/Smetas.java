@@ -26,6 +26,7 @@ public class Smetas extends AppCompatActivity {
     public static final String TAG = "33333";
 
     long file_id;
+    int pos;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
@@ -90,6 +91,21 @@ public class Smetas extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "//  Smetas onSaveInstanceState // " );
+        outState.putLong("file_id", file_id);
+        outState.putInt("pos", pos);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        file_id = savedInstanceState.getLong("file_id");
+        pos = savedInstanceState.getInt("pos");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_smetas, menu);
@@ -128,10 +144,12 @@ public class Smetas extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id,position);
+                    pos = position;
+                    SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id, pos);
                     return tab1Rabota;
                 case 1:
-                    SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id,position);
+                    pos = position;
+                    SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id, pos);
                     return tab2Materialy;
                 default:
                     return null;
@@ -169,7 +187,8 @@ public class Smetas extends AppCompatActivity {
                     switch (curItem){
                         case 0:
                             Intent intent_costs_work = new Intent(
-                                    Smetas.this, CostCategory.class);
+                                    Smetas.this, SmetasWorkCost.class);
+                            intent_costs_work.putExtra(P.ID_FILE, file_id);
                             startActivity(intent_costs_work);
                             return true;
 

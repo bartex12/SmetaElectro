@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 }else if (position == 2){
 
                     dialogNewOrCurrentFragment();
-                    //Intent intent = new Intent(MainActivity.this, SmetaCategoryElectro.class);
-                    //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
-                   // startActivity(intent);
 
                 }else if (position == 3){
                     dialogNewOrCurrentFragment();

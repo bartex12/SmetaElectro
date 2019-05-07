@@ -68,7 +68,7 @@ public class SmetasTab2Materialy extends Fragment {
         mSmetaOpenHelper = new SmetaOpenHelper(context);
 
         viewPager = new ViewPager(context);
-        viewPager.setCurrentItem(position);
+        //viewPager.setCurrentItem(position);
     }
 
     @Override

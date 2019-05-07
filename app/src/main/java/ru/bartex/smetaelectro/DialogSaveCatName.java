@@ -42,7 +42,7 @@ public class DialogSaveCatName extends DialogSaveName {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateDialog... ");
+        Log.d(TAG, "DialogSaveCatName onCreateDialog... ");
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
         takeOnAndOffSoftInput();
 
@@ -83,7 +83,7 @@ public class DialogSaveCatName extends DialogSaveName {
 
                 //читаем имя файла в строке ввода
                 String nameCat = etSaveNameCat.getText().toString();
-                Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
+                Log.d(TAG, "DialogSaveCatName onCreateDialog nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long catId;
