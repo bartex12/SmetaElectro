@@ -50,10 +50,10 @@ public class SmetasWork extends AppCompatActivity implements
     private ViewPager mViewPager;
 
     @Override
-    public void catAndClickTransmit(long cat_mat_id, boolean isSelectedCatMat) {
+    public void catAndClickTransmit(long cat_id, boolean isSelected) {
         Log.d(TAG, "//  SmetasWork  catAndClickTransmit  // " );
-        this.isSelectedCat = isSelectedCatMat;
-        this.cat_id = cat_mat_id;
+        this.isSelectedCat = isSelected;
+        this.cat_id = cat_id;
         Log.d(TAG, "SmetasWork  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку

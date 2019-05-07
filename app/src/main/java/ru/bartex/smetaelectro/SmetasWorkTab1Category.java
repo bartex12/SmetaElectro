@@ -40,7 +40,7 @@ public class SmetasWorkTab1Category extends Fragment {
     SimpleAdapter sara;
 
     public interface OnClickTCategoryWorkListener{
-        void catAndClickTransmit(long cat_mat_id, boolean isSelectedType);
+        void catAndClickTransmit(long cat_mat_id, boolean isSelectedCat);
     }
     SmetasWorkTab1Category.OnClickTCategoryWorkListener onClickCategoryWorktListener;
 

@@ -45,7 +45,7 @@ public class SmetasMatTab0Cat extends Fragment {
     }
 
     public interface OnClickCatCostMatListener{
-        void catAndClickTransmit(long cat_cost_mat_id, boolean isSelectedCatCost);
+        void catAndClickTransmit(long cat_id, boolean isSelectedCat);
     }
     SmetasMatTab0Cat.OnClickCatCostMatListener onClickCatCostMatListener;
 

@@ -36,7 +36,7 @@ public class SmetasMatTab1Category extends Fragment {
     SimpleAdapter sara;
 
     public interface OnClickTCategoryMatListener{
-        void catAndClickTransmit(long cat_mat_id, boolean isSelectedType);
+        void catAndClickTransmit(long cat_id, boolean isSelectedCat);
     }
     SmetasMatTab1Category.OnClickTCategoryMatListener onClickCategoryMatListener;
 

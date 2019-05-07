@@ -44,7 +44,7 @@ public class SmetasWorkCostTab1Category extends Fragment {
     SimpleAdapter sara;
 
     public interface OnClickTCategoryWorkListener{
-        void catAndClickTransmit(long cat_mat_id, boolean isSelectedType);
+        void catAndClickTransmit(long cat_mat_id, boolean isSelectedCat);
     }
     SmetasWorkCostTab1Category.OnClickTCategoryWorkListener onClickCategoryWorktListener;
 

@@ -48,10 +48,10 @@ SmetasWorkCostTab1Category.OnClickTCategoryWorkListener, SmetasWorkCostTab2Type.
     private ViewPager mViewPager;
 
     @Override
-    public void catAndClickTransmit(long cat_mat_id, boolean isSelectedCatMat) {
+    public void catAndClickTransmit(long cat_id, boolean isSelectedCat) {
         Log.d(TAG, "//  SmetasWorkCost  catAndClickTransmit  // " );
-        this.isSelectedCat = isSelectedCatMat;
-        this.cat_id = cat_mat_id;
+        this.isSelectedCat = isSelectedCat;
+        this.cat_id = cat_id;
         Log.d(TAG, "SmetasWorkCost  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку
