@@ -10,23 +10,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -35,7 +31,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasWork extends AppCompatActivity implements
-        SmetasTypeTab.OnClickTypekListener, SmetasCatTab.OnClickCatListener,
+        SmetasTabType.OnClickTypekListener, SmetasTabCat.OnClickCatListener,
         DialogSaveName.WorkCategoryTypeNameListener {
 
     public static final String TAG = "33333";
@@ -227,7 +223,7 @@ public class SmetasWork extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0");
-                    DialogFragment saveCat = DialogSaveCatName.newInstance(true);
+                    DialogFragment saveCat = DialogSaveNameCat.newInstance(true);
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 13");
                     saveCat.show(getSupportFragmentManager(),"SaveCatName");
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 14");
@@ -235,14 +231,14 @@ public class SmetasWork extends AppCompatActivity implements
                 case 1:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 1");
                     if (isSelectedCat){
-                        DialogFragment saveType = DialogSaveTypeName.newInstance(cat_id, true);
+                        DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, true);
                         saveType.show(getSupportFragmentManager(), "saveType");
                     }
                     break;
                 case 2:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 2");
 
-                    DialogFragment saveMat = DialogSaveWorkName.newInstance(cat_id, type_id, true);
+                    DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, true);
                     saveMat.show(getSupportFragmentManager(), "SaveWorkName");
                     break;
             }
@@ -344,7 +340,7 @@ public class SmetasWork extends AppCompatActivity implements
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID " +
                                 "cat_name_specific = " + cat_name_specific +  " cat_id_specific =" + cat_id_specific);
                         //отправляем интент с id категории
-                        Intent intentSpecificCat = new Intent(SmetasWork.this, CategorySpecific.class);
+                        Intent intentSpecificCat = new Intent(SmetasWork.this, SpecificCategory.class);
                         intentSpecificCat.putExtra(P.ID_CATEGORY, cat_id_specific);
                         startActivity(intentSpecificCat);
                         break;
@@ -359,7 +355,7 @@ public class SmetasWork extends AppCompatActivity implements
                         Log.d(TAG, "SmetaTypeElectro onContextItemSelected case P.SPECIFIC_ID case 1:" +
                                 "type_name_specific = " + type_name_specific +  " type_id_specific =" + type_id_specific);
                         //отправляем интент с id типа
-                        Intent intentSpecificType = new Intent(SmetasWork.this, TypeSpecific.class);
+                        Intent intentSpecificType = new Intent(SmetasWork.this, SpecificType.class);
                         intentSpecificType.putExtra(P.ID_TYPE, type_id_specific);
                         startActivity(intentSpecificType);
                         break;
@@ -374,7 +370,7 @@ public class SmetasWork extends AppCompatActivity implements
                         //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID " +
                         //        "work_name_specific = " + work_name_specific +  " work_id_specific =" + work_id_specific);
                         //отправляем интент с id типа
-                        Intent intentSpecificWork = new Intent(SmetasWork.this, WorkSpesific.class);
+                        Intent intentSpecificWork = new Intent(SmetasWork.this, SpesificWork.class);
                         intentSpecificWork.putExtra(P.ID_WORK, work_id_specific);
                         startActivity(intentSpecificWork);
                         break;
@@ -394,7 +390,7 @@ public class SmetasWork extends AppCompatActivity implements
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID   case 0" +
                                 "cat_name_chang = " + cat_name_chang + " cat_id_Change =" + cat_id_Change);
                         //отправляем интент с id категории
-                        Intent intent = new Intent(SmetasWork.this, CategoryChangeData.class);
+                        Intent intent = new Intent(SmetasWork.this, ChangeDataCategory.class);
                         intent.putExtra(P.ID_CATEGORY, cat_id_Change);
                         startActivity(intent);
                         break;
@@ -409,7 +405,7 @@ public class SmetasWork extends AppCompatActivity implements
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 1" +
                                 "type_name_chang = " + type_name_chang + " type_id_Change =" + type_id_Change);
                         //отправляем интент с id типа
-                        Intent intentType = new Intent(SmetasWork.this, TypeChangeData.class);
+                        Intent intentType = new Intent(SmetasWork.this, ChangeDataType.class);
                         intentType.putExtra(P.ID_TYPE, type_id_Change);
                         startActivity(intentType);
                         break;
@@ -423,7 +419,7 @@ public class SmetasWork extends AppCompatActivity implements
                         Log.d(TAG, "SmetasWork onContextItemSelected P.CHANGE_NAME_ID case 2" +
                                 "work_name_chang = " + work_name_chang + " work_id_Change =" + work_id_Change);
                         //отправляем интент с id работы
-                        Intent intentWork = new Intent(SmetasWork.this, WorkChangeData.class);
+                        Intent intentWork = new Intent(SmetasWork.this, ChangeDataWork.class);
                         intentWork.putExtra(P.ID_WORK, work_id_Change);
                         startActivity(intentWork);
                         break;

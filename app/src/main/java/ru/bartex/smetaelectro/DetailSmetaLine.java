@@ -20,7 +20,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaDetail extends AppCompatActivity {
+public class DetailSmetaLine extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
@@ -62,7 +62,7 @@ public class SmetaDetail extends AppCompatActivity {
             count = 0;
         }
 
-        Log.d(TAG, "SmetaDetail - onCreate  file_id = " + file_id +
+        Log.d(TAG, "DetailSmetaLine - onCreate  file_id = " + file_id +
                 "  cat_id = " + cat_id + "  type_id = " + type_id + "  work_id = " + work_id +
                 "isWork" + isWork);
 
@@ -79,7 +79,7 @@ public class SmetaDetail extends AppCompatActivity {
         cost = mSmetaOpenHelper.getWorkCostById(work_id);
         mTextViewCost.setText(Float.toString(cost));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
-            Log.d(TAG, "SmetaDetail.(mTextViewCost.getText().toString()).equals");
+            Log.d(TAG, "DetailSmetaLine.(mTextViewCost.getText().toString()).equals");
 
             //если для work_id в таблице расценок ничего нет (цена =0), то вызываем диалог
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -143,14 +143,14 @@ public class SmetaDetail extends AppCompatActivity {
                         finish();
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
-                            Log.d(TAG, "SmetaDetail.if ((mTextViewCost.getText().toString()).eq...");
+                            Log.d(TAG, "DetailSmetaLine.if ((mTextViewCost.getText().toString()).eq...");
                             FragmentManager fragmentManager = getSupportFragmentManager();
                             DialogFragment dialogFragment = new CostDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost");
                         }else{
                             long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,
                                     type_id, cat_id, cost, count, unit, count*cost);
-                            Log.d(TAG, "SmetaDetail-mButtonSave-onClick FW_ID = " + FW_ID);
+                            Log.d(TAG, "DetailSmetaLine-mButtonSave-onClick FW_ID = " + FW_ID);
                             //выводим таблицу FW в лог для проверки
                             mSmetaOpenHelper.displayFW();
                             finish();
@@ -175,10 +175,10 @@ public class SmetaDetail extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "SmetaDetail.onActivityResult...  resultCode = "+ (resultCode == RESULT_OK?true:false) +
+        Log.d(TAG, "DetailSmetaLine.onActivityResult...  resultCode = "+ (resultCode == RESULT_OK?true:false) +
                 "  requestCode = " +(requestCode==P.REQUEST_COST));
         if (resultCode == RESULT_OK) {
-                Log.d(TAG, "SmetaDetail.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
+                Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
                 cost = mSmetaOpenHelper.getWorkCostById(work_id);
                 mTextViewCost.setText(Float.toString(cost));
                 unit = mSmetaOpenHelper.getCostUnitById(work_id);
@@ -190,17 +190,17 @@ public class SmetaDetail extends AppCompatActivity {
     public static class CostDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Log.d(TAG, "SmetaDetail.CostDialogFragment...");
+            Log.d(TAG, "DetailSmetaLine.CostDialogFragment...");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.CostZero);
             builder.setPositiveButton(R.string.CostOk, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(getActivity(), CostDetail.class);
+                    Intent intent = new Intent(getActivity(), DetailCost.class);
                     intent.putExtra(P.ID_CATEGORY, cat_id);
                     intent.putExtra(P.ID_TYPE, type_id);
                     intent.putExtra(P.ID_WORK, work_id);
-                    intent.putExtra(CostDetail.REQUEST_CODE, request_code_add_cost);
+                    intent.putExtra(DetailCost.REQUEST_CODE, request_code_add_cost);
                     startActivityForResult(intent, P.REQUEST_COST);
                 }
             });

@@ -167,7 +167,7 @@ public class CostMatDetail extends AppCompatActivity {
         //если Cost = 0, то стираем строку в случае отмены кнопкой Cancel или Назад
         //это надо будет изменить - не писать строку, чтобы ее потом изменять,
         // а вставлять тогда, когда это будет нужно вместе с единицами измерения ,
-        // для чего переделать макет CostDetail
+        // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfMat)==0){
             mSmetaOpenHelper.deleteCostOfMat(mat_id);

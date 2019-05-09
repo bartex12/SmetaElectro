@@ -23,7 +23,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class SmetasTypeTab extends Fragment {
+public abstract class SmetasTabType extends Fragment {
 
     public static final String TAG = "33333";
     ListView listView;
@@ -45,14 +45,14 @@ public abstract class SmetasTypeTab extends Fragment {
     }
     OnClickTypekListener onClickTypeListener;
 
-    public SmetasTypeTab() {
+    public SmetasTabType() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  SmetasTypeTab onAttach // " );
+        Log.d(TAG, "//  SmetasTabType onAttach // " );
         mSmetaOpenHelper = new SmetaOpenHelper(context);
         onClickTypeListener = (OnClickTypekListener)context;
     }
@@ -60,7 +60,7 @@ public abstract class SmetasTypeTab extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  SmetasTypeTab onCreate // " );
+        Log.d(TAG, "//  SmetasTabType onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
         isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
@@ -70,19 +70,19 @@ public abstract class SmetasTypeTab extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  SmetasTypeTab onCreateView // " );
+        Log.d(TAG, "//  SmetasTabType onCreateView // " );
         View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         listView = rootView.findViewById(R.id.listViewFragmentTabs);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "//  SmetasTypeTab onItemClick // " );
+                Log.d(TAG, "//  SmetasTabType onItemClick // " );
                 TextView tv_smeta_item = view.findViewById(R.id.base_text);
                 String smeta_item_name = tv_smeta_item.getText().toString();
 
                 long type_id = getTypeId(smeta_item_name);
                 long cat_id = getCatId(type_id);
-                Log.d(TAG, "SmetasTypeTab onItemClick  cat_id = " + cat_id + "  type_id = " + type_id);
+                Log.d(TAG, "SmetasTabType onItemClick  cat_id = " + cat_id + "  type_id = " + type_id);
 
                 onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
             }
@@ -93,7 +93,7 @@ public abstract class SmetasTypeTab extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "//  SmetasTypeTab onResume // " );
+        Log.d(TAG, "//  SmetasTabType onResume // " );
 
         updateAdapter();
 

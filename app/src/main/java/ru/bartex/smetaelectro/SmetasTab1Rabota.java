@@ -3,7 +3,6 @@ package ru.bartex.smetaelectro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,12 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,12 +24,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class SmetasTab1Rabota extends Fragment {
 
@@ -108,7 +99,7 @@ public class SmetasTab1Rabota extends Fragment {
                 long type_id = mSmetaOpenHelper.getTypeIdWork(file_id, work_id);
                 long cat_id = mSmetaOpenHelper.getCateIdWork(file_id, work_id);
 
-                Intent intent = new Intent(getActivity(), SmetaDetail.class);
+                Intent intent = new Intent(getActivity(), DetailSmetaLine.class);
                 intent.putExtra(P.ID_FILE_DEFAULT, file_id);
                 intent.putExtra(P.ID_CATEGORY, cat_id);
                 intent.putExtra(P.ID_TYPE, type_id);

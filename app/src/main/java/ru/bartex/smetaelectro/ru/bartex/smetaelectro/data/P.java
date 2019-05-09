@@ -140,7 +140,7 @@ public class P {
     public static final int DELETE_ITEM_SMETA_MAT = 6;
     // Отменить пункт сметы материалов
     public static final int CANCEL_MAT = 7;
-    // для SmetaDetail риквест код
+    // для DetailSmetaLine риквест код
     public static final int REQUEST_COST = 8;
     // для SmetaMatDetail риквест код
     public static final int REQUEST_COST_MAT = 9;

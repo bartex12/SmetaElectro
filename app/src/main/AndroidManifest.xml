@@ -18,24 +18,24 @@
             android:label="@string/title_activity_SmetasWork"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MatChangeData"
+            android:name=".ChangeDataMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".TypeMatChangeData"
+            android:name=".ChangeDataTypeMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".CategoryMatChangeData"
+            android:name=".ChangeDataCategoryMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".MatSpesific"
+            android:name=".SpesificMat"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".TypeMatSpecific"
+            android:name=".SpesificTypeMat"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".CategoryMatSpecific"
+            android:name=".SpecificCategoryMat"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
@@ -58,27 +58,27 @@
             android:name=".SmetaListStructured"
             android:label="@string/title_activity_SmetaListStructured" />
         <activity
-            android:name=".WorkSpesific"
+            android:name=".SpesificWork"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
-        <activity android:name=".WorkChangeData" />
+        <activity android:name=".ChangeDataWork" />
         <activity
-            android:name=".TypeChangeData"
+            android:name=".ChangeDataType"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".TypeSpecific"
+            android:name=".SpecificType"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".CategoryChangeData"
+            android:name=".ChangeDataCategory"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".CategorySpecific"
+            android:name=".SpecificCategory"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
-        <activity android:name=".SmetaSpecific" />
+        <activity android:name=".SpecificSmeta" />
         <activity
-            android:name=".SmetaChangeData"
+            android:name=".ChangeDataSmetaName"
             android:label="@string/title_activity_changeDataFile"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -99,20 +99,12 @@
 
 
         <activity
-            android:name=".SmetaDetail"
+            android:name=".DetailSmetaLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
         <activity
-            android:name=".CostCategory"
-            android:label="@string/title_activity_CostCategory" />
-        <activity
-            android:name=".CostType"
-            android:label="@string/title_activity_CostType" />
-        <activity
-            android:name=".CostWork"
-            android:label="@string/title_activity_CostWork" />
-        <activity
-            android:name=".CostDetail"
+            android:name=".DetailCost"
             android:label="@string/title_activity_CostDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity

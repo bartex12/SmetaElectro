@@ -12,7 +12,8 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class CategoryMatChangeData extends AppCompatActivity {
+public class ChangeDataCategory extends AppCompatActivity {
+
     static String TAG = "33333";
 
     EditText etCatName;
@@ -22,22 +23,23 @@ public class CategoryMatChangeData extends AppCompatActivity {
     long cat_id;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_change_data);
 
         //получаем id выбранного файла из интента
-        cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
-        Log.d(TAG, "CategoryMatChangeData onCreate cat_id = " + cat_id);
-        DataCategoryMat dataCategoryMat = smetaOpenHelper.getCategoryMatData(cat_id);
+        cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
+        Log.d(TAG, "ChangeDataCategory onCreate cat_id = " + cat_id);
+        DataCategory dataCategory = smetaOpenHelper.getCategoryData(cat_id);
 
         etCatName = findViewById(R.id.etChangeCatName);
-        etCatName.setText(dataCategoryMat.getmCategoryMatName());
+        etCatName.setText(dataCategory.getmCategoryName());
 
         etCatDescription = findViewById(R.id.etChangeCatDescription);
-        etCatDescription.setText(dataCategoryMat.getmCategoryMatDescription());
-        Log.d(TAG, "CategoryMatChangeData onCreate etCatDescription = " + etCatDescription.getText().toString());
+        etCatDescription.setText(dataCategory.getmCategoryDescription());
+        Log.d(TAG, "ChangeDataCategory onCreate etCatDescription = " + etCatDescription.getText().toString());
 
         btnCancelChangeCat = findViewById(R.id.btnCancelChangeCat);
         btnCancelChangeCat.setOnClickListener(new View.OnClickListener() {
@@ -55,10 +57,10 @@ public class CategoryMatChangeData extends AppCompatActivity {
 
                 //читаем имя файла в строке ввода
                 String nameCat = etCatName.getText().toString();
-                Log.d(TAG, "CategoryMatChangeData nameCat = " + nameCat);
+                Log.d(TAG, "ChangeDataCategory nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
-                // long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
+               // long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
                 //Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
 
                 //если имя - пустая строка
@@ -75,9 +77,9 @@ public class CategoryMatChangeData extends AppCompatActivity {
                     String description = etCatDescription.getText().toString();
 
                     //обновляем данные файла
-                    smetaOpenHelper.updateCategoryMatData(cat_id, nameCat, description);
+                    smetaOpenHelper.updateCategoryData(cat_id, nameCat, description);
 
-                    Toast.makeText(CategoryMatChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataCategory.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -86,4 +88,6 @@ public class CategoryMatChangeData extends AppCompatActivity {
             ;
         });
     }
-}
+
+    }
+

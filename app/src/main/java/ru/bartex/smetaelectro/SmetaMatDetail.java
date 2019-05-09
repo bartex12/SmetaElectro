@@ -178,7 +178,7 @@ public class SmetaMatDetail extends AppCompatActivity {
         Log.d(TAG, "SmetaMatDetail.onActivityResult...  resultCode = "+ resultCode +
                 "  requestCode = " + requestCode);
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "SmetaDetail.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
+            Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
             //long matId = data.getExtras().getLong(P.ID_MAT);
             costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
             mTextViewCost.setText(Float.toString(costMat));

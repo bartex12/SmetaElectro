@@ -17,15 +17,15 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
 
-public class DialogSaveCatName extends DialogSaveName {
+public class DialogSaveNameCat extends DialogSaveName {
 
     static String TAG = "33333";
     boolean isWorkDialog;
-    public DialogSaveCatName(){};
+    public DialogSaveNameCat(){};
 
-    public static DialogSaveCatName newInstance(boolean isWorkDialog) {
-        Log.d(TAG, "DialogSaveCatName newInstance. isWorkDialog =   " + isWorkDialog);
-        DialogSaveCatName fragment = new DialogSaveCatName();
+    public static DialogSaveNameCat newInstance(boolean isWorkDialog) {
+        Log.d(TAG, "DialogSaveNameCat newInstance. isWorkDialog =   " + isWorkDialog);
+        DialogSaveNameCat fragment = new DialogSaveNameCat();
         Bundle args = new Bundle();
         args.putBoolean(P.IS_WORK_DIALOG, isWorkDialog);
         fragment.setArguments(args);
@@ -36,57 +36,46 @@ public class DialogSaveCatName extends DialogSaveName {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isWorkDialog = getArguments().getBoolean(P.IS_WORK_DIALOG);
-        Log.d(TAG, "DialogSaveCatName onCreate. isWorkDialog =   " + isWorkDialog);
+        Log.d(TAG, "DialogSaveNameCat onCreate. isWorkDialog =   " + isWorkDialog);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.d(TAG, "DialogSaveCatName onCreateDialog... ");
+        Log.d(TAG, "DialogSaveNameCat onCreateDialog... ");
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
         takeOnAndOffSoftInput();
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...1 ");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...2 ");
         View view = inflater.inflate(R.layout.dialog_save_name, null);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...3 ");
         builder.setView(view);
         builder.setTitle("Сохранить");
-        builder.setIcon(R.drawable.ic_save_black_24dp);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...3 ");
+         builder.setIcon(R.drawable.ic_save_black_24dp);
 
         TextView tvKind  = view.findViewById(R.id.tvKind);
         tvKind.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...4 ");
         EditText etSaveNameWork = view.findViewById(R.id.etSaveNameWork);
         etSaveNameWork.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...5 ");
         TextView tvType  = view.findViewById(R.id.tvType);
         tvType.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...6 ");
         TextView tvTypeName  = view.findViewById(R.id.tvTypeName);
         tvTypeName.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...7 ");
         EditText typeName = view.findViewById(R.id.etSaveNameType);
         typeName.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...8 ");
         TextView tvCatName  = view.findViewById(R.id.tvCatName);
         tvCatName.setVisibility(View.GONE);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...9 ");
         final EditText etSaveNameCat = view.findViewById(R.id.etSaveNameCat);
         etSaveNameCat.requestFocus();
         etSaveNameCat.setInputType(InputType.TYPE_CLASS_TEXT);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...10 ");
         Button btnSaveName = view.findViewById(R.id.buttonSaveName);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...11 ");
         btnSaveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //читаем имя файла в строке ввода
                 String nameCat = etSaveNameCat.getText().toString();
-                Log.d(TAG, "DialogSaveCatName onCreateDialog nameCat = " + nameCat);
+                Log.d(TAG, "DialogSaveNameCat onCreateDialog nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long catId;
@@ -127,7 +116,6 @@ public class DialogSaveCatName extends DialogSaveName {
         });
 
         Button btnCancel = view.findViewById(R.id.buttonCancelName);
-        Log.d(TAG, "DialogSaveCatName onCreateDialog...12 ");
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

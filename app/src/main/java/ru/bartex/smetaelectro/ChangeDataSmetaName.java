@@ -1,6 +1,5 @@
 package ru.bartex.smetaelectro;
 
-import android.content.ContentValues;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaChangeData extends AppCompatActivity {
+public class ChangeDataSmetaName extends AppCompatActivity {
 
     static String TAG = "33333";
 
@@ -38,7 +36,7 @@ public class SmetaChangeData extends AppCompatActivity {
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
-        Log.d(TAG, "SmetaChangeData onCreate file_id = " + file_id);
+        Log.d(TAG, "ChangeDataSmetaName onCreate file_id = " + file_id);
         DataFile dataFile = smetaOpenHelper.getFileData(file_id);
 
         //InputMethodManager imm = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -76,7 +74,7 @@ public class SmetaChangeData extends AppCompatActivity {
 
                 if (checkBoxDateTime.isChecked()) {
                     nameFile = nameFile + "_" + P.setDateTimeString();
-                    Log.d(TAG, "SmetaChangeData date.isChecked() Имя файла = " + nameFile);
+                    Log.d(TAG, "ChangeDataSmetaName date.isChecked() Имя файла = " + nameFile);
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
@@ -103,7 +101,7 @@ public class SmetaChangeData extends AppCompatActivity {
                     //обновляем данные файла
                     smetaOpenHelper.updateFileData(file_id, nameFile, adress, description);
 
-                    Toast.makeText(SmetaChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataSmetaName.this,"Обновлено ",
                            Toast.LENGTH_SHORT).show();
                     finish();
                 }

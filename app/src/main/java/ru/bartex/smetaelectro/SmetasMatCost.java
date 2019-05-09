@@ -26,7 +26,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMatCost extends AppCompatActivity implements
-        SmetasCatTab.OnClickCatListener, SmetasTypeTab.OnClickTypekListener,
+        SmetasTabCat.OnClickCatListener, SmetasTabType.OnClickTypekListener,
         DialogSaveCost.OnCatTypeMatCostNameListener{
 
     public static final String TAG = "33333";

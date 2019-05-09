@@ -10,13 +10,15 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class TypeMatSpecific extends AppCompatActivity {
+public class SpecificType extends AppCompatActivity {
+
     public static final String TAG = "33333";
-    TextView tvTypeMatName;
-    TextView tvTypeMatDescription;
+    TextView tvTypeName;
+    TextView tvTypeDescription;
     Button btnOkType;
-    long type_mat_id;
-    DataTypeMat dataTypeMat;
+    long type_id;
+    DataType dataType;
+
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
 
     @Override
@@ -24,18 +26,19 @@ public class TypeMatSpecific extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
+
         //получаем id выбранного файла из интента
-        type_mat_id = getIntent().getExtras().getLong(P.ID_TYPE_MAT);
-        Log.d(TAG, "TypeMatSpecific onCreate type_mat_id = " + type_mat_id);
-        dataTypeMat = smetaOpenHelper.getTypeMatData(type_mat_id);
+        type_id = getIntent().getExtras().getLong(P.ID_TYPE);
+        Log.d(TAG, "SpecificType onCreate type_id = " + type_id);
+        dataType = smetaOpenHelper.getTypeData(type_id);
 
-        tvTypeMatName = findViewById(R.id.tvName);
-        tvTypeMatName.setText(dataTypeMat.getmTypeMatName());
-        Log.d(TAG, "TypeMatSpecific onCreate tvTypeMatName = " + dataTypeMat.getmTypeMatName());
+        tvTypeName = findViewById(R.id.tvName);
+        tvTypeName.setText(dataType.getmTypeName());
+        Log.d(TAG, "SpecificType onCreate tvTypeName = " + dataType.getmTypeName());
 
-        tvTypeMatDescription = findViewById(R.id.tvDescription);
-        tvTypeMatDescription.setText(dataTypeMat.getmTypeMatDescription());
-        Log.d(TAG, "TypeMatSpecific onCreate tvTypeDescription = " + dataTypeMat.getmTypeMatDescription());
+        tvTypeDescription = findViewById(R.id.tvDescription);
+        tvTypeDescription.setText(dataType.getmTypeDescription());
+        Log.d(TAG, "SpecificType onCreate tvTypeDescription = " + dataType.getmTypeDescription());
 
         btnOkType = findViewById(R.id.btnOk);
         btnOkType.setOnClickListener(new View.OnClickListener() {

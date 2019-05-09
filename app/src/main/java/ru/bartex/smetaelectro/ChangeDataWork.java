@@ -12,7 +12,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class WorkChangeData extends AppCompatActivity {
+public class ChangeDataWork extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
@@ -33,7 +33,7 @@ public class WorkChangeData extends AppCompatActivity {
 
         //получаем id выбранного типа работы из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);
-        Log.d(TAG, "WorkChangeData onCreate work_id = " + work_id);
+        Log.d(TAG, "ChangeDataWork onCreate work_id = " + work_id);
         DataWork dataWork  = smetaOpenHelper.getWorkData(work_id);
 
         etWorkName = findViewById(R.id.etChangeWorkName);
@@ -41,7 +41,7 @@ public class WorkChangeData extends AppCompatActivity {
 
         etWorkDescription = findViewById(R.id.etChangeWorkDescription);
         etWorkDescription.setText(dataWork.getmWorkDescription());
-        Log.d(TAG, "WorkChangeData onCreate etWorkDescription = " + etWorkDescription.getText().toString());
+        Log.d(TAG, "ChangeDataWork onCreate etWorkDescription = " + etWorkDescription.getText().toString());
 
         btnCancelChangeWork = findViewById(R.id.btnCancelChangeWork);
         btnCancelChangeWork.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class WorkChangeData extends AppCompatActivity {
 
                 //читаем имя типа работы в строке ввода
                 String nameWork = etWorkName.getText().toString();
-                Log.d(TAG, "WorkChangeData nameWork = " + nameWork);
+                Log.d(TAG, "ChangeDataWork nameWork = " + nameWork);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
                 //если имя - пустая строка
@@ -78,7 +78,7 @@ public class WorkChangeData extends AppCompatActivity {
                     //обновляем данные типа работы
                     smetaOpenHelper.updateWorkData(work_id, nameWork, description);
 
-                    Toast.makeText(WorkChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataWork.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class CostDetail extends AppCompatActivity {
+public class DetailCost extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
@@ -46,7 +46,7 @@ public class CostDetail extends AppCompatActivity {
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
         work_id = getIntent().getLongExtra(P.ID_WORK, 1);
 
-        Log.d(TAG, "CostDetail - onCreate  cat_id = " +
+        Log.d(TAG, "DetailCost - onCreate  cat_id = " +
                  cat_id + "  type_id = " + type_id + "  work_id = " + work_id);
 
         //выводим название работы
@@ -84,7 +84,7 @@ public class CostDetail extends AppCompatActivity {
         }else {
             String unitName = mSmetaOpenHelper.getCostUnitById(work_id);
             long unitId = mSmetaOpenHelper.getIdFromUnitName(unitName);
-            Log.d(TAG, "CostDetail- Spinner -unitName = " + unitName + "  unitId = " + unitId);
+            Log.d(TAG, "DetailCost- Spinner -unitName = " + unitName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
             spinner.setSelection((int)unitId - 1);
         }
@@ -112,7 +112,7 @@ public class CostDetail extends AppCompatActivity {
                 if ((costOfWork.equals(""))||(costOfWork.equals("."))){
                     costOfWork = "0";
                 }
-                Log.d(TAG, "CostDetail-mButtonSave.setOnClickListener costOfWork = " + costOfWork);
+                Log.d(TAG, "DetailCost-mButtonSave.setOnClickListener costOfWork = " + costOfWork);
                 //проверка на 0, чтобы не было нулевых строк в смете
                 if (Float.parseFloat(costOfWork)==0) {
                     //Snackbar заслонён клавиатурой, поэтому в манифесте пишем
@@ -124,7 +124,7 @@ public class CostDetail extends AppCompatActivity {
                     cost =  Float.parseFloat(costOfWork);
                     String unit = spinner.getSelectedItem().toString();
                     long unit_id = mSmetaOpenHelper.getIdFromUnitName(unit);
-                    Log.d(TAG, "CostDetail-mButtonSave.setOnClickListener work_id = " +
+                    Log.d(TAG, "DetailCost-mButtonSave.setOnClickListener work_id = " +
                             work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
 
                     //обновляем стоимость работы с единицами измерения
@@ -135,7 +135,7 @@ public class CostDetail extends AppCompatActivity {
                         requestCode = extras.getInt(REQUEST_CODE);
                         //если пришло из изменить запись
                         if (requestCode == 111) {
-                            Log.d(TAG, "CostDetail-mButtonSave requestCode =  " + requestCode);
+                            Log.d(TAG, "DetailCost-mButtonSave requestCode =  " + requestCode);
                             Intent intent = new Intent();
                             setResult(RESULT_OK, intent);
                         }
@@ -157,7 +157,7 @@ public class CostDetail extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "CostDetail-onDestroy..." );
+        Log.d(TAG, "DetailCost-onDestroy..." );
         String costOfWork =  mTextViewCost.getText().toString();
         if ((costOfWork.equals(""))||(costOfWork.equals("."))){
             costOfWork = "0";
@@ -165,7 +165,7 @@ public class CostDetail extends AppCompatActivity {
         //если Cost = 0, то стираем строку в случае отмены кнопкой Cancel или Назад
         //это надо будет изменить - не писать строку, чтобы ее потом изменять,
         // а вставлять тогда, когда это будет нужно вместе с единицами измерения ,
-        // для чего переделать макет CostDetail
+        // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfWork)==0){
             mSmetaOpenHelper.deleteCostOfWork(work_id);

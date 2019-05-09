@@ -1,19 +1,13 @@
 package ru.bartex.smetaelectro;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -158,7 +152,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name_specific = " + file_name_specific +
                         " file_id_cpecific =" + file_id_specific);
                 //отправляем интент с id файла
-                Intent intentSpecific = new Intent(ListOfSmetasNames.this, SmetaSpecific.class);
+                Intent intentSpecific = new Intent(ListOfSmetasNames.this, SpecificSmeta.class);
                 intentSpecific.putExtra(P.ID_FILE, file_id_specific);
                 startActivity(intentSpecific);
                 return true;
@@ -172,7 +166,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name_chang +
                         " file_id_Change =" + file_id_Change);
                 //отправляем интент с id файла
-                Intent intent = new Intent(ListOfSmetasNames.this, SmetaChangeData.class);
+                Intent intent = new Intent(ListOfSmetasNames.this, ChangeDataSmetaName.class);
                 intent.putExtra(P.ID_FILE, file_id_Change);
                 startActivity(intent);
                 return true;

@@ -5,11 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +17,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT2Type extends SmetasTypeTab {
+public class SMT2Type extends SmetasTabType {
 
     public static SMT2Type NewInstance( long file_id, int position, boolean isSelectedCat, long cat_id){
         Log.d(TAG, "//  SMT2Type NewInstance // " );

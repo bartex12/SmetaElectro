@@ -17,7 +17,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT1CostCat extends SmetasCatTab {
+public class SMT1CostCat extends SmetasTabCat {
 
 
     public SMT1CostCat() {

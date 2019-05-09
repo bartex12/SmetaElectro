@@ -10,7 +10,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class MatSpesific extends AppCompatActivity {
+public class SpesificMat extends AppCompatActivity {
     public static final String TAG = "33333";
     TextView tvMatName;
     TextView tvMatDescription;
@@ -27,16 +27,16 @@ public class MatSpesific extends AppCompatActivity {
 
         //получаем id выбранного файла из интента
         mat_id = getIntent().getExtras().getLong(P.ID_MAT);
-        Log.d(TAG, "MatSpesific onCreate mat_id = " + mat_id);
+        Log.d(TAG, "SpesificMat onCreate mat_id = " + mat_id);
         dataMat = smetaOpenHelper.getMatData(mat_id);
 
         tvMatName = findViewById(R.id.tvName);
         tvMatName.setText(dataMat.getmMatName());
-        Log.d(TAG, "MatSpesific onCreate tvMatName = " + dataMat.getmMatName());
+        Log.d(TAG, "SpesificMat onCreate tvMatName = " + dataMat.getmMatName());
 
         tvMatDescription = findViewById(R.id.tvDescription);
         tvMatDescription.setText(dataMat.getmMatDescription());
-        Log.d(TAG, "MatSpesific onCreate tvMatDescription = " + dataMat.getmMatDescription());
+        Log.d(TAG, "SpesificMat onCreate tvMatDescription = " + dataMat.getmMatDescription());
 
         btnOkMat = findViewById(R.id.btnOk);
         btnOkMat.setOnClickListener(new View.OnClickListener() {

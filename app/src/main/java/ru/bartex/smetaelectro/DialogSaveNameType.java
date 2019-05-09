@@ -15,19 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
-public class DialogSaveTypeName extends DialogSaveName {
+public class DialogSaveNameType extends DialogSaveName {
 
     static String TAG = "33333";
     long cat_id;
     boolean isWorkDialog;
 
-    public DialogSaveTypeName(){
+    public DialogSaveNameType(){
         //пустой конструктор
     }
 
-    public static DialogSaveTypeName newInstance(long cat_id, boolean isWorkDialog) {
-        Log.d(TAG, "DialogSaveTypeName newInstance. cat_id =   " + cat_id);
-        DialogSaveTypeName fragment = new DialogSaveTypeName();
+    public static DialogSaveNameType newInstance(long cat_id, boolean isWorkDialog) {
+        Log.d(TAG, "DialogSaveNameType newInstance. cat_id =   " + cat_id);
+        DialogSaveNameType fragment = new DialogSaveNameType();
         Bundle args = new Bundle();
         args.putLong(P.ID_CATEGORY, cat_id);
         args.putBoolean(P.IS_WORK_DIALOG, isWorkDialog);
@@ -40,14 +40,14 @@ public class DialogSaveTypeName extends DialogSaveName {
         super.onCreate(savedInstanceState);
         cat_id = getArguments().getLong(P.ID_CATEGORY);
         isWorkDialog = getArguments().getBoolean(P.IS_WORK_DIALOG);
-        Log.d(TAG, "DialogSaveTypeName onCreate. cat_id =   " + cat_id + "  isWorkDialog = " + isWorkDialog);
+        Log.d(TAG, "DialogSaveNameType onCreate. cat_id =   " + cat_id + "  isWorkDialog = " + isWorkDialog);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Log.d(TAG, "DialogSaveTypeName onCreateDialog... ");
+        Log.d(TAG, "DialogSaveNameType onCreateDialog... ");
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
         takeOnAndOffSoftInput();
 
@@ -76,10 +76,10 @@ public class DialogSaveTypeName extends DialogSaveName {
         final String catName;
         if (isWorkDialog){
             catName = smetaOpenHelper.getCategoryNameById(cat_id);
-            Log.d(TAG, "DialogSaveTypeName onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
+            Log.d(TAG, "DialogSaveNameType onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
         }else {
             catName = smetaOpenHelper.getCategoryMatNameById(cat_id);
-            Log.d(TAG, "DialogSaveTypeName onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
+            Log.d(TAG, "DialogSaveNameType onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
         }
         tvCatName.setText(catName);
 

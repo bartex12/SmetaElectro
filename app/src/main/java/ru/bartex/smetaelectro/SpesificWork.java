@@ -10,7 +10,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class WorkSpesific extends AppCompatActivity {
+public class SpesificWork extends AppCompatActivity {
 
     public static final String TAG = "33333";
     TextView tvWorkName;
@@ -28,16 +28,16 @@ public class WorkSpesific extends AppCompatActivity {
 
         //получаем id выбранного файла из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);
-        Log.d(TAG, "WorkSpesific onCreate work_id = " + work_id);
+        Log.d(TAG, "SpesificWork onCreate work_id = " + work_id);
         dataWork = smetaOpenHelper.getWorkData(work_id);
 
         tvWorkName = findViewById(R.id.tvName);
         tvWorkName.setText(dataWork.getmWorkName());
-        Log.d(TAG, "WorkSpesific onCreate tvWorkName = " + dataWork.getmWorkName());
+        Log.d(TAG, "SpesificWork onCreate tvWorkName = " + dataWork.getmWorkName());
 
         tvWorkDescription = findViewById(R.id.tvDescription);
         tvWorkDescription.setText(dataWork.getmWorkDescription());
-        Log.d(TAG, "WorkSpesific onCreate tvWorkDescription = " + dataWork.getmWorkDescription());
+        Log.d(TAG, "SpesificWork onCreate tvWorkDescription = " + dataWork.getmWorkDescription());
 
         btnOkWork = findViewById(R.id.btnOk);
         btnOkWork.setOnClickListener(new View.OnClickListener() {

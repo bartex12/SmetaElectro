@@ -31,7 +31,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMat extends AppCompatActivity implements
-        SmetasTypeTab.OnClickTypekListener, SmetasCatTab.OnClickCatListener,
+        SmetasTabType.OnClickTypekListener, SmetasTabCat.OnClickCatListener,
         DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
@@ -227,13 +227,13 @@ public class SmetasMat extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 0");
-                    DialogFragment saveCat = DialogSaveCatName.newInstance(false);
+                    DialogFragment saveCat = DialogSaveNameCat.newInstance(false);
                     saveCat.show(getSupportFragmentManager(),"SaveCatName");
                     break;
                 case 1:
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 1");
                     if (isSelectedCat){
-                        DialogFragment saveType = DialogSaveTypeName.newInstance(cat_id, false);
+                        DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, false);
                         saveType.show(getSupportFragmentManager(), "saveTypeName");
                     }
                     break;
@@ -242,7 +242,7 @@ public class SmetasMat extends AppCompatActivity implements
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 2");
                     Log.d(TAG, " SmetasMat  onOptionsItemSelected case 2 cat_id = " + cat_id +
                             "  type_id = " + type_id);
-                    DialogFragment saveMat = DialogSaveWorkName.newInstance(cat_id, type_id, false);
+                    DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, false);
                     saveMat.show(getSupportFragmentManager(), "SaveMatName");
                     break;
             }
@@ -334,7 +334,7 @@ public class SmetasMat extends AppCompatActivity implements
 
                         //отправляем интент с id категории
                         Intent intentSpecificCat = new Intent(
-                                SmetasMat.this, CategoryMatSpecific.class);
+                                SmetasMat.this, SpecificCategoryMat.class);
                         intentSpecificCat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
                         startActivity(intentSpecificCat);
                         break;
@@ -349,7 +349,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 "type_mat_name_specific = " + type_mat_name_specific +
                                 " type_mat_id_specific =" + type_mat_id_specific);
                         //отправляем интент с id типа
-                        Intent intentSpecificTypeMat = new Intent(SmetasMat.this, TypeMatSpecific.class);
+                        Intent intentSpecificTypeMat = new Intent(SmetasMat.this, SpesificTypeMat.class);
                         intentSpecificTypeMat.putExtra(P.ID_TYPE_MAT, type_mat_id_specific);
                         startActivity(intentSpecificTypeMat);
                         break;
@@ -365,7 +365,7 @@ public class SmetasMat extends AppCompatActivity implements
                         Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID " +
                                 "mat_name_specific = " + mat_name_specific +  " mat_id_specific =" + mat_id_specific);
                         //отправляем интент с id материала
-                        Intent intentSpecificMat = new Intent(SmetasMat.this, MatSpesific.class);
+                        Intent intentSpecificMat = new Intent(SmetasMat.this, SpesificMat.class);
                         intentSpecificMat.putExtra(P.ID_MAT, mat_id_specific);
                         startActivity(intentSpecificMat);
                         break;
@@ -386,7 +386,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 " name = " + name +  " cat_mat_id =" + cat_mat_id);
 
                         Intent intentCat = new Intent(
-                                SmetasMat.this, CategoryMatChangeData.class);
+                                SmetasMat.this, ChangeDataCategoryMat.class);
                         intentCat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
                         startActivity(intentCat);
                         break;
@@ -402,7 +402,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 " type_mat_id =" + type_mat_id);
 
                         Intent intentType = new Intent(
-                                SmetasMat.this, TypeMatChangeData.class);
+                                SmetasMat.this, ChangeDataTypeMat.class);
                         intentType.putExtra(P.ID_TYPE_MAT, type_mat_id);
                         startActivity(intentType);
                         break;
@@ -415,7 +415,7 @@ public class SmetasMat extends AppCompatActivity implements
                         Log.d(TAG, "SmetasMat onContextItemSelected  case P.CHANGE_NAME_ID " +
                                 "mat_name_chang = " + mat_name_chang + " mat_id_Change =" + mat_id_Change);
                         //отправляем интент с id материала
-                        Intent intent = new Intent(SmetasMat.this, MatChangeData.class);
+                        Intent intent = new Intent(SmetasMat.this, ChangeDataMat.class);
                         intent.putExtra(P.ID_MAT, mat_id_Change);
                         startActivity(intent);
                         break;

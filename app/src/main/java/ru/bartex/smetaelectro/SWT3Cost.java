@@ -6,11 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +18,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT3Cost extends SmetasMWTab {
+public class SWT3Cost extends SmetasTabWorkMat {
 
 
     public SWT3Cost() {
@@ -79,7 +75,7 @@ public class SWT3Cost extends SmetasMWTab {
         //ищем id категории работы, зная id типа
         long cat_id = mSmetaOpenHelper.getCatIdFromTypeWork(type_id);
 
-        Intent intent = new Intent(getActivity(), CostDetail.class);
+        Intent intent = new Intent(getActivity(), DetailCost.class);
         intent.putExtra(P.ID_CATEGORY, cat_id);
         intent.putExtra(P.ID_TYPE, type_id);
         intent.putExtra(P.ID_WORK, work_id);

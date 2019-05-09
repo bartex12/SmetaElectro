@@ -9,10 +9,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 abstract public class DialogSaveName extends DialogFragment {
 
-    //int positionCategory;
-    //int  positionType;
-    //long cat_id;
-    //long type_id;
     static String TAG = "33333";
     SmetaOpenHelper smetaOpenHelper;
 

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class MatChangeData extends AppCompatActivity {
+public class ChangeDataMat extends AppCompatActivity {
     public static final String TAG = "33333";
 
     EditText etWorkName;
@@ -30,7 +30,7 @@ public class MatChangeData extends AppCompatActivity {
 
         //получаем id выбранного материала из интента
         work_id = getIntent().getExtras().getLong(P.ID_MAT);
-        Log.d(TAG, "MatChangeData onCreate work_id = " + work_id);
+        Log.d(TAG, "ChangeDataMat onCreate work_id = " + work_id);
         DataMat dataMat  = smetaOpenHelper.getMatData(work_id);
 
         etWorkName = findViewById(R.id.etChangeWorkName);
@@ -38,7 +38,7 @@ public class MatChangeData extends AppCompatActivity {
 
         etWorkDescription = findViewById(R.id.etChangeWorkDescription);
         etWorkDescription.setText(dataMat.getmMatDescription());
-        Log.d(TAG, "MatChangeData onCreate etWorkDescription = " + etWorkDescription.getText().toString());
+        Log.d(TAG, "ChangeDataMat onCreate etWorkDescription = " + etWorkDescription.getText().toString());
 
         btnCancelChangeWork = findViewById(R.id.btnCancelChangeWork);
         btnCancelChangeWork.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class MatChangeData extends AppCompatActivity {
 
                 //читаем имя типа работы в строке ввода
                 String nameWork = etWorkName.getText().toString();
-                Log.d(TAG, "MatChangeData nameWork = " + nameWork);
+                Log.d(TAG, "ChangeDataMat nameWork = " + nameWork);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
                 //если имя - пустая строка
@@ -75,7 +75,7 @@ public class MatChangeData extends AppCompatActivity {
                     //обновляем данные типа работы
                     smetaOpenHelper.updateMatData(work_id, nameWork, description);
 
-                    Toast.makeText(MatChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

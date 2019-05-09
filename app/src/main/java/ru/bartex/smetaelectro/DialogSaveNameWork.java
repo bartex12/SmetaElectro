@@ -16,19 +16,19 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
-public class DialogSaveWorkName extends DialogSaveName {
+public class DialogSaveNameWork extends DialogSaveName {
 
     static String TAG = "33333";
     long cat_id;
     long type_id;
     boolean isWorkDialog;
-    public DialogSaveWorkName(){
+    public DialogSaveNameWork(){
         //пустой конструктор
     }
 
-    public static DialogSaveWorkName newInstance(long cat_id, long type_id, boolean isWorkDialog){
-        Log.d(TAG, "DialogSaveWorkName newInstance... ");
-        DialogSaveWorkName dialogSaveWorkName = new DialogSaveWorkName();
+    public static DialogSaveNameWork newInstance(long cat_id, long type_id, boolean isWorkDialog){
+        Log.d(TAG, "DialogSaveNameWork newInstance... ");
+        DialogSaveNameWork dialogSaveWorkName = new DialogSaveNameWork();
         Bundle bundle = new Bundle();
         bundle.putLong(P.ID_CATEGORY,cat_id);
         bundle.putLong(P.ID_TYPE,type_id);
@@ -40,13 +40,13 @@ public class DialogSaveWorkName extends DialogSaveName {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "DialogSaveWorkName onCreate... ");
+        Log.d(TAG, "DialogSaveNameWork onCreate... ");
         //positionCategory = getArguments().getInt(P.POSITION_CATEGORY);
         //positionType = getArguments().getInt(P.POSITION_TYPE);
         cat_id = getArguments().getLong(P.ID_CATEGORY);
         type_id = getArguments().getLong(P.ID_TYPE);
         isWorkDialog = getArguments().getBoolean(P.IS_WORK_DIALOG);
-        Log.d(TAG, "DialogSaveWorkName onCreate.  cat_id = " + cat_id +
+        Log.d(TAG, "DialogSaveNameWork onCreate.  cat_id = " + cat_id +
                 "  type_id = " + type_id + "  isWorkDialog = " + isWorkDialog);
     }
 
@@ -75,12 +75,12 @@ public class DialogSaveWorkName extends DialogSaveName {
         final String typeName;
         final String catName;
         if (isWorkDialog){
-            Log.d(TAG, "DialogSaveWorkName onCreateDialog. isWorkDialog = true  cat_id = " +
+            Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = true  cat_id = " +
             cat_id + "  type_id = " + type_id);
            typeName = smetaOpenHelper.getTypeNameById(type_id);
            catName = smetaOpenHelper.getCategoryNameById(cat_id);
         }else{
-            Log.d(TAG, "DialogSaveWorkName onCreateDialog. isWorkDialog = false  cat_id = " +
+            Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = false  cat_id = " +
                     cat_id + "  type_id = " + type_id);
            typeName = smetaOpenHelper.getTypeNameMatById(type_id);
            catName = smetaOpenHelper.getCategoryMatNameById(cat_id);

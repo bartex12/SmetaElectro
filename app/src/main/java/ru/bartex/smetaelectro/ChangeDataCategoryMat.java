@@ -6,18 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import java.util.Objects;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class CategoryChangeData extends AppCompatActivity {
-
+public class ChangeDataCategoryMat extends AppCompatActivity {
     static String TAG = "33333";
 
     EditText etCatName;
@@ -27,23 +22,22 @@ public class CategoryChangeData extends AppCompatActivity {
     long cat_id;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_change_data);
 
         //получаем id выбранного файла из интента
-        cat_id = Objects.requireNonNull(getIntent().getExtras()).getLong(P.ID_CATEGORY);
-        Log.d(TAG, "CategoryChangeData onCreate cat_id = " + cat_id);
-        DataCategory dataCategory = smetaOpenHelper.getCategoryData(cat_id);
+        cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
+        Log.d(TAG, "ChangeDataCategoryMat onCreate cat_id = " + cat_id);
+        DataCategoryMat dataCategoryMat = smetaOpenHelper.getCategoryMatData(cat_id);
 
         etCatName = findViewById(R.id.etChangeCatName);
-        etCatName.setText(dataCategory.getmCategoryName());
+        etCatName.setText(dataCategoryMat.getmCategoryMatName());
 
         etCatDescription = findViewById(R.id.etChangeCatDescription);
-        etCatDescription.setText(dataCategory.getmCategoryDescription());
-        Log.d(TAG, "CategoryChangeData onCreate etCatDescription = " + etCatDescription.getText().toString());
+        etCatDescription.setText(dataCategoryMat.getmCategoryMatDescription());
+        Log.d(TAG, "ChangeDataCategoryMat onCreate etCatDescription = " + etCatDescription.getText().toString());
 
         btnCancelChangeCat = findViewById(R.id.btnCancelChangeCat);
         btnCancelChangeCat.setOnClickListener(new View.OnClickListener() {
@@ -61,10 +55,10 @@ public class CategoryChangeData extends AppCompatActivity {
 
                 //читаем имя файла в строке ввода
                 String nameCat = etCatName.getText().toString();
-                Log.d(TAG, "CategoryChangeData nameCat = " + nameCat);
+                Log.d(TAG, "ChangeDataCategoryMat nameCat = " + nameCat);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
-               // long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
+                // long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
                 //Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
 
                 //если имя - пустая строка
@@ -81,9 +75,9 @@ public class CategoryChangeData extends AppCompatActivity {
                     String description = etCatDescription.getText().toString();
 
                     //обновляем данные файла
-                    smetaOpenHelper.updateCategoryData(cat_id, nameCat, description);
+                    smetaOpenHelper.updateCategoryMatData(cat_id, nameCat, description);
 
-                    Toast.makeText(CategoryChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataCategoryMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -92,6 +86,4 @@ public class CategoryChangeData extends AppCompatActivity {
             ;
         });
     }
-
-    }
-
+}

@@ -10,14 +10,14 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class CategorySpecific extends AppCompatActivity {
+public class SpecificCategoryMat extends AppCompatActivity {
 
     public static final String TAG = "33333";
     TextView tvCatName;
     TextView tvSmetaDescription;
     Button btnOk;
-    long cat_id;
-    DataCategory dataCategory;
+    long cat_mat_id;
+    DataCategoryMat dataCategory;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
 
@@ -27,17 +27,17 @@ public class CategorySpecific extends AppCompatActivity {
         setContentView(R.layout.activity_category_specific);
 
         //получаем id выбранного файла из интента
-        cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
-        Log.d(TAG, "CategorySpecific onCreate cat_id = " + cat_id);
-        dataCategory = smetaOpenHelper.getCategoryData(cat_id);
+        cat_mat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
+        Log.d(TAG, "SpecificCategoryMat onCreate cat_mat_id = " + cat_mat_id);
+        dataCategory = smetaOpenHelper.getCategoryMatData(cat_mat_id);
 
         tvCatName = findViewById(R.id.tvName);
-        tvCatName.setText(dataCategory.getmCategoryName());
-        Log.d(TAG, "CategorySpecific onCreate tvCatName = " + dataCategory.getmCategoryName());
+        tvCatName.setText(dataCategory.getmCategoryMatName());
+        Log.d(TAG, "SpecificCategoryMat onCreate tvCatName = " + dataCategory.getmCategoryMatName());
 
         tvSmetaDescription = findViewById(R.id.tvDescription);
-        tvSmetaDescription.setText(dataCategory.getmCategoryDescription());
-        Log.d(TAG, "CategorySpecific onCreate tvSmetaDescription = " + dataCategory.getmCategoryDescription());
+        tvSmetaDescription.setText(dataCategory.getmCategoryMatDescription());
+        Log.d(TAG, "SpecificCategoryMat onCreate tvSmetaDescription = " + dataCategory.getmCategoryMatDescription());
 
         btnOk = findViewById(R.id.btnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {

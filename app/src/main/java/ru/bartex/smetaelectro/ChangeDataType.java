@@ -12,7 +12,8 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class TypeMatChangeData extends AppCompatActivity {
+public class ChangeDataType extends AppCompatActivity {
+
     static String TAG = "33333";
 
     EditText etTypeName;
@@ -22,22 +23,23 @@ public class TypeMatChangeData extends AppCompatActivity {
     long type_id;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_change_data);
 
-        //получаем id выбранного типа материала из интента
-        type_id = getIntent().getExtras().getLong(P.ID_TYPE_MAT);
-        Log.d(TAG, "TypeChangeData onCreate type_id = " + type_id);
-        DataTypeMat dataTypeMat = smetaOpenHelper.getTypeMatData((type_id));
+        //получаем id выбранного типа работы из интента
+        type_id = getIntent().getExtras().getLong(P.ID_TYPE);
+        Log.d(TAG, "ChangeDataType onCreate type_id = " + type_id);
+        DataType dataType = smetaOpenHelper.getTypeData(type_id);
 
         etTypeName = findViewById(R.id.etChangeTypeName);
-        etTypeName.setText(dataTypeMat.getmTypeMatName());
+        etTypeName.setText(dataType.getmTypeName());
 
         etTypeDescription = findViewById(R.id.etChangeTypeDescription);
-        etTypeDescription.setText(dataTypeMat.getmTypeMatDescription());
-        Log.d(TAG, "TypeChangeData onCreate etTypeDescription = " + etTypeDescription.getText().toString());
+        etTypeDescription.setText(dataType.getmTypeDescription());
+        Log.d(TAG, "ChangeDataType onCreate etTypeDescription = " + etTypeDescription.getText().toString());
 
         btnCancelChangeType = findViewById(R.id.btnCancelChangeType);
         btnCancelChangeType.setOnClickListener(new View.OnClickListener() {
@@ -55,16 +57,16 @@ public class TypeMatChangeData extends AppCompatActivity {
 
                 //читаем имя типа работы в строке ввода
                 String nameType = etTypeName.getText().toString();
-                Log.d(TAG, "TypeChangeData nameType = " + nameType);
+                Log.d(TAG, "ChangeDataType nameType = " + nameType);
 
                 //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
                 //если имя - пустая строка
                 if (nameType.trim().isEmpty()) {
                     //Чтобы Snackbar появлялся над клавиатурой, в манифесте в активности
                     // написано android:windowSoftInputMode="adjustResize"
-                    Snackbar.make(v, "Введите непустое название типа материала",
+                    Snackbar.make(v, "Введите непустое название типа работы",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                    Log.d(TAG, "Введите непустое название ");
+                    Log.d(TAG, "Введите непустое название типа работы ");
                     return;
                     //если имя  не пустое то
                 } else {
@@ -72,9 +74,9 @@ public class TypeMatChangeData extends AppCompatActivity {
                     String description = etTypeDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateTypeMatData(type_id, nameType, description);
+                    smetaOpenHelper.updateTypeData(type_id, nameType, description);
 
-                    Toast.makeText(TypeMatChangeData.this,"Обновлено ",
+                    Toast.makeText(ChangeDataType.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

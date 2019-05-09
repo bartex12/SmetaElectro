@@ -15,7 +15,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaSpecific extends AppCompatActivity {
+public class SpecificSmeta extends AppCompatActivity {
 
     static String TAG = "33333";
 
@@ -36,24 +36,24 @@ public class SmetaSpecific extends AppCompatActivity {
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
-        Log.d(TAG, "SmetaSpecific onCreate file_id = " + file_id);
+        Log.d(TAG, "SpecificSmeta onCreate file_id = " + file_id);
         dataFile = smetaOpenHelper.getFileData(file_id);
 
         tvSmetaName = findViewById(R.id.tvName);
         tvSmetaName.setText(dataFile.getFileName());
-        Log.d(TAG, "SmetaSpecific onCreate tvSmetaName = " + dataFile.getFileName());
+        Log.d(TAG, "SpecificSmeta onCreate tvSmetaName = " + dataFile.getFileName());
 
         tvSmetaDescription = findViewById(R.id.tvDescription);
         tvSmetaDescription.setText(dataFile.getDescription());
-        Log.d(TAG, "SmetaSpecific onCreate tvSmetaDescription = " + dataFile.getDescription());
+        Log.d(TAG, "SpecificSmeta onCreate tvSmetaDescription = " + dataFile.getDescription());
 
         tvObjectAdress = findViewById(R.id.tvAdress);
         tvObjectAdress.setText(dataFile.getAdress());
-        Log.d(TAG, "SmetaSpecific onCreate tvObjectAdress = " + dataFile.getAdress());
+        Log.d(TAG, "SpecificSmeta onCreate tvObjectAdress = " + dataFile.getAdress());
 
         tvDateTime = findViewById(R.id.tvDateTime);
         tvDateTime.setText(dataFile.getFileNameDate() + "_" + dataFile.getFileNameTime());
-        Log.d(TAG, "SmetaSpecific onCreate tvDateTime = " +
+        Log.d(TAG, "SpecificSmeta onCreate tvDateTime = " +
                 dataFile.getFileNameDate() + "_" + dataFile.getFileNameTime());
 
         btnOk = findViewById(R.id.btnOk);
