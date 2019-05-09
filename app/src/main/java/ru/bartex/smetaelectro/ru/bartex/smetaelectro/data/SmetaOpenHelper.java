@@ -2155,6 +2155,33 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return typeNamesFW;
     }
 
+    //получаем список типов по id файла из таблицы FW
+    public String[] getTypeNamesFWSort(long file_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort ... ");
+
+        Cursor cursor = db.query(
+                FW.TABLE_NAME,   // таблица
+                new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
+                FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FW.FW_TYPE_ID);                   // порядок сортировки
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort cursor.getCount()  " + cursor.getCount());
+
+        String[] typeNamesFW = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            typeNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort typeNamesFW[position] = " + typeNamesFW[position]);
+        }
+        cursor.close();
+        return typeNamesFW;
+    }
+
     //получаем список типов материалов по id файла из таблицы FM
     public String[] getTypeNamesFM(long file_id){
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM ... ");
@@ -2171,6 +2198,32 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM typeNamesFW[position] = " + typeNamesFM[position]);
         }
             cursor.close();
+        return typeNamesFM;
+    }
+
+    //получаем список типов материалов по id файла из таблицы FM
+    public String[] getTypeNamesFMSort(long file_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort ... ");
+
+        Cursor cursor = db.query(
+                FM.TABLE_NAME,   // таблица
+                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
+                FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM.FM_MAT_TYPE_ID);                   // порядок сортировки
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort cursor.getCount()  " + cursor.getCount());
+        String[] typeNamesFM = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            typeNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort typeNamesFW[position] = " + typeNamesFM[position]);
+        }
+        cursor.close();
         return typeNamesFM;
     }
 
@@ -2643,7 +2696,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(Unit._ID);
@@ -2653,9 +2706,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromUnitName currentID = " + currentID);
-        if (cursor != null) {
             cursor.close();
-        }
         return currentID;
     }
 

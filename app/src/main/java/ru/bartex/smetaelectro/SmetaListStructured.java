@@ -134,8 +134,10 @@ public class SmetaListStructured extends AppCompatActivity {
                 String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
                 Log.d(TAG, "SmetaListStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
-                String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
+                //String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
+                String[] type_name = mSmetaOpenHelper.getTypeNamesFWSort(file_id);
                 Log.d(TAG, "SmetaListStructured - updateAdapter  type_name.length = " + type_name.length);
+
                 //получаем суммарную стоимомть работ  по смете с id файла file_id
                 work_summas = mSmetaOpenHelper.getSummaOfWork(file_id);
 
@@ -208,8 +210,10 @@ public class SmetaListStructured extends AppCompatActivity {
                 String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
                 Log.d(TAG, "SmetaListStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
                 //массив типов материалов для сметы с file_id
-                String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
+                //String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
+                String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFMSort(file_id);
                 Log.d(TAG, "SmetaListStructured - updateAdapter  type_name.length = " + type_mat_name.length);
+
                 //получаем суммарную стоимомть материалов  по смете с id файла file_id
                 mat_summas = mSmetaOpenHelper.getSummaOfMat(file_id);
 
