@@ -34,7 +34,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.WorkCategoryTypeNameListener,
-SmetasWorkCostTab1Category.OnClickTCategoryWorkListener, SmetasWorkCostTab2Type.OnClickTypeWorkListener{
+        SmetasCatTab.OnClickCatListener, SmetasTypeTab.OnClickTypekListener{
 
     public static final String TAG = "33333";
     long file_id;
@@ -264,14 +264,14 @@ SmetasWorkCostTab1Category.OnClickTCategoryWorkListener, SmetasWorkCostTab2Type.
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: " );
-                    SmetasWorkCostTab1Category tab1Category = SmetasWorkCostTab1Category.NewInstance(
+                    SWT1CostCat tab1Category = SWT1CostCat.NewInstance(
                             file_id,position);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/1: " );
-                    SmetasWorkCostTab2Type  tab2Type = SmetasWorkCostTab2Type.NewInstance(
+                    SWT2CostType  tab2Type = SWT2CostType.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -280,7 +280,7 @@ SmetasWorkCostTab1Category.OnClickTCategoryWorkListener, SmetasWorkCostTab2Type.
                 case 2:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SmetasWorkCostTab3Work tab3Mat = SmetasWorkCostTab3Work.NewInstance(
+                    SWT3Cost tab3Mat = SWT3Cost.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +

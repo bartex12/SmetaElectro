@@ -15,23 +15,18 @@ import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMatCost extends AppCompatActivity implements
-        SmetasMatTab0Cat.OnClickCatCostMatListener, SmetasMatTab1Type.OnClickTypeMatListener,
+        SmetasCatTab.OnClickCatListener, SmetasTypeTab.OnClickTypekListener,
         DialogSaveCost.OnCatTypeMatCostNameListener{
 
     public static final String TAG = "33333";
@@ -59,10 +54,11 @@ public class SmetasMatCost extends AppCompatActivity implements
     }
 
     @Override
-    public void typeAndClickTransmit(long type_mat_id, boolean isSelectedTypeMat) {
+    public void typeAndClickTransmit(long cat_id,long type_id, boolean isSelectedType) {
         Log.d(TAG, "//  SmetasMatCost  typeAndClickTransmit  // " );
-        this.isSelectedType = isSelectedTypeMat;
-        this.type_id = type_mat_id;
+        this.isSelectedType = isSelectedType;
+        this.type_id = type_id;
+        this.cat_id = cat_id;
         Log.d(TAG, "SmetasMatCost  typeAndClickTransmit type_id =" +
                 type_id + "  isSelectedType = " + isSelectedType);
 
@@ -259,20 +255,19 @@ public class SmetasMatCost extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 0: ####### " );
-                    SmetasMatTab0Cat  smetasMatTab0Cat = SmetasMatTab0Cat.
+                    SMT1CostCat  smetasMatTab0Cat = SMT1CostCat.
                             NewInstance(file_id, position);
                     return smetasMatTab0Cat;
                 case 1:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 1: ####### " );
-                    SmetasMatTab1Type  smetasMatTab1Type = SmetasMatTab1Type.
+                    SMT2CostType  smetasMatTab1Type = SMT2CostType.
                             NewInstance(file_id, position,isSelectedCatCost, cat_id);
                     return smetasMatTab1Type;
 
                 case 2:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 2/1: #######" );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SmetasMatTab2Mat smetasMatTab2Mat = SmetasMatTab2Mat.
-                            NewInstance(file_id, position, isSelectedType, type_id);
+                    SMT3Cost smetasMatTab2Mat = SMT3Cost.NewInstance(file_id, position, isSelectedType, type_id);
                     Log.d(TAG, " ####### SmetasMatCost  Fragment getItem case 2/2: isSelectedType = ####### " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
                             "  position = " +  position);

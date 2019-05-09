@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
@@ -32,7 +34,7 @@ public class CategoryChangeData extends AppCompatActivity {
         setContentView(R.layout.activity_category_change_data);
 
         //получаем id выбранного файла из интента
-        cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
+        cat_id = Objects.requireNonNull(getIntent().getExtras()).getLong(P.ID_CATEGORY);
         Log.d(TAG, "CategoryChangeData onCreate cat_id = " + cat_id);
         DataCategory dataCategory = smetaOpenHelper.getCategoryData(cat_id);
 

@@ -107,7 +107,7 @@ public class SmetaListStructured extends AppCompatActivity {
                     return true;
                 case R.id.navigation_costs:
                     if (position_tab == 0){
-                        Intent intent_costs_work = new Intent(SmetaListStructured.this, CostCategory.class);
+                        Intent intent_costs_work = new Intent(SmetaListStructured.this, SmetasWorkCost.class);
                         startActivity(intent_costs_work);
                     }else if (position_tab == 1){
                         Intent intent_costs_mat = new Intent(SmetaListStructured.this, SmetasMatCost.class);

@@ -18,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/base_text_two_mat"
+        android:id="@+id/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

@@ -35,7 +35,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasWork extends AppCompatActivity implements
-        SmetasWorkTab2Type.OnClickTypeWorkListener, SmetasWorkTab1Category.OnClickTCategoryWorkListener,
+        SmetasTypeTab.OnClickTypekListener, SmetasCatTab.OnClickCatListener,
         DialogSaveName.WorkCategoryTypeNameListener {
 
     public static final String TAG = "33333";
@@ -228,7 +228,9 @@ public class SmetasWork extends AppCompatActivity implements
                 case 0:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0");
                     DialogFragment saveCat = DialogSaveCatName.newInstance(true);
+                    Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 13");
                     saveCat.show(getSupportFragmentManager(),"SaveCatName");
+                    Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 14");
                     break;
                 case 1:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 1");
@@ -265,7 +267,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "SmetasWork c  case 0:");
                 //получаем имя категории из строки списка категории
-                TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
                 long cat_id = mSmetaOpenHelper.getIdFromCategoryName(name);
@@ -279,7 +281,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 1:
                 Log.d(TAG, "SmetasWork onCreateContextMenu  case 1:");
                 //получаем имя типа из строки списка типов
-                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeName = tvType.getText().toString();
                 //находим id типа по имени типа
                 long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
@@ -295,7 +297,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 2:
                 Log.d(TAG, "SmetasWork onCreateContextMenu  case 2:");
                 //получаем имя работы  из строки списка видов работ
-                TextView tvWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                 String workName = tvWork.getText().toString();
                 //находим id вида  по имени вида работ
                 long work_id = mSmetaOpenHelper.getIdFromWorkName(workName);
@@ -335,7 +337,7 @@ public class SmetasWork extends AppCompatActivity implements
                     case 0:
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID case 0:");
                         //получаем имя категории из строки списка категорий
-                        TextView tvSpecificCat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvSpecificCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_specific = tvSpecificCat.getText().toString();
                         //находим id по имени категории
                         long cat_id_specific = mSmetaOpenHelper.getIdFromCategoryName(cat_name_specific);
@@ -350,7 +352,7 @@ public class SmetasWork extends AppCompatActivity implements
                     case 1:
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID case 1:");
                         //получаем имя типа из строки списка типов работ
-                        TextView tvSpecificType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvSpecificType = acmi.targetView.findViewById(R.id.base_text);
                         String type_name_specific = tvSpecificType.getText().toString();
                         //находим id по имени типа
                         long type_id_specific = mSmetaOpenHelper.getIdFromTypeName(type_name_specific);
@@ -365,12 +367,12 @@ public class SmetasWork extends AppCompatActivity implements
                     case 2:
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID case 2:");
                         //получаем имя типа из строки списка типов работ
-                        TextView tvSpecificWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvSpecificWork = acmi.targetView.findViewById(R.id.base_text);
                         String work_name_specific = tvSpecificWork.getText().toString();
                         //находим id по имени типа
                         long work_id_specific = mSmetaOpenHelper.getIdFromWorkName(work_name_specific);
-                        Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID " +
-                                "work_name_specific = " + work_name_specific +  " work_id_specific =" + work_id_specific);
+                        //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID " +
+                        //        "work_name_specific = " + work_name_specific +  " work_id_specific =" + work_id_specific);
                         //отправляем интент с id типа
                         Intent intentSpecificWork = new Intent(SmetasWork.this, WorkSpesific.class);
                         intentSpecificWork.putExtra(P.ID_WORK, work_id_specific);
@@ -385,7 +387,7 @@ public class SmetasWork extends AppCompatActivity implements
 
                     case 0:
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 0");
-                        TextView tvChangCat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvChangCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_chang = tvChangCat.getText().toString();
                         //находим id категории по имени категории
                         long cat_id_Change = mSmetaOpenHelper.getIdFromCategoryName(cat_name_chang);
@@ -400,7 +402,7 @@ public class SmetasWork extends AppCompatActivity implements
                     case 1:
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 1");
                         //получаем имя типа из строки списка типов работ
-                        TextView tvChangType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvChangType = acmi.targetView.findViewById(R.id.base_text);
                         String type_name_chang = tvChangType.getText().toString();
                         //находим id по имени типа
                         long type_id_Change = mSmetaOpenHelper.getIdFromTypeName(type_name_chang);
@@ -414,7 +416,7 @@ public class SmetasWork extends AppCompatActivity implements
                     case 2:
                         Log.d(TAG, "SmetasWork onContextItemSelected P.CHANGE_NAME_ID case 2");
                         //получаем имя типа из строки списка типов работ
-                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text);
                         String work_name_chang = tvChangWork.getText().toString();
                         //находим id по имени работы
                         long work_id_Change = mSmetaOpenHelper.getIdFromWorkName(work_name_chang);
@@ -444,7 +446,7 @@ public class SmetasWork extends AppCompatActivity implements
                         switch (mViewPager.getCurrentItem()){
                             case 0:
                                 Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 0");
-                                TextView tvCat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
                                 String cat_name = tvCat.getText().toString();
                                 //находим id по имени файла
                                 long cat_id = mSmetaOpenHelper.getIdFromCategoryName(cat_name);
@@ -458,7 +460,7 @@ public class SmetasWork extends AppCompatActivity implements
 
                             case 1:
                                 Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 1");
-                                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                                 String type_name = tvType.getText().toString();
                                 //находим id по имени файла
                                 long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name);
@@ -475,12 +477,12 @@ public class SmetasWork extends AppCompatActivity implements
 
                             case 2:
                                 Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 2");
-                                TextView tvWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                                 String work_Name = tvWork.getText().toString();
                                 //находим id по имени файла
                                 long work_id = mSmetaOpenHelper.getIdFromWorkName(work_Name);
-                                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
-                                        " work_Name = " + work_Name + " work_id =" + work_id);
+                                //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
+                                 //       " work_Name = " + work_Name + " work_id =" + work_id);
                                 //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
                                 // проверка в onCreateContextMenu
                                 mSmetaOpenHelper.deleteWork(work_id);
@@ -518,14 +520,14 @@ public class SmetasWork extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
-                    SmetasWorkTab1Category tab1Category = SmetasWorkTab1Category.NewInstance(
+                    SWT1Cat tab1Category = SWT1Cat.NewInstance(
                             file_id,position);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
-                    SmetasWorkTab2Type  tab2Type = SmetasWorkTab2Type.NewInstance(
+                    SWT2Type  tab2Type = SWT2Type.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -534,7 +536,7 @@ public class SmetasWork extends AppCompatActivity implements
                 case 2:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SmetasWorkTab3Work tab3Mat = SmetasWorkTab3Work.NewInstance(
+                    SWT3 tab3Mat = SWT3.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +

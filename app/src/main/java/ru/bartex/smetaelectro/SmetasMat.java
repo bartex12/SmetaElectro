@@ -16,26 +16,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMat extends AppCompatActivity implements
-        SmetasMatTab2Type.OnClickTypeMatListener, SmetasMatTab1Category.OnClickTCategoryMatListener,
+        SmetasTypeTab.OnClickTypekListener, SmetasCatTab.OnClickCatListener,
         DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
@@ -270,7 +266,7 @@ public class SmetasMat extends AppCompatActivity implements
         switch (mViewPager.getCurrentItem()){
             case 0:
                 //получаем имя категории из строки списка категории
-                TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
                 long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
@@ -283,7 +279,7 @@ public class SmetasMat extends AppCompatActivity implements
                 break;
             case 1:
                 //получаем имя типа из строки списка типов материала
-                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeMatName = tvType.getText().toString();
                 //находим id типа по имени типа
                 long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(typeMatName);
@@ -296,13 +292,13 @@ public class SmetasMat extends AppCompatActivity implements
                 break;
             case 2:
                 //получаем имя материала  из строки списка видов материала
-                TextView tvMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                TextView tvMat = acmi.targetView.findViewById(R.id.base_text);
                 String matName = tvMat.getText().toString();
                 //находим id вида  по имени вида материала
                 long mat_id = mSmetaOpenHelper.getIdFromMatName(matName);
                 //находим количество строк видов материала в таблице FM для mat_id
                 int countLineWorkFM = mSmetaOpenHelper.getCountLineMatInFM(mat_id);
-                Log.d(TAG, "SmetasMatTab3Mat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
+                Log.d(TAG, "SmetasMat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
                 //mSmetaOpenHelper.displayTableCost();
                 if(countLineWorkFM > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -329,7 +325,7 @@ public class SmetasMat extends AppCompatActivity implements
                 switch (mViewPager.getCurrentItem()){
                     case 0:
                         //получаем имя категории из строки списка категории
-                        TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                         final String name = tvName.getText().toString();
                         //находим id категории по имени категории
                         final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
@@ -345,7 +341,7 @@ public class SmetasMat extends AppCompatActivity implements
                     case 1:
 
                         //получаем имя типа из строки списка типов материала
-                        TextView tvSpecificTypeMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvSpecificTypeMat = acmi.targetView.findViewById(R.id.base_text);
                         String type_mat_name_specific = tvSpecificTypeMat.getText().toString();
                         //находим id по имени типа
                         long type_mat_id_specific = mSmetaOpenHelper.getIdFromMatTypeName(type_mat_name_specific);
@@ -362,7 +358,7 @@ public class SmetasMat extends AppCompatActivity implements
 
                         Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID");
                         //получаем имя типа из строки списка материала
-                        TextView tvSpecificMat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvSpecificMat = acmi.targetView.findViewById(R.id.base_text);
                         String mat_name_specific = tvSpecificMat.getText().toString();
                         //находим id по имени типа
                         long mat_id_specific = mSmetaOpenHelper.getIdFromMatName(mat_name_specific);
@@ -382,7 +378,7 @@ public class SmetasMat extends AppCompatActivity implements
                     case 0:
 
                         //получаем имя категории из строки списка категории
-                        TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                         final String name = tvName.getText().toString();
                         //находим id категории по имени категории
                         final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
@@ -397,7 +393,7 @@ public class SmetasMat extends AppCompatActivity implements
 
                     case 1:
                         //получаем имя типа из строки списка типов материала
-                        TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                         String tvTypeMatName = tvType.getText().toString();
                         //находим id по имени типа
                         long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(tvTypeMatName);
@@ -412,7 +408,7 @@ public class SmetasMat extends AppCompatActivity implements
                         break;
                     case 2:
                         //получаем имя материала из строки списка типов материала
-                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text);
                         String mat_name_chang = tvChangWork.getText().toString();
                         //находим id по имени материала
                         long mat_id_Change = mSmetaOpenHelper.getIdFromMatName(mat_name_chang);
@@ -442,7 +438,7 @@ public class SmetasMat extends AppCompatActivity implements
                         switch (mViewPager.getCurrentItem()){
                             case 0:
                                 //получаем имя категории из строки списка категории
-                                TextView tvName = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                                 final String name = tvName.getText().toString();
                                 //находим id категории по имени категории
                                 final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
@@ -458,7 +454,7 @@ public class SmetasMat extends AppCompatActivity implements
 
                             case 1:
                                 //получаем имя типа из строки списка типов
-                                TextView tvType = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                                 final String type = tvType.getText().toString();
                                 //находим id типа по имени типа
                                 final long type_mat_id = mSmetaOpenHelper.getTypeIdFromTypeMatName(type);
@@ -477,7 +473,7 @@ public class SmetasMat extends AppCompatActivity implements
 
                             case 2:
                                 //получаем имя материала из строки списка материала
-                                TextView tvmat = acmi.targetView.findViewById(R.id.base_text_two_mat);
+                                TextView tvmat = acmi.targetView.findViewById(R.id.base_text);
                                 final String mat = tvmat.getText().toString();
                                 //находим id типа по имени типа
                                 final long mat_id = mSmetaOpenHelper.getMatIdFromMatName(mat);
@@ -519,13 +515,13 @@ public class SmetasMat extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
-                    SmetasMatTab1Category tab1Category = SmetasMatTab1Category.NewInstance(file_id,position);
+                    SMT1Cat tab1Category = SMT1Cat.NewInstance(file_id,position);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 1/1: " );
-                    SmetasMatTab2Type  tab2Type = SmetasMatTab2Type.NewInstance(
+                    SMT2Type  tab2Type = SMT2Type.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -534,7 +530,7 @@ public class SmetasMat extends AppCompatActivity implements
                 case 2:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SmetasMatTab3Mat tab3Mat = SmetasMatTab3Mat.NewInstance(
+                    SMT3 tab3Mat = SMT3.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +

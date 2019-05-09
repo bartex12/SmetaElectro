@@ -13,6 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 import ru.bartex.smetaelectro.DataCategory;
 import ru.bartex.smetaelectro.DataCategoryMat;
@@ -981,7 +982,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
         Log.i(TAG, " SmetaOpenHelper.getIdFromCategoryName - cursor.getCount()=" + cursor.getCount());
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(CategoryWork._ID);
@@ -991,9 +992,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromCategoryName currentID = " + currentID);
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return currentID;
     }
 
@@ -1081,7 +1080,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.close();
         }
-        Log.d(TAG, "getIdFromWorks currentID.length = " + currentID.length);
+        Log.d(TAG, "getIdFromWorks currentID.length = " +currentID.length);
         return currentID;
     }
 
@@ -1098,7 +1097,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
         int[] currentID = null;
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             currentID = new int[cursor.getCount()];
             while (cursor.moveToNext()) {
                 // Узнаем индекс каждого столбца
@@ -1107,7 +1106,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 currentID[cursor.getPosition()] = cursor.getInt(idColumnIndex);
             }
         }
-            cursor.close();
+        cursor.close();
         Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
         return currentID;
     }
@@ -1148,7 +1147,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(work_id)});
         Log.d(TAG, "getWorkCostById cursor.getCount() = " + cursor.getCount());
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(CostWork.COST_COST);
@@ -1156,9 +1155,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             costOfWork = cursor.getFloat(idColumnIndex);
         }
         Log.d(TAG, "getWorkCostById costOfWork = " + costOfWork);
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return costOfWork;
     }
 
@@ -1227,7 +1224,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "getCostUnitById cursor.getCount() = " + cursor.getCount());
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс  столбца
             int idColumnIndex = cursor.getColumnIndex(CostWork.COST_UNIT_ID);
@@ -1241,7 +1238,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Cursor cursor1 = db.rawQuery(unitN, null);
             Log.d(TAG, "getCostUnitById cursor1.getCount() = " + cursor1.getCount());
 
-            if ((cursor1 != null) && (cursor1.getCount() != 0)) {
+            if (cursor1.getCount() != 0) {
                 cursor1.moveToFirst();
                 // Узнаем индекс  столбца
                 int idColumnIndex1 = cursor1.getColumnIndex(Unit.UNIT_NAME);
@@ -1249,13 +1246,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 unitName = cursor1.getString(idColumnIndex1);
                 Log.d(TAG, "getWorkCostById unitName = " + unitName);
             }
-            if (cursor1 != null) {
-                cursor1.close();
-            }
+            cursor1.close();
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return unitName;
     }
 
@@ -1392,7 +1385,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 FileWork._ID + "=" + file_id,
                 null, null, null, null, null);
         Log.d(TAG, "getFileNameById mCursor.getCount() = " + mCursor.getCount());
-        if ((mCursor != null) && (mCursor.getCount() != 0)) {
+        if (mCursor.getCount() != 0) {
             mCursor.moveToFirst();
         }
         String fileName = mCursor.getString(mCursor.getColumnIndex(FileWork.FILE_NAME));
@@ -1629,9 +1622,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             file_name[position] = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
             Log.i(TAG, "SmetaOpenHelper.getFileNames position = " + position);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return file_name;
     }
 
@@ -1725,9 +1716,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
             Log.i(TAG, "SmetaOpenHelper.getNameOfWork work_name[position] = " + work_name[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_name;
     }
 
@@ -1811,9 +1800,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
             Log.i(TAG, "SmetaOpenHelper.getCostOfWork work_cost[position] = " + work_cost[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_cost;
     }
 
@@ -1970,9 +1957,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
             Log.i(TAG, "SmetaOpenHelper.getUnitsOfWork work_units[position] = " + work_units[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_units;
     }
 
@@ -2011,9 +1996,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
             Log.i(TAG, "SmetaOpenHelper.getUnitsOfWorkSelectedType work_units[position] = " + work_units[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_units;
     }
 
@@ -2033,9 +2016,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             mat_units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
             Log.i(TAG, "SmetaOpenHelper.getUnitsOfMatSelectedType mat_units[position] = " + mat_units[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return mat_units;
     }
 
@@ -2054,9 +2035,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
             Log.i(TAG, "SmetaOpenHelper.getSummaOfWork work_summa[position] = " + work_summa[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_summa;
     }
 
@@ -2095,9 +2074,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             work_summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
             Log.i(TAG, "SmetaOpenHelper.getSummaOfWorkSelectedType work_summa[position] = " + work_summa[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return work_summa;
     }
 
@@ -2117,9 +2094,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             mat_summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
             Log.i(TAG, "SmetaOpenHelper.getSummaOfMatSelectedType mat_summa[position] = " + mat_summa[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return mat_summa;
     }
 
@@ -2214,9 +2189,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             workNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
             Log.i(TAG, "SmetaOpenHelper.getWorkNamesFW workNamesFW[position] = " + workNamesFW[position]);
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return workNamesFW;
     }
 
@@ -2301,12 +2274,10 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(work_id)});
         Log.i(TAG, "SmetaOpenHelper.isWork cursor.getCount() = " + cursor.getCount());
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             return true;
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return false;
     }
 
@@ -2324,9 +2295,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             float count = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
             return count;
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return -1;
     }
 
@@ -2345,9 +2314,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Log.i(TAG, "SmetaOpenHelper.getTypeIdWork type_id = " + type_id );
             return type_id;
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return -1;
     }
 
@@ -2366,9 +2333,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Log.i(TAG, "SmetaOpenHelper.getCateIdWork cat_id = " + cat_id );
             return cat_id;
         }
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return -1;
     }
 
@@ -3153,7 +3118,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(mat_id)});
         Log.d(TAG, "getCostMatById cursor.getCount() = " + cursor.getCount());
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
@@ -3161,9 +3126,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             costOfMat = cursor.getFloat(idColumnIndex);
         }
         Log.d(TAG, "getCostMatById costOfMat = " + costOfMat);
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return costOfMat;
     }
 

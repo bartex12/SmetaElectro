@@ -45,38 +45,41 @@ public class DialogSaveCatName extends DialogSaveName {
         Log.d(TAG, "DialogSaveCatName onCreateDialog... ");
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
         takeOnAndOffSoftInput();
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...1 ");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.dialog_save_name, null);
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...2 ");
+        View view = inflater.inflate(R.layout.dialog_save_name, null);
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...3 ");
         builder.setView(view);
         builder.setTitle("Сохранить");
         builder.setIcon(R.drawable.ic_save_black_24dp);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...3 ");
 
         TextView tvKind  = view.findViewById(R.id.tvKind);
         tvKind.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...4 ");
         EditText etSaveNameWork = view.findViewById(R.id.etSaveNameWork);
         etSaveNameWork.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...5 ");
         TextView tvType  = view.findViewById(R.id.tvType);
         tvType.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...6 ");
         TextView tvTypeName  = view.findViewById(R.id.tvTypeName);
         tvTypeName.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...7 ");
         EditText typeName = view.findViewById(R.id.etSaveNameType);
         typeName.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...8 ");
         TextView tvCatName  = view.findViewById(R.id.tvCatName);
         tvCatName.setVisibility(View.GONE);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...9 ");
         final EditText etSaveNameCat = view.findViewById(R.id.etSaveNameCat);
         etSaveNameCat.requestFocus();
         etSaveNameCat.setInputType(InputType.TYPE_CLASS_TEXT);
-
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...10 ");
         Button btnSaveName = view.findViewById(R.id.buttonSaveName);
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...11 ");
         btnSaveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,14 +100,14 @@ public class DialogSaveCatName extends DialogSaveName {
 
                 //если имя - пустая строка
                 if (nameCat.trim().isEmpty()){
-                    Snackbar.make(view, "Введите непустое название категории", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(getView(), "Введите непустое название категории", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название категории ");
                     return;
 
                     //если такое имя уже есть в базе
                 }else if (catId != -1) {
-                    Snackbar.make(view, "Такое название уже существует. Введите другое.",
+                    Snackbar.make(getView(), "Такое название уже существует. Введите другое.",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Такое имя название существует. Введите другое название. catId = " +catId);
                     return;
@@ -124,6 +127,7 @@ public class DialogSaveCatName extends DialogSaveName {
         });
 
         Button btnCancel = view.findViewById(R.id.buttonCancelName);
+        Log.d(TAG, "DialogSaveCatName onCreateDialog...12 ");
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +139,4 @@ public class DialogSaveCatName extends DialogSaveName {
         //если не делать запрет на закрытие окна при щелчке за пределами окна, то можно так
         return builder.create();
     }
-
-
 }
