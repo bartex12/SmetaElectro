@@ -11,56 +11,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT1CostCat extends SmetasTabCat {
+public class SMT1CatCost extends SmetasTabCat {
 
 
-    public SWT1CostCat() {
+    public SMT1CatCost() {
         // Required empty public constructor
     }
 
-    public static SWT1CostCat NewInstance(long file_id, int position){
-        Log.d(TAG, "//  SWT1CostCat NewInstance // " );
-        SWT1CostCat fragment = new SWT1CostCat();
+    public static SMT1CatCost NewInstance(long file_id, int position){
+        Log.d(TAG, "//  SMT1CatCost NewInstance // " );
+        SMT1CatCost fragment = new SMT1CatCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
-        args.putInt(P.TAB_POSITION, position);
+        args.putLong(P.TAB_POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SWT1CostCat updateAdapter // " );
-        //Курсор с именами категорий из таблицы категорий CategoryMat
-        Cursor cursor = mSmetaOpenHelper.getCategoryNames();
+        //Курсор с именами категорий материалов
+        Cursor cursor = mSmetaOpenHelper.getMatCategoryNames();
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SWT1CostCat updateAdapter Всего категорий  = "+ cursor.getCount() );
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
-            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
+            String name_cat_cost = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
+            Log.d(TAG, "SMT1CatCost - updateAdapter  name_cat_cost = " + name_cat_cost);
             m = new HashMap<>();
-            m.put(P.ATTR_CATEGORY_NAME,name_cat);
+            m.put(P.ATTR_CAT_MAT_NAME,name_cat_cost);
             data.add(m);
         }
-        Log.d(TAG, " SWT1CostCat updateAdapter data.size()  = "+ data.size() );
-        String[] from = new String[]{P.ATTR_CATEGORY_NAME};
+        String[] from = new String[]{P.ATTR_CAT_MAT_NAME};
         int[] to = new int[]{R.id.base_text};
-
         sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
         listView.setAdapter(sara);
     }
 
     @Override
     public long getCatId(String catName) {
-        long cat_id = mSmetaOpenHelper.getIdFromCategoryName(catName);
+        long cat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(catName);
         return cat_id;
     }
-
 }

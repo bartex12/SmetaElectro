@@ -17,12 +17,12 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT2CostType extends SmetasTabType {
+public class SWT2TypeCost extends SmetasTabType {
 
-    public static SWT2CostType NewInstance(
+    public static SWT2TypeCost NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SWT2CostType NewInstance // " );
-        SWT2CostType fragment = new SWT2CostType();
+        Log.d(TAG, "//  SWT2TypeCost NewInstance // " );
+        SWT2TypeCost fragment = new SWT2TypeCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -34,15 +34,15 @@ public class SWT2CostType extends SmetasTabType {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SWT2CostType updateAdapter // " );
+        Log.d(TAG, "//  SWT2TypeCost updateAdapter // " );
 
         Cursor cursor;
         if (isSelectedCat){
-            Log.d(TAG, "SWT2CostType updateAdapter isSelectedCat = true " );
+            Log.d(TAG, "SWT2TypeCost updateAdapter isSelectedCat = true " );
             //курсор с именами типов работы для категорий с cat_id
             cursor = mSmetaOpenHelper.getTypeNames(cat_id);
         }else {
-            Log.d(TAG, "SWT2CostType updateAdapter isSelectedCat = false " );
+            Log.d(TAG, "SWT2TypeCost updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
             cursor = mSmetaOpenHelper.getTypeWorkNamesAllCategories();
         }
@@ -50,7 +50,7 @@ public class SWT2CostType extends SmetasTabType {
         String[] typetNamesFW = mSmetaOpenHelper.getTypeNamesFW(file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SWT2CostType updateAdapter Всего типов материалов = "+ cursor.getCount() );
+        Log.d(TAG, " SWT2TypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
@@ -58,7 +58,7 @@ public class SWT2CostType extends SmetasTabType {
             m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
             data.add(m);
         }
-        Log.d(TAG, " SWT2CostType updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " SWT2TypeCost updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_TYPE_MAT_NAME};
         int [] to = new int[]{R.id.base_text};
 
@@ -78,7 +78,7 @@ public class SWT2CostType extends SmetasTabType {
         return cat_id;
     }
 
-    public SWT2CostType() {
+    public SWT2TypeCost() {
         // Required empty public constructor
     }
 

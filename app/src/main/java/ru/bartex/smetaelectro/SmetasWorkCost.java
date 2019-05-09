@@ -255,14 +255,14 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: " );
-                    SWT1CostCat tab1Category = SWT1CostCat.NewInstance(
+                    SWT1CatCost tab1Category = SWT1CatCost.NewInstance(
                             file_id,position);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/1: " );
-                    SWT2CostType  tab2Type = SWT2CostType.NewInstance(
+                    SWT2TypeCost tab2Type = SWT2TypeCost.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +

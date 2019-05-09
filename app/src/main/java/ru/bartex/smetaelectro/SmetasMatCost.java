@@ -255,12 +255,12 @@ public class SmetasMatCost extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 0: ####### " );
-                    SMT1CostCat  smetasMatTab0Cat = SMT1CostCat.
+                    SMT1CatCost smetasMatTab0Cat = SMT1CatCost.
                             NewInstance(file_id, position);
                     return smetasMatTab0Cat;
                 case 1:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 1: ####### " );
-                    SMT2CostType  smetasMatTab1Type = SMT2CostType.
+                    SMT2TypeCost smetasMatTab1Type = SMT2TypeCost.
                             NewInstance(file_id, position,isSelectedCatCost, cat_id);
                     return smetasMatTab1Type;
 
