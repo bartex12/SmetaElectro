@@ -66,9 +66,7 @@ public class SmetasTab2Materialy extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mSmetaOpenHelper = new SmetaOpenHelper(context);
-
         viewPager = new ViewPager(context);
-        //viewPager.setCurrentItem(position);
     }
 
     @Override
@@ -104,6 +102,24 @@ public class SmetasTab2Materialy extends Fragment {
         updateAdapter();
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasMaterials);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "//SmetasTab2Materialy onPause // " );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "//SmetasTab2Materialy onStop // " );
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "//SmetasTab2Materialy onDestroy // " );
     }
 
     public void updateAdapter() {

@@ -11,6 +11,7 @@
     <string name="title_activity_smetas">Smetas</string>
     <string name="action_settings">Настройки</string>
     <string name="action_struct">Структура</string>
+    <string name="action_send">Поделиться</string>
     <string name="action_delete">Удалить</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_change_name">Изменить</string>

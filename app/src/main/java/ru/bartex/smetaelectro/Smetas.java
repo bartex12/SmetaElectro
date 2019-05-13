@@ -2,6 +2,8 @@ package ru.bartex.smetaelectro;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,6 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -118,10 +125,11 @@ public class Smetas extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
         if (id == R.id.action_struct) {
             int currentItem = mViewPager.getCurrentItem();
             Log.d(TAG, "Smetas - onOptionsItemSelected    currentItem = " + currentItem);
-            Intent intent = new Intent(Smetas.this, SmetaListStructured.class);
+            Intent intent = new Intent(Smetas.this, ListOfSmetasStructured.class);
             intent.putExtra(P.TAB_POSITION, currentItem);
             intent.putExtra(P.ID_FILE, file_id);
             startActivity(intent);
@@ -198,9 +206,6 @@ public class Smetas extends AppCompatActivity {
                             startActivity(intent_costs_mat);
                             return true;
                     }
-
-                    // Для данного варианта в манифесте
-
             }
             return false;
         }

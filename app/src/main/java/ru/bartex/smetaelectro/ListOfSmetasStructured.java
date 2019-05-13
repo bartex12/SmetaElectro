@@ -1,40 +1,43 @@
 package ru.bartex.smetaelectro;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleExpandableListAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaListStructured extends AppCompatActivity {
+public class ListOfSmetasStructured extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
@@ -57,6 +60,8 @@ public class SmetaListStructured extends AppCompatActivity {
     //список для имён, цены и других параметров работы
     Map<String,String> mm;
 
+    File fileWork; //имя файла с данными по смете на работы
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +73,7 @@ public class SmetaListStructured extends AppCompatActivity {
         mSmetaOpenHelper = new SmetaOpenHelper(this);
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         position_tab = getIntent().getExtras().getInt(P.TAB_POSITION);
-        Log.d(TAG, "SmetaListStructured - onCreate file_id = " + file_id  + "  position_tab = " + position_tab);
+        Log.d(TAG, "ListOfSmetasStructured - onCreate file_id = " + file_id  + "  position_tab = " + position_tab);
 
         llWork = findViewById(R.id.llWork);
 
@@ -86,6 +91,28 @@ public class SmetaListStructured extends AppCompatActivity {
         updateAdapter();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list_of_smetas_structured, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_send:
+                ExportDatabaseCSVTask task=new ExportDatabaseCSVTask();
+                task.execute();
+                return true;
+
+            case R.id.action_settings:
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -93,7 +120,7 @@ public class SmetaListStructured extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
-                    Intent intentHome = new Intent(SmetaListStructured.this, MainActivity.class);
+                    Intent intentHome = new Intent(ListOfSmetasStructured.this, MainActivity.class);
                     // установка флагов- создаём новую задачу и убиваем старую вместе
                     // со всеми предыдущими переходами - работает дёргано по сравнению с манифестом
                     //intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -102,15 +129,15 @@ public class SmetaListStructured extends AppCompatActivity {
                     return true;
                 case R.id.navigation_smetas:
                     // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
-                    Intent intent_smetas = new Intent(SmetaListStructured.this, ListOfSmetasNames.class);
+                    Intent intent_smetas = new Intent(ListOfSmetasStructured.this, ListOfSmetasNames.class);
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs:
                     if (position_tab == 0){
-                        Intent intent_costs_work = new Intent(SmetaListStructured.this, SmetasWorkCost.class);
+                        Intent intent_costs_work = new Intent(ListOfSmetasStructured.this, SmetasWorkCost.class);
                         startActivity(intent_costs_work);
                     }else if (position_tab == 1){
-                        Intent intent_costs_mat = new Intent(SmetaListStructured.this, SmetasMatCost.class);
+                        Intent intent_costs_mat = new Intent(ListOfSmetasStructured.this, SmetasMatCost.class);
                         intent_costs_mat.putExtra(P.ID_FILE, file_id);
                         startActivity(intent_costs_mat);
                     }
@@ -124,19 +151,18 @@ public class SmetaListStructured extends AppCompatActivity {
     public void updateAdapter() {
 
         String fileName = mSmetaOpenHelper.getFileNameById(file_id);
-
         switch (position_tab){
             case 0:
                 data = new  ArrayList<Map<String, String>>();
 
-                Log.d(TAG, "SmetaListStructured - updateAdapter /////////////////////");
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter /////////////////////");
                 //Массив категорий работ для сметы с file_id
                 String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  cat_name.length = " + cat_name.length);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
                 //String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
                 String[] type_name = mSmetaOpenHelper.getTypeNamesFWSort(file_id);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  type_name.length = " + type_name.length);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_name.length);
 
                 //получаем суммарную стоимомть работ  по смете с id файла file_id
                 work_summas = mSmetaOpenHelper.getSummaOfWork(file_id);
@@ -147,7 +173,7 @@ public class SmetaListStructured extends AppCompatActivity {
                         mm = new HashMap<>();
                         mm.put("typeName", (i+1) + " " + type_name[i]);
                         data.add(mm);
-                        Log.d(TAG, "SmetaListStructured - updateAdapter  data.size()1 = " + data.size());
+                        Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
                         long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
                         Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[i] = " +
@@ -173,7 +199,7 @@ public class SmetaListStructured extends AppCompatActivity {
                             mm.put("workUnit", work_units[k]);
                             mm.put("workSumma", Float.toString(work_summa[k]));
                             data.add(mm);
-                            Log.d(TAG, "SmetaListStructured - updateAdapter  data.size()2 = " + data.size());
+                            Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()2 = " + data.size());
                         }
                     }
                 }
@@ -192,7 +218,7 @@ public class SmetaListStructured extends AppCompatActivity {
                 //добавляем футер
                 footer = getLayoutInflater().inflate(R.layout.list_item_single, null);
                 totalSumma = P.updateTotalSumma(work_summas);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  totalSumma = " + totalSumma);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  totalSumma = " + totalSumma);
                 ((TextView)footer.findViewById(R.id.base_text)).
                         setText(String.format(Locale.ENGLISH,"За работу: %.0f руб", totalSumma ));
                 mListViewNames.addFooterView(footer, null, false);
@@ -205,14 +231,14 @@ public class SmetaListStructured extends AppCompatActivity {
 
                 data = new  ArrayList<Map<String, String>>();
 
-                Log.d(TAG, "SmetaListStructured - updateAdapter /////////////////////");
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter /////////////////////");
                 //Массив категорий материалов для сметы с file_id
                 String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
                 //массив типов материалов для сметы с file_id
                 //String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
                 String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFMSort(file_id);
-                Log.d(TAG, "SmetaListStructured - updateAdapter  type_name.length = " + type_mat_name.length);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_mat_name.length);
 
                 //получаем суммарную стоимомть материалов  по смете с id файла file_id
                 mat_summas = mSmetaOpenHelper.getSummaOfMat(file_id);
@@ -223,7 +249,7 @@ public class SmetaListStructured extends AppCompatActivity {
                         mm = new HashMap<>();
                         mm.put("typeName", (i+1) + " " + type_mat_name[i]);
                         data.add(mm);
-                        Log.d(TAG, "SmetaListStructured - updateAdapter  data.size()1 = " + data.size());
+                        Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
                         long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(type_mat_name[i]);
                         Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_mat_name[i] = " +
@@ -249,7 +275,7 @@ public class SmetaListStructured extends AppCompatActivity {
                             mm.put("workUnit", mat_units[k]);
                             mm.put("workSumma", Float.toString(mat_summa[k]));
                             data.add(mm);
-                            Log.d(TAG, "SmetaListStructured - updateAdapter  data.size()2 = " + data.size());
+                            Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()2 = " + data.size());
                         }
                     }
                 }
@@ -302,7 +328,7 @@ public class SmetaListStructured extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.base_text_type:
                     String s = (String) data;
-                    Log.d(TAG, "SmetaListStructured - MyViewBinder s = " + s);
+                    Log.d(TAG, "ListOfSmetasStructured - MyViewBinder s = " + s);
                     if (s == null) {
                         view.setVisibility(View.GONE);
                     } else {
@@ -312,15 +338,15 @@ public class SmetaListStructured extends AppCompatActivity {
                     return false;
 
                 case R.id.llWork:
-                    Log.d(TAG, "SmetaListStructured - MyViewBinder view.getId() == R.id.llWork /////");
+                    Log.d(TAG, "ListOfSmetasStructured - MyViewBinder view.getId() == R.id.llWork /////");
                     String s1 = (String) data;
-                    //Log.d(TAG, "SmetaListStructured - MyViewBinder s = " + s1 );
+                    //Log.d(TAG, "ListOfSmetasStructured - MyViewBinder s = " + s1 );
                     if (s1 == null) {
                         view.setVisibility(View.VISIBLE);
-                        Log.d(TAG, "SmetaListStructured - MyViewBinder s == null  View.VISIBLE");
+                        Log.d(TAG, "ListOfSmetasStructured - MyViewBinder s == null  View.VISIBLE");
                     } else {
                         view.setVisibility(View.GONE);
-                        Log.d(TAG, "SmetaListStructured - MyViewBinder s == null View.GONE");
+                        Log.d(TAG, "ListOfSmetasStructured - MyViewBinder s == null View.GONE");
                     }
                     //так как адаптер не умеет обрабатывать LinearLayout, ставим true. прекращая обработку
                     return true;
@@ -330,136 +356,226 @@ public class SmetaListStructured extends AppCompatActivity {
         }
     }
 
-    /*
+    public class ExportDatabaseCSVTask extends AsyncTask<String, Void, Boolean> {
+        private final ProgressDialog dialog = new ProgressDialog(ListOfSmetasStructured.this);
 
-    //можно замутить класс для изменения свойств в setViewText или setViewImage
-    // но проще цветной текст сделать в макете
-    class MySimpleAdapter extends SimpleAdapter {
-
-        public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource,
-                               String[] from, int[] to) {
-            super(context, data, resource, from, to);
-        }
         @Override
-        public void setViewText(TextView v, String text) {
-            // метод супер-класса, который вставляет текст
-            super.setViewText(v, text);
+        protected void onPreExecute() {
+            this.dialog.setMessage("Exporting database...");
+            this.dialog.show();
+        }
 
-            // если нужный нам TextView
-            if (v.getId() == R.id.base_text_type) {
-                v.setTextColor(Color.BLUE);
-            }else {
-                v.setTextColor(Color.BLACK);
+        protected Boolean doInBackground(final String... args) {
+            String currentDBPath = "/data/"+ "your Package name" +"/databases/abc.db";
+            File dbFile = getDatabasePath(""+currentDBPath);
+
+            Log.d(TAG, "ListOfSmetasStructured - doInBackground currentDBPath = " + dbFile);
+            File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
+
+            if (!exportDir.exists()) { exportDir.mkdirs(); }
+
+            fileWork = new File(exportDir, "myfile.csv");
+            try {
+                fileWork.createNewFile();
+                CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
+
+                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
+
+                Cursor curCSV = null;
+                String[] pusto = new String[]{"","","",""};
+                String[] summarno = new String[]{};
+                //если вошли с вкладки работы
+    if (position_tab==0){
+        curCSV = db.query(
+                FW.TABLE_NAME,   // таблица
+                new String[]{FW.FW_WORK_NAME,FW.FW_COST,FW.FW_COUNT,FW.FW_SUMMA},  // столбцы
+                FW.FW_FILE_ID + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FW.FW_TYPE_ID);                   // порядок сортировки
+
+        summarno = new String[]{"За работу:", "","",""+totalSumma};
+
+        //если вошли с вкладки материалы
+    }else if (position_tab == 1){
+        curCSV = db.query(
+                FM.TABLE_NAME,   // таблица
+                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},            // столбцы
+                FM.FM_FILE_ID + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM.FM_MAT_TYPE_ID);                   // порядок сортировки
+
+       summarno = new String[]{"За материалы:", "","",""+totalSummaMat};
+
+    }
+                String [] titleNames = new String[]{"Название","Цена","Кол-во","Сумма"};
+
+               //csvWrite.writeNext(curCSV.getColumnNames());
+                csvWrite.writeNext(titleNames);
+                while(curCSV.moveToNext()) {
+                    String[] mySecondStringArray = new String[curCSV.getColumnNames().length];
+                    for(int i=0; i<curCSV.getColumnNames().length; i++)
+                    {
+                        mySecondStringArray[i] =curCSV.getString(i);
+                    }
+                    csvWrite.writeNext(mySecondStringArray);
+                }
+                csvWrite.writeNext(pusto);
+                csvWrite.writeNext(summarno);
+
+                csvWrite.close();
+                curCSV.close();
+                return true;
+            } catch (IOException e) {
+                Log.e("ListOfSmetasStructured", e.getMessage(), e);
+                return false;
+            }
+        }
+
+        protected void onPostExecute(final Boolean success) {
+            if (this.dialog.isShowing()) { this.dialog.dismiss(); }
+            if (success) {
+                Toast.makeText(ListOfSmetasStructured.this, "Export successful!", Toast.LENGTH_SHORT).show();
+
+                Uri u1  =   Uri.fromFile(fileWork);
+                Log.d(TAG, "ListOfSmetasStructured -  case R.id.action_send:  Uri u1 = " + u1);
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
+                sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                sendIntent.setType("text/html");
+                startActivity(sendIntent);
+
+            } else {
+                Toast.makeText(ListOfSmetasStructured.this, "Export failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-// вариант для вывода сметы с хедером и футером в активности Smetas
-    public void updateAdapter() {
+    public class CSVWriter {
 
-        //Массив категорий работ для сметы с file_id
-        String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  cat_name.length = " + cat_name.length);
-        //массив типов работ для сметы с file_id
-        String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
-        Log.d(TAG, "SmetasTab1Rabota - updateAdapter  type_name.length = " + type_name.length);
-        //Массив работ в файле с file_id
-        String[] work_name = mSmetaOpenHelper.getNameOfWork(file_id);
-        //Массив расценок для работ в файле с file_id
-        float[] work_cost = mSmetaOpenHelper.getCostOfWork(file_id);
-        //Массив количества работ для работ в файле с file_id
-        float[] work_amount = mSmetaOpenHelper.getAmountOfWork(file_id);
-        //Массив единиц измерения для работ в файле с file_id
-        String[] work_units = mSmetaOpenHelper.getUnitsOfWork(file_id);
-        //Массив стоимости работы  для работ в файле с file_id
-        work_summa = mSmetaOpenHelper.getSummaOfWork(file_id);
+        private PrintWriter pw;
+        private char separator;
+        private char quotechar;
+        private char escapechar;
+        private String lineEnd;
 
-        //Список с данными для адаптера
-        data = new ArrayList<Map<String, Object>>(work_name.length);
+        /** The character used for escaping quotes. */
+        public static final char DEFAULT_ESCAPE_CHARACTER = '"';
+        /** The default separator to use if none is supplied to the constructor. */
+        public static final char DEFAULT_SEPARATOR = ',';
+        /**
+         * The default quote character to use if none is supplied to the
+         * constructor.
+         */
+        public static final char DEFAULT_QUOTE_CHARACTER = '"';
+        /** The quote constant to use when you wish to suppress all quoting. */
+        public static final char NO_QUOTE_CHARACTER = '\u0000';
+        /** The escape constant to use when you wish to suppress all escaping. */
+        public static final char NO_ESCAPE_CHARACTER = '\u0000';
+        /** Default line terminator uses platform encoding. */
+        public static final String DEFAULT_LINE_END = "\n";
 
-        for (int j=0; j<cat_name.length; j++){
-            //добавляем хедер
-            header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)header.findViewById(R.id.base_text)).setText((j+1) +" "+ cat_name[j]);
-            lvSmetasRabota.addHeaderView(header, null, false);
-
-            for (int i = 0; i < work_name.length; i++) {
-                Log.d(TAG, "SmetasTab1Rabota - updateAdapter  work_name = " + work_name[i]);
-
-                m = new HashMap<>();
-                m.put(P.WORK_NUMBER, (j+1) + "." +(i + 1));
-                m.put(P.WORK_NAME, work_name[i]);
-                m.put(P.WORK_COST, work_cost[i]);
-                m.put(P.WORK_AMOUNT, work_amount[i]);
-                m.put(P.WORK_UNITS, work_units[i]);
-                m.put(P.WORK_SUMMA, work_summa[i]);
-                data.add(m);
-            }
-            //добавляем футер
-            footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-            ((TextView)footer.findViewById(R.id.base_text)).setText("Итоги");
-            lvSmetasRabota.addFooterView(footer);
+        /**
+         * Constructs CSVWriter using a comma for the separator.
+         *
+         * @param writer
+         *            the writer to an underlying CSV source.
+         */
+        public CSVWriter(Writer writer) {
+            this(writer, DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER,
+                    DEFAULT_ESCAPE_CHARACTER, DEFAULT_LINE_END);
         }
-        String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
-                P.WORK_UNITS, P.WORK_SUMMA};
-        int[] to = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
-                R.id.tvUnits, R.id.tvSumma};
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
-        lvSmetasRabota.setAdapter(sara);
+
+        /**
+         * Constructs CSVWriter with supplied separator, quote char, escape char and line ending.
+         *
+         * @param writer
+         *            the writer to an underlying CSV source.
+         * @param separator
+         *            the delimiter to use for separating entries
+         * @param quotechar
+         *            the character to use for quoted elements
+         * @param escapechar
+         *            the character to use for escaping quotechars or escapechars
+         * @param lineEnd
+         *            the line feed terminator to use
+         */
+        public CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd) {
+            this.pw = new PrintWriter(writer);
+            this.separator = separator;
+            this.quotechar = quotechar;
+            this.escapechar = escapechar;
+            this.lineEnd = lineEnd;
+        }
+        /**
+         * Writes the next line to the file.
+         *
+         * @param nextLine
+         *            a string array with each comma-separated element as a separate
+         *            entry.
+         */
+        public void writeNext(String[] nextLine) {
+
+            if (nextLine == null)
+                return;
+
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < nextLine.length; i++) {
+
+                if (i != 0) {
+                    sb.append(separator);
+                }
+
+                String nextElement = nextLine[i];
+                if (nextElement == null)
+                    continue;
+                if (quotechar !=  NO_QUOTE_CHARACTER)
+                    sb.append(quotechar);
+                for (int j = 0; j < nextElement.length(); j++) {
+                    char nextChar = nextElement.charAt(j);
+                    if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
+                        sb.append(escapechar).append(nextChar);
+                    } else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
+                        sb.append(escapechar).append(nextChar);
+                    } else {
+                        sb.append(nextChar);
+                    }
+                }
+                if (quotechar != NO_QUOTE_CHARACTER)
+                    sb.append(quotechar);
+            }
+            sb.append(lineEnd);
+            pw.write(sb.toString());
+        }
+        /**
+         * Flush underlying stream to writer.
+         *
+         * @throws IOException if bad things happen
+         */
+        public void flush() throws IOException {
+
+            pw.flush();
+
+        }
+        /**
+         * Close the underlying stream writer flushing any buffered content.
+         *
+         * @throws IOException if bad things happen
+         *
+         */
+        public void close() throws IOException {
+            pw.flush();
+            pw.close();
+        }
+
     }
-*/
 
 /*
- //это метод для адаптера ниже. Используется для вывода сметв в активности SmetaListStructured
-    //получаем имена работ  по смете с id файла file_id
-    public ArrayList<String>  getNameOfTypesAndWorkStructured(long file_id){
-
-        String select_type_name_structured =
-                " select  distinct " + FW.FW_TYPE_NAME  +
-                        " from " + FW.TABLE_NAME +
-                        " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id)+
-                        " order by " + FW.FW_TYPE_ID ;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(select_type_name_structured, null);
-        Log.i(TAG, "TempDBHelper.getNameOfTypesAndWorkStructured cursor.getCount()  " + cursor.getCount());
-
-        ArrayList<String> arrayList = new ArrayList<>();
-        String[] type_name = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            type_name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
-            arrayList.add((position+1) + " " + type_name[position]);
-            long type_id = this.getIdFromTypeName(type_name[position]);
-            Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[position] = " +
-                    type_name[position] + " type_id = " + type_id);
-
-            String select_work_name_structured =
-                    " select distinct " + FW.FW_WORK_NAME  +
-                            " from " + FW.TABLE_NAME +
-                            " where " +  FW.FW_FILE_ID  + " = " +  String.valueOf(file_id)+
-                            " and " +  FW.FW_TYPE_ID + " = " +  String.valueOf(type_id);
-            Cursor cursor1 = db.rawQuery(select_work_name_structured, null);
-            Log.i(TAG, "TempDBHelper.getNameOfTypesAndWorkStructured cursor1.getCount()  " + cursor1.getCount());
-
-            String[] work_name = new String[cursor1.getCount()];
-            while (cursor1.moveToNext()){
-                int position1 = cursor1.getPosition();
-                work_name[position1] = cursor1.getString(cursor1.getColumnIndex(FW.FW_WORK_NAME));
-                arrayList.add("   " + (position+1)+ "." + (position1+1) + " " + work_name[position1]);
-                Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured work_name[position1] = " + work_name[position1]);
-            }
-            cursor1.close();
-        }
-        cursor.close();
-
-        return arrayList;
-    }
-
-*/
-
-/*
+    //для примера оставляю
     public void updateExpandableAdapter() {
 
         //Массив категорий работ для сметы с file_id
@@ -516,7 +632,6 @@ public class SmetaListStructured extends AppCompatActivity {
             }
             childData.add(childDataItem);
         }
-
         // список атрибутов элементов для чтения
         String[] childFrom = new String[]{"workName", "workCost", "workАmount", "workUnit", "workSumma"};
         // список ID view-элементов, в которые будет помещены атрибуты элементов
@@ -535,26 +650,6 @@ public class SmetaListStructured extends AppCompatActivity {
         //разворачиваем все группы
         for(int i=0; i < adapter.getGroupCount(); i++)
             lvSmetasRabota.expandGroup(i);
-    }
-
-    //данные для адаптера готовятся в getNameOfTypesAndWorkStructured в виде ArrayList<String>
-    public void updateAdapter2() {
-        Log.d(TAG, "SmetaListStructured - updateAdapter ...");
-        //Курсор с именами файлов
-        ArrayList<String> work_type_name = mSmetaOpenHelper.getNameOfTypesAndWorkStructured(file_id);
-        //Список с данными для адаптера
-        data = new ArrayList<Map<String, Object>>(work_type_name.size());
-
-        for (int i = 0; i< work_type_name.size(); i++){
-            Log.d(TAG, "SmetaListStructured - updateAdapter  name_file = " + work_type_name.get(i));
-            m = new HashMap<>();
-            m.put(P.TYPE_WORK_NAME,work_type_name.get(i));
-            data.add(m);
-        }
-        String[] from = new String[]{P.TYPE_WORK_NAME};
-        int[] to = new int[]{ R.id.base_text};
-        sara =  new SimpleAdapter(this, data, R.layout.list_item_single_small, from, to);
-        mListViewNames.setAdapter(sara);
     }
 */
 

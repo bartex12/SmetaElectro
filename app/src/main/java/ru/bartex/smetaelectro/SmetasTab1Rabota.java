@@ -70,16 +70,8 @@ public class SmetasTab1Rabota extends Fragment {
         super.onAttach(context);
         //получаем  ViewPager viewPager
         viewPager = getActivity().findViewById(R.id.container);
+        mSmetaOpenHelper = new SmetaOpenHelper(context);
         Log.d(TAG, "// SmetasTab1Rabota onAttach  viewPager = " + viewPager);
-        //устанавливаем нужную вкладку в открытое состояние нельзя - при повороте экрана viewPager = null
-        //viewPager.setCurrentItem(position);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "//SmetasTab1Rabota  onActivityCreated // " );
-        mSmetaOpenHelper = new SmetaOpenHelper(getActivity());
     }
 
     @Override
@@ -111,26 +103,6 @@ public class SmetasTab1Rabota extends Fragment {
         return rootView;
     }
 
-    /*
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "//  SmetasTab1Rabota onSaveInstanceState // " );
-        outState.putLong("file_id", file_id);
-        outState.putInt("position", position);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d(TAG, "//  SmetasTab1Rabota onViewStateRestored // " );
-        if (savedInstanceState!=null){
-            file_id = savedInstanceState.getLong("file_id");
-            position = savedInstanceState.getInt("position");
-        }
-    }
-
-*/
     @Override
     public void onResume() {
         super.onResume();
@@ -139,12 +111,6 @@ public class SmetasTab1Rabota extends Fragment {
         updateAdapter();
         //объявляем о регистрации контекстного меню
         registerForContextMenu(lvSmetasRabota);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "//SmetasTab1Rabota onDestroy // " );
     }
 
     @Override
@@ -158,8 +124,14 @@ public class SmetasTab1Rabota extends Fragment {
         super.onStop();
         Log.d(TAG, "//SmetasTab1Rabota onStop // " );
         //иначе почему то дублируются
-        lvSmetasRabota.removeHeaderView(header);
-        lvSmetasRabota.removeFooterView(footer);
+        //lvSmetasRabota.removeHeaderView(header);
+        //lvSmetasRabota.removeFooterView(footer);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "//SmetasTab2Materialy onDestroy // " );
     }
 
     //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
