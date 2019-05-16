@@ -18,7 +18,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT3Cost extends SmetasTabWorkMat {
+public class SWT3Cost extends SmetasTabWorkMatAbstrFrag {
 
 
     public SWT3Cost() {

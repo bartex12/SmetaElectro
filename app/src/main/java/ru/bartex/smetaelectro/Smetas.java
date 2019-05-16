@@ -1,13 +1,13 @@
 package ru.bartex.smetaelectro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.app.Fragment;
@@ -16,14 +16,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -36,6 +34,7 @@ public class Smetas extends AppCompatActivity {
     int pos;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
+    SmetaOpenHelper mSmetaOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,8 @@ public class Smetas extends AppCompatActivity {
 
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
+
+        mSmetaOpenHelper = new SmetaOpenHelper(this);
 
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
@@ -138,6 +139,82 @@ public class Smetas extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.DELETE_ITEM_SMETA, 0, "Удалить пункт");
+        menu.add(0, P.CANCEL, 0, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        //если удалить из контекстного меню
+        if (item.getItemId() == P.DELETE_ITEM_SMETA) {
+
+            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA");
+            AlertDialog.Builder builder = new AlertDialog.Builder(Smetas.this);
+            builder.setTitle(R.string.Delete_Item);
+            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA acmi.position  =" +
+                            (acmi.position));
+
+                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
+                    String name = tv.getText().toString();
+                    switch (mViewPager.getCurrentItem()){
+                        //switch (positionItem){
+                        case 0:
+                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
+                            //находим id по имени работы
+                            long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
+                                    file_id + " work_id =" + work_id+ " work_name =" + name);
+
+                            //удаляем пункт сметы из таблицы FW
+                            mSmetaOpenHelper.deleteWorkItemFromFW(file_id, work_id);
+                            //обновляем данные списка фрагмента активности
+                            updateAdapter(0);
+                            break;
+
+                        case 1:
+                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
+                            //находим id по имени работы
+                            long mat_id = mSmetaOpenHelper.getIdFromMatName(name);
+                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
+                                    file_id + " mat_id =" + mat_id + " mat_name =" + name);
+
+                            //mSmetaOpenHelper.displayFM();
+                            //удаляем пункт сметы из таблицы FM
+                            mSmetaOpenHelper.deleteMatItemFromFM(file_id, mat_id);
+                            //mSmetaOpenHelper.displayFM();
+
+                            updateAdapter(1);
+                            break;
+                    }
+                }
+            });
+            builder.show();
+            return true;
+            //если изменить из контекстного меню
+        } else if (item.getItemId() == P.CANCEL) {
+            //getActivity().finish();
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -150,15 +227,19 @@ public class Smetas extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            pos = position;
+
             switch (position){
                 case 0:
-                    pos = position;
-                    SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id, pos);
-                    return tab1Rabota;
+                    //SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id, pos);
+                   // return tab1Rabota;
+                SmetasFrag smetasTab0 = SmetasFrag.newInstance(file_id, pos);
+                return smetasTab0;
                 case 1:
-                    pos = position;
-                    SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id, pos);
-                    return tab2Materialy;
+                    //SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id, pos);
+                    //return tab2Materialy;
+                    SmetasFrag smetasTab1 = SmetasFrag.newInstance(file_id, pos);
+                    return smetasTab1;
                 default:
                     return null;
             }
@@ -210,4 +291,12 @@ public class Smetas extends AppCompatActivity {
             return false;
         }
     };
+
+    private void updateAdapter(int currentItem){
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());;
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(currentItem);
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
 }

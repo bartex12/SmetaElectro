@@ -17,11 +17,11 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT2TypeCost extends SmetasTabType {
+public class SMT2TypeCostFrag extends SmetasTabTypeAbstrFrag {
 
-    public static SMT2TypeCost NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SMT2TypeCost NewInstance // " );
-        SMT2TypeCost fragment = new SMT2TypeCost();
+    public static SMT2TypeCostFrag NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
+        Log.d(TAG, "//  SMT2TypeCostFrag NewInstance // " );
+        SMT2TypeCostFrag fragment = new SMT2TypeCostFrag();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -33,14 +33,14 @@ public class SMT2TypeCost extends SmetasTabType {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SMT2TypeCost updateAdapter // " );
+        Log.d(TAG, "//  SMT2TypeCostFrag updateAdapter // " );
         Cursor cursor;
         if (isSelectedCat){
-            Log.d(TAG, "SMT2TypeCost updateAdapter isSelectedCat = true " );
+            Log.d(TAG, "SMT2TypeCostFrag updateAdapter isSelectedCat = true " );
             //Курсор  с названиями типов материалов для cat_id
             cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
         }else{
-            Log.d(TAG, "SMT2TypeCost updateAdapter isSelectedCat = false " );
+            Log.d(TAG, "SMT2TypeCostFrag updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
             cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
         }
@@ -49,7 +49,7 @@ public class SMT2TypeCost extends SmetasTabType {
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            Log.d(TAG, "SMT2TypeCost - updateAdapter  name_type = " + name_type);
+            Log.d(TAG, "SMT2TypeCostFrag - updateAdapter  name_type = " + name_type);
             m = new HashMap<>();
             m.put(P.ATTR_TYPE_NAME,name_type);
             data.add(m);
@@ -72,7 +72,7 @@ public class SMT2TypeCost extends SmetasTabType {
         return cat_id;
     }
 
-    public SMT2TypeCost() {
+    public SMT2TypeCostFrag() {
         // Required empty public constructor
     }
 

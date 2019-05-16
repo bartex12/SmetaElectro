@@ -17,16 +17,16 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT1CatCost extends SmetasTabCat {
+public class SMT1CatCostFrag extends SmetasTabCatAbstrFrag {
 
 
-    public SMT1CatCost() {
+    public SMT1CatCostFrag() {
         // Required empty public constructor
     }
 
-    public static SMT1CatCost NewInstance(long file_id, int position){
-        Log.d(TAG, "//  SMT1CatCost NewInstance // " );
-        SMT1CatCost fragment = new SMT1CatCost();
+    public static SMT1CatCostFrag NewInstance(long file_id, int position){
+        Log.d(TAG, "//  SMT1CatCostFrag NewInstance // " );
+        SMT1CatCostFrag fragment = new SMT1CatCostFrag();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putLong(P.TAB_POSITION, position);
@@ -43,7 +43,7 @@ public class SMT1CatCost extends SmetasTabCat {
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_cat_cost = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
-            Log.d(TAG, "SMT1CatCost - updateAdapter  name_cat_cost = " + name_cat_cost);
+            Log.d(TAG, "SMT1CatCostFrag - updateAdapter  name_cat_cost = " + name_cat_cost);
             m = new HashMap<>();
             m.put(P.ATTR_CAT_MAT_NAME,name_cat_cost);
             data.add(m);

@@ -25,7 +25,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.WorkCategoryTypeNameListener,
-        SmetasTabCat.OnClickCatListener, SmetasTabType.OnClickTypekListener{
+        SmetasTabCatAbstrFrag.OnClickCatListener, SmetasTabTypeAbstrFrag.OnClickTypekListener{
 
     public static final String TAG = "33333";
     long file_id;

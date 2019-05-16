@@ -31,7 +31,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMat extends AppCompatActivity implements
-        SmetasTabType.OnClickTypekListener, SmetasTabCat.OnClickCatListener,
+        SmetasTabTypeAbstrFrag.OnClickTypekListener, SmetasTabCatAbstrFrag.OnClickCatListener,
         DialogSaveName.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
@@ -515,13 +515,13 @@ public class SmetasMat extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
-                    SMT1Cat tab1Category = SMT1Cat.NewInstance(file_id,position);
+                    SMT1CatFrag tab1Category = SMT1CatFrag.NewInstance(file_id,position);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 1/1: " );
-                    SMT2Type  tab2Type = SMT2Type.NewInstance(
+                    SMT2TypeFrag tab2Type = SMT2TypeFrag.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -530,7 +530,7 @@ public class SmetasMat extends AppCompatActivity implements
                 case 2:
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SMT3 tab3Mat = SMT3.NewInstance(
+                    SMT3Frag tab3Mat = SMT3Frag.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
@@ -584,6 +584,4 @@ public class SmetasMat extends AppCompatActivity implements
         mViewPager.setCurrentItem(currentItem);
         mSectionsPagerAdapter.notifyDataSetChanged();
     }
-
-
 }

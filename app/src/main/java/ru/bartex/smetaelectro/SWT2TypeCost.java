@@ -17,7 +17,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT2TypeCost extends SmetasTabType {
+public class SWT2TypeCost extends SmetasTabTypeAbstrFrag {
 
     public static SWT2TypeCost NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){

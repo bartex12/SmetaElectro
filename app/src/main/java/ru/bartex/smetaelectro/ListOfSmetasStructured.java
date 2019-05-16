@@ -294,7 +294,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 //добавляем футер
                 footer = getLayoutInflater().inflate(R.layout.list_item_single, null);
                 totalSummaMat = P.updateTotalSumma(mat_summas);
-                Log.d(TAG, "SmetasTab1Rabota - updateAdapter  totalSumma = " + totalSumma);
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  totalSumma = " + totalSumma);
                 ((TextView)footer.findViewById(R.id.base_text)).
                         setText(String.format(Locale.ENGLISH,"За материалы: %.0f руб", totalSummaMat ));
                 mListViewNames.addFooterView(footer, null, false);

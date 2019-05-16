@@ -214,7 +214,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         data = new ArrayList<Map<String, Object>>(file_name.length);
 
         for (int i = 0; i< file_name.length; i++){
-            Log.d(TAG, "SmetasTab1Rabota - updateAdapter  name_file = " + file_name[i]);
+            Log.d(TAG, "ListOfSmetasNames - updateAdapter  name_file = " + file_name[i]);
             m = new HashMap<>();
             m.put(P.FILENAME_DEFAULT,file_name[i]);
             data.add(m);

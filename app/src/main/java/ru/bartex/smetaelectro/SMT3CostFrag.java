@@ -18,17 +18,17 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT3Cost extends SmetasTabWorkMat {
+public class SMT3CostFrag extends SmetasTabWorkMatAbstrFrag {
 
 
-    public SMT3Cost() {
+    public SMT3CostFrag() {
         // Required empty public constructor
     }
 
-    public static SMT3Cost NewInstance(
+    public static SMT3CostFrag NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id) {
-        Log.d(TAG, "//  SMT3Cost NewInstance // " );
-        SMT3Cost fragment = new SMT3Cost();
+        Log.d(TAG, "//  SMT3CostFrag NewInstance // " );
+        SMT3CostFrag fragment = new SMT3CostFrag();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -40,14 +40,14 @@ public class SMT3Cost extends SmetasTabWorkMat {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SMT3Cost updateAdapter // " );
+        Log.d(TAG, "//  SMT3CostFrag updateAdapter // " );
         Cursor cursor;
         if (isSelectedType){
-            Log.d(TAG, "SMT3Cost updateAdapter isSelectedType = true " );
+            Log.d(TAG, "SMT3CostFrag updateAdapter isSelectedType = true " );
             //Курсор с именами   материалов из таблицы Mat для type_id
             cursor = mSmetaOpenHelper.getMatNamesOneType(type_id);
         }else {
-            Log.d(TAG, "SMT3Cost updateAdapter isSelectedType = false " );
+            Log.d(TAG, "SMT3CostFrag updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat
             cursor = mSmetaOpenHelper.getMatNamesAllTypes();
         }
@@ -56,7 +56,7 @@ public class SMT3Cost extends SmetasTabWorkMat {
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_type = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
-            Log.d(TAG, "SMT3Cost - updateAdapter  name_type = " + name_type);
+            Log.d(TAG, "SMT3CostFrag - updateAdapter  name_type = " + name_type);
             m = new HashMap<>();
             m.put(P.ATTR_TYPE_NAME,name_type);
             data.add(m);
@@ -71,11 +71,11 @@ public class SMT3Cost extends SmetasTabWorkMat {
     public void sendIntent(String name) {
         //находим id материала по имени материала
         final long mat_id = mSmetaOpenHelper.getIdFromMatName(name);
-        Log.d(TAG, "SMT3Cost - onItemClick  mat_id = " + mat_id +
+        Log.d(TAG, "SMT3CostFrag - onItemClick  mat_id = " + mat_id +
                 "  name = " + name);
         // проверяем есть ли такой  материал в FM для файла с file_id
         final boolean isMat = mSmetaOpenHelper.isMatInFM(file_id, mat_id);
-        Log.d(TAG, "SMT3Cost - onItemClick  isMat = " + isMat);
+        Log.d(TAG, "SMT3CostFrag - onItemClick  isMat = " + isMat);
 
         //ищем id категории материалов, зная id типа
         long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
