@@ -482,7 +482,9 @@ public class SmetasMat extends AppCompatActivity implements
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
                                 //это проверили в onCreateContextMenu
                                 mSmetaOpenHelper.deleteMat(mat_id);
-
+                                //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                                // проверка в onCreateContextMenu
+                                mSmetaOpenHelper.deleteCostOfMat(mat_id);
                                 //после удаления в материалах не даём появиться + в тулбаре
                                 isSelectedType = false;
 

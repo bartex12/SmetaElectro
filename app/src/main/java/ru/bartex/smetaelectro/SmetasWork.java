@@ -304,7 +304,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
                         " countCostLineWork =" + countCostLineWork);
 
-                mSmetaOpenHelper.displayTableCost();
+                //mSmetaOpenHelper.displayTableCost();
 
                 if(countLineWorkFW > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
@@ -485,10 +485,9 @@ public class SmetasWork extends AppCompatActivity implements
                                 //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
                                 // проверка в onCreateContextMenu
                                 mSmetaOpenHelper.deleteCostOfWork(work_id);
-                                // обновляем соседнюю вкладку работы и показываем её
-
                                 //после удаления в работах не даём появиться + в тулбаре
                                 isSelectedType = false;
+                                // обновляем соседнюю вкладку работы и показываем её
                                 updateAdapter(1);
                                 break;
                         }

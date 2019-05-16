@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,9 +20,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -241,7 +246,152 @@ public class SmetasMatCost extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.DELETE_ID, 0, R.string.action_delete);
+        menu.add(0, P.CANCEL, 0, R.string.action_cancel);
 
+        // получаем инфу о пункте списка
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        switch (mViewPager.getCurrentItem()){
+            case 0:
+                //получаем имя категории из строки списка категории
+                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
+                String name = tvName.getText().toString();
+                //находим id категории по имени категории
+                long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                //находим количество строк типов материала для cat_mat_id
+                int countType_mat = mSmetaOpenHelper.getCountTypeMat(cat_mat_id);
+                Log.d(TAG, "SmetasMatCost onCreateContextMenu - countType = " + countType_mat);
+                if(countType_mat > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+            case 1:
+                //получаем имя типа из строки списка типов материала
+                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
+                String typeMatName = tvType.getText().toString();
+                //находим id типа по имени типа
+                long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(typeMatName);
+                //находим количество строк видов материала для type_mat_id
+                int countLineMat = mSmetaOpenHelper.getCountLineMat(type_mat_id);
+                Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineMat = " + countLineMat);
+                if(countLineMat > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+            case 2:
+                //получаем имя материала  из строки списка видов материала
+                TextView tvMat = acmi.targetView.findViewById(R.id.base_text);
+                String matName = tvMat.getText().toString();
+                //находим id вида  по имени вида материала
+                long mat_id = mSmetaOpenHelper.getIdFromMatName(matName);
+                //находим количество строк видов материала в таблице FM для mat_id
+                int countLineWorkFM = mSmetaOpenHelper.getCountLineMatInFM(mat_id);
+                Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
+                //mSmetaOpenHelper.displayTableCost();
+                if(countLineWorkFM > 0) {
+                    menu.findItem(P.DELETE_ID).setEnabled(false);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // получаем инфу о пункте списка
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        int id = item.getItemId();
+        Log.d(TAG, "SmetasMatCost onContextItemSelected id = " + id +
+                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
+
+        switch (id){
+            case P.DELETE_ID:
+                Log.d(TAG, "SmetasMatCost onContextItemSelected case P.DELETE_ID");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.Delete);
+                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (mViewPager.getCurrentItem()){
+                            case 0:
+                                //получаем имя категории из строки списка категории
+                                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
+                                final String name = tvName.getText().toString();
+                                //находим id категории по имени категории
+                                final long cat_mat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(name);
+                                Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 0" +
+                                        " name = " + name +  " cat_mat_id =" + cat_mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteCategoryMat(cat_mat_id);
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(0);
+                                break;
+
+                            case 1:
+                                //получаем имя типа из строки списка типов
+                                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
+                                final String type = tvType.getText().toString();
+                                //находим id типа по имени типа
+                                final long type_mat_id = mSmetaOpenHelper.getTypeIdFromTypeMatName(type);
+                                Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 1" +
+                                        " type = " + type +  " type_mat_id =" + type_mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteTypeMat(type_mat_id);
+
+                                //после удаления в типемматериалов не даём появиться + в тулбаре
+                                isSelectedCatCost = false;
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(0);
+                                break;
+
+                            case 2:
+                                //получаем имя материала из строки списка материала
+                                TextView tvmat = acmi.targetView.findViewById(R.id.base_text);
+                                final String mat = tvmat.getText().toString();
+                                //находим id типа по имени типа
+                                final long mat_id = mSmetaOpenHelper.getMatIdFromMatName(mat);
+                                Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 1" +
+                                        " mat = " + mat +  " mat_id =" + mat_id);
+                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
+                                //это проверили в onCreateContextMenu
+                                mSmetaOpenHelper.deleteMat(mat_id);
+                                //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                                // проверка в onCreateContextMenu
+                                mSmetaOpenHelper.deleteCostOfMat(mat_id);
+                                //после удаления в материалах не даём появиться + в тулбаре
+                                isSelectedType = false;
+
+                                // обновляем соседнюю вкладку типов материалов и показываем её
+                                updateAdapter(1);
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+
+            case P.CANCEL:
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 

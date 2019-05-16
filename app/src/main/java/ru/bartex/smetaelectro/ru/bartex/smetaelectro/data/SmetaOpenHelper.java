@@ -1209,6 +1209,56 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    //вывод в лог всех строк базы
+    public void displayTableCostMat() {
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Зададим условие для выборки - список столбцов
+        String[] projection = {
+                CostMat._ID,
+                CostMat.COST_MAT_ID,
+                CostMat.COST_MAT_UNIT_ID,
+                CostMat.COST_MAT_COST,
+                CostMat.COST_MAT_NUMBER};
+
+        // Делаем запрос
+        Cursor cursor = db.query(
+                CostMat.TABLE_NAME,   // таблица
+                projection,            // столбцы
+                null,                  // столбцы для условия WHERE
+                null,                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+        try {
+            // Проходим через все ряды в таблице CostWork
+            while (cursor.moveToNext()) {
+                // Используем индекс для получения строки или числа
+                int currentID = cursor.getInt(
+                        cursor.getColumnIndex(CostMat._ID));
+                int current_WORK_ID = cursor.getInt(
+                        cursor.getColumnIndex(CostMat.COST_MAT_ID));
+                String current_UNIT = cursor.getString(
+                        cursor.getColumnIndex(CostMat.COST_MAT_UNIT_ID));
+                float current_COST = cursor.getFloat(
+                        cursor.getColumnIndex(CostMat.COST_MAT_COST));
+                int current_NUMBER = cursor.getInt(
+                        cursor.getColumnIndex(CostMat.COST_MAT_NUMBER));
+                // Выводим построчно значения каждого столбца
+                Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                        " MAT_ID = " + current_WORK_ID + " - " +
+                        " UNIT = " + current_UNIT + " - " +
+                        " MAT_COST = " + current_COST + " - " +
+                        " MAT_NUMBER = " + current_NUMBER);
+            }
+
+        } finally {
+            // Всегда закрываем курсор после чтения
+            cursor.close();
+        }
+    }
+
     //получаем единицы измерения с помощью двух запросов, так как при одном запросе возникает
     //ошибка связанная с тем, что в таблицах есть одинаковые поля _ID
     public String getCostUnitById1(long work_id){
