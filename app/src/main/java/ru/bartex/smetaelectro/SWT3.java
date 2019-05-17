@@ -51,7 +51,6 @@ public class SWT3 extends SmetasTabWorkMatAbstrFrag {
             //Курсор с именами  всех материалов из таблицы Mat
             cursor = mSmetaOpenHelper.getWorkNamesAllTypes();
         }
-
         //Строковый массив с именами работы из таблицы FW для файла с file_id
         String[] workNamesFW = mSmetaOpenHelper.getWorkNamesFW(file_id);
 

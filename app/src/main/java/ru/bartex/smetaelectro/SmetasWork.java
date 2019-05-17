@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
@@ -130,7 +131,7 @@ public class SmetasWork extends AppCompatActivity implements
         toolbar.setTitleTextColor(Color.GREEN);
 
         //Создаём адаптер для фрагментов
-        mSectionsPagerAdapter = new SmetasWork.SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Привязываем ViewPager к адаптеру
         mViewPager = (ViewPager) findViewById(R.id.containerWork);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -167,14 +168,19 @@ public class SmetasWork extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
+        Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  **************************");
+    }
 
-        //добираемся до списка фрагмента ___________пока нет_____________
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, " ))))))))SmetasWork  onResume((((((((");
+        //добираемся до списка фрагмента ___________пока нет см в onPrepareOptionsMenu_____________
         //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
         View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-        Log.d(TAG, " SmetasWork  onCreate mViewPager.getCurrentItem() = " +
+        Log.d(TAG, " SmetasWork  onResume mViewPager.getCurrentItem() = " +
                 mViewPager.getCurrentItem() + "  view = " + view );
 
-        Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  **************************");
     }
 
     @Override
@@ -188,6 +194,17 @@ public class SmetasWork extends AppCompatActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(TAG, " ))))))))SmetasWork  onPrepareOptionsMenu(((((((( ///");
+
+        //добираемся до списка фрагмента здесь, так как onPrepareOptionsMenu выполняется
+        // после формирования фрагмента в Fragment getItem() - в onResume возвращает null
+        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
+        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
+        Log.d(TAG, " SmetasWork  onPrepareOptionsMenu mViewPager.getCurrentItem() = " +
+                mViewPager.getCurrentItem() + "  view = " + view );
+        ListView  listView = view.findViewById(R.id.listViewFragmentTabs);
+        Log.d(TAG, " SmetasWork  onPrepareOptionsMenu mViewPager.getCurrentItem() = "
+                + "  listView = " + listView );
+
         int position = mViewPager.getCurrentItem();
         Log.d(TAG, " ))))))))SmetasWork  onPrepareOptionsMenu(((((((( position = " + position +
                 "  isSelectedCat = " + isSelectedCat + "  isSelectedType = " + isSelectedType);
@@ -433,7 +450,6 @@ public class SmetasWork extends AppCompatActivity implements
                 builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
                 builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {

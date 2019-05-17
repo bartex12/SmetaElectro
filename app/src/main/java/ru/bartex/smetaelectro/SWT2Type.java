@@ -22,7 +22,7 @@ public class SWT2Type extends SmetasTabTypeAbstrFrag {
 
     public static SWT2Type NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SmetasWorkTab2Type NewInstance // " );
+        Log.d(TAG, "//  SWT2Type NewInstance // " );
         SWT2Type fragment = new SWT2Type();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

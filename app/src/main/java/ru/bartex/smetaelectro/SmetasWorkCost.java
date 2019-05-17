@@ -237,7 +237,6 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
                     break;
                 case 2:
                     Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected case 2");
-
                     DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, true);
                     saveMat.show(getSupportFragmentManager(), "SaveWorkName");
                     break;

@@ -36,7 +36,7 @@
     <string name="title_activity_CategoryMatSpecific">Подробности</string>
     <string name="title_activity_CategorySpecific">Подробности</string>
     <string name="DeleteYesNo">Удалить все пункты данной сметы?</string>
-    <string name="CostZero">Цена работы не указана</string>
+    <string name="CostZero">Цена не указана</string>
     <string name="DeleteCategory">Удалить эту категорию?</string>
     <string name="DeleteType">Удалить этот тип работ?</string>
     <string name="DeleteKind">Удалить этот вид работ?</string>

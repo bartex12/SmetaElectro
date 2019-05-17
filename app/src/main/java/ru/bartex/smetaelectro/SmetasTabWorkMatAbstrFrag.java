@@ -90,7 +90,6 @@ public abstract class SmetasTabWorkMatAbstrFrag extends Fragment {
         super.onResume();
         Log.d(TAG, "//  SmetasTabWorkMatAbstrFrag onResume // " );
         updateAdapter();
-
         //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
         registerForContextMenu(listView);
     }
