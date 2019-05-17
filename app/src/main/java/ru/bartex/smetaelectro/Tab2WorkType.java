@@ -17,12 +17,13 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT2TypeCost extends SmetasTabTypeAbstrFrag {
+public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
 
-    public static SWT2TypeCost NewInstance(
+
+    public static Tab2WorkType NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SWT2TypeCost NewInstance // " );
-        SWT2TypeCost fragment = new SWT2TypeCost();
+        Log.d(TAG, "//  Tab2WorkType NewInstance // " );
+        Tab2WorkType fragment = new Tab2WorkType();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -34,15 +35,15 @@ public class SWT2TypeCost extends SmetasTabTypeAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SWT2TypeCost updateAdapter // " );
+        Log.d(TAG, "//  Tab2WorkType updateAdapter // " );
 
         Cursor cursor;
         if (isSelectedCat){
-            Log.d(TAG, "SWT2TypeCost updateAdapter isSelectedCat = true " );
+            Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = true " );
             //курсор с именами типов работы для категорий с cat_id
             cursor = mSmetaOpenHelper.getTypeNames(cat_id);
         }else {
-            Log.d(TAG, "SWT2TypeCost updateAdapter isSelectedCat = false " );
+            Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
             cursor = mSmetaOpenHelper.getTypeWorkNamesAllCategories();
         }
@@ -50,19 +51,30 @@ public class SWT2TypeCost extends SmetasTabTypeAbstrFrag {
         String[] typetNamesFW = mSmetaOpenHelper.getTypeNamesFW(file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SWT2TypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );
+        Log.d(TAG, " Tab2WorkType updateAdapter Всего типов материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+            boolean check_mark = false;
+            for (int i=0; i<typetNamesFW.length; i++){
+                if (typetNamesFW[i].equals(tipe_mat_name)){
+                    check_mark = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+            Log.d(TAG, " Tab2WorkType updateAdapter tipe_mat_name  = " +
+                    (cursor.getPosition()+1) + "  " + tipe_mat_name + "  check_mark = " + check_mark);
             m =new HashMap<>();
             m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
+            m.put(P.ATTR_TYPE_MAT_MARK, check_mark);
             data.add(m);
         }
-        Log.d(TAG, " SWT2TypeCost updateAdapter data.size()  = "+ data.size() );
-        String[] from = new String[]{P.ATTR_TYPE_MAT_NAME};
-        int [] to = new int[]{R.id.base_text};
+        Log.d(TAG, " Tab2WorkType updateAdapter data.size()  = "+ data.size() );
+        String[] from = new String[]{P.ATTR_TYPE_MAT_NAME, P.ATTR_TYPE_MAT_MARK};
+        int [] to = new int[]{R.id.base_text, R.id.checkBoxTwoMat};
 
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
+        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat, from, to);
         listView.setAdapter(sara);
     }
 
@@ -78,8 +90,11 @@ public class SWT2TypeCost extends SmetasTabTypeAbstrFrag {
         return cat_id;
     }
 
-    public SWT2TypeCost() {
+    public Tab2WorkType() {
         // Required empty public constructor
     }
+
+
+
 
 }

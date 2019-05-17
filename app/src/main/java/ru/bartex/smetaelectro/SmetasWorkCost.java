@@ -29,8 +29,8 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.WorkCategoryTypeNameListener,
-        SmetasTabCatAbstrFrag.OnClickCatListener, SmetasTabTypeAbstrFrag.OnClickTypekListener{
+public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost.OnCatTypeMatCostNameListener,
+        Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{
 
     public static final String TAG = "33333";
     long file_id;
@@ -69,15 +69,15 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
     }
 
     @Override
-    public void workCategoryTypeNameTransmit(String workName, String typeName, String catName) {
+    public void catTypeMatCostNameTransmit(String catName, String typeName, String matName, String costOfMat, String unit) {
         int position = mViewPager.getCurrentItem();
-        Log.d(TAG, " ++++++++SmetasWorkCost  workCategoryTypeNameTransmit ++++++");
+        Log.d(TAG, " ++++++++SmetasWorkCost  catTypeMatCostNameTransmit ++++++");
         switch (position){
             case 0:
-                Log.d(TAG, "++++++++ SmetasWorkCost  workCategoryTypeNameTransmit ++++++ case 0");
+                Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 0");
 
                 long newCatWorkCostId = mSmetaOpenHelper.insertCatName(catName);
-                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatWorkCostId=" + newCatWorkCostId);
 
                 // обновляем вкладку категорий работы и показываем её
@@ -85,30 +85,36 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
                 break;
 
             case 1:
-                Log.d(TAG, "++++++++ SmetasWorkCost  workCategoryTypeNameTransmit ++++++ case 1");
+                Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
                 long type_category_Id = mSmetaOpenHelper.getIdFromCategoryName(catName);
                 long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
-                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
+                Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем вкладку типов работы и показываем её
                 updateAdapter(1);
                 break;
 
             case 2:
-                Log.d(TAG, "++++++++ SmetasWorkCost  workCategoryTypeNameTransmit ++++++ case 2");
-                //определяем id типа по его имени
-                long work_type_Id = mSmetaOpenHelper.getIdFromTypeName(typeName);
-                long newWorkNameId = mSmetaOpenHelper.insertWorkName(workName, work_type_Id);
-                Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
-                        " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
+                Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 2");
 
-                // обновляем  вкладку работы и показываем её
+                float cost = Float.parseFloat(costOfMat);
+
+                long unit_work_id = mSmetaOpenHelper.getIdFromUnitName(unit);
+                Log.d(TAG, "SmetasWorkCost  unit_work_id = " +
+                        unit_work_id + " cost = " + cost + " unit = " + unit
+                        + " workName = " + matName  + " type_id = " + type_id) ;
+
+                //Вставляем новую работу в таблицу
+                long workID = mSmetaOpenHelper.insertWorkName(matName, type_id);
+                //обновляем цену работы с единицами измерения
+                mSmetaOpenHelper.insertCostWork(workID, cost, unit_work_id);
+
+                // обновляем адаптер
                 updateAdapter(2);
                 break;
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +229,29 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
             int position = mViewPager.getCurrentItem();
             Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected(((((((( position = " + position );
             switch (position){
+
+                case 0:
+                    Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 0");
+                    DialogFragment saveCostCat = DialogSaveCost.NewInstance(
+                            true, false, -1, -1);
+                    saveCostCat.show(getSupportFragmentManager(),"saveCostCat");
+                    break;
+
+                case 1:
+                    Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 1");
+                    DialogFragment saveCostType = DialogSaveCost.NewInstance(
+                            false, true, cat_id, -1);
+                    saveCostType.show(getSupportFragmentManager(),"saveCostType");
+                    break;
+
+                case 2:
+                    Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 2");
+                    DialogFragment saveCostMat = DialogSaveCost.NewInstance(
+                            false, false, cat_id, type_id);
+                    saveCostMat.show(getSupportFragmentManager(),"saveCostMat");
+                    break;
+
+                /*
                 case 0:
                     Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected case 0");
                     DialogFragment saveCat = DialogSaveNameCat.newInstance(true);
@@ -240,6 +269,8 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
                     DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, true);
                     saveMat.show(getSupportFragmentManager(), "SaveWorkName");
                     break;
+                   */
+
             }
             return true;
         }
@@ -402,7 +433,6 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
         return super.onContextItemSelected(item);
     }
 
-
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -416,14 +446,14 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: " );
-                    SWT1CatCost tab1Category = SWT1CatCost.NewInstance(
+                    Tab1WorkCatCost tab1Category = Tab1WorkCatCost.NewInstance(
                             file_id,position);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/1: " );
-                    SWT2TypeCost tab2Type = SWT2TypeCost.NewInstance(
+                    Tab2WorkTypeCost tab2Type = Tab2WorkTypeCost.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -432,7 +462,7 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
                 case 2:
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SWT3Cost tab3Mat = SWT3Cost.NewInstance(
+                    Tab3WorkCost tab3Mat = Tab3WorkCost.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasWorkCost  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +

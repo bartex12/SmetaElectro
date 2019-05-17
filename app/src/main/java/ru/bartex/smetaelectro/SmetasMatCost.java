@@ -31,7 +31,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMatCost extends AppCompatActivity implements
-        SmetasTabCatAbstrFrag.OnClickCatListener, SmetasTabTypeAbstrFrag.OnClickTypekListener,
+        Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,
         DialogSaveCost.OnCatTypeMatCostNameListener{
 
     public static final String TAG = "33333";
@@ -405,19 +405,19 @@ public class SmetasMatCost extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 0: ####### " );
-                    SMT1CatCostFrag smetasMatTab0Cat = SMT1CatCostFrag.
+                    Tab1MatCatCost smetasMatTab0Cat = Tab1MatCatCost.
                             NewInstance(file_id, position);
                     return smetasMatTab0Cat;
                 case 1:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 1: ####### " );
-                    SMT2TypeCostFrag smetasMatTab1Type = SMT2TypeCostFrag.
+                    Tab2MatTypeCost smetasMatTab1Type = Tab2MatTypeCost.
                             NewInstance(file_id, position,isSelectedCatCost, cat_id);
                     return smetasMatTab1Type;
 
                 case 2:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 2/1: #######" );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SMT3CostFrag smetasMatTab2Mat = SMT3CostFrag.NewInstance(file_id, position, isSelectedType, type_id);
+                    Tab3MatCost smetasMatTab2Mat = Tab3MatCost.NewInstance(file_id, position, isSelectedType, type_id);
                     Log.d(TAG, " ####### SmetasMatCost  Fragment getItem case 2/2: isSelectedType = ####### " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
                             "  position = " +  position);

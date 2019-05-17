@@ -18,17 +18,17 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT3 extends SmetasTabWorkMatAbstrFrag {
+public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
 
 
-    public SWT3() {
+    public Tab3Work() {
         // Required empty public constructor
     }
 
-    public static SWT3 NewInstance(
+    public static Tab3Work NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id){
-        Log.d(TAG, "//  SWT3 NewInstance // " );
-        SWT3 fragment = new SWT3();
+        Log.d(TAG, "//  Tab3Work NewInstance // " );
+        Tab3Work fragment = new Tab3Work();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -40,14 +40,14 @@ public class SWT3 extends SmetasTabWorkMatAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SWT3 updateAdapter // " );
+        Log.d(TAG, "//  Tab3Work updateAdapter // " );
         Cursor cursor;
         if (isSelectedType){
-            Log.d(TAG, "SWT3 updateAdapter isSelectedType = true " );
+            Log.d(TAG, "Tab3Work updateAdapter isSelectedType = true " );
             //Курсор с именами работ с типом type_id
             cursor = mSmetaOpenHelper.getWorkNames(type_id);
         }else {
-            Log.d(TAG, "SWT3 updateAdapter isSelectedType = false " );
+            Log.d(TAG, "Tab3Work updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat
             cursor = mSmetaOpenHelper.getWorkNamesAllTypes();
         }
@@ -55,7 +55,7 @@ public class SWT3 extends SmetasTabWorkMatAbstrFrag {
         String[] workNamesFW = mSmetaOpenHelper.getWorkNamesFW(file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SWT3 updateAdapter Всего материалов = "+ cursor.getCount() );
+        Log.d(TAG, " Tab3Work updateAdapter Всего материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String mat_name = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
@@ -68,14 +68,14 @@ public class SWT3 extends SmetasTabWorkMatAbstrFrag {
                     break;
                 }
             }
-            Log.d(TAG, " SWT3 updateAdapter mat_name  = " +
+            Log.d(TAG, " Tab3Work updateAdapter mat_name  = " +
                     (cursor.getPosition()+1) + "  " + mat_name + "  check_mark = " + check_mark);
             m =new HashMap<>();
             m.put(P.ATTR_MAT_NAME, mat_name);
             m.put(P.ATTR_MAT_MARK, check_mark);
             data.add(m);
         }
-        Log.d(TAG, " SWT3 updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " Tab3Work updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_MAT_NAME, P.ATTR_MAT_MARK};
         int [] to = new int[]{R.id.base_text, R.id.checkBoxTwoMat};
 
@@ -87,11 +87,11 @@ public class SWT3 extends SmetasTabWorkMatAbstrFrag {
     public void sendIntent(String name) {
         //находим id работы по имени работы
         final long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
-        Log.d(TAG, "SWT3 - onItemClick  work_id = " + work_id +
+        Log.d(TAG, "Tab3Work - onItemClick  work_id = " + work_id +
                 "  work_name = " + name);
         // проверяем есть ли такая  работа в FW для файла с file_id
         final boolean isWork = mSmetaOpenHelper.isWorkInFW(file_id, work_id);
-        Log.d(TAG, "SWT3 - onItemClick  isWork = " + isWork);
+        Log.d(TAG, "Tab3Work - onItemClick  isWork = " + isWork);
 
         //ищем id категории работы, зная id типа
         long cat_id = mSmetaOpenHelper.getCatIdFromTypeWork(type_id);

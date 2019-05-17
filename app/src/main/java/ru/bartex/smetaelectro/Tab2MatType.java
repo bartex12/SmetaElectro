@@ -17,11 +17,11 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SMT2TypeFrag extends SmetasTabTypeAbstrFrag {
+public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
 
-    public static SMT2TypeFrag NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  SMT2TypeFrag NewInstance // " );
-        SMT2TypeFrag fragment = new SMT2TypeFrag();
+    public static Tab2MatType NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
+        Log.d(TAG, "//  Tab2MatType NewInstance // " );
+        Tab2MatType fragment = new Tab2MatType();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -33,15 +33,15 @@ public class SMT2TypeFrag extends SmetasTabTypeAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SMT2TypeFrag updateAdapter // " );
+        Log.d(TAG, "//  Tab2MatType updateAdapter // " );
 
         Cursor cursor;
         if (isSelectedCat){
-            Log.d(TAG, "SMT2TypeFrag updateAdapter isSelectedCat = true " );
+            Log.d(TAG, "Tab2MatType updateAdapter isSelectedCat = true " );
             //Курсор  с названиями типов материалов для cat_id
             cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
         }else {
-            Log.d(TAG, "SMT2TypeFrag updateAdapter isSelectedCat = false " );
+            Log.d(TAG, "Tab2MatType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
             cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
         }
@@ -49,7 +49,7 @@ public class SMT2TypeFrag extends SmetasTabTypeAbstrFrag {
         String[] typetMatNamesFM = mSmetaOpenHelper.getTypeNamesFM(file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SMT2TypeFrag updateAdapter Всего типов материалов = "+ cursor.getCount() );
+        Log.d(TAG, " Tab2MatType updateAdapter Всего типов материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
@@ -61,14 +61,14 @@ public class SMT2TypeFrag extends SmetasTabTypeAbstrFrag {
                     break;
                 }
             }
-            Log.d(TAG, " SMT2TypeFrag updateAdapter tipe_mat_name  = " +
+            Log.d(TAG, " Tab2MatType updateAdapter tipe_mat_name  = " +
                     (cursor.getPosition()+1) + "  " + tipe_mat_name + "  check_mark = " + check_mark);
             m =new HashMap<>();
             m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
             m.put(P.ATTR_TYPE_MAT_MARK, check_mark);
             data.add(m);
         }
-        Log.d(TAG, " SMT2TypeFrag updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " Tab2MatType updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_TYPE_MAT_NAME, P.ATTR_TYPE_MAT_MARK};
         int [] to = new int[]{R.id.base_text, R.id.checkBoxTwoMat};
 
@@ -88,7 +88,7 @@ public class SMT2TypeFrag extends SmetasTabTypeAbstrFrag {
         return cat_id;
     }
 
-    public SMT2TypeFrag() {
+    public Tab2MatType() {
         // Required empty public constructor
     }
 }

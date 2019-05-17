@@ -17,7 +17,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
 
-public class DialogSaveNameCat extends DialogSaveName {
+public class DialogSaveNameCat extends DialogSaveNameAbstract {
 
     static String TAG = "33333";
     boolean isWorkDialog;

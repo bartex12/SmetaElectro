@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
-public class DialogSaveNameType extends DialogSaveName {
+public class DialogSaveNameType extends DialogSaveNameAbstract {
 
     static String TAG = "33333";
     long cat_id;

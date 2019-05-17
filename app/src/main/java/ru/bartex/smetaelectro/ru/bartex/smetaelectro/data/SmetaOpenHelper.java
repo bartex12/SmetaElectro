@@ -3711,4 +3711,21 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return ID;
     }
 
+    //Добавляем тип материала
+    public long  insertCostWork( long workID, float cost, long unit_work_id){
+        Log.i(TAG, "SmetaOpenHelper.insertCostWork ... ");
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CostWork.COST_WORK_ID,workID);
+        cv.put(CostWork.COST_COST,cost);
+        cv.put(CostWork.COST_UNIT_ID,unit_work_id);
+        // вставляем строку
+        long ID = db.insert(CostWork.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertCostWork  CostWork._ID = " + ID);
+        return ID;
+    }
+
 }

@@ -25,15 +25,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasWork extends AppCompatActivity implements
-        SmetasTabTypeAbstrFrag.OnClickTypekListener, SmetasTabCatAbstrFrag.OnClickCatListener,
-        DialogSaveName.WorkCategoryTypeNameListener {
+        Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
+        DialogSaveNameAbstract.WorkCategoryTypeNameListener {
 
     public static final String TAG = "33333";
     long file_id;
@@ -175,7 +174,7 @@ public class SmetasWork extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         Log.d(TAG, " ))))))))SmetasWork  onResume((((((((");
-        //добираемся до списка фрагмента ___________пока нет см в onPrepareOptionsMenu_____________
+        //добираемся до списка фрагмента ___________пока нет в onPrepareOptionsMenu тоже вызывает ошибку_____________
         //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
         View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
         Log.d(TAG, " SmetasWork  onResume mViewPager.getCurrentItem() = " +
@@ -194,16 +193,6 @@ public class SmetasWork extends AppCompatActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(TAG, " ))))))))SmetasWork  onPrepareOptionsMenu(((((((( ///");
-
-        //добираемся до списка фрагмента здесь, так как onPrepareOptionsMenu выполняется
-        // после формирования фрагмента в Fragment getItem() - в onResume возвращает null
-        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
-        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-        Log.d(TAG, " SmetasWork  onPrepareOptionsMenu mViewPager.getCurrentItem() = " +
-                mViewPager.getCurrentItem() + "  view = " + view );
-        ListView  listView = view.findViewById(R.id.listViewFragmentTabs);
-        Log.d(TAG, " SmetasWork  onPrepareOptionsMenu mViewPager.getCurrentItem() = "
-                + "  listView = " + listView );
 
         int position = mViewPager.getCurrentItem();
         Log.d(TAG, " ))))))))SmetasWork  onPrepareOptionsMenu(((((((( position = " + position +
@@ -531,14 +520,14 @@ public class SmetasWork extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
-                    SWT1Cat tab1Category = SWT1Cat.NewInstance(
+                    Tab1WorkCat tab1Category = Tab1WorkCat.NewInstance(
                             file_id,position);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
                             file_id + "  position = " +  position);
                     return tab1Category;
                 case 1:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
-                    SWT2Type  tab2Type = SWT2Type.NewInstance(
+                    Tab2WorkType tab2Type = Tab2WorkType.NewInstance(
                             file_id, position, isSelectedCat, cat_id);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
                             isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -547,7 +536,7 @@ public class SmetasWork extends AppCompatActivity implements
                 case 2:
                     Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    SWT3 tab3Mat = SWT3.NewInstance(
+                    Tab3Work tab3Mat = Tab3Work.NewInstance(
                             file_id, position, isSelectedType, type_id);
                     Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +

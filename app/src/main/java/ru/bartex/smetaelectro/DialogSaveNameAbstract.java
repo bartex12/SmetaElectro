@@ -7,12 +7,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.inputmethod.InputMethodManager;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-abstract public class DialogSaveName extends DialogFragment {
+abstract public class DialogSaveNameAbstract extends DialogFragment {
 
     static String TAG = "33333";
     SmetaOpenHelper smetaOpenHelper;
 
-    public DialogSaveName(){
+    public DialogSaveNameAbstract(){
         //пустой конструктор
     }
 

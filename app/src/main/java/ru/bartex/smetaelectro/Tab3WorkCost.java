@@ -18,17 +18,17 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SWT3Cost extends SmetasTabWorkMatAbstrFrag {
+public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
 
 
-    public SWT3Cost() {
+    public Tab3WorkCost() {
         // Required empty public constructor
     }
 
-    public static SWT3Cost NewInstance(
+    public static Tab3WorkCost NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id){
-        Log.d(TAG, "//  SWT3Cost NewInstance // " );
-        SWT3Cost fragment = new SWT3Cost();
+        Log.d(TAG, "//  Tab3WorkCost NewInstance // " );
+        Tab3WorkCost fragment = new Tab3WorkCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -40,19 +40,19 @@ public class SWT3Cost extends SmetasTabWorkMatAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  SWT3Cost updateAdapter // " );
+        Log.d(TAG, "//  Tab3WorkCost updateAdapter // " );
         Cursor cursor;
         if (isSelectedType){
-            Log.d(TAG, "SWT3Cost updateAdapter isSelectedType = true " );
+            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = true " );
             //Курсор с именами работ с типом type_id
             cursor = mSmetaOpenHelper.getWorkNames(type_id);
         }else {
-            Log.d(TAG, "SWT3Cost updateAdapter isSelectedType = false " );
+            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat
             cursor = mSmetaOpenHelper.getWorkNamesAllTypes();
         }
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " SWT3Cost updateAdapter Всего материалов = "+ cursor.getCount() );
+        Log.d(TAG, " Tab3WorkCost updateAdapter Всего материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String mat_name = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
@@ -60,7 +60,7 @@ public class SWT3Cost extends SmetasTabWorkMatAbstrFrag {
             m.put(P.ATTR_MAT_NAME, mat_name);
             data.add(m);
         }
-        Log.d(TAG, " SWT3Cost updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " Tab3WorkCost updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_MAT_NAME};
         int [] to = new int[]{R.id.base_text};
 
