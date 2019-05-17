@@ -127,7 +127,7 @@ public class CostMatDetail extends AppCompatActivity {
                     Bundle extras = getIntent().getExtras();
 
                         requestCode = extras.getInt(REQUEST_CODE);
-                        //если пришло из SmetaMatDetail
+                        //если пришло из DetailSmetaMatLine
                         if (requestCode == 222) {
                             //добавляем стоимость cost работы с mat_id  с единицами измерения unit_mat_id
                             //long costId = mSmetaOpenHelper.insertCostMat(mat_id,cost,unit_mat_id);

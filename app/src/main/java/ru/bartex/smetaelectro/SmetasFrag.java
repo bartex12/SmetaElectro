@@ -113,7 +113,7 @@ public class SmetasFrag extends Fragment {
                         long type_mat_id = mSmetaOpenHelper.getTypeIdMat(file_id, mat_id);
                         long cat_mat_id = mSmetaOpenHelper.getCateIdMat(file_id, mat_id);
 
-                        Intent intent_mat = new Intent(getActivity(), SmetaMatDetail.class);
+                        Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
                         intent_mat.putExtra(P.ID_FILE, file_id);
                         intent_mat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
                         intent_mat.putExtra(P.ID_TYPE_MAT, type_mat_id);

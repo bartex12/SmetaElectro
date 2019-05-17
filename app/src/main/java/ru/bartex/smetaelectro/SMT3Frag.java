@@ -101,7 +101,7 @@ public class SMT3Frag extends SmetasTabWorkMatAbstrFrag {
         Log.d(TAG, "SMT3Frag - listView.onItemClick  file_id = " + file_id +
                 "  cat_id = " + cat_id + "  type_id = " + type_id +
                 "  mat_id = " + mat_id + "  isMat = " + isMat);
-        Intent intent = new Intent(getActivity(), SmetaMatDetail.class);
+        Intent intent = new Intent(getActivity(), DetailSmetaMatLine.class);
         intent.putExtra(P.ID_FILE, file_id);
         intent.putExtra(P.ID_CATEGORY_MAT, cat_id);
         intent.putExtra(P.ID_TYPE_MAT, type_id);

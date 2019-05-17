@@ -51,7 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SmetaMatDetail"
+            android:name=".DetailSmetaMatLine"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".SmetasMat"

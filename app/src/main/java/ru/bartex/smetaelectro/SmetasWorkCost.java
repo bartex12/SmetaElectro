@@ -493,4 +493,5 @@ public class SmetasWorkCost extends AppCompatActivity implements DialogSaveName.
         mViewPager.setCurrentItem(currentItem);
         mSectionsPagerAdapter.notifyDataSetChanged();
     }
+
 }

@@ -142,7 +142,7 @@ public class P {
     public static final int CANCEL_MAT = 7;
     // для DetailSmetaLine риквест код
     public static final int REQUEST_COST = 8;
-    // для SmetaMatDetail риквест код
+    // для DetailSmetaMatLine риквест код
     public static final int REQUEST_COST_MAT = 9;
 
 

@@ -600,5 +600,6 @@ public class SmetasWork extends AppCompatActivity implements
         mViewPager.setCurrentItem(currentItem);
         mSectionsPagerAdapter.notifyDataSetChanged();
     }
+
 }
 

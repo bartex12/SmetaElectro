@@ -20,7 +20,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class SmetaMatDetail extends AppCompatActivity {
+public class DetailSmetaMatLine extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
@@ -63,7 +63,7 @@ public class SmetaMatDetail extends AppCompatActivity {
         }else {
             countMat = 0;
         }
-        Log.d(TAG, "SmetaMatDetail - onCreate  file_id = " + file_id +
+        Log.d(TAG, "DetailSmetaMatLine - onCreate  file_id = " + file_id +
                 "  cat_mat_id = " + cat_mat_id + "  type_id = " + type_mat_id +
                 "  mat_id = " + mat_id + "  isMat = " + isMat);
 
@@ -80,7 +80,7 @@ public class SmetaMatDetail extends AppCompatActivity {
         costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
         mTextViewCost.setText(Float.toString(costMat));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
-            Log.d(TAG, "SmetaMatDetail.(mTextViewCost.getText().toString()).equals \"0.0\"");
+            Log.d(TAG, "DetailSmetaMatLine.(mTextViewCost.getText().toString()).equals \"0.0\"");
             //если для mat_id в таблице расценок ничего нет (цена =0), то вызываем диалог
             FragmentManager fragmentManager = getSupportFragmentManager();
             DialogFragment dialogFragment = new CostMatDialogFragment();
@@ -143,14 +143,14 @@ public class SmetaMatDetail extends AppCompatActivity {
                         finish();
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
-                            Log.d(TAG, "SmetaMatDetail.if ((mTextViewCost.getText().toString()).eq..\"0.0\".");
+                            Log.d(TAG, "DetailSmetaMatLine.if ((mTextViewCost.getText().toString()).eq..\"0.0\".");
                             FragmentManager fragmentManager = getSupportFragmentManager();
                             DialogFragment dialogFragment = new CostMatDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost_mat");
                         }else{
                             long FM_ID = mSmetaOpenHelper.insertRowInFM_Name(file_id, mat_id,
                                     type_mat_id, cat_mat_id, costMat, countMat, unit, countMat*costMat);
-                            Log.d(TAG, "SmetaMatDetail-mButtonSave-onClick FM_ID = " + FM_ID +
+                            Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
                                     " unit = " + unit);
                             //выводим таблицу FM в лог для проверки
                             mSmetaOpenHelper.displayFM();
@@ -175,7 +175,7 @@ public class SmetaMatDetail extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "SmetaMatDetail.onActivityResult...  resultCode = "+ resultCode +
+        Log.d(TAG, "DetailSmetaMatLine.onActivityResult...  resultCode = "+ resultCode +
                 "  requestCode = " + requestCode);
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
@@ -193,7 +193,7 @@ public class SmetaMatDetail extends AppCompatActivity {
     public static class CostMatDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Log.d(TAG, "SmetaMatDetail.CostMatDialogFragment...");
+            Log.d(TAG, "DetailSmetaMatLine.CostMatDialogFragment...");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.CostZero);
             builder.setPositiveButton(R.string.CostOk, new DialogInterface.OnClickListener() {
