@@ -50,6 +50,7 @@ public abstract class SmetasTabCatAbstrFrag extends Fragment {
         Log.d(TAG, "//  SmetasTabCatAbstrFrag onAttach // " );
         mSmetaOpenHelper = new SmetaOpenHelper(context);
         onClickCatListener = (OnClickCatListener)context;
+
     }
 
     @Override
