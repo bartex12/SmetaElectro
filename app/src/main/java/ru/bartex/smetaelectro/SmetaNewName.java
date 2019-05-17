@@ -2,6 +2,7 @@ package ru.bartex.smetaelectro;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,7 +57,6 @@ public class SmetaNewName extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //читаем имя файла в строке ввода
                 String nameFile = etSmetaName.getText().toString();
 
@@ -99,7 +99,11 @@ public class SmetaNewName extends AppCompatActivity {
                     Toast.makeText(SmetaNewName.this,"Сохранено ",
                                  Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Сохранено имя файла  = " + nameFile + "  id = " + file_id);
-                    finish();
+
+                    Intent intent = new Intent(SmetaNewName.this, ListOfSmetasNames.class);
+                    //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                    startActivity(intent);
+                   // finish();
                 }
             }
 

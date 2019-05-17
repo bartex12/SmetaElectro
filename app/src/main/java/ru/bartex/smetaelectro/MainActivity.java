@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 }else if (position == 1){
 
                 }else if (position == 2){
-
                     dialogNewOrCurrentFragment();
 
                 }else if (position == 3){

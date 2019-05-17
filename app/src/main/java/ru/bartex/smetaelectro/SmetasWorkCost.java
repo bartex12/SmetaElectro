@@ -1,8 +1,14 @@
 package ru.bartex.smetaelectro;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -25,9 +31,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost.OnCatTypeMatCostNameListener,
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{
@@ -42,6 +60,9 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    File fileWork; //имя файла с данными по смете на работы
+    int position_tab;
 
     @Override
     public void catAndClickTransmit(long cat_id, boolean isSelectedCat) {
@@ -189,7 +210,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, " ))))))))SmetasWorkCost  onCreateOptionsMenu(((((((( ///");
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_smeta_mat, menu);
+        getMenuInflater().inflate(R.menu.menu_work_cost, menu);
         return true;
     }
 
@@ -221,8 +242,12 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected(((((((( ///");
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+
+        }else if (id == R.id.action_send){
+            ExportDatabaseCSVTask task=new ExportDatabaseCSVTask();
+            task.execute();
             return true;
 
         }else if (id == R.id.action_add){
@@ -250,27 +275,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             false, false, cat_id, type_id);
                     saveCostMat.show(getSupportFragmentManager(),"saveCostMat");
                     break;
-
-                /*
-                case 0:
-                    Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected case 0");
-                    DialogFragment saveCat = DialogSaveNameCat.newInstance(true);
-                    saveCat.show(getSupportFragmentManager(),"SaveCatName");
-                    break;
-                case 1:
-                    Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected case 1");
-                    if (isSelectedCat){
-                        DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, true);
-                        saveType.show(getSupportFragmentManager(), "saveType");
-                    }
-                    break;
-                case 2:
-                    Log.d(TAG, " ))))))))SmetasWorkCost  onOptionsItemSelected case 2");
-                    DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, true);
-                    saveMat.show(getSupportFragmentManager(), "SaveWorkName");
-                    break;
-                   */
-
             }
             return true;
         }
@@ -522,6 +526,226 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(currentItem);
         mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
+    public class ExportDatabaseCSVTask extends AsyncTask<String, Void, Boolean> {
+        private final ProgressDialog dialog = new ProgressDialog(SmetasWorkCost.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Exporting database...");
+            //this.dialog.show();
+        }
+
+        protected Boolean doInBackground(final String... args) {
+            String currentDBPath = "/data/"+ "your Package name" +"/databases/abc.db";
+            File dbFile = getDatabasePath(""+currentDBPath);
+
+            Log.d(TAG, "SmetasWorkCost - doInBackground currentDBPath = " + dbFile);
+            File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
+
+            if (!exportDir.exists()) { exportDir.mkdirs(); }
+
+            fileWork = new File(exportDir, "Rascenki_na_rabotu.csv");
+
+            try {
+                fileWork.createNewFile();
+                CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
+
+                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
+
+                String selectWorkName = " SELECT " + Work.WORK_NAME +
+                        " FROM " +  Work.TABLE_NAME;
+                Cursor curName = db.rawQuery(selectWorkName, null);
+                Log.d(TAG, "SmetasWorkCost - doInBackground curName.getCount= " + curName.getCount());
+
+                String [] titleNames = new String[]{"Название работы","Цена, руб"};
+                csvWrite.writeNext(titleNames);
+
+                Cursor curCost = null;
+
+                while(curName.moveToNext()) {
+
+                    String[] mySecondStringArray = new String[2];
+
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex = curName.getColumnIndex(Work.WORK_NAME);
+                    // Используем индекс для получения строки или числа
+                    String currentWorkName = curName.getString(idColumnIndex);
+                    long workId = mSmetaOpenHelper.getIdFromWorkName(currentWorkName);
+
+                    String selectWorkCost = " SELECT " + CostWork.COST_COST +
+                            " FROM " +  CostWork.TABLE_NAME  +
+                            " WHERE " + CostWork.COST_WORK_ID  + " = " + String.valueOf(workId);
+                    curCost = db.rawQuery(selectWorkCost, null);
+                    Log.d(TAG, "SmetasWorkCost - doInBackground curCost.getCount= " + curCost.getCount());
+
+                    if (curCost.getCount() != 0) {
+                        curCost.moveToFirst();
+                        // Узнаем индекс каждого столбца
+                        int idColumnIndexCost = curCost.getColumnIndex(CostWork.COST_COST);
+                        // Используем индекс для получения числа
+                        float currentCostFloat = curCost.getFloat(idColumnIndexCost);
+                        //переводим число в строку
+                        String currentCost = String.valueOf(currentCostFloat);
+
+                        mySecondStringArray[0] = currentWorkName;
+                        mySecondStringArray[1] = currentCost;
+
+                        csvWrite.writeNext(mySecondStringArray);
+                    }
+                }
+
+                csvWrite.close();
+                curName.close();
+                if (curCost!=null){
+                    curCost.close();
+                }
+
+                return true;
+            } catch (IOException e) {
+                Log.e("SmetasWorkCost", e.getMessage(), e);
+                return false;
+            }
+        }
+
+        protected void onPostExecute(final Boolean success) {
+            if (this.dialog.isShowing()) { this.dialog.dismiss(); }
+            if (success) {
+                Toast.makeText(SmetasWorkCost.this, "Export successful!", Toast.LENGTH_SHORT).show();
+
+                Uri u1  =   Uri.fromFile(fileWork);
+                Log.d(TAG, "SmetasWorkCost -  case R.id.action_send:  Uri u1 = " + u1);
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
+                sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                sendIntent.setType("text/html");
+                startActivity(sendIntent);
+
+            } else {
+                Toast.makeText(SmetasWorkCost.this, "Export failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public class CSVWriter {
+
+        private PrintWriter pw;
+        private char separator;
+        private char quotechar;
+        private char escapechar;
+        private String lineEnd;
+
+        /** The character used for escaping quotes. */
+        public static final char DEFAULT_ESCAPE_CHARACTER = '"';
+        /** The default separator to use if none is supplied to the constructor. */
+        public static final char DEFAULT_SEPARATOR = ',';
+        /**
+         * The default quote character to use if none is supplied to the
+         * constructor.
+         */
+        public static final char DEFAULT_QUOTE_CHARACTER = '"';
+        /** The quote constant to use when you wish to suppress all quoting. */
+        public static final char NO_QUOTE_CHARACTER = '\u0000';
+        /** The escape constant to use when you wish to suppress all escaping. */
+        public static final char NO_ESCAPE_CHARACTER = '\u0000';
+        /** Default line terminator uses platform encoding. */
+        public static final String DEFAULT_LINE_END = "\n";
+
+        /**
+         * Constructs CSVWriter using a comma for the separator.
+         *
+         * @param writer
+         *            the writer to an underlying CSV source.
+         */
+        public CSVWriter(Writer writer) {
+            this(writer, DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER,
+                    DEFAULT_ESCAPE_CHARACTER, DEFAULT_LINE_END);
+        }
+
+        /**
+         * Constructs CSVWriter with supplied separator, quote char, escape char and line ending.
+         *
+         * @param writer
+         *            the writer to an underlying CSV source.
+         * @param separator
+         *            the delimiter to use for separating entries
+         * @param quotechar
+         *            the character to use for quoted elements
+         * @param escapechar
+         *            the character to use for escaping quotechars or escapechars
+         * @param lineEnd
+         *            the line feed terminator to use
+         */
+        public CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd) {
+            this.pw = new PrintWriter(writer);
+            this.separator = separator;
+            this.quotechar = quotechar;
+            this.escapechar = escapechar;
+            this.lineEnd = lineEnd;
+        }
+        /**
+         * Writes the next line to the file.
+         *
+         * @param nextLine
+         *            a string array with each comma-separated element as a separate
+         *            entry.
+         */
+        public void writeNext(String[] nextLine) {
+
+            if (nextLine == null)
+                return;
+
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < nextLine.length; i++) {
+
+                if (i != 0) {
+                    sb.append(separator);
+                }
+
+                String nextElement = nextLine[i];
+                if (nextElement == null)
+                    continue;
+                if (quotechar !=  NO_QUOTE_CHARACTER)
+                    sb.append(quotechar);
+                for (int j = 0; j < nextElement.length(); j++) {
+                    char nextChar = nextElement.charAt(j);
+                    if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
+                        sb.append(escapechar).append(nextChar);
+                    } else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
+                        sb.append(escapechar).append(nextChar);
+                    } else {
+                        sb.append(nextChar);
+                    }
+                }
+                if (quotechar != NO_QUOTE_CHARACTER)
+                    sb.append(quotechar);
+            }
+            sb.append(lineEnd);
+            pw.write(sb.toString());
+        }
+        /**
+         * Flush underlying stream to writer.
+         *
+         * @throws IOException if bad things happen
+         */
+        public void flush() throws IOException {
+
+            pw.flush();
+
+        }
+        /**
+         * Close the underlying stream writer flushing any buffered content.
+         *
+         * @throws IOException if bad things happen
+         *
+         */
+        public void close() throws IOException {
+            pw.flush();
+            pw.close();
+        }
+
     }
 
 }

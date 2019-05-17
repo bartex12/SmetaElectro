@@ -1782,7 +1782,7 @@
     <string name="title_activity_SmetasMat">Материалы</string>
     <string name="title_activity_SmetasWork">Работа</string>
     <string name="title_activity_smetas_mat_cost">Цена материала</string>
-    <string name="title_activity_SmetasWorkCost">Расценки на раоту</string>
+    <string name="title_activity_SmetasWorkCost">Расценки на работу</string>
     <string name="title_activity_smetas_work">SmetasWork</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

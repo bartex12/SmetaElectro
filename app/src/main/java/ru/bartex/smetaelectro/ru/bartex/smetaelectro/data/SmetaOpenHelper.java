@@ -1159,7 +1159,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return costOfWork;
     }
 
-    //вывод в лог всех строк базы
+    //вывод в лог всех строк CostWork
     public void displayTableCost() {
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1301,6 +1301,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return unitName;
     }
+
+   //(((((((((((((((((((((((       вложенный запрос             ))))))))))))))))
 
     //получаем единицы измерения с помощью вложенного запроса
     public String getCostUnitById(long work_id){
@@ -2760,7 +2762,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return currentID;
     }
 
-    //получаем данные по категории по её id
+    //получаем данные по работе по её id
     public DataWork getWorkData(long work_id){
         Log.i(TAG, "SmetaOpenHelper.getWorkData ... ");
         DataWork dataWork = new DataWork();
