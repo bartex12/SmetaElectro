@@ -36,18 +36,13 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
-public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost.OnCatTypeMatCostNameListener,
+public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCostWork.OnCatTypeMatCostNameListener,
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{
 
     public static final String TAG = "33333";
@@ -62,7 +57,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     private ViewPager mViewPager;
 
     File fileWork; //имя файла с данными по смете на работы
-    int position_tab;
 
     @Override
     public void catAndClickTransmit(long cat_id, boolean isSelectedCat) {
@@ -257,21 +251,21 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
                 case 0:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 0");
-                    DialogFragment saveCostCat = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostCat = DialogSaveCostWork.NewInstance(
                             true, false, -1, -1);
                     saveCostCat.show(getSupportFragmentManager(),"saveCostCat");
                     break;
 
                 case 1:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 1");
-                    DialogFragment saveCostType = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostType = DialogSaveCostWork.NewInstance(
                             false, true, cat_id, -1);
                     saveCostType.show(getSupportFragmentManager(),"saveCostType");
                     break;
 
                 case 2:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 2");
-                    DialogFragment saveCostMat = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostMat = DialogSaveCostWork.NewInstance(
                             false, false, cat_id, type_id);
                     saveCostMat.show(getSupportFragmentManager(),"saveCostMat");
                     break;
@@ -362,7 +356,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                 }
             });
             builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
@@ -534,7 +527,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Exporting database...");
-            //this.dialog.show();
+            this.dialog.show();
         }
 
         protected Boolean doInBackground(final String... args) {
@@ -550,6 +543,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
             try {
                 fileWork.createNewFile();
+
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
                 SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
@@ -627,125 +621,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 Toast.makeText(SmetasWorkCost.this, "Export failed", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public class CSVWriter {
-
-        private PrintWriter pw;
-        private char separator;
-        private char quotechar;
-        private char escapechar;
-        private String lineEnd;
-
-        /** The character used for escaping quotes. */
-        public static final char DEFAULT_ESCAPE_CHARACTER = '"';
-        /** The default separator to use if none is supplied to the constructor. */
-        public static final char DEFAULT_SEPARATOR = ',';
-        /**
-         * The default quote character to use if none is supplied to the
-         * constructor.
-         */
-        public static final char DEFAULT_QUOTE_CHARACTER = '"';
-        /** The quote constant to use when you wish to suppress all quoting. */
-        public static final char NO_QUOTE_CHARACTER = '\u0000';
-        /** The escape constant to use when you wish to suppress all escaping. */
-        public static final char NO_ESCAPE_CHARACTER = '\u0000';
-        /** Default line terminator uses platform encoding. */
-        public static final String DEFAULT_LINE_END = "\n";
-
-        /**
-         * Constructs CSVWriter using a comma for the separator.
-         *
-         * @param writer
-         *            the writer to an underlying CSV source.
-         */
-        public CSVWriter(Writer writer) {
-            this(writer, DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER,
-                    DEFAULT_ESCAPE_CHARACTER, DEFAULT_LINE_END);
-        }
-
-        /**
-         * Constructs CSVWriter with supplied separator, quote char, escape char and line ending.
-         *
-         * @param writer
-         *            the writer to an underlying CSV source.
-         * @param separator
-         *            the delimiter to use for separating entries
-         * @param quotechar
-         *            the character to use for quoted elements
-         * @param escapechar
-         *            the character to use for escaping quotechars or escapechars
-         * @param lineEnd
-         *            the line feed terminator to use
-         */
-        public CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd) {
-            this.pw = new PrintWriter(writer);
-            this.separator = separator;
-            this.quotechar = quotechar;
-            this.escapechar = escapechar;
-            this.lineEnd = lineEnd;
-        }
-        /**
-         * Writes the next line to the file.
-         *
-         * @param nextLine
-         *            a string array with each comma-separated element as a separate
-         *            entry.
-         */
-        public void writeNext(String[] nextLine) {
-
-            if (nextLine == null)
-                return;
-
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < nextLine.length; i++) {
-
-                if (i != 0) {
-                    sb.append(separator);
-                }
-
-                String nextElement = nextLine[i];
-                if (nextElement == null)
-                    continue;
-                if (quotechar !=  NO_QUOTE_CHARACTER)
-                    sb.append(quotechar);
-                for (int j = 0; j < nextElement.length(); j++) {
-                    char nextChar = nextElement.charAt(j);
-                    if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
-                        sb.append(escapechar).append(nextChar);
-                    } else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
-                        sb.append(escapechar).append(nextChar);
-                    } else {
-                        sb.append(nextChar);
-                    }
-                }
-                if (quotechar != NO_QUOTE_CHARACTER)
-                    sb.append(quotechar);
-            }
-            sb.append(lineEnd);
-            pw.write(sb.toString());
-        }
-        /**
-         * Flush underlying stream to writer.
-         *
-         * @throws IOException if bad things happen
-         */
-        public void flush() throws IOException {
-
-            pw.flush();
-
-        }
-        /**
-         * Close the underlying stream writer flushing any buffered content.
-         *
-         * @throws IOException if bad things happen
-         *
-         */
-        public void close() throws IOException {
-            pw.flush();
-            pw.close();
-        }
-
     }
 
 }

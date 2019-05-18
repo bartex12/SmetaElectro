@@ -10,13 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +26,7 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
-public class DialogSaveCost extends DialogFragment {
+public class DialogSaveCostMat extends DialogFragment {
 
     public static final String TAG = "33333";
 
@@ -49,13 +47,13 @@ public class DialogSaveCost extends DialogFragment {
     Button buttonCostCancel;
     TextView textView18;
 
-    public DialogSaveCost() {
+    public DialogSaveCostMat() {
         // Required empty public constructor
     }
 
-    public static DialogSaveCost NewInstance(
+    public static DialogSaveCostMat NewInstance(
             boolean isCat, boolean isType, long catId, long typeId){
-        DialogSaveCost fragment = new DialogSaveCost();
+        DialogSaveCostMat fragment = new DialogSaveCostMat();
         Bundle args = new Bundle();
         args.putBoolean(P.IS_CAT_MAT, isCat);
         args.putBoolean(P.IS_TYPE_MAT, isType);
@@ -307,7 +305,7 @@ public class DialogSaveCost extends DialogFragment {
                         if ((costOfMat.equals("")) || (costOfMat.equals("."))) {
                             costOfMat = "0";
                         }
-                        Log.d(TAG, "DialogSaveCost-mButtonSave. costOfMat = " + costOfMat);
+                        Log.d(TAG, "DialogSaveCostMat-mButtonSave. costOfMat = " + costOfMat);
                         //проверка на 0, чтобы не было нулевых строк в смете
                         if (Float.parseFloat(costOfMat) == 0) {
                             //Snackbar заслонён клавиатурой, поэтому в манифесте пишем

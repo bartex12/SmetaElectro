@@ -1,8 +1,14 @@
 package ru.bartex.smetaelectro;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -26,13 +32,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 
 public class SmetasMatCost extends AppCompatActivity implements
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,
-        DialogSaveCost.OnCatTypeMatCostNameListener{
+        DialogSaveCostMat.OnCatTypeMatCostNameListener{
 
     public static final String TAG = "33333";
     long file_id;
@@ -45,6 +58,7 @@ public class SmetasMatCost extends AppCompatActivity implements
     private ViewPager mViewPager;
 
     SmetaOpenHelper mSmetaOpenHelper;
+    File fileWork; //имя файла с данными по смете на работы
 
     @Override
     public void catAndClickTransmit(long cat_cost_mat_id, boolean isSelectedCatCost) {
@@ -69,7 +83,6 @@ public class SmetasMatCost extends AppCompatActivity implements
 
         updateAdapter(2);
     }
-
 
     @Override
     public void catTypeMatCostNameTransmit(
@@ -184,7 +197,7 @@ public class SmetasMatCost extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cost_mat, menu);
+        getMenuInflater().inflate(R.menu.menu_work_cost, menu);
         return true;
     }
 
@@ -218,26 +231,30 @@ public class SmetasMatCost extends AppCompatActivity implements
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }else if (id == R.id.action_send){
+            ExportDatabaseCSVTask task=new ExportDatabaseCSVTask();
+            task.execute();
+            return true;
         }else if (id == R.id.action_add){
             int position = mViewPager.getCurrentItem();
             switch (position){
                 case 0:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 0");
-                    DialogFragment saveCostCat = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostCat = DialogSaveCostMat.NewInstance(
                             true, false, -1, -1);
                     saveCostCat.show(getSupportFragmentManager(),"saveCostCat");
                     break;
 
                 case 1:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 1");
-                    DialogFragment saveCostType = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostType = DialogSaveCostMat.NewInstance(
                             false, true, cat_id, -1);
                     saveCostType.show(getSupportFragmentManager(),"saveCostType");
                     break;
 
                 case 2:
                     Log.d(TAG, " ))))))))SmetasMatCost  onOptionsItemSelected case 2");
-                    DialogFragment saveCostMat = DialogSaveCost.NewInstance(
+                    DialogFragment saveCostMat = DialogSaveCostMat.NewInstance(
                             false, false, cat_id, type_id);
                     saveCostMat.show(getSupportFragmentManager(),"saveCostMat");
                     break;
@@ -478,4 +495,106 @@ public class SmetasMatCost extends AppCompatActivity implements
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(item);
     }
+
+    public class ExportDatabaseCSVTask extends AsyncTask<String, Void, Boolean> {
+        private final ProgressDialog dialog = new ProgressDialog(SmetasMatCost.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Exporting database...");
+            this.dialog.show();
+        }
+
+        protected Boolean doInBackground(final String... args) {
+            String currentDBPath = "/data/"+ "your Package name" +"/databases/abc.db";
+            File dbFile = getDatabasePath(""+currentDBPath);
+
+            Log.d(TAG, "SmetasMatCost - doInBackground currentDBPath = " + dbFile);
+            File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
+
+            if (!exportDir.exists()) { exportDir.mkdirs(); }
+
+            fileWork = new File(exportDir, "Rascenki_na_materialy.csv");
+
+            try {
+                fileWork.createNewFile();
+
+                CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
+
+                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
+
+                String selectMatName = " SELECT " + Mat.MAT_NAME +
+                        " FROM " +  Mat.TABLE_NAME;
+                Cursor curName = db.rawQuery(selectMatName, null);
+                Log.d(TAG, "SmetasMatCost - doInBackground curName.getCount= " + curName.getCount());
+
+                String [] titleNames = new String[]{"Название материала","Цена, руб"};
+                csvWrite.writeNext(titleNames);
+
+                Cursor curCost = null;
+
+                while(curName.moveToNext()) {
+
+                    String[] mySecondStringArray = new String[2];
+
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex = curName.getColumnIndex(Mat.MAT_NAME );
+                    // Используем индекс для получения строки или числа
+                    String currentMatName = curName.getString(idColumnIndex);
+
+                    long workId = mSmetaOpenHelper.getIdFromMatName(currentMatName);
+
+                    String selectMatCost = " SELECT " + CostMat.COST_MAT_COST +
+                            " FROM " +  CostMat.TABLE_NAME  +
+                            " WHERE " + CostMat.COST_MAT_ID  + " = " + String.valueOf(workId);
+                    curCost = db.rawQuery(selectMatCost, null);
+                    Log.d(TAG, "SmetasMatCost - doInBackground curCost.getCount= " + curCost.getCount());
+
+                    if (curCost.getCount() != 0) {
+                        curCost.moveToFirst();
+                        // Узнаем индекс каждого столбца
+                        int idColumnIndexCost = curCost.getColumnIndex(CostMat.COST_MAT_COST);
+                        // Используем индекс для получения числа
+                        float currentCostFloat = curCost.getFloat(idColumnIndexCost);
+                        //переводим число в строку
+                        String currentCost = String.valueOf(currentCostFloat);
+
+                        mySecondStringArray[0] = currentMatName;
+                        mySecondStringArray[1] = currentCost;
+
+                        csvWrite.writeNext(mySecondStringArray);
+                    }
+                }
+                csvWrite.close();
+                curName.close();
+                if (curCost!=null){
+                    curCost.close();
+                }
+                return true;
+            } catch (IOException e) {
+                Log.e("SmetasMatCost", e.getMessage(), e);
+                return false;
+            }
+        }
+
+        protected void onPostExecute(final Boolean success) {
+            if (this.dialog.isShowing()) { this.dialog.dismiss(); }
+            if (success) {
+                Toast.makeText(SmetasMatCost.this, "Export successful!", Toast.LENGTH_SHORT).show();
+
+                Uri u1  =   Uri.fromFile(fileWork);
+                Log.d(TAG, "SmetasMatCost -  case R.id.action_send:  Uri u1 = " + u1);
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
+                sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                sendIntent.setType("text/html");
+                startActivity(sendIntent);
+
+            } else {
+                Toast.makeText(SmetasMatCost.this, "Export failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

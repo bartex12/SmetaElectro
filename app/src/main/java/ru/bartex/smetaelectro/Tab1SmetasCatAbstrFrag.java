@@ -91,6 +91,9 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
         super.onResume();
         Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onResume // " );
         updateAdapter();
+
+        //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
+        registerForContextMenu(listView);
     }
 
     @Override

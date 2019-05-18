@@ -72,7 +72,7 @@
     <string name="description_type">Опиcание типа работы</string>
     <string name="description_no">Без описания</string>
     <string name="ok">OK</string>
-    <string name="action_create_add_name">Новая смета</string>
+    <string name="action_create_add_name">Добавить</string>
     <string name="work_hint_name">Работа</string>
     <string name="description_work">Описание работы</string>
     <string name="smeta_of_work">Смета на работу</string>
