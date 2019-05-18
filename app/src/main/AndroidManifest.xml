@@ -52,6 +52,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".DetailSmetaMatLine"
+            android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".SmetasMat"
