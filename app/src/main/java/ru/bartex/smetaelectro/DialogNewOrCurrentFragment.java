@@ -60,10 +60,9 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
         //если не делать запрет на закрытие окна при щелчке за пределами окна, то можно так
         //return bilder.create();
         //А если делать запрет, то так
-        //Dialog  dialog = builder.create();
-        //запрет на закрытие окна при щелчке за пределами окна
-        //dialog.setCanceledOnTouchOutside(false);
-        return builder.create();
+        Dialog  dialog = builder.create();
+        //запрет на закрытие окна при щелчке за пределами окна - false
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
     }
-
 }
