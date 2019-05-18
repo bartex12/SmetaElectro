@@ -2214,13 +2214,15 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort ... ");
 
         Cursor cursor = db.query(
+                true,
                 FW.TABLE_NAME,   // таблица
                 new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
                 FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
                 new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
                 null,                  // Don't group the rows
                 null,                  // Don't filter by row groups
-                FW.FW_TYPE_ID);                   // порядок сортировки
+                FW.FW_TYPE_ID,                 // порядок сортировки
+                null);
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort cursor.getCount()  " + cursor.getCount());
 
         String[] typeNamesFW = new String[cursor.getCount()];
@@ -2260,13 +2262,15 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort ... ");
 
         Cursor cursor = db.query(
+                true,
                 FM.TABLE_NAME,   // таблица
                 new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
                 FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
                 new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
                 null,                  // Don't group the rows
                 null,                  // Don't filter by row groups
-                FM.FM_MAT_TYPE_ID);                   // порядок сортировки
+                FM.FM_MAT_TYPE_ID,              // порядок сортировки
+                null);
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort cursor.getCount()  " + cursor.getCount());
         String[] typeNamesFM = new String[cursor.getCount()];
         // Проходим через все строки в курсоре

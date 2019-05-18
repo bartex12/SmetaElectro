@@ -153,12 +153,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             case 0:
                 data = new  ArrayList<Map<String, String>>();
 
-                Log.d(TAG, "ListOfSmetasStructured - updateAdapter /////////////////////");
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter case 0 /////////////////////");
                 //Массив категорий работ для сметы с file_id
                 String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
-                //String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
                 String[] type_name = mSmetaOpenHelper.getTypeNamesFWSort(file_id);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_name.length);
 
@@ -174,7 +173,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
                         long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
-                        Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_name[i] = " +
+                        Log.i(TAG, "ListOfSmetasStructured updateAdapter type_name[i] = " +
                                 type_name[i] + " type_id = " + type_id);
 
                         //получаем имена работ  по смете с id файла file_id и id типа type_id
@@ -229,7 +228,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
                 data = new  ArrayList<Map<String, String>>();
 
-                Log.d(TAG, "ListOfSmetasStructured - updateAdapter /////////////////////");
+                Log.d(TAG, "ListOfSmetasStructured - updateAdapter  case 1 /////////////////////");
                 //Массив категорий материалов для сметы с file_id
                 String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
@@ -250,7 +249,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
                         long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(type_mat_name[i]);
-                        Log.i(TAG, "SmetaOpenHelper.getNameOfTypesAndWorkStructured type_mat_name[i] = " +
+                        Log.i(TAG, "ListOfSmetasStructured updateAdapter type_mat_name[i] = " +
                                 type_mat_name[i] + " type_mat_id = " + type_mat_id);
 
                         //получаем имена материалов  по смете с id файла file_id и id типа type_mat_name
@@ -355,6 +354,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
     }
 
     public class ExportDatabaseCSVTask extends AsyncTask<String, Void, Boolean> {
+
         private final ProgressDialog dialog = new ProgressDialog(ListOfSmetasStructured.this);
 
         @Override
@@ -371,62 +371,168 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
 
             if (!exportDir.exists()) { exportDir.mkdirs(); }
+            if (position_tab==0){
+                fileWork = new File(exportDir, "Smeta_na_rabotu.csv");
+            }else if (position_tab == 1){
+                fileWork = new File(exportDir, "Smeta_na_materialy.csv");
+            }
 
-            fileWork = new File(exportDir, "myfile.csv");
             try {
                 fileWork.createNewFile();
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
                 SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
 
-                Cursor curCSV = null;
+                Cursor curStroka = null;
+                Cursor curTypeSort = null;
+                String[] titleSmeta = new String[]{};
                 String[] pusto = new String[]{"","","",""};
                 String[] summarno = new String[]{};
+
                 //если вошли с вкладки работы
     if (position_tab==0){
-        curCSV = db.query(
-                FW.TABLE_NAME,   // таблица
-                new String[]{FW.FW_WORK_NAME,FW.FW_COST,FW.FW_COUNT,FW.FW_SUMMA},  // столбцы
-                FW.FW_FILE_ID + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FW.FW_TYPE_ID);                   // порядок сортировки
-
-        summarno = new String[]{"За работу:", "","",""+totalSumma};
-
+        titleSmeta = new String[]{"          Смета на работу.", "", "", ""};
+        summarno = new String[]{"     Итого за работу:", "","",
+                String.format(Locale.ENGLISH,"%.0f руб", totalSumma)};
         //если вошли с вкладки материалы
     }else if (position_tab == 1){
-        curCSV = db.query(
-                FM.TABLE_NAME,   // таблица
-                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},            // столбцы
-                FM.FM_FILE_ID + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FM.FM_MAT_TYPE_ID);                   // порядок сортировки
-
-       summarno = new String[]{"За материалы:", "","",""+totalSummaMat};
-
+        titleSmeta = new String[]{"          Смета на материалы.", "", "", ""};
+        summarno = new String[]{"     Итого за материалы:", "","",
+                String.format(Locale.ENGLISH,"%.0f руб", totalSummaMat)};
     }
                 String [] titleNames = new String[]{"Название","Цена","Кол-во","Сумма"};
-
+                //пишем заголовки таблицы
                //csvWrite.writeNext(curCSV.getColumnNames());
                 csvWrite.writeNext(titleNames);
-                while(curCSV.moveToNext()) {
-                    String[] mySecondStringArray = new String[curCSV.getColumnNames().length];
-                    for(int i=0; i<curCSV.getColumnNames().length; i++)
-                    {
-                        mySecondStringArray[i] =curCSV.getString(i);
+                //пишем смета на работу/материалы
+                csvWrite.writeNext(titleSmeta);
+                //пишем пустую строку
+                csvWrite.writeNext(pusto);
+
+                //если вошли с вкладки работы
+                if (position_tab==0){
+
+                    //получаем курсор с именами типов работы
+                    curTypeSort = db.query(
+                            true,
+                            FW.TABLE_NAME,   // таблица
+                            new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
+                            FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                            new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                            null,                  // Don't group the rows
+                            null,                  // Don't filter by row groups
+                            FW.FW_TYPE_ID,                 // порядок сортировки
+                            null);
+
+                    Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 curTypeSort.getCount() = " +
+                            curTypeSort.getCount());
+
+                    //для каждого имени типа работы
+                while (curTypeSort.moveToNext()) {
+                    //получаем имя типа работы из курсора
+                    String typeName = curTypeSort.getString(curTypeSort.getColumnIndex(FW.FW_TYPE_NAME));
+                    //вставляем имя типа в строковый массив
+                    String[] typeNameArray = new String[]{"     "+typeName, "", "", ""};
+                    //выводим имя типа работы в таблицу - надо сделать через настройки вывод типа
+                    //csvWrite.writeNext(typeNameArray);
+
+                    //получаем id типа работы ...
+                    long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
+                    Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 type_name = " +
+                            typeName + " type_id = " + type_id);
+
+                    //получаем курсор с данными сметы с file_id для типа работ с type_id
+                    curStroka = db.query(
+                            FW.TABLE_NAME,   // таблица
+                            new String[]{FW.FW_WORK_NAME, FW.FW_COST, FW.FW_COUNT, FW.FW_SUMMA},  // столбцы
+                            FW.FW_FILE_ID + "=?" + " AND " + FW.FW_TYPE_ID + "=?", // столбцы для условия WHERE
+                            new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                            null,                  // Don't group the rows
+                            null,                  // Don't filter by row groups
+                            FW.FW_WORK_ID);                   // порядок сортировки
+                    Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 curStroka.getCount() = " +
+                            curStroka.getCount());
+
+                    //...выводим все строки с названием, ценой, количеством и суммой
+                    while (curStroka.moveToNext()) {
+
+                        String[] myStrokaStringArray = new String[curStroka.getColumnNames().length];
+                        for (int i = 0; i < curStroka.getColumnNames().length; i++) {
+                            myStrokaStringArray[i] = curStroka.getString(i);
+                        }
+                        csvWrite.writeNext(myStrokaStringArray);
                     }
-                    csvWrite.writeNext(mySecondStringArray);
+                    //пишем пустую строку
+                    csvWrite.writeNext(pusto);
                 }
+                    //если вошли с вкладки материалы
+                    }else if (position_tab == 1){
+
+                    //получаем курсор с именами типов материала
+                        curTypeSort = db.query(
+                                true,
+                                FM.TABLE_NAME,   // таблица
+                                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID}, // столбцы
+                                FM.FM_FILE_ID  + "=?", // столбцы для условия WHERE
+                                new String[]{String.valueOf(file_id)}, // значения для условия WHERE
+                                null,                  // Don't group the rows
+                                null,                  // Don't filter by row groups
+                                FM.FM_MAT_TYPE_ID,              // порядок сортировки
+                                null);
+                        Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 curTypeSort.getCount() = " +
+                                curTypeSort.getCount());
+
+                    //для каждого имени типа материала
+                    while (curTypeSort.moveToNext()) {
+
+                        //получаем имя типа материала из курсора
+                        String typeName = curTypeSort.getString(curTypeSort.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+                        //вставляем имя типа в строковый массив
+                        String[] typeNameArray = new String[]{"     "+typeName, "", "", ""};
+                        //выводим имя типа материала в таблицу - надо сделать через настройки вывод типа
+                        //csvWrite.writeNext(typeNameArray);
+
+                        //получаем id типа материала...
+                        long type_id = mSmetaOpenHelper.getIdFromMatTypeName(typeName);
+                        Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 type_name = " +
+                                typeName + " type_id = " + type_id);
+
+                        //получаем курсор с данными сметы с file_id для типа материала с type_id
+                        curStroka = db.query(
+                                FM.TABLE_NAME,   // таблица
+                                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},// столбцы
+                                FM.FM_FILE_ID + "=?"+ " AND " + FM.FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
+                                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                                null,                  // Don't group the rows
+                                null,                  // Don't filter by row groups
+                                FM.FM_MAT_ID);                   // порядок сортировки
+                        Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 curStroka.getCount() = " +
+                                curStroka.getCount());
+
+                        //...выводим все строки с названием, ценой, количеством и суммой
+                        while(curStroka.moveToNext()) {
+
+                            String[] myStrokaStringArray = new String[curStroka.getColumnNames().length];
+                            for(int i=0; i<curStroka.getColumnNames().length; i++)
+                            {
+                                myStrokaStringArray[i] =curStroka.getString(i);
+                            }
+                            csvWrite.writeNext(myStrokaStringArray);
+                        }
+                        //пишем пустую строку
+                        csvWrite.writeNext(pusto);
+                    }
+                }
+
                 csvWrite.writeNext(pusto);
                 csvWrite.writeNext(summarno);
 
                 csvWrite.close();
-                curCSV.close();
+                curStroka.close();
+                curTypeSort.close();
+
                 return true;
+
             } catch (IOException e) {
                 Log.e("ListOfSmetasStructured", e.getMessage(), e);
                 return false;
@@ -439,7 +545,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 Toast.makeText(ListOfSmetasStructured.this, "Export successful!", Toast.LENGTH_SHORT).show();
 
                 Uri u1  =   Uri.fromFile(fileWork);
-                Log.d(TAG, "ListOfSmetasStructured -  case R.id.action_send:  Uri u1 = " + u1);
+                Log.d(TAG, "ListOfSmetasStructured -  onPostExecute  Uri u1 = " + u1);
 
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
