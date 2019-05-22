@@ -481,8 +481,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         }
                         csvWrite.writeNext(myStrokaStringArray);
                     }
-                    //пишем пустую строку
-                    csvWrite.writeNext(pusto);
+                    //пишем пустую строку - если делать вывод типа
+                    //csvWrite.writeNext(pusto);
                 }
                     //если вошли с вкладки материалы
                     }else if (position_tab == 1){
@@ -538,8 +538,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                             }
                             csvWrite.writeNext(myStrokaStringArray);
                         }
-                        //пишем пустую строку
-                        csvWrite.writeNext(pusto);
+                        //пишем пустую строку - если делать вывод типа
+                        //csvWrite.writeNext(pusto);
                     }
                 }
 
