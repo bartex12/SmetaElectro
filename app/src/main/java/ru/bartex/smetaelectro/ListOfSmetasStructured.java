@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -364,21 +366,38 @@ public class ListOfSmetasStructured extends AppCompatActivity {
         }
 
         protected Boolean doInBackground(final String... args) {
-            String currentDBPath = "/data/"+ "your Package name" +"/databases/abc.db";
-            File dbFile = getDatabasePath(""+currentDBPath);
 
-            Log.d(TAG, "ListOfSmetasStructured - doInBackground currentDBPath = " + dbFile);
-            File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
+            //получаем путь к предопределённой папке для документов
+            //такой код в андроид 7 не работает путь: /storage/emulated/0/Documents
+            //File exportDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            //а вот такой - работает  путь:  /storage/emulated/0/Android/data/ru.bartex.smetaelectro/files/Documents
+            //File exportDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
 
-            if (!exportDir.exists()) { exportDir.mkdirs(); }
+            File exportDir = null;
+            if (Build.VERSION.SDK_INT >= 24){
+                Log.d(TAG, "Build.VERSION >= 24");
+                exportDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            }else {
+                Log.d(TAG, "Build.VERSION < 24");
+                String path = Environment.getExternalStorageDirectory() + "/SmetaElectro";
+                exportDir = new File (path);
+            }
+            Log.d(TAG, "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT );
+            Log.d(TAG, "exportDir.getAbsolutePath = " + exportDir.getAbsolutePath());
+
+                if(!exportDir.exists()) {
+                    exportDir.mkdirs();
+                }
+
             if (position_tab==0){
                 fileWork = new File(exportDir, "Smeta_na_rabotu.csv");
             }else if (position_tab == 1){
                 fileWork = new File(exportDir, "Smeta_na_materialy.csv");
             }
+            Log.d(TAG, "ListOfSmetasStructured - doInBackground fileWork = " + fileWork);
 
             try {
-                fileWork.createNewFile();
+               fileWork.createNewFile();
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
                 SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
@@ -540,15 +559,22 @@ public class ListOfSmetasStructured extends AppCompatActivity {
         }
 
         protected void onPostExecute(final Boolean success) {
+
             if (this.dialog.isShowing()) { this.dialog.dismiss(); }
+
             if (success) {
                 Toast.makeText(ListOfSmetasStructured.this, "Export successful!", Toast.LENGTH_SHORT).show();
+
+                //чтобы не крэшилось приложение при вызове
+                // из-за использования file:// а не content:// в Uri для API>24
+                StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder1.build());
 
                 Uri u1  =   Uri.fromFile(fileWork);
                 Log.d(TAG, "ListOfSmetasStructured -  onPostExecute  Uri u1 = " + u1);
 
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Smeta Details");
                 sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
                 sendIntent.setType("text/html");
                 startActivity(sendIntent);
@@ -556,6 +582,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             } else {
                 Toast.makeText(ListOfSmetasStructured.this, "Export failed", Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 

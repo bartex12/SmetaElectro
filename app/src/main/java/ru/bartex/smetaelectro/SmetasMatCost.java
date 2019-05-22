@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -506,13 +508,28 @@ public class SmetasMatCost extends AppCompatActivity implements
         }
 
         protected Boolean doInBackground(final String... args) {
-            String currentDBPath = "/data/"+ "your Package name" +"/databases/abc.db";
-            File dbFile = getDatabasePath(""+currentDBPath);
 
-            Log.d(TAG, "SmetasMatCost - doInBackground currentDBPath = " + dbFile);
-            File exportDir = new File(Environment.getExternalStorageDirectory(), "/Folder_Name/");
+            //получаем путь к предопределённой папке для документов
+            //такой код в андроид 7 не работает путь: /storage/emulated/0/Documents
+            //File exportDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            //а вот такой - работает  путь:  /storage/emulated/0/Android/data/ru.bartex.smetaelectro/files/Documents
+            //File exportDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
 
-            if (!exportDir.exists()) { exportDir.mkdirs(); }
+            File exportDir = null;
+            if (Build.VERSION.SDK_INT >= 24){
+                Log.d(TAG, "Build.VERSION >= 24");
+                exportDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            }else {
+                Log.d(TAG, "Build.VERSION < 24");
+                String path = Environment.getExternalStorageDirectory() + "/SmetaElectro";
+                exportDir = new File (path);
+            }
+            Log.d(TAG, "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT );
+            Log.d(TAG, "exportDir.getAbsolutePath = " + exportDir.getAbsolutePath());
+
+            if(!exportDir.exists()) {
+                exportDir.mkdirs();
+            }
 
             fileWork = new File(exportDir, "Rascenki_na_materialy.csv");
 
@@ -581,6 +598,11 @@ public class SmetasMatCost extends AppCompatActivity implements
             if (this.dialog.isShowing()) { this.dialog.dismiss(); }
             if (success) {
                 Toast.makeText(SmetasMatCost.this, "Export successful!", Toast.LENGTH_SHORT).show();
+
+                //чтобы не крэшилось приложение при вызове
+                // из-за использования file:// а не content:// в Uri для API>24
+                StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder1.build());
 
                 Uri u1  =   Uri.fromFile(fileWork);
                 Log.d(TAG, "SmetasMatCost -  case R.id.action_send:  Uri u1 = " + u1);
