@@ -41,24 +41,15 @@ public class SmetasFrag extends Fragment {
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;
-    float[] array_summa; //массив стоимости работ
-    float totalSumma; // общая стоимость работ по смете
 
     long file_id;
     int positionItem;
 
-    View header;
-    View footer;
-
     ViewPager viewPager;
+    BehaviorWorkOrMat behaviorWorkOrMat;
 
-    public static SmetasFrag newInstance(long file_id, int position) {
-        SmetasFrag fragment = new SmetasFrag();
-        Bundle args = new Bundle();
-        args.putLong(P.ID_FILE, file_id);
-        args.putInt(P.TAB_POSITION, position);
-        fragment.setArguments(args);
-        return fragment;
+    public void performUpdateAdapter(Context context){
+        behaviorWorkOrMat.updateAdapter(context);
     }
 
     @Override
@@ -136,7 +127,7 @@ public class SmetasFrag extends Fragment {
         super.onResume();
         Log.d(TAG, "//  SmetasFrag onResume // " );
         //обновляем данные списка фрагмента активности
-        updateAdapter();
+        performUpdateAdapter(getActivity());
         //объявляем о регистрации контекстного меню
         //странно, но работа с контекстным меню происходит в активности Smetas, а не здесь
         registerForContextMenu(lvSmetas);
@@ -158,149 +149,5 @@ public class SmetasFrag extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "//SmetasFrag onDestroy // " );
-    }
-
-
-    public void updateAdapter() {
-        Log.d(TAG, "SmetasFrag updateAdapter positionItem = " + positionItem);
-        //switch (viewPager.getCurrentItem()){
-            switch (positionItem){
-            case 0:
-                Log.d(TAG, "//SmetasFrag updateAdapter case 0// " );
-                //Массив категорий материалов для сметы с file_id
-                String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
-                Log.d(TAG, "SmetasFrag - updateAdapter  cat_name.length = " + cat_name.length);
-                //массив типов материалов для сметы с file_id
-                String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
-                Log.d(TAG, "SmetasFrag - updateAdapter  type_name.length = " + type_name.length);
-                //Массив материалов в файле с file_id
-                String[] work_name = mSmetaOpenHelper.getNameOfWork(file_id);
-                //Массив цен для материалов в файле с file_id
-                float[] work_cost = mSmetaOpenHelper.getCostOfWork(file_id);
-                //Массив количества материалов для материалов в файле с file_id
-                float[] work_amount = mSmetaOpenHelper.getAmountOfWork(file_id);
-                //Массив единиц измерения для материалов в файле с file_id
-                String[] work_units = mSmetaOpenHelper.getUnitsOfWork(file_id);
-                //Массив стоимости материалов  для материалов в файле с file_id
-                array_summa = mSmetaOpenHelper.getSummaOfWork(file_id);
-
-                //Список с данными для адаптера
-                data = new ArrayList<Map<String, Object>>(work_name.length);
-
-                for (int i = 0; i < work_name.length; i++) {
-                    Log.d(TAG, "SmetasFrag - updateAdapter  work_name = " + work_name[i]);
-
-                    m = new HashMap<>();
-                    m.put(P.WORK_NUMBER, (i + 1));
-                    m.put(P.WORK_NAME, work_name[i]);
-                    m.put(P.WORK_COST, work_cost[i]);
-                    m.put(P.WORK_AMOUNT, work_amount[i]);
-                    m.put(P.WORK_UNITS, work_units[i]);
-                    m.put(P.WORK_SUMMA, array_summa[i]);
-                    data.add(m);
-                }
-                String[] fromWork = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
-                        P.WORK_UNITS, P.WORK_SUMMA};
-                int[] toWork = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
-                        R.id.tvUnits, R.id.tvSumma};
-
-                if (data.size()<=0){
-                }else {
-                    lvSmetas.removeHeaderView(header);
-                    //добавляем хедер
-                    header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                    String fileName = mSmetaOpenHelper.getFileNameById(file_id);
-                    ((TextView)header.findViewById(R.id.base_text)).setText(
-                            String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
-                    lvSmetas.addHeaderView(header, null, false);
-                    Log.d(TAG, "***********getHeaderViewsCount*********** = " +
-                            lvSmetas.getHeaderViewsCount());
-
-                    lvSmetas.removeFooterView(footer);
-                    Log.d(TAG, "*********  removeFooterView2  ********* ");
-                    //добавляем футер
-                    footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                    totalSumma = P.updateTotalSumma(array_summa);
-                    Log.d(TAG, "SmetasFrag - updateAdapter  totalSumma = " + totalSumma);
-                    ((TextView)footer.findViewById(R.id.base_text)).
-                            setText(String.format(Locale.ENGLISH,"За работу: %.0f руб", totalSumma ));
-                    lvSmetas.addFooterView(footer, null, false);
-                    Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
-                            lvSmetas.getFooterViewsCount());
-                }
-                sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, fromWork, toWork);
-                lvSmetas.setAdapter(sara);
-                break;
-
-            case 1:
-                Log.d(TAG, "//SmetasFrag updateAdapter case 1// " );
-                //Массив категорий материалов для сметы с file_id
-                String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
-                Log.d(TAG, "SmetasFrag - updateAdapter  cat_name.length = " + cat_mat_name.length);
-                //массив типов материалов для сметы с file_id
-                String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
-                Log.d(TAG, "SmetasFrag - updateAdapter  type_name.length = " + type_mat_name.length);
-                //Массив материалов в файле с file_id
-                String[] mat_name = mSmetaOpenHelper.getNameOfMat(file_id);
-                //Массив цен для материалов в файле с file_id
-                float[] mat_cost = mSmetaOpenHelper.getCostOfMat(file_id);
-                //Массив количества работ для работ в файле с file_id
-                float[] mat_amount = mSmetaOpenHelper.getAmountOfMat(file_id);
-                //Массив единиц измерения для материалов в файле с file_id
-                String[] mat_units = mSmetaOpenHelper.getUnitsOfMat(file_id);
-                //Массив стоимости материалов  для работ в файле с file_id
-                array_summa = mSmetaOpenHelper.getSummaOfMat(file_id);
-
-                //Список с данными для адаптера
-                data = new ArrayList<Map<String, Object>>(mat_name.length);
-
-                for (int i = 0; i < mat_name.length; i++) {
-                    Log.d(TAG, "SmetasFrag - updateAdapter  mat_name = " + mat_name[i]);
-
-                    m = new HashMap<>();
-                    m.put(P.MAT_NUMBER, (i + 1));
-                    m.put(P.MAT_NAME, mat_name[i]);
-                    m.put(P.MAT_COST, mat_cost[i]);
-                    m.put(P.MAT_AMOUNT, mat_amount[i]);
-                    m.put(P.MAT_UNITS, mat_units[i]);
-                    m.put(P.MAT_SUMMA, array_summa[i]);
-                    Log.d(TAG, "SmetasFrag - updateAdapter  i+1 = "
-                            + (i+1) + " mat_units[i] = " + mat_units[i] );
-                    data.add(m);
-                }
-
-                String[] from = new String[]{P.MAT_NUMBER, P.MAT_NAME, P.MAT_COST, P.MAT_AMOUNT,
-                        P.MAT_UNITS, P.MAT_SUMMA};
-                int[] to = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
-                        R.id.tvUnits, R.id.tvSumma};
-
-                //***************************Header and Footer***************
-                lvSmetas.removeHeaderView(header);
-                //добавляем хедер
-                header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                String fileNameMat = mSmetaOpenHelper.getFileNameById(file_id);
-                ((TextView)header.findViewById(R.id.base_text)).setText(
-                        String.format(Locale.ENGLISH,"Смета на материалы:   %s", fileNameMat));
-                lvSmetas.addHeaderView(header, null, false);
-                Log.d(TAG, "***********getHeaderViewsCount*********** = " +
-                        lvSmetas.getHeaderViewsCount());
-
-                lvSmetas.removeFooterView(footer);
-                Log.d(TAG, "*********  removeFooterView2  ********* ");
-                //добавляем футер
-                footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                totalSumma = P.updateTotalSumma(array_summa);
-                Log.d(TAG, "SmetasFrag - updateAdapter  totalSumma = " + totalSumma);
-                ((TextView)footer.findViewById(R.id.base_text)).
-                        setText(String.format(Locale.ENGLISH,"За материалы: %.0f руб", totalSumma ));
-                lvSmetas.addFooterView(footer, null, false);
-                Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
-                        lvSmetas.getFooterViewsCount());
-                //***************************Header and Footer***************
-
-                sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, from, to);
-                lvSmetas.setAdapter(sara);
-                break;
-        }
     }
 }

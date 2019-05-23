@@ -232,14 +232,10 @@ public class Smetas extends AppCompatActivity {
 
             switch (position){
                 case 0:
-                    //SmetasTab1Rabota tab1Rabota = SmetasTab1Rabota.newInstance(file_id, pos);
-                   // return tab1Rabota;
-                SmetasFrag smetasTab0 = SmetasFrag.newInstance(file_id, pos);
+                SmetasFrag smetasTab0 = SmetasFrag_Tab1Rab.newInstance(file_id, pos);
                 return smetasTab0;
                 case 1:
-                    //SmetasTab2Materialy tab2Materialy = SmetasTab2Materialy.newInstance(file_id, pos);
-                    //return tab2Materialy;
-                    SmetasFrag smetasTab1 = SmetasFrag.newInstance(file_id, pos);
+                    SmetasFrag smetasTab1 = SmetasFrag_Tab2Mat.newInstance(file_id, pos);
                     return smetasTab1;
                 default:
                     return null;
