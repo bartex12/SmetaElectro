@@ -318,7 +318,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return file1_id;
     }
 
-    //получаем количество файлов (сохранённых подходов) в базе
+    //получаем количество файлов  в базе
     public int getFilesCount() {
         Log.i(TAG, "TempDBHelper.getFilesCount ... ");
         String countQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
@@ -403,7 +403,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс  столбца FileWork._ID
             int idColumnIndex = cursor.getColumnIndex(FileWork._ID);
@@ -413,9 +413,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromFileName currentID = " + currentID);
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         db.close();
         return currentID;
     }
@@ -491,6 +489,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             category_id[position] = cursor.getInt(cursor.getColumnIndex(CategoryWork._ID));
             Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId position = " + position);
         }
+        cursor.close();
         return category_id;
     }
 
@@ -507,6 +506,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             category_id_mat[position] = cursor.getInt(cursor.getColumnIndex(CategoryMat._ID));
             Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId position = " + position);
         }
+        cursor.close();
         return category_id_mat;
     }
 
@@ -655,11 +655,11 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         for (int i = 0; i <work_name_type_primechania.length; i++ ){
             this.InsertWork(db, values, type_id[ii],  work_name_type_primechania[i]);
         }
-        ii = 13; //work_name_type_hren
+        ii = 13; //work_name_type_musor
         for (int i = 0; i <work_name_type_musor.length; i++ ){
             this.InsertWork(db, values, type_id[ii],  work_name_type_musor[i]);
         }
-        ii = 14; //work_name_type_full_hren
+        ii = 14; //work_name_type_tovary
         for (int i = 0; i <work_name_type_tovary.length; i++ ){
             this.InsertWork(db, values, type_id[ii],  work_name_type_tovary[i]);
         }
@@ -842,7 +842,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         for (int i = 0; i<length; i++){
             unit_id[i] = Integer.valueOf(unitIdOfMat[i]);
         }
-        //*******ИСПРАВИТЬ ПОСЛЕ НАЗНАЧЕНИЯ ЦЕН************
 
         String[] costMat = res.getStringArray(R.array.cost_of_mat);
         float[] cost_of_mat = new float[costMat.length];
@@ -888,6 +887,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             type_id[position] = cursor.getInt(cursor.getColumnIndex(TypeWork._ID));
             //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
         }
+        cursor.close();
         return type_id;
     }
 

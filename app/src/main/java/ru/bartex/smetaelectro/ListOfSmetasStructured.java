@@ -24,9 +24,21 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -376,7 +388,10 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             File exportDir = null;
             if (Build.VERSION.SDK_INT >= 24){
                 Log.d(TAG, "Build.VERSION >= 24");
+                //папка по адресу
                 exportDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                //папка по адресу /data/user/0/ru.bartex.smetaelectro/files
+                //exportDir = getApplicationContext().getFilesDir();
             }else {
                 Log.d(TAG, "Build.VERSION < 24");
                 String path = Environment.getExternalStorageDirectory() + "/SmetaElectro";
@@ -509,6 +524,106 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 curStroka.close();
                 curTypeSort.close();
 
+/*
+                // +++++++++++++  ПЕРЕВОД В Excel  ++++++++++++++ start
+                //рабочий вариант, но во всех программах не работает кодировка
+                ArrayList arList=null;
+                ArrayList al=null;
+
+                //нужна папка /data/user/0/ru.bartex.smetaelectro/files
+
+                //сейчас путь /storage/emulated/0/Android/data/ru.bartex.smetaelectro/files/Documents/Smeta_na_rabotu.csv
+                String inFilePath =getApplicationContext().
+                        getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)+"/Smeta_na_rabotu.csv";
+                Log.d(TAG, "ListOfSmetasStructured - doInBackground inFilePath = " + inFilePath);
+                //здесь путь  /storage/emulated/0/Android/data/ru.bartex.smetaelectro/files/Documents/test.xls
+                String outFilePath = getApplicationContext().
+                        getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) +"/test.xls";
+                Log.d(TAG, "ListOfSmetasStructured - doInBackground outFilePath = " + outFilePath);
+                String thisLine;
+                int count=0;
+
+                try {
+                Log.d(TAG,"try1");
+
+                // открываем поток для чтения
+                //InputStream is = openFileInput(inFilePath);
+                //Log.d(TAG,"InputStream is = " + is);
+                //InputStreamReader isr = new InputStreamReader(is);
+                // Log.d(TAG,"InputStreamReader isr = " + isr);
+                //BufferedReader br = new BufferedReader(isr);
+                //Log.d(TAG,"BufferedReader br = " + br);
+
+                int i=0;
+
+                FileInputStream fis = new FileInputStream(fileWork);
+                Log.d(TAG,"FileInputStream fis = " + fis);
+                DataInputStream myInput = new DataInputStream(fis);
+                Log.d(TAG,"DataInputStream myInput = " + myInput);
+
+                arList = new ArrayList();
+                Log.d(TAG,"myInput.readLine() = " + myInput.readLine());
+                while ((thisLine = myInput.readLine()) != null)
+                {
+                    al = new ArrayList();
+                    String strar[] = thisLine.split(",");
+                    for(int j=0;j<strar.length;j++)
+                    {
+                        al.add(strar[j]);
+                        Log.d(TAG,"try1 al.size() = " + al.size());
+                    }
+                    arList.add(al);
+                    Log.d(TAG,"try1 arList.size() = " + arList.size());
+                    System.out.println();
+                    i++;
+                }
+                 } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "shit");
+                }
+                try
+                {
+                    Log.d(TAG,"try2");
+                    HSSFWorkbook hwb = new HSSFWorkbook();
+                    HSSFSheet sheet = hwb.createSheet("new sheet");
+                    Log.d(TAG,"arList.size() = " + arList.size());
+                    for(int k=0;k<arList.size();k++)
+                    {
+                        ArrayList ardata = (ArrayList)arList.get(k);
+                        HSSFRow row = sheet.createRow((short) 0+k);
+                        Log.d(TAG,"ardata.size() = " + ardata.size());
+                        for(int p=0;p<ardata.size();p++)
+                        {
+                            HSSFCell cell = row.createCell((short) p);
+                            String data = ardata.get(p).toString();
+                            if(data.startsWith("=")){
+                                cell.setCellType(Cell.CELL_TYPE_STRING);
+                                data=data.replaceAll("\"", "");
+                                data=data.replaceAll("=", "");
+                                cell.setCellValue(data);
+                            }else if(data.startsWith("\"")){
+                                data=data.replaceAll("\"", "");
+                                cell.setCellType(Cell.CELL_TYPE_STRING);
+                                cell.setCellValue(data);
+                            }else{
+                                data=data.replaceAll("\"", "");
+                                cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                cell.setCellValue(data);
+                            }
+                        }
+                        System.out.println();
+                    }
+                    FileOutputStream fileOut = new FileOutputStream(outFilePath);
+                    hwb.write(fileOut);
+                    fileOut.close();
+                    Log.d(TAG,"try3");
+                } catch ( Exception ex ) {
+                    ex.printStackTrace();
+                }
+                // +++++++++++++  ПЕРЕВОД В Excel  ++++++++++++++ end
+                */
+
+                Log.d(TAG,"try4");
                 return true;
 
             } catch (IOException e) {
@@ -529,7 +644,14 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder1.build());
 
+                //ниже строки для формата Excel который пока не работает
+                //String outFilePath = getApplicationContext().
+                //       getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) +"/test.xls";
+                //File file = new File(outFilePath);
+                //Uri u1  =   Uri.fromFile(file);
+
                 Uri u1  =   Uri.fromFile(fileWork);
+
                 Log.d(TAG, "ListOfSmetasStructured -  onPostExecute  Uri u1 = " + u1);
 
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
