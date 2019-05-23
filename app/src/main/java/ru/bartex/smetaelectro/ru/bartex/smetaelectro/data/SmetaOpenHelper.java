@@ -3334,6 +3334,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             units_name[position] = cursor.getString(cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME));
             Log.i(TAG, "SmetaOpenHelper.getArrayUnitsMatNames position = " + position);
         }
+        cursor.close();
         return units_name;
     }
 
