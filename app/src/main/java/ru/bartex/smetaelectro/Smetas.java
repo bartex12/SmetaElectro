@@ -232,9 +232,21 @@ public class Smetas extends AppCompatActivity {
 
             switch (position){
                 case 0:
+                    //использован шаблон проектирования Стратегия
+                    //SmetasFrag_Tab1Rab extend SmetasFrag, а во SmetasFrag переменная
+                    // интерфейса BehaviorWorkOrMat выполняет метод performUpdateAdapter()
+                    //с методом интерфейса updateAdapter внутри)
+                    // причём в SmetasFrag_Tab1Rab эта переменная указывает на класс, который будет выполнять
+                    // метод updateAdapter - это класс BehaviorWorkOrMat_Work
                 SmetasFrag smetasTab0 = SmetasFrag_Tab1Rab.newInstance(file_id, pos);
                 return smetasTab0;
                 case 1:
+                    //использован шаблон проектирования Стратегия
+                    //SmetasFrag_Tab2Mat extend SmetasFrag, а во SmetasFrag переменная
+                    // интерфейса BehaviorWorkOrMat выполняет метод performUpdateAdapter()
+                    //с методом интерфейса updateAdapter внутри
+                    // причём в SmetasFrag_Tab2Mat эта переменная указывает на класс, который будет выполнять
+                    // метод updateAdapter - это класс BehaviorWorkOrMat_Mat
                     SmetasFrag smetasTab1 = SmetasFrag_Tab2Mat.newInstance(file_id, pos);
                     return smetasTab1;
                 default:
