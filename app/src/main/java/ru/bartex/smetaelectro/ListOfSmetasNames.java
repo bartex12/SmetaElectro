@@ -48,6 +48,11 @@ public class ListOfSmetasNames extends AppCompatActivity {
         mSmetaOpenHelper = new SmetaOpenHelper(this);
 
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
+        //находим View, которое выводит текст Список пуст
+        View empty = findViewById(android.R.id.empty);
+        TextView tvEmpty = (TextView)empty;
+        tvEmpty.setText(R.string.list_empty_names);
+        mListViewNames.setEmptyView(empty);
         mListViewNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

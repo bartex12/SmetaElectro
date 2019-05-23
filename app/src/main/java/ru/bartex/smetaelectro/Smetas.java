@@ -54,6 +54,7 @@ public class Smetas extends AppCompatActivity {
         //Получаем имя файла с текущей  сметой
         SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
         String fileName = mDbHelper.getFileNameById(file_id);
+        Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

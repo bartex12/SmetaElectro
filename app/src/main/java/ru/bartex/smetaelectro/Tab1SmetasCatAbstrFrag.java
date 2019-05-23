@@ -70,6 +70,13 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
         View view = inflater.inflate(
                 R.layout.fragment_tabs_for_works_and_materials, container, false);
         listView = view.findViewById(R.id.listViewFragmentTabs);
+
+        //находим View, которое выводит текст Список пуст
+        View empty = view.findViewById(android.R.id.empty);
+        TextView tvEmpty = (TextView)empty;
+        tvEmpty.setText(R.string.list_empty_tab);
+        listView.setEmptyView(empty);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

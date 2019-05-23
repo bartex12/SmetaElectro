@@ -87,6 +87,10 @@ public class SmetasFrag extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         lvSmetas = rootView.findViewById(R.id.listViewFragmentTabs);
 
+        //находим View, которое выводит текст Список пуст
+        View empty = rootView.findViewById(android.R.id.empty);
+        lvSmetas.setEmptyView(empty);
+
         lvSmetas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,28 +204,30 @@ public class SmetasFrag extends Fragment {
                 int[] toWork = new int[]{R.id.tvNumberOfLine, R.id.base_text, R.id.tvCost, R.id.tvAmount,
                         R.id.tvUnits, R.id.tvSumma};
 
-                lvSmetas.removeHeaderView(header);
-                //добавляем хедер
-                header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                String fileName = mSmetaOpenHelper.getFileNameById(file_id);
-                ((TextView)header.findViewById(R.id.base_text)).setText(
-                        String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
-                lvSmetas.addHeaderView(header, null, false);
-                Log.d(TAG, "***********getHeaderViewsCount*********** = " +
-                        lvSmetas.getHeaderViewsCount());
+                if (data.size()<=0){
+                }else {
+                    lvSmetas.removeHeaderView(header);
+                    //добавляем хедер
+                    header = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+                    String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+                    ((TextView)header.findViewById(R.id.base_text)).setText(
+                            String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
+                    lvSmetas.addHeaderView(header, null, false);
+                    Log.d(TAG, "***********getHeaderViewsCount*********** = " +
+                            lvSmetas.getHeaderViewsCount());
 
-                lvSmetas.removeFooterView(footer);
-                Log.d(TAG, "*********  removeFooterView2  ********* ");
-                //добавляем футер
-                footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
-                totalSumma = P.updateTotalSumma(array_summa);
-                Log.d(TAG, "SmetasFrag - updateAdapter  totalSumma = " + totalSumma);
-                ((TextView)footer.findViewById(R.id.base_text)).
-                        setText(String.format(Locale.ENGLISH,"За работу: %.0f руб", totalSumma ));
-                lvSmetas.addFooterView(footer, null, false);
-                Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
-                        lvSmetas.getFooterViewsCount());
-
+                    lvSmetas.removeFooterView(footer);
+                    Log.d(TAG, "*********  removeFooterView2  ********* ");
+                    //добавляем футер
+                    footer = getActivity().getLayoutInflater().inflate(R.layout.list_item_single, null);
+                    totalSumma = P.updateTotalSumma(array_summa);
+                    Log.d(TAG, "SmetasFrag - updateAdapter  totalSumma = " + totalSumma);
+                    ((TextView)footer.findViewById(R.id.base_text)).
+                            setText(String.format(Locale.ENGLISH,"За работу: %.0f руб", totalSumma ));
+                    lvSmetas.addFooterView(footer, null, false);
+                    Log.d(TAG, "*********  addFooterView getFooterViewsCount1 = " +
+                            lvSmetas.getFooterViewsCount());
+                }
                 sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_complex, fromWork, toWork);
                 lvSmetas.setAdapter(sara);
                 break;

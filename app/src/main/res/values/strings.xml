@@ -1787,5 +1787,8 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_smetas_work_cost">SmetasWorkCost</string>
+    <string name="list_empty">Начните составление сметы с нажатия на зелёную кнопку</string>
+    <string name="list_empty_tab">Для добавления нового пункта нажмите на "+" сверху экрана</string>
+    <string name="list_empty_names">Для создания новой сметы нажмите на "+" сверху экрана</string>
 
 </resources>
