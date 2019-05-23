@@ -905,6 +905,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             type_id_mat[position] = cursor.getInt(cursor.getColumnIndex(TypeMat._ID));
             //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
         }
+        cursor.close();
         return type_id_mat;
     }
 
@@ -1010,7 +1011,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(TypeWork._ID);
@@ -1020,9 +1021,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromTypeName currentID = " + currentID);
-        if (cursor != null) {
             cursor.close();
-        }
         return currentID;
     }
 
@@ -1040,7 +1039,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(Work._ID);
@@ -1050,9 +1049,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromWorkName currentID = " + currentID);
-        if (cursor != null) {
             cursor.close();
-        }
         return currentID;
     }
 
@@ -1068,7 +1065,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
         int[] currentID = null;
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             currentID = new int[cursor.getCount()];
             while (cursor.moveToNext()) {
                 // Узнаем индекс каждого столбца
@@ -1077,9 +1074,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 currentID[cursor.getPosition()] = cursor.getInt(idColumnIndex);
             }
         }
-        if (cursor != null) {
             cursor.close();
-        }
         Log.d(TAG, "getIdFromWorks currentID.length = " +currentID.length);
         return currentID;
     }
@@ -1120,7 +1115,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + Work._ID  + " = ?" ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(workName, new String[]{String.valueOf(work_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(Work.WORK_NAME);
@@ -1128,13 +1123,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentWorkName = cursor.getString(idColumnIndex);
         }
         Log.d(TAG, "getWorkNameById currentWorkName = " + currentWorkName);
-        if (cursor != null) {
             cursor.close();
-        }
         return currentWorkName;
     }
-
-
 
     //получаем стоимость работы по её id
     public float getWorkCostById(long work_id){
@@ -1456,7 +1447,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,
                 TypeWork._ID + "=" + type_id,
                 null, null, null, null, null);
-        if ((mCursor != null) && (mCursor.getCount() != 0)) {
+        if (mCursor.getCount() != 0) {
             mCursor.moveToFirst();
         }
         String typeName = mCursor.getString(mCursor.getColumnIndex(TypeWork.TYPE_NAME));
@@ -1475,7 +1466,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,
                 CategoryWork._ID + "=" + cat_id,
                 null, null, null, null, null);
-        if ((mCursor != null) && (mCursor.getCount() != 0)) {
+        if (mCursor.getCount() != 0) {
             mCursor.moveToFirst();
         }
         String catName = mCursor.getString(mCursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
@@ -2422,7 +2413,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + FileWork._ID  + " = ? " ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(workName, new String[]{String.valueOf(file_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             String currentFileName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
@@ -2435,9 +2426,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             dataFile = new DataFile(currentFileName, currentAdress,
                     currentDate, currentTime, currentDescription);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return dataFile;
     }
 
@@ -2564,6 +2553,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             category_name[position] = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
             Log.i(TAG, "SmetaOpenHelper.getArrayCategoryNames position = " + position);
         }
+        cursor.close();
         return category_name;
     }
 
@@ -2592,7 +2582,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + CategoryWork._ID  + " = ? " ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             String currentCatName = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
@@ -2601,9 +2591,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             //создаём экземпляр класса DataFile в конструкторе
             dataCategory = new DataCategory(currentCatName, currentCatDescription);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return dataCategory;
     }
 
@@ -2667,7 +2655,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + TypeWork._ID  + " = ? " ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(typeData, new String[]{String.valueOf(type_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             long currentTypeCategoryId = cursor.getLong(cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID));
@@ -2677,9 +2665,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             //создаём экземпляр класса DataFile в конструкторе
             dataType = new DataType(currentTypeCategoryId, currentTypeName, currentTypeDescription);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return dataType;
     }
 
@@ -2720,6 +2706,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             type_name[position] = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
             Log.i(TAG, "SmetaOpenHelper.getArrayTypeNames position = " + position);
         }
+        cursor.close();
         return type_name;
     }
 
@@ -2817,6 +2804,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             units_name[position] = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
             Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
         }
+        cursor.close();
         return units_name;
     }
 
@@ -2857,7 +2845,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + Work._ID  + " = ? " ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
@@ -2867,9 +2855,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             //создаём экземпляр класса DataWork в конструкторе
             dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
         }
-        if (cursor != null) {
             cursor.close();
-        }
         return dataWork;
     }
 
@@ -2902,7 +2888,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(Unit._ID);
@@ -2912,9 +2898,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromMatName currentID = " + currentID);
-        if (cursor != null) {
             cursor.close();
-        }
         return currentID;
     }
 
@@ -2933,7 +2917,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(TypeMat._ID);
@@ -2962,7 +2946,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 null,                  // Don't filter by row groups
                 null);                   // порядок сортировки
 
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
@@ -3084,7 +3068,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 " WHERE " + Mat._ID  + " = ?" ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(workName, new String[]{String.valueOf(mat_id)});
-        if ((cursor != null) && (cursor.getCount() != 0)) {
+        if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(Mat.MAT_NAME);
