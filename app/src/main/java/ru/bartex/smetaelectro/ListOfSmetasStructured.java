@@ -432,19 +432,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 if (position_tab==0){
 
                     //получаем курсор с именами типов работы
-                    curTypeSort = db.query(
-                            true,
-                            FW.TABLE_NAME,   // таблица
-                            new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
-                            FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
-                            new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                            null,                  // Don't group the rows
-                            null,                  // Don't filter by row groups
-                            FW.FW_TYPE_ID,                 // порядок сортировки
-                            null);
-
-                    Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 curTypeSort.getCount() = " +
-                            curTypeSort.getCount());
+                    curTypeSort =  mSmetaOpenHelper.getTypeNamesFWSortStructured(file_id);
 
                     //для каждого имени типа работы
                 while (curTypeSort.moveToNext()) {
@@ -461,16 +449,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                             typeName + " type_id = " + type_id);
 
                     //получаем курсор с данными сметы с file_id для типа работ с type_id
-                    curStroka = db.query(
-                            FW.TABLE_NAME,   // таблица
-                            new String[]{FW.FW_WORK_NAME, FW.FW_COST, FW.FW_COUNT, FW.FW_SUMMA},  // столбцы
-                            FW.FW_FILE_ID + "=?" + " AND " + FW.FW_TYPE_ID + "=?", // столбцы для условия WHERE
-                            new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
-                            null,                  // Don't group the rows
-                            null,                  // Don't filter by row groups
-                            FW.FW_WORK_ID);                   // порядок сортировки
-                    Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 curStroka.getCount() = " +
-                            curStroka.getCount());
+                    curStroka = mSmetaOpenHelper.getDataFWSortStructured(file_id,type_id);
 
                     //...выводим все строки с названием, ценой, количеством и суммой
                     while (curStroka.moveToNext()) {
@@ -488,18 +467,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                     }else if (position_tab == 1){
 
                     //получаем курсор с именами типов материала
-                        curTypeSort = db.query(
-                                true,
-                                FM.TABLE_NAME,   // таблица
-                                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID}, // столбцы
-                                FM.FM_FILE_ID  + "=?", // столбцы для условия WHERE
-                                new String[]{String.valueOf(file_id)}, // значения для условия WHERE
-                                null,                  // Don't group the rows
-                                null,                  // Don't filter by row groups
-                                FM.FM_MAT_TYPE_ID,              // порядок сортировки
-                                null);
-                        Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 curTypeSort.getCount() = " +
-                                curTypeSort.getCount());
+                    curTypeSort =  mSmetaOpenHelper.getTypeNamesFMSortStructured(file_id);
 
                     //для каждого имени типа материала
                     while (curTypeSort.moveToNext()) {
@@ -517,16 +485,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                                 typeName + " type_id = " + type_id);
 
                         //получаем курсор с данными сметы с file_id для типа материала с type_id
-                        curStroka = db.query(
-                                FM.TABLE_NAME,   // таблица
-                                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},// столбцы
-                                FM.FM_FILE_ID + "=?"+ " AND " + FM.FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
-                                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
-                                null,                  // Don't group the rows
-                                null,                  // Don't filter by row groups
-                                FM.FM_MAT_ID);                   // порядок сортировки
-                        Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 curStroka.getCount() = " +
-                                curStroka.getCount());
+                        curStroka =  mSmetaOpenHelper.getDataFMSortStructured(file_id, type_id);
 
                         //...выводим все строки с названием, ценой, количеством и суммой
                         while(curStroka.moveToNext()) {

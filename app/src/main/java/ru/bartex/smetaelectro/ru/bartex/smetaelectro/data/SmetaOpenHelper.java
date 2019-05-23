@@ -2236,6 +2236,47 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return typeNamesFW;
     }
 
+    //получаем курсор с именами типов работ
+    public Cursor getTypeNamesFWSortStructured(long file_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSortStructured ... ");
+
+        Cursor curTypeSort = db.query(
+                true,
+                FW.TABLE_NAME,   // таблица
+                new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
+                FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FW.FW_TYPE_ID,                 // порядок сортировки
+                null);
+
+        Log.i(TAG, "getTypeNamesFWSortStructured  curTypeSort.getCount() = " +  curTypeSort.getCount());
+
+        return curTypeSort;
+    }
+
+    //получаем курсор с данными сметы с file_id для типа работ с type_id
+    public Cursor getDataFWSortStructured(long file_id, long type_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getDataFWSortStructured ... ");
+
+        Cursor curStroka = db.query(
+                FW.TABLE_NAME,   // таблица
+                new String[]{FW.FW_WORK_NAME, FW.FW_COST, FW.FW_COUNT, FW.FW_SUMMA},  // столбцы
+                FW.FW_FILE_ID + "=?" + " AND " + FW.FW_TYPE_ID + "=?", // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FW.FW_WORK_ID);                   // порядок сортировки
+        Log.i(TAG, "getDataFWSortStructured  curStroka.getCount() = " + curStroka.getCount());
+
+        return curStroka;
+    }
+
     //получаем список типов материалов по id файла из таблицы FM
     public String[] getTypeNamesFM(long file_id){
         Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM ... ");
@@ -2281,6 +2322,47 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return typeNamesFM;
+    }
+
+    //получаем курсор с именами типов работ
+    public Cursor getTypeNamesFMSortStructured(long file_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSortStructured ... ");
+
+        Cursor curTypeSort = db.query(
+                true,
+                FM.TABLE_NAME,   // таблица
+                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
+                FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM.FM_MAT_TYPE_ID,                 // порядок сортировки
+                null);
+
+        Log.i(TAG, "getTypeNamesFMSortStructured  curTypeSort.getCount() = " +  curTypeSort.getCount());
+
+        return curTypeSort;
+    }
+
+    //получаем курсор с данными сметы с file_id для типа работ с type_id
+    public Cursor getDataFMSortStructured(long file_id, long type_id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.i(TAG, "SmetaOpenHelper.getDataFMSortStructured ... ");
+
+        Cursor curStroka = db.query(
+                FM.TABLE_NAME,   // таблица
+                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},// столбцы
+                FM.FM_FILE_ID + "=?"+ " AND " + FM.FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
+                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM.FM_MAT_ID);                   // порядок сортировки
+        Log.i(TAG, "getDataFMSortStructured curStroka.getCount() = " +curStroka.getCount());
+
+        return curStroka;
     }
 
     //получаем список работ по id файла из таблицы FW
