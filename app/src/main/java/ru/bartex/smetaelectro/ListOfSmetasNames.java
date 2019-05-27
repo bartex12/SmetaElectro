@@ -181,7 +181,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 .setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 })
                 .setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
