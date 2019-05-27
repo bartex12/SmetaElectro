@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,9 +14,12 @@ import ru.bartex.smetaelectro.DataFile;
 public class TableControllerSmeta extends SmetaOpenHelper {
 
     public static final String TAG = "33333";
+    ContentValues cv;
 
     public TableControllerSmeta(Context context) {
         super(context);
+
+        cv = new ContentValues();
     }
 
     //получаем список объектов DataFile
@@ -77,6 +81,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
     //получаем id по имени в зависимости от имени таблицы
     public long getIdFromName(String name, String tableName){
+        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = null;
         // Создадим и откроем для чтения базу данных
@@ -84,7 +89,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
         switch (tableName){
             case FileWork.TABLE_NAME:
-                Log.d(TAG, "getIdFromString case FileWork.TABLE_NAME...");
+                Log.d(TAG, "getIdFromName case FileWork.TABLE_NAME...");
                 cursor = db.query(
                         FileWork.TABLE_NAME,   // таблица
                         new String[]{FileWork._ID},            // столбцы
@@ -100,13 +105,12 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                     // Используем индекс для получения строки или числа
                     currentID = cursor.getLong(idColumnIndex);
                 }
-                Log.d(TAG, "getIdFromString case FileWork.TABLE_NAME currentID = " + currentID);
+                Log.d(TAG, "getIdFromName case FileWork.TABLE_NAME currentID = " + currentID);
                 break;
 
             case CategoryWork.TABLE_NAME:
 
                 break;
-
         }
         if (cursor!=null){
             cursor.close();
@@ -118,7 +122,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
     public void deleteFile(long fileId) {
-
+        Log.i(TAG, "TableControllerSmeta.deleteFile ... ");
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " ,
                 new String[]{String.valueOf(fileId)});
@@ -126,5 +130,45 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 new String[]{String.valueOf(fileId)});
         db.close();
     }
+
+    // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
+    public long addFile(String fileName, String adress, String description) {
+        Log.i(TAG, "TableControllerSmeta.addFile ... ");
+        SQLiteDatabase db = getWritableDatabase();
+
+        //получаем дату и время в нужном для базы данных формате
+        String dateFormat = this.getDateString();
+        String timeFormat = this.getTimeString();
+
+        cv = new ContentValues();
+        cv.put(FileWork.FILE_NAME, fileName);
+        cv.put(FileWork.ADRESS, adress);
+        cv.put(FileWork.FILE_NAME_DATE, dateFormat);
+        cv.put(FileWork.FILE_NAME_TIME, timeFormat);
+        cv.put(FileWork.DESCRIPTION_OF_FILE, description);
+        // вставляем строку
+        long ID = db.insert(FileWork.TABLE_NAME, null, cv);
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
+        return ID;
+    }
+
+    //обновляем данные файла сметы имя, адрес, описание, дата и время
+    public void updateFileData(long file_id, String name, String adress, String description){
+        Log.i(TAG, "TableControllerSmeta.updateFileData ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //заполняем данные для обновления в базе
+        cv = new ContentValues();
+        cv.put(FileWork.FILE_NAME, name);
+        cv.put(FileWork.ADRESS, adress);
+        cv.put(FileWork.DESCRIPTION_OF_FILE, description);
+
+        db.update(FileWork.TABLE_NAME, cv,FileWork._ID + "=" + file_id, null);
+        Log.i(TAG, "TableControllerSmeta.updateFileData - name =" + name + "  file_id = " + file_id);
+        db.close();
+    }
+
 
 }

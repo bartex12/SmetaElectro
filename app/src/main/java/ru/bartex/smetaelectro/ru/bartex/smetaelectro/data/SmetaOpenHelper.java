@@ -366,28 +366,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return ID;
     }
 
-    // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
-    public long addFile(String fileName, String adress, String description) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        //получаем дату и время в нужном для базы данных формате
-        String dateFormat = this.getDateString();
-        String timeFormat = this.getTimeString();
-
-        ContentValues cv = new ContentValues();
-        cv.put(FileWork.FILE_NAME, fileName);
-        cv.put(FileWork.ADRESS, adress);
-        cv.put(FileWork.FILE_NAME_DATE, dateFormat);
-        cv.put(FileWork.FILE_NAME_TIME, timeFormat);
-        cv.put(FileWork.DESCRIPTION_OF_FILE, description);
-        // вставляем строку
-        long ID = db.insert(FileWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
-        return ID;
-    }
 
     //получаем ID по имени файла
     public long getIdFromFileName(String name) {

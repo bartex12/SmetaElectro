@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -169,7 +170,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
             case P.CHANGE_NAME_ID:
 
                 //отправляем интент с id файла
-                Intent intent = new Intent(ListOfSmetasNames.this, ChangeDataSmetaName.class);
+                Intent intent = new Intent(ListOfSmetasNames.this, SmetaNewNameChange.class);
                 intent.putExtra(P.ID_FILE, file_id);
                 startActivity(intent);
                 return true;
@@ -188,6 +189,8 @@ public class ListOfSmetasNames extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //Удаляем файл из таблицы FileWork и данные из таблицы FW по file_id
                         tableControllerSmeta.deleteFile(file_id);
+                        Toast.makeText(ListOfSmetasNames.this,"Удалено ",
+                                Toast.LENGTH_SHORT).show();
 
                         updateAdapter();
                     }

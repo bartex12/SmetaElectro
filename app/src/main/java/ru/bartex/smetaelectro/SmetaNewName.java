@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SmetaNewName extends AppCompatActivity {
 
@@ -29,12 +31,15 @@ public class SmetaNewName extends AppCompatActivity {
     CheckBox checkBoxDateTime;
     Button btnCancel;
     Button btnSave;
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+
+    private TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_new_name);
+
+        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //InputMethodManager imm = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -66,14 +71,11 @@ public class SmetaNewName extends AppCompatActivity {
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = smetaOpenHelper.getIdFromFileName(nameFile);
+                long fileId = tableControllerSmeta.getIdFromName(nameFile, FileWork.TABLE_NAME);
                 Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                 //если имя - пустая строка
                 if (nameFile.trim().isEmpty()) {
-                    //Toast.makeText(SmetaNewName.this,"Введите непустое название сметы ",
-                      //      Toast.LENGTH_LONG).show();
-
                     //Чтобы Snackbar появлялся над клавиатурой, в манифесте в активности
                     // написано android:windowSoftInputMode="adjustResize"
                    Snackbar.make(linearLayout, "Введите непустое название сметы",
@@ -95,15 +97,16 @@ public class SmetaNewName extends AppCompatActivity {
                     String adress = etObjectAdress.getText().toString();
                     String description = etSmetaDescription.getText().toString();
 
-                    long file_id = smetaOpenHelper.addFile(nameFile,adress,description);
+                    long file_id = tableControllerSmeta.addFile(nameFile,adress,description);
                     Toast.makeText(SmetaNewName.this,"Сохранено ",
-                                 Toast.LENGTH_LONG).show();
+                                 Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Сохранено имя файла  = " + nameFile + "  id = " + file_id);
 
                     Intent intent = new Intent(SmetaNewName.this, ListOfSmetasNames.class);
-                    //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
+                    //если бы вызывали Smetas, тогда надо было бы
+                    //intent.putExtra(P.ID_FILE, file_id);
                     startActivity(intent);
-                   // finish();
+                    finish();  //чтобы не возвращаться в эту активность по кнопке Назад
                 }
             }
 

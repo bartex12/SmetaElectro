@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.bartex.smetaelectro">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SmetaNewNameChange"></activity>
         <activity
             android:name=".SmetasWorkCost"
             android:label="@string/title_activity_smetas_work_cost"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SmetasWork"
             android:label="@string/title_activity_SmetasWork"
@@ -82,10 +83,6 @@
             android:theme="@style/AppDialog" />
         <activity android:name=".SpecificSmeta" />
         <activity
-            android:name=".ChangeDataSmetaName"
-            android:label="@string/title_activity_changeDataFile"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".SmetaNewName"
             android:label="@string/title_activity_SmetaNewName"
             android:windowSoftInputMode="adjustResize" />
@@ -99,12 +96,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".DetailSmetaLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
         <activity
             android:name=".DetailCost"
             android:label="@string/title_activity_CostDetail"
