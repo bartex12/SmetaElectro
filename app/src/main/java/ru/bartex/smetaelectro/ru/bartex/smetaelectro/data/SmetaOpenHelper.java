@@ -1651,7 +1651,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 CostWork.COST_WORK_ID + "=" + work_Id, null);
         Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost + "  countLine = " + countLine);
     }
-
+/*
     //получаем все имена файлов со сметами
     public String[] getFileNames(){
         Log.i(TAG, "TempDBHelper.getFileNames ... ");
@@ -1666,9 +1666,10 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             Log.i(TAG, "SmetaOpenHelper.getFileNames position = " + position);
         }
         cursor.close();
+        db.close();
         return file_name;
     }
-
+*/
     //получаем имена работ  по смете с id файла file_id
     public ArrayList<String>  getNameOfTypesAndWorkStructured(long file_id){
 
@@ -2394,6 +2395,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return matNamesFW;
     }
 
+    /*
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
     public void deleteFile(long fileId) {
 
@@ -2404,7 +2406,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(fileId)});
         db.close();
     }
+    */
 
+/*
     //получаем все данные сметы в классе DataFile - для удобства работы
     public  DataFile getFileData(long file_id){
         Log.i(TAG, "SmetaOpenHelper.getFileData ... ");
@@ -2416,6 +2420,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long id = cursor.getLong(cursor.getColumnIndex(FileWork._ID));
             String currentFileName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
             String currentAdress = cursor.getString(cursor.getColumnIndex(FileWork.ADRESS));
             String currentDate = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME_DATE));
@@ -2423,13 +2428,13 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             String currentDescription = cursor.getString(cursor.getColumnIndex(FileWork.DESCRIPTION_OF_FILE));
             Log.d(TAG, "getFileData currentFileName = " + currentFileName);
             //создаём экземпляр класса DataFile в конструкторе
-            dataFile = new DataFile(currentFileName, currentAdress,
+            dataFile = new DataFile(id,currentFileName, currentAdress,
                     currentDate, currentTime, currentDescription);
         }
             cursor.close();
         return dataFile;
     }
-
+*/
     //обновляем данные файла сметы имя, адрес, описание, дата и время
     public void updateFileData(long file_id, String name, String adress, String description){
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class DataFile implements Serializable {
 
+    private long _ID;
     private String mFileName;
     private String mAdress;
     private String mFileNameDate;
@@ -24,6 +25,19 @@ public class DataFile implements Serializable {
         mFileNameTime = FileNameTime;
         mDescription = Description;
     }
+
+    // конструктор для создания
+    public DataFile(long id, String FileName, String Adress, String FileNameDate,
+                    String FileNameTime, String Description){
+        _ID = id;
+        mFileName = FileName;
+        mAdress = Adress;
+        mFileNameDate = FileNameDate;
+        mFileNameTime = FileNameTime;
+        mDescription = Description;
+    }
+
+    public long get_ID() { return _ID;}
 
     public String getFileName() {
         return mFileName;

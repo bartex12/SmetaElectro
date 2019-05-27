@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class ChangeDataSmetaName extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class ChangeDataSmetaName extends AppCompatActivity {
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, "ChangeDataSmetaName onCreate file_id = " + file_id);
-        DataFile dataFile = smetaOpenHelper.getFileData(file_id);
+        DataFile dataFile = new TableControllerSmeta(this).getFileData(file_id);
 
         //InputMethodManager imm = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

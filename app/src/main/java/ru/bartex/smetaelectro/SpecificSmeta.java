@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SpecificSmeta extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class SpecificSmeta extends AppCompatActivity {
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, "SpecificSmeta onCreate file_id = " + file_id);
-        dataFile = smetaOpenHelper.getFileData(file_id);
+        dataFile = new TableControllerSmeta(this).getFileData(file_id);
 
         tvSmetaName = findViewById(R.id.tvName);
         tvSmetaName.setText(dataFile.getFileName());

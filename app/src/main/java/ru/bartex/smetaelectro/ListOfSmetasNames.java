@@ -21,17 +21,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class ListOfSmetasNames extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
     ListView mListViewNames;
-    SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String,Object> m;
     SimpleAdapter sara;
@@ -45,7 +48,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_smetas_list);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
         //находим View, которое выводит текст Список пуст
@@ -61,7 +64,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 TextView tv = view.findViewById(R.id.base_text);
                 String file_name = tv.getText().toString();
                 //находим id по имени файла
-                long file_id = mSmetaOpenHelper.getIdFromFileName(file_name);
+                long file_id = tableControllerSmeta.getIdFromName(file_name, FileWork.TABLE_NAME);
 
                 Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id +
                         "  Name = " + tv.getText());
@@ -147,63 +150,49 @@ public class ListOfSmetasNames extends AppCompatActivity {
         Log.d(TAG, "ListOfSmetasNames onContextItemSelected id = " + id +
                 " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
 
+        //получаем имя файла из строки списка файлов
+        TextView tv = acmi.targetView.findViewById(R.id.base_text);
+        String file_name = tv.getText().toString();
+        //находим id по имени файла
+        final long file_id = tableControllerSmeta.getIdFromName(file_name, FileWork.TABLE_NAME);
+        Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name +
+                " file_id_cpecific =" + file_id);
+
         switch (id){
             case P.SPECIFIC_ID:
-                //получаем имя файла из строки списка файлов
-                TextView tvSpecific = acmi.targetView.findViewById(R.id.base_text);
-                String file_name_specific = tvSpecific.getText().toString();
-                //находим id по имени файла
-                long file_id_specific = mSmetaOpenHelper.getIdFromFileName(file_name_specific);
-                Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name_specific = " + file_name_specific +
-                        " file_id_cpecific =" + file_id_specific);
                 //отправляем интент с id файла
                 Intent intentSpecific = new Intent(ListOfSmetasNames.this, SpecificSmeta.class);
-                intentSpecific.putExtra(P.ID_FILE, file_id_specific);
+                intentSpecific.putExtra(P.ID_FILE, file_id);
                 startActivity(intentSpecific);
                 return true;
 
             case P.CHANGE_NAME_ID:
-                //получаем имя файла из строки списка файлов
-                TextView tvChang = acmi.targetView.findViewById(R.id.base_text);
-                String file_name_chang = tvChang.getText().toString();
-                //находим id по имени файла
-                long file_id_Change = mSmetaOpenHelper.getIdFromFileName(file_name_chang);
-                Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name_chang +
-                        " file_id_Change =" + file_id_Change);
+
                 //отправляем интент с id файла
                 Intent intent = new Intent(ListOfSmetasNames.this, ChangeDataSmetaName.class);
-                intent.putExtra(P.ID_FILE, file_id_Change);
+                intent.putExtra(P.ID_FILE, file_id);
                 startActivity(intent);
                 return true;
 
             case P.DELETE_ID:
                 Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.DeleteYesNo);
-                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this)
+                .setTitle(R.string.DeleteYesNo)
+                .setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                });
-                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                })
+                .setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        TextView tv = acmi.targetView.findViewById(R.id.base_text);
-                        String file_name = tv.getText().toString();
-                        //находим id по имени файла
-                        long file_id = mSmetaOpenHelper.getIdFromFileName(file_name);
-                        Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name +
-                                " file_id =" + file_id);
-
                         //Удаляем файл из таблицы FileWork и данные из таблицы FW по file_id
-                        mSmetaOpenHelper.deleteFile(file_id);
+                        tableControllerSmeta.deleteFile(file_id);
 
                         updateAdapter();
                     }
-                });
-
-                builder.show();
+                }).show();
                 return true;
 
             case P.CANCEL:
@@ -213,17 +202,24 @@ public class ListOfSmetasNames extends AppCompatActivity {
     }
 
     public void updateAdapter() {
-        //Курсор с именами файлов
-        String[] file_name = mSmetaOpenHelper.getFileNames();
-        //Список с данными для адаптера
-        data = new ArrayList<Map<String, Object>>(file_name.length);
 
-        for (int i = 0; i< file_name.length; i++){
-            Log.d(TAG, "ListOfSmetasNames - updateAdapter  name_file = " + file_name[i]);
+        //Курсор с именами файлов
+        List<DataFile> recordsList = new TableControllerSmeta(this).readFilesData();
+        //Список с данными для адаптера
+        data = new ArrayList<Map<String, Object>>(recordsList.size());
+
+        if (recordsList.size()>0){
+            for (DataFile file: recordsList){
+                m = new HashMap<>();
+                m.put(P.FILENAME_DEFAULT,file.getFileName());
+                data.add(m);
+            }
+        }else {
             m = new HashMap<>();
-            m.put(P.FILENAME_DEFAULT,file_name[i]);
+            m.put(P.FILENAME_DEFAULT,getResources().getString(R.string.list_empty_tab));
             data.add(m);
         }
+
         String[] from = new String[]{P.FILENAME_DEFAULT};
         int[] to = new int[]{ R.id.base_text};
         sara =  new SimpleAdapter(this, data, R.layout.list_item_single, from, to);
