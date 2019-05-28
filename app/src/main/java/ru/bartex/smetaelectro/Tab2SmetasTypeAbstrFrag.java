@@ -56,6 +56,7 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
         super.onAttach(context);
         Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onAttach // " );
         mSmetaOpenHelper = new SmetaOpenHelper(context);
+        tableControllerSmeta  = new TableControllerSmeta(context);
         onClickTypeListener = (OnClickTypekListener)context;
     }
 

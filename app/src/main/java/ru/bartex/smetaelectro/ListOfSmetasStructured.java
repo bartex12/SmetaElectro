@@ -85,6 +85,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
+
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         position_tab = getIntent().getExtras().getInt(P.TAB_POSITION);
         Log.d(TAG, "ListOfSmetasStructured - onCreate file_id = " + file_id  + "  position_tab = " + position_tab);

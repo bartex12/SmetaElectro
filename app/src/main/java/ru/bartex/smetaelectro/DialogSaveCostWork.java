@@ -76,6 +76,7 @@ public class DialogSaveCostWork extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mSmetaOpenHelper = new SmetaOpenHelper(context);
+        tableControllerSmeta = new TableControllerSmeta(context);
         catTypeMatCostNameListener = (OnCatTypeMatCostNameListener)context;
     }
 

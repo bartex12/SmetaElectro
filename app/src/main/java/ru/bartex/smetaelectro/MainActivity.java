@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     final String ATTR_BASE_TEXT = "BASE_TEXT";
 
     //создаём базу данных, если ее не было
-    SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
+    SmetaOpenHelper mDbHelper;
     TableControllerSmeta tableControllerSmeta;
     long file_id;
 
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDbHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_main);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

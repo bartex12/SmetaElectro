@@ -21,14 +21,17 @@ public class ChangeDataMat extends AppCompatActivity {
     Button btnCancelChangeWork;
     Button btnSaveChangeWork;
     long work_id;
-    TableControllerSmeta tableControllerSmeta;
 
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    private TableControllerSmeta tableControllerSmeta;
+    private SmetaOpenHelper smetaOpenHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_change_data);
 
+        smetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного материала из интента
         work_id = getIntent().getExtras().getLong(P.ID_MAT);

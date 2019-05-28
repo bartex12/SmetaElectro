@@ -20,13 +20,16 @@ public class SpesificWork extends AppCompatActivity {
     long work_id;
     DataWork dataWork;
 
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    private SmetaOpenHelper smetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
+
+        smetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);

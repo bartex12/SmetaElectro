@@ -22,14 +22,17 @@ public class ChangeDataType extends AppCompatActivity {
     Button btnCancelChangeType;
     Button btnSaveChangeType;
     long type_id;
-    TableControllerSmeta tableControllerSmeta;
 
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    private TableControllerSmeta tableControllerSmeta;
+    private SmetaOpenHelper smetaOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_change_data);
+
+        smetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного типа работы из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);

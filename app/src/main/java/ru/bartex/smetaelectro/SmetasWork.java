@@ -120,7 +120,9 @@ public class SmetasWork extends AppCompatActivity implements
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
+
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta  = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

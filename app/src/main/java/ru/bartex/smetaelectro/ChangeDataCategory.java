@@ -22,14 +22,17 @@ public class ChangeDataCategory extends AppCompatActivity {
     Button btnCancelChangeCat;
     Button btnSaveChangeCat;
     long cat_id;
-    TableControllerSmeta tableControllerSmeta;
 
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    private TableControllerSmeta tableControllerSmeta;
+    private SmetaOpenHelper smetaOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_change_data);
+
+        smetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);

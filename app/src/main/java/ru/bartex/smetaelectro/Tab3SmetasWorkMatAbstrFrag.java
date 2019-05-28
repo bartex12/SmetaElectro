@@ -52,7 +52,7 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
         super.onAttach(context);
         Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onAttach // " );
         mSmetaOpenHelper = new SmetaOpenHelper(context);
-
+        tableControllerSmeta  = new TableControllerSmeta(context);
     }
 
     @Override

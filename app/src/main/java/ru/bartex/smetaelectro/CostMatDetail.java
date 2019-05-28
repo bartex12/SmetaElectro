@@ -41,6 +41,8 @@ public class CostMatDetail extends AppCompatActivity {
         setContentView(R.layout.activity_cost_detail);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
+
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE_MAT, 1);
         mat_id = getIntent().getLongExtra(P.ID_MAT, 1);

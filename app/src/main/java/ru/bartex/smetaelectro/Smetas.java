@@ -50,6 +50,8 @@ public class Smetas extends AppCompatActivity {
         file_id = intent.getExtras().getLong(P.ID_FILE);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta  = new TableControllerSmeta(this);
+
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
         //Получаем имя файла с текущей  сметой

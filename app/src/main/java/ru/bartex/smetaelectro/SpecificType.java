@@ -20,7 +20,7 @@ public class SpecificType extends AppCompatActivity {
     long type_id;
     DataType dataType;
 
-    private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    private SmetaOpenHelper smetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
@@ -28,6 +28,8 @@ public class SpecificType extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
+        smetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);

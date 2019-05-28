@@ -53,6 +53,8 @@ public class DetailSmetaMatLine extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_mat_detail);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
+
         file_id = getIntent().getLongExtra(P.ID_FILE, 1);
         cat_mat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);
         type_mat_id = getIntent().getLongExtra(P.ID_TYPE_MAT, 1);

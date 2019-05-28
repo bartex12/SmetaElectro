@@ -150,6 +150,7 @@ public class SmetasMatCost extends AppCompatActivity implements
         Log.d(TAG, "SmetasMatCost onCreate file_id =" + file_id);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta  = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

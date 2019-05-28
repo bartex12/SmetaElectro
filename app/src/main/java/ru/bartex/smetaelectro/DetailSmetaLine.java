@@ -52,6 +52,8 @@ public class DetailSmetaLine extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_detail);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
+
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
