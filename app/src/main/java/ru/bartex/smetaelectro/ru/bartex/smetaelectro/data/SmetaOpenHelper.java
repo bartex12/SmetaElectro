@@ -2790,7 +2790,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return units_name;
     }
-
+/*
     //получаем ID по имени  работы
     public long getIdFromUnitName(String unitName) {
         long currentID;
@@ -2818,7 +2818,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return currentID;
     }
-
+*/
     //получаем данные по работе по её id
     public DataWork getWorkData(long work_id){
         Log.i(TAG, "SmetaOpenHelper.getWorkData ... ");

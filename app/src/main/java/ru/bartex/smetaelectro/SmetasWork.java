@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SmetasWork extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
@@ -41,6 +42,7 @@ public class SmetasWork extends AppCompatActivity implements
     long type_id;
     long cat_id;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
 
     private SmetasWork.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;

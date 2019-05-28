@@ -19,6 +19,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +34,7 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     boolean isSelectedCat;
     long cat_id;
 

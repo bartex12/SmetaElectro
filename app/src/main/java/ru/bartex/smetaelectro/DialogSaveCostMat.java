@@ -23,8 +23,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class DialogSaveCostMat extends DialogFragment {
 
@@ -32,6 +34,7 @@ public class DialogSaveCostMat extends DialogFragment {
 
 
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     float cost = 0; //цена работы
     boolean isType;
     boolean isCat;
@@ -74,6 +77,7 @@ public class DialogSaveCostMat extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mSmetaOpenHelper = new SmetaOpenHelper(context);
+        tableControllerSmeta = new TableControllerSmeta(context);
         catTypeMatCostNameListener = (OnCatTypeMatCostNameListener)context;
     }
 
@@ -280,7 +284,7 @@ public class DialogSaveCostMat extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameMat = " + nameMat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long matId = mSmetaOpenHelper.getIdFromMatName(nameMat);
+                    long matId = tableControllerSmeta.getIdFromName(nameMat, Mat.TABLE_NAME);
                     Log.d(TAG, "nameMat = " + nameMat + "  matId = " + matId);
 
                     //если имя - пустая строка

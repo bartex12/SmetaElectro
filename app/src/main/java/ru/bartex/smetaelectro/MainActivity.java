@@ -19,6 +19,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     //создаём базу данных, если ее не было
     SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
+    TableControllerSmeta tableControllerSmeta;
     long file_id;
 
     @Override

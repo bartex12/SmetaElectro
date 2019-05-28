@@ -48,6 +48,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
 
@@ -56,6 +57,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
     LinearLayout llWork;
     ListView mListViewNames;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     SimpleAdapter sara;
     long file_id;
     View header;

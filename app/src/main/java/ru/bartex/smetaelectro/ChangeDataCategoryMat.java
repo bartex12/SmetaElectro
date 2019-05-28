@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class ChangeDataCategoryMat extends AppCompatActivity {
     static String TAG = "33333";
@@ -20,6 +21,7 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
     Button btnCancelChangeCat;
     Button btnSaveChangeCat;
     long cat_id;
+    TableControllerSmeta tableControllerSmeta;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
     @Override

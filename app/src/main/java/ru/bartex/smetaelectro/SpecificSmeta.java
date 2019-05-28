@@ -29,6 +29,7 @@ public class SpecificSmeta extends AppCompatActivity {
     DataFile dataFile;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

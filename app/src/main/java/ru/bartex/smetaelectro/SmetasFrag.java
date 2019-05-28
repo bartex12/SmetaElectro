@@ -2,13 +2,19 @@ package ru.bartex.smetaelectro;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +29,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +45,7 @@ public class SmetasFrag extends Fragment {
 
     ListView lvSmetas;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;
@@ -68,6 +76,7 @@ public class SmetasFrag extends Fragment {
         //получаем  ViewPager viewPager
         viewPager = getActivity().findViewById(R.id.container);
         mSmetaOpenHelper = new SmetaOpenHelper(context);
+        tableControllerSmeta = new TableControllerSmeta(context);
         Log.d(TAG, "// SmetasFrag onAttach  viewPager = " + viewPager);
     }
 
@@ -129,8 +138,86 @@ public class SmetasFrag extends Fragment {
         //обновляем данные списка фрагмента активности
         performUpdateAdapter(getActivity());
         //объявляем о регистрации контекстного меню
-        //странно, но работа с контекстным меню происходит в активности Smetas, а не здесь
+        //странно, но работа с контекстным меню может прроисходить  как в активности Smetas, так и здесь
+        //но если сдесь, то не обновляется адаптер материалов при удалении пункта сметы,
+        // поэтому приходится делать в Smetas
         registerForContextMenu(lvSmetas);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.DELETE_ITEM_SMETA, 0, "Удалить пункт");
+        menu.add(0, P.CANCEL, 0, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        final AdapterView.AdapterContextMenuInfo acmi =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        //если удалить из контекстного меню
+        if (item.getItemId() == P.DELETE_ITEM_SMETA) {
+
+            Log.d(TAG, "SmetasFrag P.DELETE_ITEM_SMETA");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.Delete_Item);
+            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "SmetasFrag P.DELETE_ITEM_SMETA acmi.position  =" +
+                            (acmi.position));
+
+                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
+                    String name = tv.getText().toString();
+                    switch (viewPager.getCurrentItem()){
+                        //switch (positionItem){
+                        case 0:
+                            Log.d(TAG, "SmetasFrag P.DELETE_ITEM_SMETA case 0");
+                            //находим id по имени работы
+                            long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+                            Log.d(TAG, "SmetasFrag onContextItemSelected file_id = " +
+                                    file_id + " work_id =" + work_id+ " work_name =" + name);
+
+                            //удаляем пункт сметы из таблицы FW
+                            mSmetaOpenHelper.deleteWorkItemFromFW(file_id, work_id);
+                            //обновляем данные списка фрагмента активности
+                            performUpdateAdapter(getActivity());
+                            break;
+
+                        case 1:
+                            Log.d(TAG, "SmetasFrag P.DELETE_ITEM_SMETA case 1");
+                            //находим id по имени работы
+                            long mat_id = mSmetaOpenHelper.getIdFromMatName(name);
+                            Log.d(TAG, "SmetasFrag onContextItemSelected file_id = " +
+                                    file_id + " mat_id =" + mat_id + " mat_name =" + name);
+
+                            //mSmetaOpenHelper.displayFM();
+                            //удаляем пункт сметы из таблицы FM
+                            mSmetaOpenHelper.deleteMatItemFromFM(file_id, mat_id);
+                            //mSmetaOpenHelper.displayFM();
+
+                            //обновляем данные списка фрагмента активности
+                            performUpdateAdapter(getActivity());
+                            break;
+                    }
+                }
+            });
+            builder.show();
+            return true;
+            //если изменить из контекстного меню
+        } else if (item.getItemId() == P.CANCEL) {
+            //getActivity().finish();
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

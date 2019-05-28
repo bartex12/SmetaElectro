@@ -23,6 +23,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
 
@@ -35,6 +36,7 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
     Map<String, Object> m;
 
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
 
     public abstract  void updateAdapter();
     public abstract  long getCatId(String catName);

@@ -42,6 +42,8 @@ import java.io.IOException;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCostWork.OnCatTypeMatCostNameListener,
@@ -54,6 +56,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     long type_id;
     long cat_id;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -86,7 +89,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     }
 
     @Override
-    public void catTypeMatCostNameTransmit(String catName, String typeName, String matName, String costOfMat, String unit) {
+    public void catTypeMatCostNameTransmit(
+            String catName, String typeName, String matName, String costOfMat, String unit) {
         int position = mViewPager.getCurrentItem();
         Log.d(TAG, " ++++++++SmetasWorkCost  catTypeMatCostNameTransmit ++++++");
         switch (position){
@@ -117,7 +121,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
                 float cost = Float.parseFloat(costOfMat);
 
-                long unit_work_id = mSmetaOpenHelper.getIdFromUnitName(unit);
+                long unit_work_id = tableControllerSmeta.getIdFromName(unit, Unit.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost  unit_work_id = " +
                         unit_work_id + " cost = " + cost + " unit = " + unit
                         + " workName = " + matName  + " type_id = " + type_id) ;
@@ -142,6 +146,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         Log.d(TAG, "SmetasWorkCost onCreate file_id =" + file_id);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

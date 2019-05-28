@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.inputmethod.InputMethodManager;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 abstract public class DialogSaveNameAbstract extends DialogFragment {
 
     static String TAG = "33333";
     SmetaOpenHelper smetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
 
     public DialogSaveNameAbstract(){
         //пустой конструктор
@@ -25,6 +27,7 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         smetaOpenHelper = new SmetaOpenHelper(context);
+        tableControllerSmeta = new TableControllerSmeta(context);
         workCategoryTypeNameListener = (WorkCategoryTypeNameListener)context;
     }
 

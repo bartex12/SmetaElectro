@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class DetailSmetaLine extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class DetailSmetaLine extends AppCompatActivity {
     Button mButtonSave;
     Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     long file_id;
     static long cat_id;
     static long type_id;

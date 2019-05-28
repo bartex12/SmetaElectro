@@ -24,9 +24,9 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater =getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_new_or_current_smeta, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(view);
         builder.setTitle("Выберите вариант");
         //builder.setIcon(R.drawable.ic_save_black_24dp);

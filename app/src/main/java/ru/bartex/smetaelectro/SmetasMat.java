@@ -27,8 +27,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SmetasMat extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
@@ -41,6 +43,7 @@ public class SmetasMat extends AppCompatActivity implements
     long type_id;
     long cat_id;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     Menu menu;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -120,6 +123,7 @@ public class SmetasMat extends AppCompatActivity implements
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -295,7 +299,7 @@ public class SmetasMat extends AppCompatActivity implements
                 TextView tvMat = acmi.targetView.findViewById(R.id.base_text);
                 String matName = tvMat.getText().toString();
                 //находим id вида  по имени вида материала
-                long mat_id = mSmetaOpenHelper.getIdFromMatName(matName);
+                long mat_id = tableControllerSmeta.getIdFromName(matName, Mat.TABLE_NAME);
                 //находим количество строк видов материала в таблице FM для mat_id
                 int countLineWorkFM = mSmetaOpenHelper.getCountLineMatInFM(mat_id);
                 Log.d(TAG, "SmetasMat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
@@ -361,7 +365,8 @@ public class SmetasMat extends AppCompatActivity implements
                         TextView tvSpecificMat = acmi.targetView.findViewById(R.id.base_text);
                         String mat_name_specific = tvSpecificMat.getText().toString();
                         //находим id по имени типа
-                        long mat_id_specific = mSmetaOpenHelper.getIdFromMatName(mat_name_specific);
+                        long mat_id_specific = tableControllerSmeta.
+                                getIdFromName(mat_name_specific, Mat.TABLE_NAME);
                         Log.d(TAG, "SmetasMat onContextItemSelected case P.SPECIFIC_ID " +
                                 "mat_name_specific = " + mat_name_specific +  " mat_id_specific =" + mat_id_specific);
                         //отправляем интент с id материала
@@ -411,7 +416,8 @@ public class SmetasMat extends AppCompatActivity implements
                         TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text);
                         String mat_name_chang = tvChangWork.getText().toString();
                         //находим id по имени материала
-                        long mat_id_Change = mSmetaOpenHelper.getIdFromMatName(mat_name_chang);
+                        long mat_id_Change =tableControllerSmeta.
+                                getIdFromName(mat_name_chang, Mat.TABLE_NAME);
                         Log.d(TAG, "SmetasMat onContextItemSelected  case P.CHANGE_NAME_ID " +
                                 "mat_name_chang = " + mat_name_chang + " mat_id_Change =" + mat_id_Change);
                         //отправляем интент с id материала

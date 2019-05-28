@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class CostMatDetail extends AppCompatActivity {
     public static final String TAG = "33333";
@@ -25,6 +26,7 @@ public class CostMatDetail extends AppCompatActivity {
     Button mButtonSave;
     Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     long cat_id;
     long type_id;
     long mat_id;

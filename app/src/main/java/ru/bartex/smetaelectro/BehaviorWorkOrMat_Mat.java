@@ -15,6 +15,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
@@ -23,6 +24,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
     long file_id;
     ListView lvSmetasMaterials;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     float[] mat_summa;
     float totalSumma; // общая стоимость материалов по смете
     ArrayList<Map<String, Object>> data;

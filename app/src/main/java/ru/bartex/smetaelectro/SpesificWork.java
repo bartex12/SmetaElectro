@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SpesificWork extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class SpesificWork extends AppCompatActivity {
     DataWork dataWork;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

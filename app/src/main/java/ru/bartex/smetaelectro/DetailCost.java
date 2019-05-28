@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
 
 public class DetailCost extends AppCompatActivity {
 
@@ -26,6 +28,7 @@ public class DetailCost extends AppCompatActivity {
     Button mButtonSave;
     Button mButtonCancel;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     long cat_id;
     long type_id;
     long work_id;
@@ -42,6 +45,8 @@ public class DetailCost extends AppCompatActivity {
         setContentView(R.layout.activity_cost_detail);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
+        tableControllerSmeta = new TableControllerSmeta(this);
+
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
         work_id = getIntent().getLongExtra(P.ID_WORK, 1);
@@ -83,7 +88,7 @@ public class DetailCost extends AppCompatActivity {
             spinner.setSelection(0);
         }else {
             String unitName = mSmetaOpenHelper.getCostUnitById(work_id);
-            long unitId = mSmetaOpenHelper.getIdFromUnitName(unitName);
+            long unitId = tableControllerSmeta.getIdFromName(unitName, Unit.TABLE_NAME);
             Log.d(TAG, "DetailCost- Spinner -unitName = " + unitName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
             spinner.setSelection((int)unitId - 1);
@@ -123,7 +128,7 @@ public class DetailCost extends AppCompatActivity {
                 }else {
                     cost =  Float.parseFloat(costOfWork);
                     String unit = spinner.getSelectedItem().toString();
-                    long unit_id = mSmetaOpenHelper.getIdFromUnitName(unit);
+                    long unit_id =  tableControllerSmeta.getIdFromName(unit, Unit.TABLE_NAME);
                     Log.d(TAG, "DetailCost-mButtonSave.setOnClickListener work_id = " +
                             work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
 

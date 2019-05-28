@@ -44,6 +44,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SmetasMatCost extends AppCompatActivity implements
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,
@@ -60,6 +61,7 @@ public class SmetasMatCost extends AppCompatActivity implements
     private ViewPager mViewPager;
 
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     File fileWork; //имя файла с данными по смете на работы
 
     @Override

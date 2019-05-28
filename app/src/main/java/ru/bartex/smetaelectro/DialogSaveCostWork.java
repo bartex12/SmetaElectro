@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class DialogSaveCostWork extends DialogFragment {
 
@@ -32,6 +33,7 @@ public class DialogSaveCostWork extends DialogFragment {
 
 
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     float cost = 0; //цена работы
     boolean isType;
     boolean isCat;

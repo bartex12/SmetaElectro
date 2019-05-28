@@ -15,12 +15,14 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
 
     public static final String TAG = "33333";
     ListView lvSmetas;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;

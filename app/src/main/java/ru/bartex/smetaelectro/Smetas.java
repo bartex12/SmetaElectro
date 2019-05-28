@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class Smetas extends AppCompatActivity {
 
@@ -35,6 +36,7 @@ public class Smetas extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
     SmetaOpenHelper mSmetaOpenHelper;
+    TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,10 @@ public class Smetas extends AppCompatActivity {
         file_id = intent.getExtras().getLong(P.ID_FILE);
 
         mSmetaOpenHelper = new SmetaOpenHelper(this);
-
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
         //Получаем имя файла с текущей  сметой
-        SmetaOpenHelper mDbHelper = new SmetaOpenHelper(this);
-        String fileName = mDbHelper.getFileNameById(file_id);
+        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
         Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -139,8 +139,8 @@ public class Smetas extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
+/*
+    //создаём контекстное меню для списка  -  сделано в SmetasFrag
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -215,7 +215,7 @@ public class Smetas extends AppCompatActivity {
         }
         return super.onContextItemSelected(item);
     }
-
+*/
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -301,6 +301,7 @@ public class Smetas extends AppCompatActivity {
         }
     };
 
+    //можно так обновлять адаптер, если бы контекстное меню было сдесь
     private void updateAdapter(int currentItem){
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());;
         mViewPager.setAdapter(mSectionsPagerAdapter);

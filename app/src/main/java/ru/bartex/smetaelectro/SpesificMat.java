@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class SpesificMat extends AppCompatActivity {
     public static final String TAG = "33333";
@@ -19,6 +20,7 @@ public class SpesificMat extends AppCompatActivity {
     DataMat dataMat;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
+    TableControllerSmeta tableControllerSmeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

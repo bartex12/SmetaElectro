@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
 public class ChangeDataWork extends AppCompatActivity {
 
@@ -21,6 +22,7 @@ public class ChangeDataWork extends AppCompatActivity {
     Button btnCancelChangeWork;
     Button btnSaveChangeWork;
     long work_id;
+    TableControllerSmeta tableControllerSmeta;
 
     private SmetaOpenHelper smetaOpenHelper = new SmetaOpenHelper(this);
 

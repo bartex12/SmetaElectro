@@ -83,6 +83,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     public long getIdFromName(String name, String tableName){
         Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
         long currentID = -1;
+        int idColumnIndex = -1;
         Cursor cursor = null;
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
@@ -98,20 +99,88 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         null,                  // Don't group the rows
                         null,                  // Don't filter by row groups
                         null);                   // порядок сортировки
-
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
-                    int idColumnIndex = cursor.getColumnIndex(FileWork._ID);
-                    // Используем индекс для получения строки или числа
-                    currentID = cursor.getLong(idColumnIndex);
+                    idColumnIndex = cursor.getColumnIndex(FileWork._ID);
                 }
-                Log.d(TAG, "getIdFromName case FileWork.TABLE_NAME currentID = " + currentID);
                 break;
 
             case CategoryWork.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case CategoryWork.TABLE_NAME...");
+
+                break;
+
+            case CategoryMat.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case CategoryMat.TABLE_NAME...");
+
+                break;
+
+            case TypeWork.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case TypeWork.TABLE_NAME...");
+
+                break;
+
+            case TypeMat.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case TypeMat.TABLE_NAME...");
+
+                break;
+
+            case Work.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case Work.TABLE_NAME...");
+
+                break;
+
+            case Mat.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case Mat.TABLE_NAME...");
+                cursor = db.query(
+                        Mat.TABLE_NAME,   // таблица
+                        new String[]{Unit._ID},            // столбцы
+                        Mat.MAT_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(Mat._ID);
+                }
+                break;
+
+            case CostWork.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case CostWork.TABLE_NAME...");
+
+                break;
+
+            case CostMat.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case CostMat.TABLE_NAME...");
+
+                break;
+
+            case Unit.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case Unit.TABLE_NAME...");
+                cursor = db.query(
+                        Unit.TABLE_NAME,   // таблица
+                        new String[]{Unit._ID},            // столбцы
+                        Unit.UNIT_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(Unit._ID);
+                }
+                break;
+
+            case UnitMat.TABLE_NAME:
+                Log.d(TAG, "getIdFromName case UnitMat.TABLE_NAME...");
 
                 break;
         }
+        // Используем индекс для получения id
+        currentID = cursor.getLong(idColumnIndex);
+        Log.d(TAG, "getIdFromName currentID = " + currentID);
+
         if (cursor!=null){
             cursor.close();
         }
