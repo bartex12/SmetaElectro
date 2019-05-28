@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -98,7 +100,8 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //находим поле Сумма
         mTextViewSumma = findViewById(R.id.textView_summa);
-        mTextViewSumma.setText(String.valueOf(count*cost));
+        mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
+
 
         //смотрим, что записано в поле Количество
         mEditTextCount = findViewById(R.id.editText_count);
@@ -121,7 +124,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                 }
                 count = Float.parseFloat(str);
                //пишем в поле Сумма
-                mTextViewSumma.setText(Float.toString(count*cost));
+                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
             }
         });
 
@@ -187,7 +190,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                 mTextViewCost.setText(Float.toString(cost));
                 unit = mSmetaOpenHelper.getCostUnitById(work_id);
                 mTextViewUnit.setText(unit);
-                mTextViewSumma.setText(String.valueOf(count*cost));
+                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
         }
     }
 

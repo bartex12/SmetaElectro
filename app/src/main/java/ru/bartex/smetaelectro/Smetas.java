@@ -141,7 +141,7 @@ public class Smetas extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-/*
+
     //создаём контекстное меню для списка  -  сделано в SmetasFrag
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -217,7 +217,7 @@ public class Smetas extends AppCompatActivity {
         }
         return super.onContextItemSelected(item);
     }
-*/
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.

@@ -107,12 +107,27 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case CategoryWork.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case CategoryWork.TABLE_NAME...");
-
+                cursor = db.query(
+                        CategoryWork.TABLE_NAME,   // таблица
+                        new String[]{CategoryWork._ID},            // столбцы
+                        CategoryWork.CATEGORY_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(CategoryWork._ID);
+                }
                 break;
 
             case CategoryMat.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case CategoryMat.TABLE_NAME...");
 
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(CategoryMat._ID);
+                }
                 break;
 
             case TypeWork.TABLE_NAME:

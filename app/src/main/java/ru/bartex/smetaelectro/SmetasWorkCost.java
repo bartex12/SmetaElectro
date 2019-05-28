@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -108,7 +109,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             case 1:
                 Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = mSmetaOpenHelper.getIdFromCategoryName(catName);
+                long type_category_Id = tableControllerSmeta.
+                        getIdFromName(catName, CategoryWork.TABLE_NAME);
                 long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
@@ -299,7 +301,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
-                long cat_id = mSmetaOpenHelper.getIdFromCategoryName(name);
+                long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
                 //находим количество строк типов работы для cat_id
                 int countLineType = mSmetaOpenHelper.getCountType(cat_id);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineType = " + countLineType);
@@ -379,7 +381,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
                             String cat_name = tvCat.getText().toString();
                             //находим id по имени файла
-                            long cat_id = mSmetaOpenHelper.getIdFromCategoryName(cat_name);
+                            long cat_id = tableControllerSmeta.
+                                    getIdFromName(cat_name, CategoryWork.TABLE_NAME);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected case P.DELETE_ID" +
                                     " cat_name = " + cat_name + " cat_id =" + cat_id);
                             //Удаляем файл из таблицы CategoryWork когда в категории нет типов

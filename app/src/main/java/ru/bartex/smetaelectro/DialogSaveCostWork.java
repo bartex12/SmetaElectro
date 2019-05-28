@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -154,7 +155,7 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long  catId = mSmetaOpenHelper.getIdFromCategoryName(nameCat);
+                    long  catId = tableControllerSmeta.getIdFromName(nameCat, CategoryWork.TABLE_NAME);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
 
                     //если имя - пустая строка

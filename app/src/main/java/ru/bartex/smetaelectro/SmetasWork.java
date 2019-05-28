@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -91,7 +92,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 1:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = mSmetaOpenHelper.getIdFromCategoryName(catName);
+                long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryWork.TABLE_NAME);
                 long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
@@ -276,7 +277,7 @@ public class SmetasWork extends AppCompatActivity implements
                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
-                long cat_id = mSmetaOpenHelper.getIdFromCategoryName(name);
+                long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
                 //находим количество строк типов работы для cat_id
                 int countLineType = mSmetaOpenHelper.getCountType(cat_id);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineType = " + countLineType);
@@ -346,7 +347,8 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvSpecificCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_specific = tvSpecificCat.getText().toString();
                         //находим id по имени категории
-                        long cat_id_specific = mSmetaOpenHelper.getIdFromCategoryName(cat_name_specific);
+                        long cat_id_specific = tableControllerSmeta.
+                                getIdFromName(cat_name_specific, CategoryWork.TABLE_NAME);
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID " +
                                 "cat_name_specific = " + cat_name_specific +  " cat_id_specific =" + cat_id_specific);
                         //отправляем интент с id категории
@@ -396,7 +398,8 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvChangCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_chang = tvChangCat.getText().toString();
                         //находим id категории по имени категории
-                        long cat_id_Change = mSmetaOpenHelper.getIdFromCategoryName(cat_name_chang);
+                        long cat_id_Change = tableControllerSmeta.
+                                getIdFromName(cat_name_chang, CategoryWork.TABLE_NAME);
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID   case 0" +
                                 "cat_name_chang = " + cat_name_chang + " cat_id_Change =" + cat_id_Change);
                         //отправляем интент с id категории
@@ -454,7 +457,8 @@ public class SmetasWork extends AppCompatActivity implements
                                 TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
                                 String cat_name = tvCat.getText().toString();
                                 //находим id по имени файла
-                                long cat_id = mSmetaOpenHelper.getIdFromCategoryName(cat_name);
+                                long cat_id = tableControllerSmeta.
+                                        getIdFromName(cat_name, CategoryWork.TABLE_NAME);
                                 Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
                                         " cat_name = " + cat_name + " cat_id =" + cat_id);
                                 //Удаляем файл из таблицы CategoryWork когда в категории нет типов

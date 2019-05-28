@@ -74,7 +74,7 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
 
     @Override
     public long getCatId(String catName) {
-        long cat_id = mSmetaOpenHelper.getIdFromCategoryName(catName);
+        long cat_id = tableControllerSmeta.getIdFromName(catName, CategoryWork.TABLE_NAME);
         return cat_id;
     }
 }

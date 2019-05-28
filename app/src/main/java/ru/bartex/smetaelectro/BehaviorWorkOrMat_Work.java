@@ -78,8 +78,9 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
             m.put(P.WORK_COST, work_cost[i]);
             m.put(P.WORK_AMOUNT, work_amount[i]);
             m.put(P.WORK_UNITS, work_units[i]);
-            m.put(P.WORK_SUMMA, summa[i]);
+            m.put(P.WORK_SUMMA, String.format(Locale.ENGLISH,"%.2f", summa[i]));
             data.add(m);
+
         }
         String[] from = new String[]{P.WORK_NUMBER, P.WORK_NAME, P.WORK_COST, P.WORK_AMOUNT,
                 P.WORK_UNITS, P.WORK_SUMMA};

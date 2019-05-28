@@ -946,6 +946,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /*
     //получаем ID по имени категории
     public long getIdFromCategoryName(String name) {
         Log.i(TAG, "SmetaOpenHelper.getIdFromCategoryName ... ");
@@ -974,6 +975,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return currentID;
     }
+*/
 
     //получаем ID по имени типа работы
     public long getIdFromTypeName(String name) {

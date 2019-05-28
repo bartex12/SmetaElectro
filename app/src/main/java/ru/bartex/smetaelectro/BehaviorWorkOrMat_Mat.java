@@ -75,7 +75,8 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
             m.put(P.MAT_COST, mat_cost[i]);
             m.put(P.MAT_AMOUNT, mat_amount[i]);
             m.put(P.MAT_UNITS, mat_units[i]);
-            m.put(P.MAT_SUMMA, mat_summa[i]);
+            m.put(P.MAT_SUMMA, String.format(Locale.ENGLISH,"%.2f", mat_summa[i]));
+
             Log.d(TAG, "SmetasTab2Materialy - updateAdapter  i+1 = "
                     + (i+1) + " mat_units[i] = " + mat_units[i] );
             data.add(m);

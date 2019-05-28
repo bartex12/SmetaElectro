@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -98,7 +100,8 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //находим поле Сумма
         mTextViewSumma = findViewById(R.id.textView_summa);
-        mTextViewSumma.setText(String.valueOf(countMat*costMat));
+        mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
+
 
         //смотрим, что записано в поле Количество
         mEditTextCount = findViewById(R.id.editText_count);
@@ -121,7 +124,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                 }
                 countMat = Float.parseFloat(str);
                 //пишем в поле Сумма
-                mTextViewSumma.setText(Float.toString(countMat*costMat));
+                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
             }
         });
 
@@ -187,7 +190,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
             costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
             mTextViewCost.setText(Float.toString(costMat));
 
-            mTextViewSumma.setText(String.valueOf(countMat*costMat));
+            mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
 
             unit = mSmetaOpenHelper.getCostMatUnitById(mat_id);
             mTextViewUnit.setText(unit);
