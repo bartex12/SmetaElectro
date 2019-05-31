@@ -23,10 +23,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 
 public class DialogSaveCostMat extends DialogFragment {
 
@@ -155,7 +157,7 @@ public class DialogSaveCostMat extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long  catId = mSmetaOpenHelper.getCatIdFromCategoryMatName(nameCat);
+                    long  catId = tableControllerSmeta.getIdFromName(nameCat, CategoryMat.TABLE_NAME);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
 
                     //если имя - пустая строка
@@ -201,7 +203,7 @@ public class DialogSaveCostMat extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameType = " + nameType);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long  typeId = mSmetaOpenHelper.getIdFromMatTypeName(nameType);
+                    long  typeId = tableControllerSmeta.getIdFromName(nameType, TypeMat.TABLE_NAME);
                         Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
 
                     //если имя - пустая строка

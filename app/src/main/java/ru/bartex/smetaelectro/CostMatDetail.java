@@ -14,9 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.UnitMat;
 
 public class CostMatDetail extends AppCompatActivity {
     public static final String TAG = "33333";
@@ -84,7 +86,7 @@ public class CostMatDetail extends AppCompatActivity {
             spinner.setSelection(0);
         }else {
             String unitMatName = mSmetaOpenHelper.getCostUnitMatById(mat_id);
-            long unitId = mSmetaOpenHelper.getIdFromUnitMatName(unitMatName);
+            long unitId = tableControllerSmeta.getIdFromName(unitMatName, UnitMat.TABLE_NAME);
             Log.d(TAG, "CostMatDetail- Spinner -unitMatName = " + unitMatName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
             spinner.setSelection((int)unitId - 1);
@@ -124,7 +126,7 @@ public class CostMatDetail extends AppCompatActivity {
                 }else {
                     cost =  Float.parseFloat(costOfMat);
                     String unit = spinner.getSelectedItem().toString();
-                    long unit_mat_id = mSmetaOpenHelper.getIdFromUnitMatName(unit);
+                    long unit_mat_id =tableControllerSmeta.getIdFromName(unit, UnitMat.TABLE_NAME);
                     Log.d(TAG, "CostMatDetail-mButtonSave.setOnClickListener mat_id = " +
                             mat_id + " cost = " + cost + " unit = " + unit + " unit_mat_id = " + unit_mat_id);
 
@@ -135,14 +137,14 @@ public class CostMatDetail extends AppCompatActivity {
                         if (requestCode == 222) {
                             //добавляем стоимость cost работы с mat_id  с единицами измерения unit_mat_id
                             //long costId = mSmetaOpenHelper.insertCostMat(mat_id,cost,unit_mat_id);
-                            mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
+                            tableControllerSmeta.updateCost(mat_id, cost, unit_mat_id, CostMat.TABLE_NAME);
                             Intent intent = new Intent();
                             intent.putExtra(P.ID_MAT,mat_id);
                             setResult(RESULT_OK, intent);
                             Log.d(TAG, "CostMatDetail-mButtonSave requestCode =  " + requestCode +
                                     "  RESULT_OK = " + RESULT_OK );
                         }else {
-                            mSmetaOpenHelper.updateMatkCost(mat_id, cost, unit_mat_id);
+                            tableControllerSmeta.updateCost(mat_id, cost, unit_mat_id, CostMat.TABLE_NAME);
                         }
 
 
@@ -174,7 +176,7 @@ public class CostMatDetail extends AppCompatActivity {
         // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfMat)==0){
-            mSmetaOpenHelper.deleteCostOfMat(mat_id);
+            tableControllerSmeta.deleteObject(mat_id, CostMat.TABLE_NAME);
         }
     }
 }

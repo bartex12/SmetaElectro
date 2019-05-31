@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class DialogSaveNameType extends DialogSaveNameAbstract {
 
@@ -98,10 +100,11 @@ public class DialogSaveNameType extends DialogSaveNameAbstract {
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long typeId;
                 if (isWorkDialog){
-                    typeId = smetaOpenHelper.getIdFromTypeName(nameType);
+                    typeId = tableControllerSmeta.
+                            getIdFromName(nameType, TypeWork.TABLE_NAME);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
                 }else {
-                    typeId = smetaOpenHelper.getIdFromMatTypeName(nameType);
+                    typeId = tableControllerSmeta.getIdFromName(nameType, TypeMat.TABLE_NAME);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
                 }
 

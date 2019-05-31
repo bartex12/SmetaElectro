@@ -68,7 +68,8 @@ public class Tab2WorkTypeCost extends Tab2SmetasTypeAbstrFrag {
 
     @Override
     public long getTypeId(String typeName) {
-        long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
+        long type_id = tableControllerSmeta.
+                getIdFromName(typeName, TypeWork.TABLE_NAME);
         return type_id;
     }
 

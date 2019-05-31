@@ -12,6 +12,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 
 public class ChangeDataTypeMat extends AppCompatActivity {
     static String TAG = "33333";
@@ -78,7 +79,7 @@ public class ChangeDataTypeMat extends AppCompatActivity {
                     String description = etTypeDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateTypeMatData(type_id, nameType, description);
+                    tableControllerSmeta.updateData(type_id, nameType, description, TypeMat.TABLE_NAME);
 
                     Toast.makeText(ChangeDataTypeMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

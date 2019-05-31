@@ -46,9 +46,12 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
 
@@ -166,7 +169,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
     public void updateAdapter() {
 
-        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
         switch (position_tab){
             case 0:
                 data = new  ArrayList<Map<String, String>>();
@@ -190,7 +193,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         data.add(mm);
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
-                        long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name[i]);
+                        long type_id = tableControllerSmeta.
+                                getIdFromName(type_name[i], TypeWork.TABLE_NAME);
                         Log.i(TAG, "ListOfSmetasStructured updateAdapter type_name[i] = " +
                                 type_name[i] + " type_id = " + type_id);
 
@@ -266,7 +270,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         data.add(mm);
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
-                        long type_mat_id = mSmetaOpenHelper.getIdFromMatTypeName(type_mat_name[i]);
+                        long type_mat_id = tableControllerSmeta.getIdFromName(type_mat_name[i], TypeMat.TABLE_NAME);
                         Log.i(TAG, "ListOfSmetasStructured updateAdapter type_mat_name[i] = " +
                                 type_mat_name[i] + " type_mat_id = " + type_mat_id);
 
@@ -463,7 +467,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                     //csvWrite.writeNext(typeNameArray);
 
                     //получаем id типа работы ...
-                    long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
+                    long type_id = tableControllerSmeta.
+                            getIdFromName(typeName, TypeWork.TABLE_NAME);
                     Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 type_name = " +
                             typeName + " type_id = " + type_id);
 
@@ -499,7 +504,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //csvWrite.writeNext(typeNameArray);
 
                         //получаем id типа материала...
-                        long type_id = mSmetaOpenHelper.getIdFromMatTypeName(typeName);
+                        long type_id =tableControllerSmeta.getIdFromName(typeName, TypeMat.TABLE_NAME);
                         Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 type_name = " +
                                 typeName + " type_id = " + type_id);
 

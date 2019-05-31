@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -78,7 +79,7 @@ public class ChangeDataMat extends AppCompatActivity {
                     String description = etWorkDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateMatData(work_id, nameWork, description);
+                    tableControllerSmeta.updateData(work_id, nameWork, description, Mat.TABLE_NAME);
 
                     Toast.makeText(ChangeDataMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

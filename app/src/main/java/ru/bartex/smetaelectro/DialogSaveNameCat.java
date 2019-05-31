@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
@@ -84,7 +85,7 @@ public class DialogSaveNameCat extends DialogSaveNameAbstract {
                     catId = tableControllerSmeta.getIdFromName(nameCat, CategoryWork.TABLE_NAME);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
                 }else {
-                    catId = smetaOpenHelper.getCatIdFromCategoryMatName(nameCat);
+                    catId = tableControllerSmeta.getIdFromName(nameCat, CategoryMat.TABLE_NAME);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
                 }
 

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -82,7 +83,7 @@ public class ChangeDataCategory extends AppCompatActivity {
                     String description = etCatDescription.getText().toString();
 
                     //обновляем данные файла
-                    smetaOpenHelper.updateCategoryData(cat_id, nameCat, description);
+                    tableControllerSmeta.updateData(cat_id, nameCat, description, CategoryWork.TABLE_NAME);
 
                     Toast.makeText(ChangeDataCategory.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

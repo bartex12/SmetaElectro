@@ -12,6 +12,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
 public class ChangeDataType extends AppCompatActivity {
 
@@ -79,7 +80,7 @@ public class ChangeDataType extends AppCompatActivity {
                     String description = etTypeDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    smetaOpenHelper.updateTypeData(type_id, nameType, description);
+                    tableControllerSmeta.updateData(type_id, nameType, description, TypeWork.TABLE_NAME);
 
                     Toast.makeText(ChangeDataType.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

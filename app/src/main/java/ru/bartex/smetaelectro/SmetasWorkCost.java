@@ -44,6 +44,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
@@ -315,7 +316,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeName = tvType.getText().toString();
                 //находим id типа по имени типа
-                long type_id = mSmetaOpenHelper.getIdFromTypeName(typeName);
+                long type_id = tableControllerSmeta.
+                        getIdFromName(typeName, TypeWork.TABLE_NAME);
                 //находим количество строк видов работы для type_id
                 int countLineWork = mSmetaOpenHelper.getCountLineWork(type_id);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWork = " + countLineWork);
@@ -331,7 +333,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                 String workName = tvWork.getText().toString();
                 //находим id вида  по имени вида работ
-                long work_id = mSmetaOpenHelper.getIdFromWorkName(workName);
+                long work_id = tableControllerSmeta.
+                        getIdFromName(workName, Work.TABLE_NAME);
                 //находим количество строк видов работы в таблице FW для work_id
                 int countLineWorkFW = mSmetaOpenHelper.getCountLineWorkInFW(work_id);
                 //находим количество строк расценок работы в таблице CostWork для work_id
@@ -386,7 +389,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected case P.DELETE_ID" +
                                     " cat_name = " + cat_name + " cat_id =" + cat_id);
                             //Удаляем файл из таблицы CategoryWork когда в категории нет типов
-                            mSmetaOpenHelper.deleteCategory(cat_id);
+                            tableControllerSmeta.deleteObject(cat_id, CategoryWork.TABLE_NAME);
                             // обновляем соседнюю вкладку категорий работы и показываем её
                             updateAdapter(0);
                             break;
@@ -396,11 +399,12 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                             String type_name = tvType.getText().toString();
                             //находим id по имени файла
-                            long type_id = mSmetaOpenHelper.getIdFromTypeName(type_name);
+                            long type_id = tableControllerSmeta.
+                                    getIdFromName(type_name, TypeWork.TABLE_NAME);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected case P.DELETE_ID" +
                                     " type_name = " + type_name + " type_id =" + type_id);
                             //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
-                            mSmetaOpenHelper.deleteType(type_id);
+                            tableControllerSmeta.deleteObject(type_id, TypeWork.TABLE_NAME);
 
                             //после удаления в типе работ не даём появиться + в тулбаре
                             isSelectedCat = false;
@@ -410,16 +414,17 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                         case 2:
                             Log.d(TAG, "SmetasWorkCost P.DELETE_ITEM_SMETA case 2");
                             //находим id по имени работы
-                            long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+                            long work_id = tableControllerSmeta.
+                                    getIdFromName(name, Work.TABLE_NAME);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected file_id = " +
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
                             mSmetaOpenHelper.displayTableCost();
                             //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
                             // проверка в onCreateContextMenu
-                            mSmetaOpenHelper.deleteWork(work_id);
+                            tableControllerSmeta.deleteObject(work_id, Work.TABLE_NAME);
                             //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
-                            mSmetaOpenHelper.deleteCostOfWork(work_id);
+                            tableControllerSmeta.deleteObject(work_id, CostWork.TABLE_NAME);
                             // проверка в onCreateContextMenu
                             mSmetaOpenHelper.displayTableCost();
                             //после удаления в работах не даём появиться + в тулбаре
@@ -590,7 +595,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                     int idColumnIndex = curName.getColumnIndex(Work.WORK_NAME);
                     // Используем индекс для получения строки или числа
                     String currentWorkName = curName.getString(idColumnIndex);
-                    long workId = mSmetaOpenHelper.getIdFromWorkName(currentWorkName);
+                    long workId = tableControllerSmeta.
+                            getIdFromName(currentWorkName, Work.TABLE_NAME);
 
                     String selectWorkCost = " SELECT " + CostWork.COST_COST +
                             " FROM " +  CostWork.TABLE_NAME  +

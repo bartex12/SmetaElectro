@@ -23,9 +23,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class Smetas extends AppCompatActivity {
 
@@ -55,7 +58,7 @@ public class Smetas extends AppCompatActivity {
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
         //Получаем имя файла с текущей  сметой
-        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
         Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -181,7 +184,7 @@ public class Smetas extends AppCompatActivity {
                         case 0:
                             Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
                             //находим id по имени работы
-                            long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+                            long work_id = tableControllerSmeta.getIdFromName(name, Work.TABLE_NAME);
                             Log.d(TAG, "Smetas onContextItemSelected file_id = " +
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
@@ -194,7 +197,7 @@ public class Smetas extends AppCompatActivity {
                         case 1:
                             Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
                             //находим id по имени работы
-                            long mat_id = mSmetaOpenHelper.getIdFromMatName(name);
+                            long mat_id = tableControllerSmeta.getIdFromName(name, Mat.TABLE_NAME);
                             Log.d(TAG, "Smetas onContextItemSelected file_id = " +
                                     file_id + " mat_id =" + mat_id + " mat_name =" + name);
 

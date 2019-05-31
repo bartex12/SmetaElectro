@@ -102,6 +102,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
                     idColumnIndex = cursor.getColumnIndex(FileWork._ID);
+                    // Используем индекс для получения id
+                    currentID = cursor.getLong(idColumnIndex);
                 }
                 break;
 
@@ -118,31 +120,76 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
                     idColumnIndex = cursor.getColumnIndex(CategoryWork._ID);
+                    currentID = cursor.getLong(idColumnIndex);
                 }
                 break;
 
             case CategoryMat.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case CategoryMat.TABLE_NAME...");
-
+                cursor = db.query(
+                        CategoryMat.TABLE_NAME,   // таблица
+                        new String[]{CategoryMat._ID},            // столбцы
+                        CategoryMat.CATEGORY_MAT_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
                     idColumnIndex = cursor.getColumnIndex(CategoryMat._ID);
+                    currentID = cursor.getLong(idColumnIndex);
                 }
                 break;
 
             case TypeWork.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case TypeWork.TABLE_NAME...");
-
+                cursor = db.query(
+                        TypeWork.TABLE_NAME,   // таблица
+                        new String[]{TypeWork._ID},            // столбцы
+                        TypeWork.TYPE_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(TypeWork._ID);
+                    currentID = cursor.getLong(idColumnIndex);
+                }
                 break;
 
             case TypeMat.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case TypeMat.TABLE_NAME...");
-
+                cursor = db.query(
+                        TypeMat.TABLE_NAME,   // таблица
+                        new String[]{TypeMat._ID},            // столбцы
+                        TypeMat.TYPE_MAT_NAME + "=?",   // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(TypeMat._ID);
+                    currentID = cursor.getLong(idColumnIndex);
+                }
                 break;
 
             case Work.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case Work.TABLE_NAME...");
-
+                cursor = db.query(
+                        Work.TABLE_NAME,   // таблица
+                        new String[]{Work._ID},            // столбцы
+                        Work.WORK_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(Work._ID);
+                    currentID = cursor.getLong(idColumnIndex);
+                }
                 break;
 
             case Mat.TABLE_NAME:
@@ -158,17 +205,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
                     idColumnIndex = cursor.getColumnIndex(Mat._ID);
+                    currentID = cursor.getLong(idColumnIndex);
                 }
-                break;
-
-            case CostWork.TABLE_NAME:
-                Log.d(TAG, "getIdFromName case CostWork.TABLE_NAME...");
-
-                break;
-
-            case CostMat.TABLE_NAME:
-                Log.d(TAG, "getIdFromName case CostMat.TABLE_NAME...");
-
                 break;
 
             case Unit.TABLE_NAME:
@@ -184,34 +222,157 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца FileWork._ID
                     idColumnIndex = cursor.getColumnIndex(Unit._ID);
+                    currentID = cursor.getLong(idColumnIndex);
                 }
                 break;
 
             case UnitMat.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case UnitMat.TABLE_NAME...");
-
+                cursor = db.query(
+                        UnitMat.TABLE_NAME,   // таблица
+                        new String[]{UnitMat._ID},            // столбцы
+                        UnitMat.UNIT_MAT_NAME + "=?",                  // столбцы для условия WHERE
+                        new String[]{name},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца FileWork._ID
+                    idColumnIndex = cursor.getColumnIndex(UnitMat._ID);
+                    currentID = cursor.getLong(idColumnIndex);
+                }
                 break;
         }
         // Используем индекс для получения id
-        currentID = cursor.getLong(idColumnIndex);
+       // currentID = cursor.getLong(idColumnIndex);
         Log.d(TAG, "getIdFromName currentID = " + currentID);
 
         if (cursor!=null){
             cursor.close();
         }
         db.close();
-
         return currentID;
     }
 
+    //получаем имя работы по её id
+    public String getNameFromId(long id, String table){
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String name = "";
+        String currentName = "";
+        Cursor cursor = null;
+        switch (table){
+
+            case FileWork.TABLE_NAME:
+                cursor = db.query(true, FileWork.TABLE_NAME,
+                        null,
+                        FileWork._ID + "=" + id,
+                        null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    currentName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
+                }
+                break;
+
+            case Work.TABLE_NAME:
+                name = " SELECT " + Work._ID + " , " +  Work.WORK_NAME +
+                        " FROM " + Work.TABLE_NAME +
+                        " WHERE " + Work._ID  + " = ?" ;
+                cursor = db.rawQuery(name, new String[]{String.valueOf(id)});
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex = cursor.getColumnIndex(Work.WORK_NAME);
+                    // Используем индекс для получения строки или числа
+                    currentName = cursor.getString(idColumnIndex);
+                }
+                break;
+
+            case CostWork.TABLE_NAME:
+                name = " SELECT " +  Unit.UNIT_NAME +
+                        " FROM " + Unit.TABLE_NAME  +
+                        " WHERE " + Unit._ID + " IN " +
+                        "(" + " SELECT " + CostWork.COST_UNIT_ID +
+                        " FROM " + CostWork.TABLE_NAME +
+                        " WHERE " + CostWork.COST_WORK_ID  + " = " +  String.valueOf(id) + ")";
+                cursor = db.rawQuery(name, null);
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс  столбца
+                    int idColumnIndex = cursor.getColumnIndex(Unit.UNIT_NAME);
+                    // Используем индекс для получения строки или числа
+                    currentName = cursor.getString(idColumnIndex);
+                }
+                break;
+        }
+
+        Log.d(TAG, "getNameFromId currentName = " + currentName);
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return currentName;
+    }
+
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
-    public void deleteFile(long fileId) {
-        Log.i(TAG, "TableControllerSmeta.deleteFile ... ");
+    public void deleteObject(long id, String tableName ) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " ,
-                new String[]{String.valueOf(fileId)});
-        db.delete(FileWork.TABLE_NAME, FileWork._ID + " =? " ,
-                new String[]{String.valueOf(fileId)});
+
+        switch (tableName){
+            case FileWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case FileWork ");
+                db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                db.delete(FileWork.TABLE_NAME, FileWork._ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case CategoryWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case CategoryWork ");
+                db.delete(CategoryWork.TABLE_NAME, CategoryWork._ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case TypeWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case TypeWork ");
+                db.delete(TypeWork.TABLE_NAME, TypeWork._ID + " =? ",
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case Work.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject  case Work ");
+                db.delete(Work.TABLE_NAME, Work._ID + " =? ",
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case CostWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case CostWork ");
+                db.delete(CostWork.TABLE_NAME, CostWork.COST_WORK_ID + " =? ",
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case CostMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case CostMat ");
+                db.delete(CostMat.TABLE_NAME, CostMat.COST_MAT_ID + " =? ",
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case CategoryMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject  case CategoryMat ");
+                db.delete(CategoryMat.TABLE_NAME, CategoryMat._ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case TypeMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject case TypeMat ");
+                db.delete(TypeMat.TABLE_NAME, TypeMat._ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                break;
+
+            case Mat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.deleteObject  case Mat ");
+                db.delete(Mat.TABLE_NAME, Mat._ID + " =? " ,
+                        new String[]{String.valueOf(id)});
+                break;
+        }
         db.close();
     }
 
@@ -254,5 +415,101 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         db.close();
     }
 
+    //Обновляем данные по категории работ
+    public void updateData(long id, String name, String description, String tableName){
+        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        switch (tableName){
+            case CategoryWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case CategoryWork");
+                //заполняем данные для обновления в базе
+                cv = new ContentValues();
+                cv.put(CategoryWork.CATEGORY_NAME, name);
+                cv.put(CategoryWork.CATEGORY_DESCRIPTION, description);
+                db.update(CategoryWork.TABLE_NAME, cv,
+                        CategoryWork._ID + "=" + id, null);
+                break;
+
+            case TypeWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case TypeWork");
+                //заполняем данные для обновления в базе
+                cv = new ContentValues();
+                cv.put(TypeWork.TYPE_NAME, name);
+                cv.put(TypeWork.TYPE_DESCRIPTION, description);
+                db.update(TypeWork.TABLE_NAME, cv,
+                        TypeWork._ID + "=" + id, null);
+                break;
+
+            case Work.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case Work");
+                //заполняем данные для обновления в базе
+               cv = new ContentValues();
+                cv.put(Work.WORK_NAME, name);
+                cv.put(Work.WORK_DESCRIPTION, description);
+                db.update(Work.TABLE_NAME, cv,
+                        Work._ID + "=" + id, null);
+                break;
+
+            case CategoryMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case CategoryMat");
+                cv = new ContentValues();
+                cv.put(CategoryMat.CATEGORY_MAT_NAME, name);
+                cv.put(CategoryMat.CATEGORY_MAT_DESCRIPTION, description);
+                db.update(CategoryMat.TABLE_NAME, cv,
+                        CategoryMat._ID + "=" + id, null);
+                break;
+
+            case TypeMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case TypeMat");
+                cv = new ContentValues();
+                cv.put(TypeMat.TYPE_MAT_NAME, name);
+                cv.put(TypeMat.TYPE_MAT_DESCRIPTION, description);
+                db.update(TypeMat.TABLE_NAME, cv,
+                        TypeMat._ID + "=" + id, null);
+                break;
+
+            case Mat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.updateData case Mat");
+                //заполняем данные для обновления в базе
+                cv = new ContentValues();
+                cv.put(Mat.MAT_NAME, name);
+                cv.put(Mat.MAT_DESCRIPTION, description);
+                db.update(Mat.TABLE_NAME, cv,
+                        Mat._ID + "=" + id, null);
+                break;
+        }
+        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        db.close();
+    }
+
+    //обновляем цену работы
+    public void updateCost(long id, float cost, long unit_Id, String table){
+
+        Log.i(TAG, "TableControllerSmeta.updateCost ...");
+        SQLiteDatabase db = this.getWritableDatabase();
+        int countLine= 0;
+        switch (table){
+            case CostWork.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostWork.COST_COST, cost);
+                cv.put(CostWork.COST_UNIT_ID, unit_Id);
+                cv.put(CostWork.COST_NUMBER, 1);
+                countLine = db.update(CostWork.TABLE_NAME, cv,
+                        CostWork.COST_WORK_ID + "=" + id, null);
+                break;
+
+            case CostMat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostMat.COST_MAT_COST, cost);
+                cv.put(CostMat.COST_MAT_UNIT_ID, unit_Id);
+                cv.put(CostMat.COST_MAT_NUMBER, 1);
+                countLine = db.update(CostMat.TABLE_NAME, cv,
+                        CostMat.COST_MAT_ID + "=" + id, null);
+                break;
+        }
+        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost + "  countLine = " + countLine);
+        db.close();
+    }
 
 }

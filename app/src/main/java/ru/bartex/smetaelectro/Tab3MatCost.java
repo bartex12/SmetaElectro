@@ -70,7 +70,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
     @Override
     public void sendIntent(String name) {
         //находим id материала по имени материала
-        final long mat_id = mSmetaOpenHelper.getIdFromMatName(name);
+        final long mat_id = tableControllerSmeta.getIdFromName(name, Mat.TABLE_NAME);
         Log.d(TAG, "Tab3MatCost - onItemClick  mat_id = " + mat_id +
                 "  name = " + name);
         // проверяем есть ли такой  материал в FM для файла с file_id

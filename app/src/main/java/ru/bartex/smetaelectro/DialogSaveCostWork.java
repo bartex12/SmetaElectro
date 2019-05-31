@@ -26,6 +26,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DialogSaveCostWork extends DialogFragment {
 
@@ -201,7 +203,8 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameType = " + nameType);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя типа   +++++++++++++//
-                    long  typeId = mSmetaOpenHelper.getIdFromTypeName(nameType);
+                    long  typeId = tableControllerSmeta.
+                            getIdFromName(nameType, TypeWork.TABLE_NAME);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
 
                     //если имя - пустая строка
@@ -284,7 +287,7 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameMat = " + nameMat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long matId = mSmetaOpenHelper.getIdFromWorkName(nameMat);
+                    long matId = tableControllerSmeta.getIdFromName(nameMat, Work.TABLE_NAME);
                     Log.d(TAG, "nameMat = " + nameMat + "  matId = " + matId);
 
                     //если имя - пустая строка

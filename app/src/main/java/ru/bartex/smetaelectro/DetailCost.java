@@ -14,10 +14,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DetailCost extends AppCompatActivity {
 
@@ -56,7 +58,7 @@ public class DetailCost extends AppCompatActivity {
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = mSmetaOpenHelper.getWorkNameById(work_id);
+        String workName = tableControllerSmeta.getNameFromId(work_id, Work.TABLE_NAME);
         mTextViewWorkName.setText(workName);
 
         //выводим таблицу CostWork
@@ -87,7 +89,7 @@ public class DetailCost extends AppCompatActivity {
         if (cost == 0){
             spinner.setSelection(0);
         }else {
-            String unitName = mSmetaOpenHelper.getCostUnitById(work_id);
+            String unitName = tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
             long unitId = tableControllerSmeta.getIdFromName(unitName, Unit.TABLE_NAME);
             Log.d(TAG, "DetailCost- Spinner -unitName = " + unitName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
@@ -133,7 +135,7 @@ public class DetailCost extends AppCompatActivity {
                             work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
 
                     //обновляем стоимость работы с единицами измерения
-                    mSmetaOpenHelper.updateWorkCost(work_id, cost, unit_id);
+                    tableControllerSmeta.updateCost(work_id, cost, unit_id, CostWork.TABLE_NAME);
 
                     Bundle extras = getIntent().getExtras();
                     if(extras != null) {
@@ -173,7 +175,7 @@ public class DetailCost extends AppCompatActivity {
         // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfWork)==0){
-            mSmetaOpenHelper.deleteCostOfWork(work_id);
+           tableControllerSmeta.deleteObject(work_id, CostWork.TABLE_NAME);
         }
 
     }

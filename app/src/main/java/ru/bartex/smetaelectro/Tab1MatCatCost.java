@@ -56,7 +56,7 @@ public class Tab1MatCatCost extends Tab1SmetasCatAbstrFrag {
 
     @Override
     public long getCatId(String catName) {
-        long cat_id = mSmetaOpenHelper.getCatIdFromCategoryMatName(catName);
+        long cat_id = tableControllerSmeta.getIdFromName(catName, CategoryMat.TABLE_NAME);
         return cat_id;
     }
 }

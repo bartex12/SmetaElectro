@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DialogSaveNameWork extends DialogSaveNameAbstract {
 
@@ -105,7 +106,7 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long workId;
                 if (isWorkDialog){
-                    workId = smetaOpenHelper.getIdFromWorkName(workName);
+                    workId = tableControllerSmeta.getIdFromName(workName, Work.TABLE_NAME);
                     Log.d(TAG, "workName = " + workName + "  workId = " + workId);
                 }else{
                     workId = tableControllerSmeta.getIdFromName(workName, Mat.TABLE_NAME);

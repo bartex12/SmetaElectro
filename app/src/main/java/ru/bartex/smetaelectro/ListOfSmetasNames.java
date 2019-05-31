@@ -188,7 +188,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Удаляем файл из таблицы FileWork и данные из таблицы FW по file_id
-                        tableControllerSmeta.deleteFile(file_id);
+                        tableControllerSmeta.deleteObject(file_id, FileWork.TABLE_NAME);
                         Toast.makeText(ListOfSmetasNames.this,"Удалено ",
                                 Toast.LENGTH_SHORT).show();
 
@@ -205,7 +205,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
 
     public void updateAdapter() {
 
-        //Курсор с именами файлов
+        //Курсор с данными файловБ из которых берём имена
         List<DataFile> recordsList = new TableControllerSmeta(this).readFilesData();
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(recordsList.size());

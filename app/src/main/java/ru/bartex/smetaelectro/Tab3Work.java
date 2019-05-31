@@ -86,7 +86,8 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
     @Override
     public void sendIntent(String name) {
         //находим id работы по имени работы
-        final long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+        final long work_id = tableControllerSmeta.
+                getIdFromName(name, Work.TABLE_NAME);
         Log.d(TAG, "Tab3Work - onItemClick  work_id = " + work_id +
                 "  work_name = " + name);
         // проверяем есть ли такая  работа в FW для файла с file_id

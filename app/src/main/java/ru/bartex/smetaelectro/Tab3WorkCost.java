@@ -71,7 +71,8 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
     @Override
     public void sendIntent(String name) {
 //находим id по имени работы
-        long work_id = mSmetaOpenHelper.getIdFromWorkName(name);
+        long work_id = tableControllerSmeta.
+                getIdFromName(name, Work.TABLE_NAME);
         //ищем id категории работы, зная id типа
         long cat_id = mSmetaOpenHelper.getCatIdFromTypeWork(type_id);
 

@@ -27,9 +27,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,7 +101,7 @@ public class SmetasFrag extends Fragment {
                 switch (viewPager.getCurrentItem()){
                     //switch (positionItem){
                     case 0:
-                        long work_id = mSmetaOpenHelper.getIdFromWorkName(smeta_item_name);
+                        long work_id = tableControllerSmeta.getIdFromName(smeta_item_name, Work.TABLE_NAME);
                         long type_id = mSmetaOpenHelper.getTypeIdWork(file_id, work_id);
                         long cat_id = mSmetaOpenHelper.getCateIdWork(file_id, work_id);
 
@@ -113,7 +115,7 @@ public class SmetasFrag extends Fragment {
                         break;
 
                     case 1:
-                        long mat_id = mSmetaOpenHelper.getIdFromMatName(smeta_item_name);
+                        long mat_id = tableControllerSmeta.getIdFromName(smeta_item_name, Mat.TABLE_NAME);
                         long type_mat_id = mSmetaOpenHelper.getTypeIdMat(file_id, mat_id);
                         long cat_mat_id = mSmetaOpenHelper.getCateIdMat(file_id, mat_id);
 

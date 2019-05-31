@@ -19,9 +19,11 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DetailSmetaLine extends AppCompatActivity {
 
@@ -74,7 +76,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = mSmetaOpenHelper.getWorkNameById(work_id);
+        String workName = tableControllerSmeta.getNameFromId(work_id, Work.TABLE_NAME);
         mTextViewWorkName.setText(workName);
 
         //выводим таблицу CostWork
@@ -95,7 +97,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
-        unit = mSmetaOpenHelper.getCostUnitById(work_id);
+        unit = tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
         mTextViewUnit.setText(unit);
 
         //находим поле Сумма
@@ -188,7 +190,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                 Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
                 cost = mSmetaOpenHelper.getWorkCostById(work_id);
                 mTextViewCost.setText(Float.toString(cost));
-                unit = mSmetaOpenHelper.getCostUnitById(work_id);
+                unit =tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
                 mTextViewUnit.setText(unit);
                 mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
         }

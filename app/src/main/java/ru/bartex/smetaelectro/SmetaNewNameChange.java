@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 
@@ -41,7 +42,7 @@ public class SmetaNewNameChange extends SmetaNewName {
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = tableControllerSmeta.getIdFromFileName(nameFile);
+                long fileId = tableControllerSmeta.getIdFromName(nameFile, FileWork.TABLE_NAME);
                 Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                 //если имя - пустая строка
