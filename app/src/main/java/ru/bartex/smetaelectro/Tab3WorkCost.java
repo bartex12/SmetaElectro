@@ -49,7 +49,7 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
         }else {
             Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat
-            cursor = mSmetaOpenHelper.getWorkNamesAllTypes();
+            cursor = tableControllerSmeta.getNamesAllTypes(Work.TABLE_NAME);
         }
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab3WorkCost updateAdapter Всего материалов = "+ cursor.getCount() );

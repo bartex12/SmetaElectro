@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -160,7 +161,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                             Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
                                     " unit = " + unit);
                             //выводим таблицу FM в лог для проверки
-                            mSmetaOpenHelper.displayFM();
+                            tableControllerSmeta.displayTable(FM.TABLE_NAME);
                             finish();
                         }
                     }

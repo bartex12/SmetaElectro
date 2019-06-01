@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -161,7 +162,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                                     type_id, cat_id, cost, count, unit, count*cost);
                             Log.d(TAG, "DetailSmetaLine-mButtonSave-onClick FW_ID = " + FW_ID);
                             //выводим таблицу FW в лог для проверки
-                            mSmetaOpenHelper.displayFW();
+                            tableControllerSmeta.displayTable(FM.TABLE_NAME);
                             finish();
                         }
                     }

@@ -512,4 +512,267 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         db.close();
     }
 
+    //вывод в лог всех строк CostWork
+    public void displayTable(String table) {
+        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =null;
+
+        switch (table){
+            case CostWork.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.displayTable case CostWork");
+                // Зададим условие для выборки - список столбцов
+                String[] projectionCostWork = {
+                        CostWork._ID,
+                        CostWork.COST_WORK_ID,
+                        CostWork.COST_UNIT_ID,
+                        CostWork.COST_COST,
+                        CostWork.COST_NUMBER};
+                // Делаем запрос
+                cursor = db.query(
+                        CostWork.TABLE_NAME,   // таблица
+                        projectionCostWork,            // столбцы
+                        null,                  // столбцы для условия WHERE
+                        null,                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                    // Проходим через все ряды в таблице CostWork
+                    while (cursor.moveToNext()) {
+                        // Используем индекс для получения строки или числа
+                        int currentID = cursor.getInt(
+                                cursor.getColumnIndex(CostWork._ID));
+                        int current_WORK_ID = cursor.getInt(
+                                cursor.getColumnIndex(CostWork.COST_WORK_ID));
+                        String current_UNIT = cursor.getString(
+                                cursor.getColumnIndex(CostWork.COST_UNIT_ID));
+                        float current_COST = cursor.getFloat(
+                                cursor.getColumnIndex(CostWork.COST_COST));
+                        int current_NUMBER = cursor.getInt(
+                                cursor.getColumnIndex(CostWork.COST_NUMBER));
+                        // Выводим построчно значения каждого столбца
+                        Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                                " WORK_ID = " + current_WORK_ID + " - " +
+                                " UNIT = " + current_UNIT + " - " +
+                                " COST = " + current_COST + " - " +
+                                " NUMBER = " + current_NUMBER);
+                    }
+                break;
+
+            case CostMat.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.displayTable case CostMat");
+            // Зададим условие для выборки - список столбцов
+                String[] projectionCostMat = {
+                        CostMat._ID,
+                        CostMat.COST_MAT_ID,
+                        CostMat.COST_MAT_UNIT_ID,
+                        CostMat.COST_MAT_COST,
+                        CostMat.COST_MAT_NUMBER};
+                // Делаем запрос
+                cursor = db.query(
+                        CostMat.TABLE_NAME,   // таблица
+                        projectionCostMat,            // столбцы
+                        null,                  // столбцы для условия WHERE
+                        null,                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                    // Проходим через все ряды в таблице CostWork
+                    while (cursor.moveToNext()) {
+                        // Используем индекс для получения строки или числа
+                        int currentID = cursor.getInt(
+                                cursor.getColumnIndex(CostMat._ID));
+                        int current_WORK_ID = cursor.getInt(
+                                cursor.getColumnIndex(CostMat.COST_MAT_ID));
+                        String current_UNIT = cursor.getString(
+                                cursor.getColumnIndex(CostMat.COST_MAT_UNIT_ID));
+                        float current_COST = cursor.getFloat(
+                                cursor.getColumnIndex(CostMat.COST_MAT_COST));
+                        int current_NUMBER = cursor.getInt(
+                                cursor.getColumnIndex(CostMat.COST_MAT_NUMBER));
+                        // Выводим построчно значения каждого столбца
+                        Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                                " MAT_ID = " + current_WORK_ID + " - " +
+                                " UNIT = " + current_UNIT + " - " +
+                                " MAT_COST = " + current_COST + " - " +
+                                " MAT_NUMBER = " + current_NUMBER);
+                    }
+                break;
+
+            case FW.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.displayTable case FW");
+            // Зададим условие для выборки - список столбцов
+                String[] projectionFW = {
+                        FW._ID,
+                        FW.FW_FILE_ID,
+                        FW.FW_FILE_NAME,
+                        FW.FW_WORK_ID,
+                        FW.FW_WORK_NAME,
+                        FW.FW_TYPE_ID,
+                        FW.FW_TYPE_NAME,
+                        FW.FW_CATEGORY_ID,
+                        FW.FW_CATEGORY_NAME,
+                        FW.FW_COST,
+                        FW.FW_COUNT,
+                        FW.FW_UNIT,
+                        FW.FW_SUMMA};
+                // Делаем запрос
+                cursor = db.query(
+                        FW.TABLE_NAME,   // таблица
+                        projectionFW,            // столбцы
+                        null,                  // столбцы для условия WHERE
+                        null,                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                    // Проходим через все ряды в таблице CostWork
+                    while (cursor.moveToNext()) {
+                        // Используем индекс для получения строки или числа
+                        int currentID = cursor.getInt(
+                                cursor.getColumnIndex(FW._ID));
+                        int current_FILE_ID = cursor.getInt(
+                                cursor.getColumnIndex(FW.FW_FILE_ID));
+                        String current_FILE_NAME = cursor.getString(
+                                cursor.getColumnIndex(FW.FW_FILE_NAME));
+                        int current_WORK_ID = cursor.getInt(
+                                cursor.getColumnIndex(FW.FW_WORK_ID));
+                        String current_WORK_NAME = cursor.getString(
+                                cursor.getColumnIndex(FW.FW_WORK_NAME));
+                        int current_TYPE_ID = cursor.getInt(
+                                cursor.getColumnIndex(FW.FW_TYPE_ID));
+                        String current_TYPE_NAME = cursor.getString(
+                                cursor.getColumnIndex(FW.FW_TYPE_NAME));
+                        int current_CATEGORY_ID = cursor.getInt(
+                                cursor.getColumnIndex(FW.FW_CATEGORY_ID));
+                        String current_CATEGORY_NAME = cursor.getString(
+                                cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
+                        float current_COST = cursor.getFloat(
+                                cursor.getColumnIndex(FW.FW_COST));
+                        int current_COUNT = cursor.getInt(
+                                cursor.getColumnIndex(FW.FW_COUNT));
+                        String current_UNIT = cursor.getString(
+                                cursor.getColumnIndex(FW.FW_UNIT));
+                        float current_SUMMA = cursor.getFloat(
+                                cursor.getColumnIndex(FW.FW_SUMMA));
+                        // Выводим построчно значения каждого столбца
+                        Log.d(TAG, "\n" + "ID = " + currentID + "/" +
+                                " FILE_ID = " + current_FILE_ID + "/" +
+                                " FILE_NAME = " + current_FILE_NAME + "/" +
+                                " WORK_ID = " + current_WORK_ID + "/" +
+                                " WORK_NAME = " + current_WORK_NAME + "/" +
+                                " TYPE_ID = " + current_TYPE_ID + "/" +
+                                " TYPE_NAME = " + current_TYPE_NAME + "/" +
+                                " CAT_ID = " + current_CATEGORY_ID + "/" +
+                                " CAT_NAME = " + current_CATEGORY_NAME + "/" +
+                                " COST = " + current_COST + "/" +
+                                " COUNT = " + current_COUNT + "/" +
+                                " UNIT = " + current_UNIT + "/" +
+                                " SUMMA = " + current_SUMMA);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.displayTable case FM");
+                // Зададим условие для выборки - список столбцов
+                String[] projectionFM = {
+                        FM._ID,
+                        FM.FM_FILE_ID,
+                        FM.FM_FILE_NAME,
+                        FM.FM_MAT_ID,
+                        FM.FM_MAT_NAME,
+                        FM.FM_MAT_TYPE_ID,
+                        FM.FM_MAT_TYPE_NAME,
+                        FM.FM_MAT_CATEGORY_ID,
+                        FM.FM_MAT_CATEGORY_NAME,
+                        FM.FM_MAT_COST,
+                        FM.FM_MAT_COUNT,
+                        FM.FM_MAT_UNIT,
+                        FM.FM_MAT_SUMMA};
+                // Делаем запрос
+                cursor = db.query(
+                        FM.TABLE_NAME,   // таблица
+                        projectionFM,            // столбцы
+                        null,                  // столбцы для условия WHERE
+                        null,                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                    // Проходим через все ряды в таблице CostWork
+                    while (cursor.moveToNext()) {
+                        // Используем индекс для получения строки или числа
+                        int currentID = cursor.getInt(
+                                cursor.getColumnIndex(FM._ID));
+                        int current_FILE_ID = cursor.getInt(
+                                cursor.getColumnIndex(FM.FM_FILE_ID));
+                        String current_FILE_NAME = cursor.getString(
+                                cursor.getColumnIndex(FM.FM_FILE_NAME));
+                        int current_WORK_ID = cursor.getInt(
+                                cursor.getColumnIndex(FM.FM_MAT_ID));
+                        String current_WORK_NAME = cursor.getString(
+                                cursor.getColumnIndex(FM.FM_MAT_NAME));
+                        int current_TYPE_ID = cursor.getInt(
+                                cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
+                        String current_TYPE_NAME = cursor.getString(
+                                cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+                        int current_CATEGORY_ID = cursor.getInt(
+                                cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
+                        String current_CATEGORY_NAME = cursor.getString(
+                                cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
+                        float current_COST = cursor.getFloat(
+                                cursor.getColumnIndex(FM.FM_MAT_COST));
+                        int current_COUNT = cursor.getInt(
+                                cursor.getColumnIndex(FM.FM_MAT_COUNT));
+                        String current_UNIT = cursor.getString(
+                                cursor.getColumnIndex(FM.FM_MAT_UNIT));
+                        float current_SUMMA = cursor.getFloat(
+                                cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+                        // Выводим построчно значения каждого столбца
+                        Log.d(TAG, "\n" + "ID = " + currentID + "/" +
+                                " FILE_ID = " + current_FILE_ID + "/" +
+                                " FILE_NAME = " + current_FILE_NAME + "/" +
+                                " MAT_ID = " + current_WORK_ID + "/" +
+                                " MAT_NAME = " + current_WORK_NAME + "/" +
+                                " MAT_TYPE_ID = " + current_TYPE_ID + "/" +
+                                " MAT_TYPE_NAME = " + current_TYPE_NAME + "/" +
+                                " MAT_CATEGORY_ID = " + current_CATEGORY_ID + "/" +
+                                " MAT_CATEGORY_NAME = " + current_CATEGORY_NAME + "/" +
+                                " MAT_COST = " + current_COST + "/" +
+                                " MAT_COUNT = " + current_COUNT + "/" +
+                                " MAT_UNIT = " + current_UNIT + "/" +
+                                " MAT_SUMMA = " + current_SUMMA);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+    }
+
+    //получаем курсор с названиями  материалов
+    public Cursor getNamesAllTypes(String table) {
+        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =null;
+        String names = "";
+
+        switch (table){
+            case Mat.TABLE_NAME:
+                names = " SELECT " + Mat._ID + " , " +
+                        Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME;
+                break;
+
+            case Work.TABLE_NAME:
+                names = " SELECT " + Work._ID + " , " +
+                        Work.WORK_NAME + " FROM " + Work.TABLE_NAME;
+                break;
+        }
+        cursor = db.rawQuery(names, null);
+        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        db.close();
+        return cursor;
+    }
+
+
 }

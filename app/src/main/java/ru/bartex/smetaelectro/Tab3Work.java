@@ -49,7 +49,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
         }else {
             Log.d(TAG, "Tab3Work updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat
-            cursor = mSmetaOpenHelper.getWorkNamesAllTypes();
+            cursor = tableControllerSmeta.getNamesAllTypes(Work.TABLE_NAME);
         }
         //Строковый массив с именами работы из таблицы FW для файла с file_id
         String[] workNamesFW = mSmetaOpenHelper.getWorkNamesFW(file_id);
