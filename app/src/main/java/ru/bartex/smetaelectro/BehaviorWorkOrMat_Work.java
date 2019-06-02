@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -37,9 +38,12 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
 
     Context context;
 
-    public BehaviorWorkOrMat_Work(Context context, SmetaOpenHelper mSmetaOpenHelper, ListView lvSmetas, long file_id){
+    public BehaviorWorkOrMat_Work(Context context, SmetaOpenHelper mSmetaOpenHelper,
+                                  TableControllerSmeta tableControllerSmeta, ListView lvSmetas,
+                                  long file_id){
         Log.d(TAG, "//BehaviorWorkOrMat_Work Конструктор // " );
         this.mSmetaOpenHelper = mSmetaOpenHelper;
+        this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetas = lvSmetas;
         this.file_id = file_id;
         this.context = context;
@@ -56,16 +60,17 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
         //массив типов материалов для сметы с file_id
         String[] type_name = mSmetaOpenHelper.getTypeNamesFW(file_id);
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  type_name.length = " + type_name.length);
+        Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  file_id= " + file_id);
         //Массив материалов в файле с file_id
-        String[] work_name = mSmetaOpenHelper.getNameOfWork(file_id);
+        String[] work_name = tableControllerSmeta.getArrayNames(file_id, FW.TABLE_NAME);
         //Массив цен для материалов в файле с file_id
-        float[] work_cost = mSmetaOpenHelper.getCostOfWork(file_id);
+        float[] work_cost = tableControllerSmeta.getArrayCost(file_id, FW.TABLE_NAME);
         //Массив количества материалов для материалов в файле с file_id
-        float[] work_amount = mSmetaOpenHelper.getAmountOfWork(file_id);
+        float[] work_amount = tableControllerSmeta.getArrayAmount(file_id, FW.TABLE_NAME);
         //Массив единиц измерения для материалов в файле с file_id
-        String[] work_units = mSmetaOpenHelper.getUnitsOfWork(file_id);
+        String[] work_units = tableControllerSmeta.getArrayUnit(file_id, FW.TABLE_NAME);
         //Массив стоимости материалов  для материалов в файле с file_id
-        summa = mSmetaOpenHelper.getSummaOfWork(file_id);
+        summa = tableControllerSmeta.getArraySumma(file_id, FW.TABLE_NAME);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(work_name.length);
@@ -91,7 +96,7 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
         lvSmetas.removeHeaderView(header);
         //добавляем хедер
         header = LayoutInflater.from(context).inflate(R.layout.list_item_single, null);
-        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
         ((TextView)header.findViewById(R.id.base_text)).setText(
                 String.format(Locale.ENGLISH,"Смета на работу:   %s", fileName));
         lvSmetas.addHeaderView(header, null, false);

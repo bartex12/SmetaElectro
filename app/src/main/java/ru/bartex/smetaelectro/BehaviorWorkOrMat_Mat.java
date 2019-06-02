@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -37,8 +38,11 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
     Context context;
 
-    public BehaviorWorkOrMat_Mat(Context context, SmetaOpenHelper mSmetaOpenHelper, ListView lvSmetas, long file_id){
+    public BehaviorWorkOrMat_Mat(Context context, SmetaOpenHelper mSmetaOpenHelper,
+                                 TableControllerSmeta tableControllerSmeta,
+                                 ListView lvSmetas, long file_id){
         this.mSmetaOpenHelper = mSmetaOpenHelper;
+        this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetasMaterials = lvSmetas;
         this.file_id = file_id;
         this.context = context;
@@ -54,15 +58,15 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
         Log.d(TAG, "SmetasTab2Materialy - updateAdapter  type_name.length = " + type_mat_name.length);
         //Массив материалов в файле с file_id
-        String[] mat_name = mSmetaOpenHelper.getNameOfMat(file_id);
+        String[] mat_name = tableControllerSmeta.getArrayNames(file_id, FM.TABLE_NAME);
         //Массив цен для материалов в файле с file_id
-        float[] mat_cost = mSmetaOpenHelper.getCostOfMat(file_id);
+        float[] mat_cost = tableControllerSmeta.getArrayCost(file_id, FM.TABLE_NAME);
         //Массив количества работ для работ в файле с file_id
-        float[] mat_amount = mSmetaOpenHelper.getAmountOfMat(file_id);
+        float[] mat_amount = tableControllerSmeta.getArrayAmount(file_id, FM.TABLE_NAME);
         //Массив единиц измерения для материалов в файле с file_id
-        String[] mat_units = mSmetaOpenHelper.getUnitsOfMat(file_id);
+        String[] mat_units = tableControllerSmeta.getArrayUnit(file_id, FM.TABLE_NAME);
         //Массив стоимости материалов  для работ в файле с file_id
-        mat_summa = mSmetaOpenHelper.getSummaOfMat(file_id);
+        mat_summa = tableControllerSmeta.getArraySumma(file_id, FM.TABLE_NAME);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(mat_name.length);
@@ -92,7 +96,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         lvSmetasMaterials.removeHeaderView(header);
         //добавляем хедер
         header = LayoutInflater.from(context).inflate(R.layout.list_item_single, null);
-        String fileName = mSmetaOpenHelper.getFileNameById(file_id);
+        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
         ((TextView)header.findViewById(R.id.base_text)).setText(
                 String.format(Locale.ENGLISH,"Смета на материалы:   %s", fileName));
         lvSmetasMaterials.addHeaderView(header, null, false);

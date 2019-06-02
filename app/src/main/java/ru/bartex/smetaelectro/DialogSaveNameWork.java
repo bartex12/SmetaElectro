@@ -14,8 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DialogSaveNameWork extends DialogSaveNameAbstract {
@@ -79,8 +81,8 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
         if (isWorkDialog){
             Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = true  cat_id = " +
             cat_id + "  type_id = " + type_id);
-           typeName = smetaOpenHelper.getTypeNameById(type_id);
-           catName = smetaOpenHelper.getCategoryNameById(cat_id);
+           typeName = tableControllerSmeta.getNameFromId(type_id, TypeWork.TABLE_NAME);
+           catName = tableControllerSmeta.getNameFromId(cat_id, CategoryWork.TABLE_NAME);
         }else{
             Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = false  cat_id = " +
                     cat_id + "  type_id = " + type_id);

@@ -183,7 +183,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_name.length);
 
                 //получаем суммарную стоимомть работ  по смете с id файла file_id
-                work_summas = mSmetaOpenHelper.getSummaOfWork(file_id);
+                work_summas = tableControllerSmeta.getArraySumma(file_id, FW.TABLE_NAME);
 
                 int length = type_name.length;
                 if (length >0){
@@ -199,15 +199,20 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                                 type_name[i] + " type_id = " + type_id);
 
                         //получаем имена работ  по смете с id файла file_id и id типа type_id
-                        String[] work_names = mSmetaOpenHelper.getNameOfWorkSelectedType(file_id, type_id);
+                        String[] work_names = tableControllerSmeta.
+                                getArrayNamesSelectedType(file_id, type_id, FW.TABLE_NAME);
                         //получаем расценки работ  по смете с id файла file_idи id типа type_id
-                        float[] work_cost = mSmetaOpenHelper.getCostOfWorkSelectedType(file_id, type_id);
+                        float[] work_cost = tableControllerSmeta.getArrayCostSelectedType(
+                                file_id, type_id, FW.TABLE_NAME);
                         //получаем количество работ  по смете с id файла file_id и id типа type_id
-                        float[] work_amount = mSmetaOpenHelper.getAmountOfWorkSelectedType(file_id, type_id);
+                        float[] work_amount = tableControllerSmeta.
+                                getArrayAmountSelectedType(file_id, type_id, FW.TABLE_NAME);
                         //получаем единицы измерения для  работ  по смете с id файла file_id
-                        String[]  work_units = mSmetaOpenHelper.getUnitsOfWorkSelectedType(file_id, type_id);
+                        String[]  work_units = tableControllerSmeta.
+                                getArrayUnitSelectedType(file_id, type_id, FW.TABLE_NAME);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
-                        float[] work_summa =  mSmetaOpenHelper.getSummaOfWorkSelectedType(file_id, type_id);
+                        float[] work_summa =  tableControllerSmeta.
+                                getArraySummaSelectedType(file_id, type_id, FW.TABLE_NAME );
 
                         for (int k = 0; k<work_names.length; k++){
                             mm = new HashMap<>();
@@ -260,7 +265,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_mat_name.length);
 
                 //получаем суммарную стоимомть материалов  по смете с id файла file_id
-                mat_summas = mSmetaOpenHelper.getSummaOfMat(file_id);
+                mat_summas = tableControllerSmeta.getArraySumma(file_id, FM.TABLE_NAME);
 
                 int length_mat = type_mat_name.length;
                 if (length_mat >0){
@@ -270,20 +275,26 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         data.add(mm);
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
-                        long type_mat_id = tableControllerSmeta.getIdFromName(type_mat_name[i], TypeMat.TABLE_NAME);
+                        long type_mat_id = tableControllerSmeta.
+                                getIdFromName(type_mat_name[i], TypeMat.TABLE_NAME);
                         Log.i(TAG, "ListOfSmetasStructured updateAdapter type_mat_name[i] = " +
                                 type_mat_name[i] + " type_mat_id = " + type_mat_id);
 
                         //получаем имена материалов  по смете с id файла file_id и id типа type_mat_name
-                        String[] mat_names = mSmetaOpenHelper.getNameOfMatkSelectedType(file_id, type_mat_id);
+                        String[] mat_names = tableControllerSmeta.
+                                getArrayNamesSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
                         //получаем расценки материалов  по смете с id файла file_idи id типа type_id
-                        float[] mat_cost = mSmetaOpenHelper.getCostOfMatSelectedType(file_id, type_mat_id);
+                        float[] mat_cost = tableControllerSmeta.getArrayCostSelectedType(
+                                file_id, type_mat_id, FM.TABLE_NAME);
                         //получаем количество работ  по смете с id файла file_id и id типа type_id
-                        float[] mat_amount = mSmetaOpenHelper.getAmountOfMatSelectedType(file_id, type_mat_id);
+                        float[] mat_amount = tableControllerSmeta.
+                                getArrayAmountSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
                         //получаем единицы измерения для  работ  по смете с id файла file_id
-                        String[]  mat_units = mSmetaOpenHelper.getUnitsOfMatSelectedType(file_id, type_mat_id);
+                        String[]  mat_units = tableControllerSmeta.
+                                getArrayUnitSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
-                        float[] mat_summa =  mSmetaOpenHelper.getSummaOfMatSelectedType(file_id, type_mat_id);
+                        float[] mat_summa =  tableControllerSmeta.
+                                getArraySummaSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
 
                         for (int k = 0; k<mat_names.length; k++){
                             mm = new HashMap<>();
@@ -535,7 +546,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
 /*
                 // +++++++++++++  ПЕРЕВОД В Excel  ++++++++++++++ start
-                //рабочий вариант, но во всех программах не работает кодировка
+                //рабочий вариант, но  во всех программах не работает кодировка
                 ArrayList arList=null;
                 ArrayList al=null;
 

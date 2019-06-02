@@ -273,6 +273,26 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 }
                 break;
 
+            case CategoryWork.TABLE_NAME:
+                cursor = db.query(true, CategoryWork.TABLE_NAME,
+                    null,
+                    CategoryWork._ID + "=" + id,
+                    null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    currentName = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
+                }
+                break;
+
+            case TypeWork.TABLE_NAME:
+                cursor = db.query(true, TypeWork.TABLE_NAME,
+                        null,
+                        TypeWork._ID + "=" + id,
+                        null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    currentName = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+                }
+                break;
+
             case Work.TABLE_NAME:
                 name = " SELECT " + Work._ID + " , " +  Work.WORK_NAME +
                         " FROM " + Work.TABLE_NAME +
@@ -772,6 +792,479 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes cursor.getCount() =  " + cursor.getCount());
         db.close();
         return cursor;
+    }
+
+    //получаем имена   по смете с id файла file_id
+    public String[]  getArrayNames(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayNames ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        String[] name = new String[]{""};
+        switch (table){
+            case FW.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.getArrayNames  case FW ");
+                select = " SELECT " + FW.FW_WORK_NAME +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
+                name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_NAME +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
+                name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return name;
+    }
+
+    //получаем имена   по смете с id файла file_id и id типа type_id
+    public String[]  getArrayNamesSelectedType(long file_id, long type_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        String[] name = new String[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType  case FW ");
+                select = " SELECT " + FW.FW_WORK_NAME +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
+                name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType name[position] = " + name[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_NAME +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
+                name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return name;
+    }
+
+    //получаем расценки  по смете с id файла file_id
+    public float[]  getArrayCost(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayCost ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] cost = new float[]{};
+
+        switch (table){
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_COST +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
+                cost = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCost cost[position] = " + cost[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select =" SELECT " + FM.FM_MAT_COST +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
+                cost = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCost cost[position] = " + cost[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return cost;
+    }
+
+    //получаем расценки  по смете с id файла file_id и id типа type_id
+    public float[]  getArrayCostSelectedType(long file_id, long type_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] cost = new float[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FW ");
+                select = " SELECT " + FW.FW_COST +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
+                cost = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cost[position] = " + cost[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FM ");
+                select =   " SELECT " + FM.FM_MAT_COST +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
+                cost = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cost[position] = " + cost[position]);
+                }
+
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return cost;
+    }
+
+    //получаем количество работ/материалов  по смете с id файла file_id
+    public float[]  getArrayAmount(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] amount = new float[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_COUNT +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
+                amount = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
+                    Log.i(TAG, "TableControllerSmeta.getArrayAmount amount[position] = " + amount[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_COUNT +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
+                amount = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
+                    Log.i(TAG, "TableControllerSmeta.getArrayAmount amount[position] = " + amount[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return amount;
+    }
+
+    //получаем количество работ  по смете с id файла file_id и id типа type_id
+    public float[]  getArrayAmountSelectedType(long file_id, long type_id, String table){
+
+        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] amount = new float[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_COUNT +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
+                amount = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
+                    Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType amount[position] = " + amount[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_COUNT +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
+                amount = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
+                    Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType amount[position] = " + amount[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return amount;
+    }
+
+    //получаем единицы измерения для  работ  по смете с id файла file_id
+    public String[]  getArrayUnit(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayUnit ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        String[] units = new String[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_UNIT +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
+                units = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_UNIT +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
+                units = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return units;
+    }
+
+    //получаем единицы измерения для  работ  по смете с id файла file_id
+    public String[]  getArrayUnitSelectedType(long file_id, long type_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        String[] units = new String[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select =" SELECT " + FW.FW_UNIT +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
+                units = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType units[position] = " + units[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select =  " SELECT " + FM.FM_MAT_UNIT +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
+                units = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType units[position] = " + units[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return units;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public float[]  getArraySumma(long file_id, String table){
+
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] summa = new float[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select =" SELECT " + FW.FW_SUMMA +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+                summa = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
+                    Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_SUMMA +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+                summa = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+                    Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return summa;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public float[]  getArraySummaSelectedType(long file_id, long type_id, String table){
+
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        float[] summa = new float[]{};
+        switch (table){
+            case FW.TABLE_NAME:
+                select =" SELECT " + FW.FW_SUMMA +
+                        " FROM " +  FW.TABLE_NAME  +
+                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                        cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+                summa = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    summa[position] =cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
+                            Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select =" SELECT " + FM.FM_MAT_SUMMA +
+                        " FROM " +  FM.TABLE_NAME  +
+                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+                summa = new float[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    summa[position] =cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+                            Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                }
+                break;
+        }
+        if (cursor!=null){
+            cursor.close();
+        }
+        db.close();
+        return summa;
     }
 
 
