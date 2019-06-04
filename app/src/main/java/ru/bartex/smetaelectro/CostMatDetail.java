@@ -62,7 +62,7 @@ public class CostMatDetail extends AppCompatActivity {
 
         //выводим стоимость материала
         mTextViewCostMat = findViewById(R.id.etCost);
-        cost = mSmetaOpenHelper.getCostMatById(mat_id);
+        cost = tableControllerSmeta.getCostById(mat_id, CostMat.TABLE_NAME);
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateMatCost
             // при нажатии кнопки Сохранить

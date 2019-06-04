@@ -34,7 +34,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                DataFile dataFile =  this.getFileDataFromCurcor(cursor);
+                DataFile dataFile = this.getFileDataFromCurcor(cursor);
                 //добавляем в список
                 recordsList.add(dataFile);
 
@@ -47,11 +47,11 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем объект DataFile для файла с file_id
-    public  DataFile getFileData(long file_id){
+    public DataFile getFileData(long file_id) {
         Log.i(TAG, "TableControllerSmeta.getFileData ... ");
         DataFile dataFile = new DataFile();
-        String fileName = " SELECT  * FROM " +  FileWork.TABLE_NAME +
-                " WHERE " + FileWork._ID  + " = ? " ;
+        String fileName = " SELECT  * FROM " + FileWork.TABLE_NAME +
+                " WHERE " + FileWork._ID + " = ? ";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(fileName, new String[]{String.valueOf(file_id)});
         if (cursor.moveToFirst()) {
@@ -64,7 +64,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем объект DataFile из курсора
-    public  DataFile getFileDataFromCurcor(Cursor cursor){
+    public DataFile getFileDataFromCurcor(Cursor cursor) {
         // Узнаем индекс каждого столбца и Используем индекс для получения строки
         long id = cursor.getLong(cursor.getColumnIndex(FileWork._ID));
         String currentFileName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
@@ -80,7 +80,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем id по имени в зависимости от имени таблицы
-    public long getIdFromName(String name, String tableName){
+    public long getIdFromName(String name, String tableName) {
         Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
         long currentID = -1;
         int idColumnIndex = -1;
@@ -88,7 +88,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
 
-        switch (tableName){
+        switch (tableName) {
             case FileWork.TABLE_NAME:
                 Log.d(TAG, "getIdFromName case FileWork.TABLE_NAME...");
                 cursor = db.query(
@@ -244,10 +244,10 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 break;
         }
         // Используем индекс для получения id
-       // currentID = cursor.getLong(idColumnIndex);
+        // currentID = cursor.getLong(idColumnIndex);
         Log.d(TAG, "getIdFromName currentID = " + currentID);
 
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -255,13 +255,13 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем имя работы по её id
-    public String getNameFromId(long id, String table){
+    public String getNameFromId(long id, String table) {
         Log.i(TAG, "TableControllerSmeta getNameFromId... ");
         SQLiteDatabase db = this.getReadableDatabase();
         String name = "";
         String currentName = "";
         Cursor cursor = null;
-        switch (table){
+        switch (table) {
 
             case FileWork.TABLE_NAME:
                 cursor = db.query(true, FileWork.TABLE_NAME,
@@ -275,9 +275,9 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case CategoryWork.TABLE_NAME:
                 cursor = db.query(true, CategoryWork.TABLE_NAME,
-                    null,
-                    CategoryWork._ID + "=" + id,
-                    null, null, null, null, null);
+                        null,
+                        CategoryWork._ID + "=" + id,
+                        null, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     currentName = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
                 }
@@ -294,9 +294,9 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 break;
 
             case Work.TABLE_NAME:
-                name = " SELECT " + Work._ID + " , " +  Work.WORK_NAME +
+                name = " SELECT " + Work._ID + " , " + Work.WORK_NAME +
                         " FROM " + Work.TABLE_NAME +
-                        " WHERE " + Work._ID  + " = ?" ;
+                        " WHERE " + Work._ID + " = ?";
                 cursor = db.rawQuery(name, new String[]{String.valueOf(id)});
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс каждого столбца
@@ -307,12 +307,12 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 break;
 
             case CostWork.TABLE_NAME:
-                name = " SELECT " +  Unit.UNIT_NAME +
-                        " FROM " + Unit.TABLE_NAME  +
+                name = " SELECT " + Unit.UNIT_NAME +
+                        " FROM " + Unit.TABLE_NAME +
                         " WHERE " + Unit._ID + " IN " +
                         "(" + " SELECT " + CostWork.COST_UNIT_ID +
                         " FROM " + CostWork.TABLE_NAME +
-                        " WHERE " + CostWork.COST_WORK_ID  + " = " +  String.valueOf(id) + ")";
+                        " WHERE " + CostWork.COST_WORK_ID + " = " + String.valueOf(id) + ")";
                 cursor = db.rawQuery(name, null);
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца
@@ -324,7 +324,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         }
 
         Log.d(TAG, "getNameFromId currentName = " + currentName);
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -332,22 +332,22 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
-    public void deleteObject(long id, String tableName ) {
+    public void deleteObject(long id, String tableName) {
         Log.i(TAG, "TableControllerSmeta.deleteObject ... ");
         SQLiteDatabase db = this.getWritableDatabase();
 
-        switch (tableName){
+        switch (tableName) {
             case FileWork.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.deleteObject case FileWork ");
-                db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " ,
+                db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? ",
                         new String[]{String.valueOf(id)});
-                db.delete(FileWork.TABLE_NAME, FileWork._ID + " =? " ,
+                db.delete(FileWork.TABLE_NAME, FileWork._ID + " =? ",
                         new String[]{String.valueOf(id)});
                 break;
 
             case CategoryWork.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.deleteObject case CategoryWork ");
-                db.delete(CategoryWork.TABLE_NAME, CategoryWork._ID + " =? " ,
+                db.delete(CategoryWork.TABLE_NAME, CategoryWork._ID + " =? ",
                         new String[]{String.valueOf(id)});
                 break;
 
@@ -377,19 +377,19 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case CategoryMat.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.deleteObject  case CategoryMat ");
-                db.delete(CategoryMat.TABLE_NAME, CategoryMat._ID + " =? " ,
+                db.delete(CategoryMat.TABLE_NAME, CategoryMat._ID + " =? ",
                         new String[]{String.valueOf(id)});
                 break;
 
             case TypeMat.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.deleteObject case TypeMat ");
-                db.delete(TypeMat.TABLE_NAME, TypeMat._ID + " =? " ,
+                db.delete(TypeMat.TABLE_NAME, TypeMat._ID + " =? ",
                         new String[]{String.valueOf(id)});
                 break;
 
             case Mat.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.deleteObject  case Mat ");
-                db.delete(Mat.TABLE_NAME, Mat._ID + " =? " ,
+                db.delete(Mat.TABLE_NAME, Mat._ID + " =? ",
                         new String[]{String.valueOf(id)});
                 break;
         }
@@ -420,7 +420,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //обновляем данные файла сметы имя, адрес, описание, дата и время
-    public void updateFileData(long file_id, String name, String adress, String description){
+    public void updateFileData(long file_id, String name, String adress, String description) {
         Log.i(TAG, "TableControllerSmeta.updateFileData ... ");
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -430,17 +430,17 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cv.put(FileWork.ADRESS, adress);
         cv.put(FileWork.DESCRIPTION_OF_FILE, description);
 
-        db.update(FileWork.TABLE_NAME, cv,FileWork._ID + "=" + file_id, null);
+        db.update(FileWork.TABLE_NAME, cv, FileWork._ID + "=" + file_id, null);
         Log.i(TAG, "TableControllerSmeta.updateFileData - name =" + name + "  file_id = " + file_id);
         db.close();
     }
 
     //Обновляем данные по категории работ
-    public void updateData(long id, String name, String description, String tableName){
+    public void updateData(long id, String name, String description, String tableName) {
         Log.i(TAG, "TableControllerSmeta.updateData ...");
         SQLiteDatabase db = this.getWritableDatabase();
 
-        switch (tableName){
+        switch (tableName) {
             case CategoryWork.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.updateData case CategoryWork");
                 //заполняем данные для обновления в базе
@@ -464,7 +464,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case Work.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.updateData case Work");
                 //заполняем данные для обновления в базе
-               cv = new ContentValues();
+                cv = new ContentValues();
                 cv.put(Work.WORK_NAME, name);
                 cv.put(Work.WORK_DESCRIPTION, description);
                 db.update(Work.TABLE_NAME, cv,
@@ -504,12 +504,12 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //обновляем цену работы
-    public void updateCost(long id, float cost, long unit_Id, String table){
+    public void updateCost(long id, float cost, long unit_Id, String table) {
 
         Log.i(TAG, "TableControllerSmeta.updateCost ...");
         SQLiteDatabase db = this.getWritableDatabase();
-        int countLine= 0;
-        switch (table){
+        int countLine = 0;
+        switch (table) {
             case CostWork.TABLE_NAME:
                 cv = new ContentValues();
                 cv.put(CostWork.COST_COST, cost);
@@ -537,9 +537,9 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         Log.i(TAG, "TableControllerSmeta.displayTable ...");
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
 
-        switch (table){
+        switch (table) {
             case CostWork.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.displayTable case CostWork");
                 // Зададим условие для выборки - список столбцов
@@ -558,31 +558,31 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         null,                  // Don't group the rows
                         null,                  // Don't filter by row groups
                         null);                   // порядок сортировки
-                    // Проходим через все ряды в таблице CostWork
-                    while (cursor.moveToNext()) {
-                        // Используем индекс для получения строки или числа
-                        int currentID = cursor.getInt(
-                                cursor.getColumnIndex(CostWork._ID));
-                        int current_WORK_ID = cursor.getInt(
-                                cursor.getColumnIndex(CostWork.COST_WORK_ID));
-                        String current_UNIT = cursor.getString(
-                                cursor.getColumnIndex(CostWork.COST_UNIT_ID));
-                        float current_COST = cursor.getFloat(
-                                cursor.getColumnIndex(CostWork.COST_COST));
-                        int current_NUMBER = cursor.getInt(
-                                cursor.getColumnIndex(CostWork.COST_NUMBER));
-                        // Выводим построчно значения каждого столбца
-                        Log.d(TAG, "\n" + "ID = " + currentID + " - " +
-                                " WORK_ID = " + current_WORK_ID + " - " +
-                                " UNIT = " + current_UNIT + " - " +
-                                " COST = " + current_COST + " - " +
-                                " NUMBER = " + current_NUMBER);
-                    }
+                // Проходим через все ряды в таблице CostWork
+                while (cursor.moveToNext()) {
+                    // Используем индекс для получения строки или числа
+                    int currentID = cursor.getInt(
+                            cursor.getColumnIndex(CostWork._ID));
+                    int current_WORK_ID = cursor.getInt(
+                            cursor.getColumnIndex(CostWork.COST_WORK_ID));
+                    String current_UNIT = cursor.getString(
+                            cursor.getColumnIndex(CostWork.COST_UNIT_ID));
+                    float current_COST = cursor.getFloat(
+                            cursor.getColumnIndex(CostWork.COST_COST));
+                    int current_NUMBER = cursor.getInt(
+                            cursor.getColumnIndex(CostWork.COST_NUMBER));
+                    // Выводим построчно значения каждого столбца
+                    Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                            " WORK_ID = " + current_WORK_ID + " - " +
+                            " UNIT = " + current_UNIT + " - " +
+                            " COST = " + current_COST + " - " +
+                            " NUMBER = " + current_NUMBER);
+                }
                 break;
 
             case CostMat.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.displayTable case CostMat");
-            // Зададим условие для выборки - список столбцов
+                // Зададим условие для выборки - список столбцов
                 String[] projectionCostMat = {
                         CostMat._ID,
                         CostMat.COST_MAT_ID,
@@ -598,31 +598,31 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         null,                  // Don't group the rows
                         null,                  // Don't filter by row groups
                         null);                   // порядок сортировки
-                    // Проходим через все ряды в таблице CostWork
-                    while (cursor.moveToNext()) {
-                        // Используем индекс для получения строки или числа
-                        int currentID = cursor.getInt(
-                                cursor.getColumnIndex(CostMat._ID));
-                        int current_WORK_ID = cursor.getInt(
-                                cursor.getColumnIndex(CostMat.COST_MAT_ID));
-                        String current_UNIT = cursor.getString(
-                                cursor.getColumnIndex(CostMat.COST_MAT_UNIT_ID));
-                        float current_COST = cursor.getFloat(
-                                cursor.getColumnIndex(CostMat.COST_MAT_COST));
-                        int current_NUMBER = cursor.getInt(
-                                cursor.getColumnIndex(CostMat.COST_MAT_NUMBER));
-                        // Выводим построчно значения каждого столбца
-                        Log.d(TAG, "\n" + "ID = " + currentID + " - " +
-                                " MAT_ID = " + current_WORK_ID + " - " +
-                                " UNIT = " + current_UNIT + " - " +
-                                " MAT_COST = " + current_COST + " - " +
-                                " MAT_NUMBER = " + current_NUMBER);
-                    }
+                // Проходим через все ряды в таблице CostWork
+                while (cursor.moveToNext()) {
+                    // Используем индекс для получения строки или числа
+                    int currentID = cursor.getInt(
+                            cursor.getColumnIndex(CostMat._ID));
+                    int current_WORK_ID = cursor.getInt(
+                            cursor.getColumnIndex(CostMat.COST_MAT_ID));
+                    String current_UNIT = cursor.getString(
+                            cursor.getColumnIndex(CostMat.COST_MAT_UNIT_ID));
+                    float current_COST = cursor.getFloat(
+                            cursor.getColumnIndex(CostMat.COST_MAT_COST));
+                    int current_NUMBER = cursor.getInt(
+                            cursor.getColumnIndex(CostMat.COST_MAT_NUMBER));
+                    // Выводим построчно значения каждого столбца
+                    Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                            " MAT_ID = " + current_WORK_ID + " - " +
+                            " UNIT = " + current_UNIT + " - " +
+                            " MAT_COST = " + current_COST + " - " +
+                            " MAT_NUMBER = " + current_NUMBER);
+                }
                 break;
 
             case FW.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.displayTable case FW");
-            // Зададим условие для выборки - список столбцов
+                // Зададим условие для выборки - список столбцов
                 String[] projectionFW = {
                         FW._ID,
                         FW.FW_FILE_ID,
@@ -646,49 +646,49 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         null,                  // Don't group the rows
                         null,                  // Don't filter by row groups
                         null);                   // порядок сортировки
-                    // Проходим через все ряды в таблице CostWork
-                    while (cursor.moveToNext()) {
-                        // Используем индекс для получения строки или числа
-                        int currentID = cursor.getInt(
-                                cursor.getColumnIndex(FW._ID));
-                        int current_FILE_ID = cursor.getInt(
-                                cursor.getColumnIndex(FW.FW_FILE_ID));
-                        String current_FILE_NAME = cursor.getString(
-                                cursor.getColumnIndex(FW.FW_FILE_NAME));
-                        int current_WORK_ID = cursor.getInt(
-                                cursor.getColumnIndex(FW.FW_WORK_ID));
-                        String current_WORK_NAME = cursor.getString(
-                                cursor.getColumnIndex(FW.FW_WORK_NAME));
-                        int current_TYPE_ID = cursor.getInt(
-                                cursor.getColumnIndex(FW.FW_TYPE_ID));
-                        String current_TYPE_NAME = cursor.getString(
-                                cursor.getColumnIndex(FW.FW_TYPE_NAME));
-                        int current_CATEGORY_ID = cursor.getInt(
-                                cursor.getColumnIndex(FW.FW_CATEGORY_ID));
-                        String current_CATEGORY_NAME = cursor.getString(
-                                cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
-                        float current_COST = cursor.getFloat(
-                                cursor.getColumnIndex(FW.FW_COST));
-                        int current_COUNT = cursor.getInt(
-                                cursor.getColumnIndex(FW.FW_COUNT));
-                        String current_UNIT = cursor.getString(
-                                cursor.getColumnIndex(FW.FW_UNIT));
-                        float current_SUMMA = cursor.getFloat(
-                                cursor.getColumnIndex(FW.FW_SUMMA));
-                        // Выводим построчно значения каждого столбца
-                        Log.d(TAG, "\n" + "ID = " + currentID + "/" +
-                                " FILE_ID = " + current_FILE_ID + "/" +
-                                " FILE_NAME = " + current_FILE_NAME + "/" +
-                                " WORK_ID = " + current_WORK_ID + "/" +
-                                " WORK_NAME = " + current_WORK_NAME + "/" +
-                                " TYPE_ID = " + current_TYPE_ID + "/" +
-                                " TYPE_NAME = " + current_TYPE_NAME + "/" +
-                                " CAT_ID = " + current_CATEGORY_ID + "/" +
-                                " CAT_NAME = " + current_CATEGORY_NAME + "/" +
-                                " COST = " + current_COST + "/" +
-                                " COUNT = " + current_COUNT + "/" +
-                                " UNIT = " + current_UNIT + "/" +
-                                " SUMMA = " + current_SUMMA);
+                // Проходим через все ряды в таблице CostWork
+                while (cursor.moveToNext()) {
+                    // Используем индекс для получения строки или числа
+                    int currentID = cursor.getInt(
+                            cursor.getColumnIndex(FW._ID));
+                    int current_FILE_ID = cursor.getInt(
+                            cursor.getColumnIndex(FW.FW_FILE_ID));
+                    String current_FILE_NAME = cursor.getString(
+                            cursor.getColumnIndex(FW.FW_FILE_NAME));
+                    int current_WORK_ID = cursor.getInt(
+                            cursor.getColumnIndex(FW.FW_WORK_ID));
+                    String current_WORK_NAME = cursor.getString(
+                            cursor.getColumnIndex(FW.FW_WORK_NAME));
+                    int current_TYPE_ID = cursor.getInt(
+                            cursor.getColumnIndex(FW.FW_TYPE_ID));
+                    String current_TYPE_NAME = cursor.getString(
+                            cursor.getColumnIndex(FW.FW_TYPE_NAME));
+                    int current_CATEGORY_ID = cursor.getInt(
+                            cursor.getColumnIndex(FW.FW_CATEGORY_ID));
+                    String current_CATEGORY_NAME = cursor.getString(
+                            cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
+                    float current_COST = cursor.getFloat(
+                            cursor.getColumnIndex(FW.FW_COST));
+                    int current_COUNT = cursor.getInt(
+                            cursor.getColumnIndex(FW.FW_COUNT));
+                    String current_UNIT = cursor.getString(
+                            cursor.getColumnIndex(FW.FW_UNIT));
+                    float current_SUMMA = cursor.getFloat(
+                            cursor.getColumnIndex(FW.FW_SUMMA));
+                    // Выводим построчно значения каждого столбца
+                    Log.d(TAG, "\n" + "ID = " + currentID + "/" +
+                            " FILE_ID = " + current_FILE_ID + "/" +
+                            " FILE_NAME = " + current_FILE_NAME + "/" +
+                            " WORK_ID = " + current_WORK_ID + "/" +
+                            " WORK_NAME = " + current_WORK_NAME + "/" +
+                            " TYPE_ID = " + current_TYPE_ID + "/" +
+                            " TYPE_NAME = " + current_TYPE_NAME + "/" +
+                            " CAT_ID = " + current_CATEGORY_ID + "/" +
+                            " CAT_NAME = " + current_CATEGORY_NAME + "/" +
+                            " COST = " + current_COST + "/" +
+                            " COUNT = " + current_COUNT + "/" +
+                            " UNIT = " + current_UNIT + "/" +
+                            " SUMMA = " + current_SUMMA);
                 }
                 break;
 
@@ -718,53 +718,53 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         null,                  // Don't group the rows
                         null,                  // Don't filter by row groups
                         null);                   // порядок сортировки
-                    // Проходим через все ряды в таблице CostWork
-                    while (cursor.moveToNext()) {
-                        // Используем индекс для получения строки или числа
-                        int currentID = cursor.getInt(
-                                cursor.getColumnIndex(FM._ID));
-                        int current_FILE_ID = cursor.getInt(
-                                cursor.getColumnIndex(FM.FM_FILE_ID));
-                        String current_FILE_NAME = cursor.getString(
-                                cursor.getColumnIndex(FM.FM_FILE_NAME));
-                        int current_WORK_ID = cursor.getInt(
-                                cursor.getColumnIndex(FM.FM_MAT_ID));
-                        String current_WORK_NAME = cursor.getString(
-                                cursor.getColumnIndex(FM.FM_MAT_NAME));
-                        int current_TYPE_ID = cursor.getInt(
-                                cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
-                        String current_TYPE_NAME = cursor.getString(
-                                cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
-                        int current_CATEGORY_ID = cursor.getInt(
-                                cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
-                        String current_CATEGORY_NAME = cursor.getString(
-                                cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
-                        float current_COST = cursor.getFloat(
-                                cursor.getColumnIndex(FM.FM_MAT_COST));
-                        int current_COUNT = cursor.getInt(
-                                cursor.getColumnIndex(FM.FM_MAT_COUNT));
-                        String current_UNIT = cursor.getString(
-                                cursor.getColumnIndex(FM.FM_MAT_UNIT));
-                        float current_SUMMA = cursor.getFloat(
-                                cursor.getColumnIndex(FM.FM_MAT_SUMMA));
-                        // Выводим построчно значения каждого столбца
-                        Log.d(TAG, "\n" + "ID = " + currentID + "/" +
-                                " FILE_ID = " + current_FILE_ID + "/" +
-                                " FILE_NAME = " + current_FILE_NAME + "/" +
-                                " MAT_ID = " + current_WORK_ID + "/" +
-                                " MAT_NAME = " + current_WORK_NAME + "/" +
-                                " MAT_TYPE_ID = " + current_TYPE_ID + "/" +
-                                " MAT_TYPE_NAME = " + current_TYPE_NAME + "/" +
-                                " MAT_CATEGORY_ID = " + current_CATEGORY_ID + "/" +
-                                " MAT_CATEGORY_NAME = " + current_CATEGORY_NAME + "/" +
-                                " MAT_COST = " + current_COST + "/" +
-                                " MAT_COUNT = " + current_COUNT + "/" +
-                                " MAT_UNIT = " + current_UNIT + "/" +
-                                " MAT_SUMMA = " + current_SUMMA);
+                // Проходим через все ряды в таблице CostWork
+                while (cursor.moveToNext()) {
+                    // Используем индекс для получения строки или числа
+                    int currentID = cursor.getInt(
+                            cursor.getColumnIndex(FM._ID));
+                    int current_FILE_ID = cursor.getInt(
+                            cursor.getColumnIndex(FM.FM_FILE_ID));
+                    String current_FILE_NAME = cursor.getString(
+                            cursor.getColumnIndex(FM.FM_FILE_NAME));
+                    int current_WORK_ID = cursor.getInt(
+                            cursor.getColumnIndex(FM.FM_MAT_ID));
+                    String current_WORK_NAME = cursor.getString(
+                            cursor.getColumnIndex(FM.FM_MAT_NAME));
+                    int current_TYPE_ID = cursor.getInt(
+                            cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
+                    String current_TYPE_NAME = cursor.getString(
+                            cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+                    int current_CATEGORY_ID = cursor.getInt(
+                            cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
+                    String current_CATEGORY_NAME = cursor.getString(
+                            cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
+                    float current_COST = cursor.getFloat(
+                            cursor.getColumnIndex(FM.FM_MAT_COST));
+                    int current_COUNT = cursor.getInt(
+                            cursor.getColumnIndex(FM.FM_MAT_COUNT));
+                    String current_UNIT = cursor.getString(
+                            cursor.getColumnIndex(FM.FM_MAT_UNIT));
+                    float current_SUMMA = cursor.getFloat(
+                            cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+                    // Выводим построчно значения каждого столбца
+                    Log.d(TAG, "\n" + "ID = " + currentID + "/" +
+                            " FILE_ID = " + current_FILE_ID + "/" +
+                            " FILE_NAME = " + current_FILE_NAME + "/" +
+                            " MAT_ID = " + current_WORK_ID + "/" +
+                            " MAT_NAME = " + current_WORK_NAME + "/" +
+                            " MAT_TYPE_ID = " + current_TYPE_ID + "/" +
+                            " MAT_TYPE_NAME = " + current_TYPE_NAME + "/" +
+                            " MAT_CATEGORY_ID = " + current_CATEGORY_ID + "/" +
+                            " MAT_CATEGORY_NAME = " + current_CATEGORY_NAME + "/" +
+                            " MAT_COST = " + current_COST + "/" +
+                            " MAT_COUNT = " + current_COUNT + "/" +
+                            " MAT_UNIT = " + current_UNIT + "/" +
+                            " MAT_SUMMA = " + current_SUMMA);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -774,10 +774,10 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     public Cursor getNamesAllTypes(String table) {
         Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String names = "";
 
-        switch (table){
+        switch (table) {
             case Mat.TABLE_NAME:
                 names = " SELECT " + Mat._ID + " , " +
                         Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME;
@@ -795,24 +795,24 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем имена   по смете с id файла file_id
-    public String[]  getArrayNames(long file_id, String table){
+    public String[] getArrayNames(long file_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayNames ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         String[] name = new String[]{""};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.getArrayNames  case FW ");
                 select = " SELECT " + FW.FW_WORK_NAME +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
                     Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
@@ -821,20 +821,20 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_NAME +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
                     Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -842,25 +842,25 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем имена   по смете с id файла file_id и id типа type_id
-    public String[]  getArrayNamesSelectedType(long file_id, long type_id, String table){
+    public String[] getArrayNamesSelectedType(long file_id, long type_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         String[] name = new String[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType  case FW ");
                 select = " SELECT " + FW.FW_WORK_NAME +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     name[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
                     Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType name[position] = " + name[position]);
@@ -869,21 +869,21 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_NAME +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     name[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
                     Log.i(TAG, "TableControllerSmeta.getArrayNames name[position] = " + name[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -891,24 +891,24 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем расценки  по смете с id файла file_id
-    public float[]  getArrayCost(long file_id, String table){
+    public float[] getArrayCost(long file_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayCost ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] cost = new float[]{};
 
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COST +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
                     Log.i(TAG, "TableControllerSmeta.getArrayCost cost[position] = " + cost[position]);
@@ -916,21 +916,21 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 break;
 
             case FM.TABLE_NAME:
-                select =" SELECT " + FM.FM_MAT_COST +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                select = " SELECT " + FM.FM_MAT_COST +
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
                     Log.i(TAG, "TableControllerSmeta.getArrayCost cost[position] = " + cost[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -938,25 +938,25 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем расценки  по смете с id файла file_id и id типа type_id
-    public float[]  getArrayCostSelectedType(long file_id, long type_id, String table){
+    public float[] getArrayCostSelectedType(long file_id, long type_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] cost = new float[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FW ");
                 select = " SELECT " + FW.FW_COST +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     cost[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COST));
                     Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cost[position] = " + cost[position]);
@@ -965,15 +965,15 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FM ");
-                select =   " SELECT " + FM.FM_MAT_COST +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                select = " SELECT " + FM.FM_MAT_COST +
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     cost[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COST));
                     Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cost[position] = " + cost[position]);
@@ -981,7 +981,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -989,22 +989,22 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем количество работ/материалов  по смете с id файла file_id
-    public float[]  getArrayAmount(long file_id, String table){
+    public float[] getArrayAmount(long file_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] amount = new float[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COUNT +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
                     Log.i(TAG, "TableControllerSmeta.getArrayAmount amount[position] = " + amount[position]);
@@ -1013,20 +1013,20 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_COUNT +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
                     Log.i(TAG, "TableControllerSmeta.getArrayAmount amount[position] = " + amount[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -1034,24 +1034,24 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем количество работ  по смете с id файла file_id и id типа type_id
-    public float[]  getArrayAmountSelectedType(long file_id, long type_id, String table){
+    public float[] getArrayAmountSelectedType(long file_id, long type_id, String table) {
 
         Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] amount = new float[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COUNT +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     amount[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
                     Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType amount[position] = " + amount[position]);
@@ -1060,21 +1060,21 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_COUNT +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     amount[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
                     Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType amount[position] = " + amount[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -1082,44 +1082,44 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем единицы измерения для  работ  по смете с id файла file_id
-    public String[]  getArrayUnit(long file_id, String table){
+    public String[] getArrayUnit(long file_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayUnit ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         String[] units = new String[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_UNIT +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
+                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT));
                     Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
                 }
                 break;
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_UNIT +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT));
                     Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -1127,46 +1127,46 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем единицы измерения для  работ  по смете с id файла file_id
-    public String[]  getArrayUnitSelectedType(long file_id, long type_id, String table){
+    public String[] getArrayUnitSelectedType(long file_id, long type_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         String[] units = new String[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
-                select =" SELECT " + FW.FW_UNIT +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
+                select = " SELECT " + FW.FW_UNIT +
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT ));
+                    units[position] = cursor.getString(cursor.getColumnIndex(FW.FW_UNIT));
                     Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType units[position] = " + units[position]);
                 }
                 break;
 
             case FM.TABLE_NAME:
-                select =  " SELECT " + FM.FM_MAT_UNIT +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FM.FM_MAT_TYPE_ID  + " = " + String.valueOf(type_id);
+                select = " SELECT " + FM.FM_MAT_UNIT +
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT ));
+                    units[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_UNIT));
                     Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType units[position] = " + units[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -1174,23 +1174,23 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем количество работ  по смете с id файла file_id
-    public float[]  getArraySumma(long file_id, String table){
+    public float[] getArraySumma(long file_id, String table) {
 
         Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] summa = new float[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
-                select =" SELECT " + FW.FW_SUMMA +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id);
+                select = " SELECT " + FW.FW_SUMMA +
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
                     Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
@@ -1199,20 +1199,20 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_SUMMA +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id);
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
                     summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
                     Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
@@ -1220,52 +1220,184 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
     //получаем количество работ  по смете с id файла file_id
-    public float[]  getArraySummaSelectedType(long file_id, long type_id, String table){
+    public float[] getArraySummaSelectedType(long file_id, long type_id, String table) {
 
         Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor =null;
+        Cursor cursor = null;
         String select = "";
         float[] summa = new float[]{};
-        switch (table){
+        switch (table) {
             case FW.TABLE_NAME:
-                select =" SELECT " + FW.FW_SUMMA +
-                        " FROM " +  FW.TABLE_NAME  +
-                        " WHERE " + FW.FW_FILE_ID  + " = " + String.valueOf(file_id)+
-                        " AND " + FW.FW_TYPE_ID  + " = " + String.valueOf(type_id);
-                        cursor = db.rawQuery(select, null);
+                select = " SELECT " + FW.FW_SUMMA +
+                        " FROM " + FW.TABLE_NAME +
+                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
+                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    summa[position] =cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
-                            Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                    summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
+                    Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
                 }
                 break;
 
             case FM.TABLE_NAME:
-                select =" SELECT " + FM.FM_MAT_SUMMA +
-                        " FROM " +  FM.TABLE_NAME  +
-                        " WHERE " + FM.FM_FILE_ID  + " = " + String.valueOf(file_id)+
+                select = " SELECT " + FM.FM_MAT_SUMMA +
+                        " FROM " + FM.TABLE_NAME +
+                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
                         " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
-                        cursor = db.rawQuery(select, null);
+                cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
                 // Проходим через все строки в курсоре
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     int position = cursor.getPosition();
-                    summa[position] =cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
-                            Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
+                    summa[position] = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_SUMMA));
+                    Log.i(TAG, "TableControllerSmeta.getArraySumma summa[position] = " + summa[position]);
                 }
                 break;
         }
-        if (cursor!=null){
+        if (cursor != null) {
             cursor.close();
         }
         db.close();
         return summa;
     }
 
+    //получаем стоимость работы/материала по  id
+    public float getCostById(long id, String table) {
+        Log.i(TAG, "TableControllerSmeta.getCostById ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        float cost = -1;
+        String select = "";
 
-}
+        switch (table) {
+            case CostWork.TABLE_NAME:
+                select = " SELECT " + CostWork.COST_COST +
+                        " FROM " + CostWork.TABLE_NAME +
+                        " WHERE " + CostWork.COST_WORK_ID + " = ?";
+
+                cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+                Log.d(TAG, "getCostById cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex = cursor.getColumnIndex(CostWork.COST_COST);
+                    // Используем индекс для получения строки или числа
+                    cost = cursor.getFloat(idColumnIndex);
+                }
+                break;
+
+            case CostMat.TABLE_NAME:
+                select = " SELECT " + CostMat.COST_MAT_COST +
+                        " FROM " + CostMat.TABLE_NAME +
+                        " WHERE " + CostMat.COST_MAT_ID + " = ?";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+                Log.d(TAG, "getCostById cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
+                    // Используем индекс для получения строки или числа
+                    cost = cursor.getFloat(idColumnIndex);
+                }
+                break;
+        }
+        Log.d(TAG, "TableControllerSmeta getCostById cost = " + cost);
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return cost;
+    }
+
+    //получаем значение количества работы/vfnthbfkf для сметы с file_id work_id/mat_id
+    public float getCount(long file_id, long id, String table) {
+        Log.i(TAG, "TableControllerSmeta.getCount ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        float count = -1;
+        String select = "";
+
+        switch (table) {
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_COUNT + " FROM " + FW.TABLE_NAME +
+                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+                Log.i(TAG, "TableControllerSmeta.getCount cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    count = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_COUNT + " FROM " + FM.TABLE_NAME +
+                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+                Log.i(TAG, "TableControllerSmeta.getCount cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    count = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
+                }
+                break;
+        }
+        Log.d(TAG, "TableControllerSmeta getCostById count = " + count);
+                if (cursor != null) {
+                    cursor.close();
+                }
+                db.close();
+                return count;
+    }
+
+    //получаем список категорий по id файла из таблицы FW/FM
+    public String[] getArrayCategory(long file_id, String table) {
+        Log.i(TAG, "TableControllerSmeta.getArrayCategory ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select = "";
+        Cursor cursor = null;
+        String[] categoryNames = new String[]{};
+
+        switch (table) {
+            case FW.TABLE_NAME:
+                select = " select DISTINCT " + FW.FW_CATEGORY_NAME +
+                        " from " + FW.TABLE_NAME + " where " + FW.FW_FILE_ID + " = " + file_id;
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCategory cursor.getCount()  " + cursor.getCount());
+                categoryNames = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()) {
+                    int position = cursor.getPosition();
+                    categoryNames[position] = cursor.getString(cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCategory catNamesFW[position] = " + categoryNames[position]);
+                }
+                break;
+            case FM.TABLE_NAME:
+                select = " select DISTINCT " + FM.FM_MAT_CATEGORY_NAME +
+                        " from " + FM.TABLE_NAME + " where " + FM.FM_FILE_ID + " = " + file_id;
+
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getArrayCategory cursor.getCount()  " + cursor.getCount());
+                categoryNames = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()) {
+                    int position = cursor.getPosition();
+                    categoryNames[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getArrayCategory catNamesFW[position] = " + categoryNames[position]);
+                    break;
+                }
+                Log.d(TAG, "TableControllerSmeta getCostById categoryNames.length = " + categoryNames.length);
+        }
+                if (cursor != null) {
+                    cursor.close();
+                }
+                db.close();
+                return categoryNames;
+        }
+
+
+    }
+

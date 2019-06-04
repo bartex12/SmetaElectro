@@ -66,7 +66,7 @@ public class DetailCost extends AppCompatActivity {
 
         //выводим стоимость работы
         mTextViewCost = findViewById(R.id.etCost);
-        cost = mSmetaOpenHelper.getWorkCostById(work_id);
+        cost = tableControllerSmeta.getCostById(work_id, CostWork.TABLE_NAME);
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost
             // при нажатии кнопки Сохранить

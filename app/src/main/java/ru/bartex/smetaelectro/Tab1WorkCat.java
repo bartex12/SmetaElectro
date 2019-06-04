@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
 /**
@@ -40,7 +41,7 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
         //Курсор с именами категорий из таблицы категорий CategoryMat
         Cursor cursor = mSmetaOpenHelper.getCategoryNames();
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
-        String[] catMatNamesFW = mSmetaOpenHelper.getCategoryNamesFW(file_id);
+        String[] catMatNamesFW = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

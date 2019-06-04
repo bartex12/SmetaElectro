@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -66,7 +67,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //Если такой материал есть в FM, то считываем из таблицы количество для file_id и mat_id
         if (isMat){
-            countMat = mSmetaOpenHelper.getCountMat(file_id, mat_id);
+            countMat = tableControllerSmeta.getCount(file_id, mat_id, FM.TABLE_NAME);
         }else {
             countMat = 0;
         }
@@ -84,7 +85,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //выводим цену работы
         mTextViewCost = findViewById(R.id.etCost);
-        costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
+        costMat = tableControllerSmeta.getCostById(mat_id, CostMat.TABLE_NAME);
         mTextViewCost.setText(Float.toString(costMat));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
             Log.d(TAG, "DetailSmetaMatLine.(mTextViewCost.getText().toString()).equals \"0.0\"");
@@ -188,7 +189,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
             //long matId = data.getExtras().getLong(P.ID_MAT);
-            costMat = mSmetaOpenHelper.getMatkCostById(mat_id);
+            costMat = tableControllerSmeta.getCostById(mat_id, CostMat.TABLE_NAME);
             mTextViewCost.setText(Float.toString(costMat));
 
             mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));

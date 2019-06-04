@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 
 /**
@@ -46,7 +47,7 @@ public class Tab1MatCat extends Tab1SmetasCatAbstrFrag {
         //Курсор с именами категорий из таблицы категорий CategoryMat
         Cursor cursor = mSmetaOpenHelper.getMatCategoryNames();
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
-        String[] catMatNamesFM = mSmetaOpenHelper.getCategoryNamesFM(file_id);
+        String[] catMatNamesFM =tableControllerSmeta.getArrayCategory(file_id, FM.TABLE_NAME);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

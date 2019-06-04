@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDbHelper = new SmetaOpenHelper(this);
+
         tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_main);
@@ -70,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
         //если записи есть, получаем id по имени "Новая смета" (скорее всего, 1)
         //если id = -1, значит ошибка
         file_id = mDbHelper.createDefaultFileIfNeed();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         Log.d(TAG, "Новая смета - file_id = " + file_id);
+        Log.d(TAG, "db  - db.getPath() = " + db.getPath());
     }
 
     @Override

@@ -176,7 +176,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter case 0 /////////////////////");
                 //Массив категорий работ для сметы с file_id
-                String[] cat_name = mSmetaOpenHelper.getCategoryNamesFW(file_id);
+                String[] cat_name = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
                 String[] type_name = mSmetaOpenHelper.getTypeNamesFWSort(file_id);
@@ -221,7 +221,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                             mm.put("workCost", Float.toString(work_cost[k]));
                             mm.put("workАmount", Float.toString(work_amount[k]));
                             mm.put("workUnit", work_units[k]);
-                            mm.put("workSumma", Float.toString(work_summa[k]));
+                            mm.put("workSumma", String.format(Locale.ENGLISH,"%.2f", work_summa[k]));
+
                             data.add(mm);
                             Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()2 = " + data.size());
                         }
@@ -257,7 +258,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  case 1 /////////////////////");
                 //Массив категорий материалов для сметы с file_id
-                String[] cat_mat_name = mSmetaOpenHelper.getCategoryNamesFM(file_id);
+                String[] cat_mat_name =tableControllerSmeta.getArrayCategory(file_id, FM.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
                 //массив типов материалов для сметы с file_id
                 //String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
@@ -303,7 +304,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                             mm.put("workCost", Float.toString(mat_cost[k]));
                             mm.put("workАmount", Float.toString(mat_amount[k]));
                             mm.put("workUnit", mat_units[k]);
-                            mm.put("workSumma", Float.toString(mat_summa[k]));
+                            mm.put("workSumma", String.format(Locale.ENGLISH,"%.2f", mat_summa[k]));
                             data.add(mm);
                             Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()2 = " + data.size());
                         }

@@ -24,13 +24,13 @@ import ru.bartex.smetaelectro.DataTypeMat;
 import ru.bartex.smetaelectro.DataWork;
 import ru.bartex.smetaelectro.R;
 
-
 public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         // Когда файлов в базе нет, вносим запись с именем файла по умолчанию (Используем здесь)
     //public void createDefaultFile(SQLiteDatabase db)
         // Если файлов в базе нет, вносим запись с именем файла по умолчанию (используем в MainActiviti)
     //public long createDefaultFileIfNeed()
+
 
     public static final String TAG = "33333";
     private final Context fContext;
@@ -981,29 +981,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return currentWorkName;
     }
 
-    //получаем стоимость работы по её id
-    public float getWorkCostById(long work_id){
-        Log.i(TAG, "SmetaOpenHelper.getWorkCostById ... ");
-       float costOfWork = 0;
-        String cost = " SELECT " + CostWork.COST_COST +
-                " FROM " + CostWork.TABLE_NAME +
-                " WHERE " + CostWork.COST_WORK_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(work_id)});
-        Log.d(TAG, "getWorkCostById cursor.getCount() = " + cursor.getCount());
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(CostWork.COST_COST);
-            // Используем индекс для получения строки или числа
-            costOfWork = cursor.getFloat(idColumnIndex);
-        }
-        Log.d(TAG, "getWorkCostById costOfWork = " + costOfWork);
-        cursor.close();
-        return costOfWork;
-    }
-
     /**
      * Вставляет строку в таблицу FW
      */
@@ -1128,44 +1105,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getCategoryNameById catName = " + catName);
         mCursor.close();
         return catName;
-    }
-
-    //получаем список категорий по id файла из таблицы FW
-    public String[] getCategoryNamesFW(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFW ... ");
-        String selectCategoryNamesFW =  " select DISTINCT " + FW.FW_CATEGORY_NAME +
-        " from " +  FW.TABLE_NAME + " where " +  FW.FW_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectCategoryNamesFW, null);
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFW cursor.getCount()  " + cursor.getCount());
-        String[] categoryNamesFW = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            categoryNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_CATEGORY_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFW catNamesFW[position] = " + categoryNamesFW[position]);
-        }
-            cursor.close();
-        return categoryNamesFW;
-    }
-
-    //получаем список категорий материалов по id файла из таблицы FM
-    public String[] getCategoryNamesFM(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM ... ");
-        String selectCategoryNamesFM =  " select DISTINCT " + FM.FM_MAT_CATEGORY_NAME +
-                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectCategoryNamesFM, null);
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM cursor.getCount()  " + cursor.getCount());
-        String[] categoryNamesFM = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            categoryNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getCategoryNamesFM catNamesFW[position] = " + categoryNamesFM[position]);
-        }
-        cursor.close();
-        return categoryNamesFM;
     }
 
     //получаем список типов по id файла из таблицы FW
@@ -1414,25 +1353,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return false;
     }
-
-    //получаем значение количества работы для сметы с id = file_id и работы с id = work_id
-    public float getCountWork(long file_id, long work_id){
-        Log.i(TAG, "SmetaOpenHelper.getCountWork ... ");
-        String select = " SELECT " + FW.FW_COUNT + " FROM " + FW.TABLE_NAME +
-                " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(work_id)});
-        Log.i(TAG, "SmetaOpenHelper.getCountWork cursor.getCount() = " + cursor.getCount());
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс столбца и Используем индекс для получения количества работы
-            float count = cursor.getFloat(cursor.getColumnIndex(FW.FW_COUNT));
-            return count;
-        }
-        cursor.close();
-        return -1;
-    }
-
     //получаем id типа работы
     public long getTypeIdWork(long file_id, long work_id){
         Log.i(TAG, "SmetaOpenHelper.getTypeIdWork ... ");
@@ -1802,23 +1722,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    //получаем значение количества материала для сметы с id = file_id и материала с id = mat_id
-    public float getCountMat(long file_id, long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.getCountMat ... ");
-        String select = " SELECT " + FM.FM_MAT_COUNT + " FROM " + FM.TABLE_NAME +
-                " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
-        Log.i(TAG, "SmetaOpenHelper.getCountMat cursor.getCount() = " + cursor.getCount());
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс столбца и Используем индекс для получения количества работы
-            float count = cursor.getFloat(cursor.getColumnIndex(FM.FM_MAT_COUNT));
-            return count;
-        }
-            cursor.close();
-        return -1;
-    }
     //получаем имя материала  по его id
     public String getMatNameById(long mat_id){
         Log.i(TAG, "SmetaOpenHelper.getMatNameById ... ");
@@ -1838,28 +1741,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getMatNameById currentName = " + currentWorkName);
             cursor.close();
         return currentWorkName;
-    }
-    //получаем стоимость материала по его id
-    public float getMatkCostById(long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.geMatkCostById ... ");
-        float costOfWork = 0;
-        String cost = " SELECT " + CostMat.COST_MAT_COST +
-                " FROM " + CostMat.TABLE_NAME +
-                " WHERE " + CostMat.COST_MAT_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(mat_id)});
-        Log.d(TAG, "geMatkCostById cursor.getCount() = " + cursor.getCount());
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
-            // Используем индекс для получения строки или числа
-            costOfWork = cursor.getFloat(idColumnIndex);
-        }
-        Log.d(TAG, "geMatkCostById costOfWork = " + costOfWork);
-            cursor.close();
-        return costOfWork;
     }
 
     //получаем единицы измерения с помощью вложенного запроса
@@ -2041,28 +1922,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }
             cursor.close();
         return -1;
-    }
-    //получаем стоимость материала по её id
-    public float getCostMatById(long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.getCostMatById ... ");
-        float costOfMat = 0;
-        String cost = " SELECT " + CostMat.COST_MAT_COST +
-                " FROM " + CostMat.TABLE_NAME +
-                " WHERE " + CostMat.COST_MAT_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(cost, new String[]{String.valueOf(mat_id)});
-        Log.d(TAG, "getCostMatById cursor.getCount() = " + cursor.getCount());
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(CostMat.COST_MAT_COST);
-            // Используем индекс для получения строки или числа
-            costOfMat = cursor.getFloat(idColumnIndex);
-        }
-        Log.d(TAG, "getCostMatById costOfMat = " + costOfMat);
-        cursor.close();
-        return costOfMat;
     }
 
     //Добавляем вид материала с левыми параметрами, чобы удалить при отказе пользователя
