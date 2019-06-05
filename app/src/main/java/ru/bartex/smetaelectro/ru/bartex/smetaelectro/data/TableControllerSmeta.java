@@ -770,30 +770,6 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         db.close();
     }
 
-    //получаем курсор с названиями  материалов
-    public Cursor getNamesAllTypes(String table) {
-        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        String names = "";
-
-        switch (table) {
-            case Mat.TABLE_NAME:
-                names = " SELECT " + Mat._ID + " , " +
-                        Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME;
-                break;
-
-            case Work.TABLE_NAME:
-                names = " SELECT " + Work._ID + " , " +
-                        Work.WORK_NAME + " FROM " + Work.TABLE_NAME;
-                break;
-        }
-        cursor = db.rawQuery(names, null);
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesAllTypes cursor.getCount() =  " + cursor.getCount());
-        db.close();
-        return cursor;
-    }
-
     //получаем имена   по смете с id файла file_id
     public String[] getArrayNames(long file_id, String table) {
         Log.i(TAG, "TableControllerSmeta.getArrayNames ... ");
@@ -1397,6 +1373,139 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 db.close();
                 return categoryNames;
         }
+
+    //получаем список типов по id файла из таблицы FW
+    public String[] getTypeNames(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getTypeNames ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select ="";
+        Cursor cursor = null;
+        String[] typeNames = new String[]{};
+        switch (table) {
+            case FW.TABLE_NAME:
+                select =  " select DISTINCT " + FW.FW_TYPE_NAME +
+                        " from " +  FW.TABLE_NAME + " where " +  FW.FW_FILE_ID + " = " + file_id;
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getTypeNames cursor.getCount()  " + cursor.getCount());
+                typeNames = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    typeNames[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getTypeNames typeNames[position] = " + typeNames[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                select =  " select DISTINCT " + FM.FM_MAT_TYPE_NAME +
+                        " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getTypeNames cursor.getCount()  " + cursor.getCount());
+                typeNames = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    typeNames[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getTypeNames typeNames[position] = " + typeNames[position]);
+                }
+                break;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return typeNames;
+    }
+
+    //получаем курсор с названиями категорий
+    public Cursor getCursorNames(String table) {
+        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select ="";
+        Cursor cursor =null;
+        switch (table) {
+            case CategoryWork.TABLE_NAME:
+                select = " SELECT " + CategoryWork._ID + " , " +
+                        CategoryWork.CATEGORY_NAME + " FROM " + CategoryWork.TABLE_NAME;
+                break;
+
+            case CategoryMat.TABLE_NAME:
+                select =  " SELECT " + CategoryMat._ID + " , " +
+                        CategoryMat.CATEGORY_MAT_NAME + " FROM " + CategoryMat.TABLE_NAME;
+                break;
+
+            case TypeWork.TABLE_NAME:
+                select =  " SELECT " + TypeWork._ID + " , " + TypeWork.TYPE_CATEGORY_ID +
+                        " , " + TypeWork.TYPE_NAME + " FROM " + TypeWork.TABLE_NAME ;
+                break;
+
+            case TypeMat.TABLE_NAME:
+                select =  " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
+                        " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME ;
+                break;
+        }
+        cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с названиями  материалов
+    public Cursor getNamesAllTypes(String table) {
+        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        String names = "";
+
+        switch (table) {
+            case Mat.TABLE_NAME:
+                names = " SELECT " + Mat._ID + " , " +
+                        Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME;
+                break;
+
+            case Work.TABLE_NAME:
+                names = " SELECT " + Work._ID + " , " +
+                        Work.WORK_NAME + " FROM " + Work.TABLE_NAME;
+                break;
+        }
+        cursor = db.rawQuery(names, null);
+        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        db.close();
+        return cursor;
+    }
+
+    //получаем курсор с названиями типов работ/материалов
+    public Cursor getNamesFromCatId(long id, String table) {
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select ="";
+        Cursor cursor =null;
+        switch (table) {
+            case TypeWork.TABLE_NAME:
+                select = " SELECT " + TypeWork._ID + " , " + TypeWork.TYPE_CATEGORY_ID +
+                        " , " + TypeWork.TYPE_NAME + " FROM " + TypeWork.TABLE_NAME +
+                        " WHERE " + TypeWork.TYPE_CATEGORY_ID  + " = ?" ;
+                break;
+            case TypeMat.TABLE_NAME:
+                select =  " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
+                        " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME +
+                        " WHERE " + TypeMat.TYPE_MAT_CATEGORY_ID  + " = ?" ;
+                break;
+            case Work.TABLE_NAME:
+                select = " SELECT " + Work._ID + " , " + Work.WORK_TYPE_ID + " , " +
+                        Work.WORK_NAME + " FROM " + Work.TABLE_NAME +
+                        " WHERE " + Work.WORK_TYPE_ID  + " = ?" ;
+                break;
+            case Mat.TABLE_NAME:
+                select = " SELECT " + Mat._ID + " , " +
+                        Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME +
+                        " WHERE " + Mat.MAT_TYPE_ID  + " = ? " ;
+                break;
+        }
+        cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+                "  id = " + id);
+        return cursor;
+    }
 
 
     }

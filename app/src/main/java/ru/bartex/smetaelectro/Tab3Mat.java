@@ -48,7 +48,7 @@ public class Tab3Mat extends Tab3SmetasWorkMatAbstrFrag {
         if (isSelectedType){
             Log.d(TAG, "Tab3Mat updateAdapter isSelectedType = true " );
             //Курсор с именами  всех материалов из таблицы Mat
-            cursor = mSmetaOpenHelper.getMatNamesOneType(type_id);
+            cursor = tableControllerSmeta.getNamesFromCatId(type_id, Mat.TABLE_NAME);
         }else {
             Log.d(TAG, "Tab3Mat updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat

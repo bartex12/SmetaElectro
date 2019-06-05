@@ -45,7 +45,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
         if (isSelectedType){
             Log.d(TAG, "Tab3MatCost updateAdapter isSelectedType = true " );
             //Курсор с именами   материалов из таблицы Mat для type_id
-            cursor = mSmetaOpenHelper.getMatNamesOneType(type_id);
+            cursor = tableControllerSmeta.getNamesFromCatId(type_id, Mat.TABLE_NAME);
         }else {
             Log.d(TAG, "Tab3MatCost updateAdapter isSelectedType = false " );
             //Курсор с именами  всех материалов из таблицы Mat

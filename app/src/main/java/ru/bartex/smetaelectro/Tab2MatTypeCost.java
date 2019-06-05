@@ -38,11 +38,11 @@ public class Tab2MatTypeCost extends Tab2SmetasTypeAbstrFrag {
         if (isSelectedCat){
             Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = true " );
             //Курсор  с названиями типов материалов для cat_id
-            cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
+            cursor = tableControllerSmeta.getNamesFromCatId(cat_id, TypeMat.TABLE_NAME);
         }else{
             Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
-            cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
+            cursor =tableControllerSmeta.getCursorNames(TypeMat.TABLE_NAME);
         }
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

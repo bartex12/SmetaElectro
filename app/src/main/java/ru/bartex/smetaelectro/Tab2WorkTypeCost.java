@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 
@@ -40,14 +41,14 @@ public class Tab2WorkTypeCost extends Tab2SmetasTypeAbstrFrag {
         if (isSelectedCat){
             Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = true " );
             //курсор с именами типов работы для категорий с cat_id
-            cursor = mSmetaOpenHelper.getTypeNames(cat_id);
+            cursor = tableControllerSmeta.getNamesFromCatId(cat_id, TypeWork.TABLE_NAME);
         }else {
             Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
-            cursor = mSmetaOpenHelper.getTypeWorkNamesAllCategories();
+            cursor =tableControllerSmeta.getCursorNames(TypeWork.TABLE_NAME );
         }
         //Строковый массив с именами типов из таблицы FW для файла с file_id
-        String[] typetNamesFW = mSmetaOpenHelper.getTypeNamesFW(file_id);
+        String[] typetNamesFW = tableControllerSmeta.getTypeNames(file_id, FW.TABLE_NAME);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab2WorkTypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );

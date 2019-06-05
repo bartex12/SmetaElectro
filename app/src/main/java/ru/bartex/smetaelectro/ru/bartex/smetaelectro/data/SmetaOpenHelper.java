@@ -406,27 +406,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name_mat.length);
     }
 
-    //получаем курсор с названиями категорий и отметкой о заходе в категорию
-    public Cursor getCategoryNames() {
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNames ... ");
-        String categoryNames = " SELECT " + CategoryWork._ID + " , " +
-                CategoryWork.CATEGORY_NAME + " FROM " + CategoryWork.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(categoryNames, null);
-        return cursor;
-    }
-
-    //получаем курсор с названиями категорий и отметкой о заходе в категорию
-    public Cursor getMatCategoryNames() {
-        Log.i(TAG, "SmetaOpenHelper.getMatCategoryNames ... ");
-        String matCategoryNames = " SELECT " + CategoryMat._ID + " , " +
-                CategoryMat.CATEGORY_MAT_NAME + " FROM " + CategoryMat.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(matCategoryNames, null);
-        Log.i(TAG, "SmetaOpenHelper.getMatCategoryNames cursor.getCount() = " + cursor.getCount());
-        return cursor;
-    }
-
     //получаем курсор с Category._id  и делаем массив id
     public int[] getArrayCategoryId(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId ... ");
@@ -859,42 +838,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return type_id_mat;
     }
 
-    //получаем курсор с названиями типов работ
-    public Cursor getTypeNames(long cat_id) {
-        Log.i(TAG, "SmetaOpenHelper.getTypeNames ... ");
-        String typeNames = " SELECT " + TypeWork._ID + " , " + TypeWork.TYPE_CATEGORY_ID +
-                " , " + TypeWork.TYPE_NAME + " FROM " + TypeWork.TABLE_NAME +
-                " WHERE " + TypeWork.TYPE_CATEGORY_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeNames, new String[]{String.valueOf(cat_id)});
-        Log.i(TAG, "SmetaOpenHelper.getTypeNames cursor.getCount() =  " + cursor.getCount()+
-                "  cat_id = " + cat_id);
-        return cursor;
-    }
-
-    //получаем курсор с названиями типов работ
-    public Cursor getTypeMatNames(long cat_id) {
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames ... ");
-        String typeMatNames = " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
-                " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME +
-                " WHERE " + TypeMat.TYPE_MAT_CATEGORY_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeMatNames, new String[]{String.valueOf(cat_id)});
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNames cursor.getCount() =  " + cursor.getCount());
-        return cursor;
-    }
-
-    //получаем курсор с названиями типов работ по всем категориям
-    public Cursor getTypeMatNamesAllCategories() {
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNamesAllCategories ... ");
-        String typeMatNames = " SELECT " + TypeMat._ID + " , " + TypeMat.TYPE_MAT_CATEGORY_ID +
-                " , " + TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeMatNames, null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNamesAllCategories cursor.getCount() =  " + cursor.getCount());
-        return cursor;
-    }
-
     //получаем курсор с названиями  работ  и отметкой о заходе в тип для типа с type_id
     public Cursor getWorkNames(long type_id) {
         Log.i(TAG, "SmetaOpenHelper.getWorkNames ... ");
@@ -1108,25 +1051,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем список типов по id файла из таблицы FW
-    public String[] getTypeNamesFW(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFW ... ");
-        String selectTypeNamesFW =  " select DISTINCT " + FW.FW_TYPE_NAME +
-                " from " +  FW.TABLE_NAME + " where " +  FW.FW_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectTypeNamesFW, null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFW cursor.getCount()  " + cursor.getCount());
-        String[] typeNamesFW = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            typeNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFW typeNamesFW[position] = " + typeNamesFW[position]);
-        }
-            cursor.close();
-        return typeNamesFW;
-    }
-
-    //получаем список типов по id файла из таблицы FW
     public String[] getTypeNamesFWSort(long file_id){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1194,25 +1118,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.i(TAG, "getDataFWSortStructured  curStroka.getCount() = " + curStroka.getCount());
 
         return curStroka;
-    }
-
-    //получаем список типов материалов по id файла из таблицы FM
-    public String[] getTypeNamesFM(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM ... ");
-        String selectTypeNamesFM =  " select DISTINCT " + FM.FM_MAT_TYPE_NAME +
-                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectTypeNamesFM, null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM cursor.getCount()  " + cursor.getCount());
-        String[] typeNamesFM = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            typeNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFM typeNamesFW[position] = " + typeNamesFM[position]);
-        }
-            cursor.close();
-        return typeNamesFM;
     }
 
     //получаем список типов материалов по id файла из таблицы FM
@@ -1668,20 +1573,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return currentID;
     }
-
-    //получаем курсор с названиями  материалов
-    public Cursor getMatNamesOneType(long type_id) {
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesOneType ... ");
-        String matNames = " SELECT " + Mat._ID + " , " +
-                Mat.MAT_NAME + " FROM " + Mat.TABLE_NAME +
-                " WHERE " + Mat.MAT_TYPE_ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(matNames, new String[]{String.valueOf(type_id)});
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesOneType cursor.getCount() =  " +
-                cursor.getCount() + " type_id = " + type_id);
-        return cursor;
-    }
-
     //Смотрим, сколько строк в таблице цен на материалы
     public int getCountLineInCostMat(){
         Log.i(TAG, "SmetaOpenHelper.getCountLineInCostMat ... ");
@@ -1693,18 +1584,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         int count = cursor.getCount();
         cursor.close();
         return count;
-    }
-
-    //получаем курсор с названиями  материалов
-    public Cursor getTypeNamesOneCategory(long cat_id) {
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesOneCategory ... ");
-        String matNames = " SELECT " + TypeMat._ID + " , " +
-                TypeMat.TYPE_MAT_NAME + " FROM " + TypeMat.TABLE_NAME +
-                " WHERE " + TypeMat.TYPE_MAT_CATEGORY_ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(matNames, new String[]{String.valueOf(cat_id)});
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesOneCategory cursor.getCount() =  " + cursor.getCount());
-        return cursor;
     }
 
     public boolean isMatInFM(long file_id, long mat_id){
@@ -2126,17 +2005,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         db.close();
         Log.d(TAG, "MyDatabaseHelper.insertMatkName  Mat._ID = " + ID);
         return ID;
-    }
-
-    //получаем курсор с названиями типов работ по всем категориям
-    public Cursor getTypeWorkNamesAllCategories() {
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNamesAllCategories ... ");
-        String typeMatNames = " SELECT " + TypeWork._ID + " , " + TypeWork.TYPE_CATEGORY_ID +
-                " , " + TypeWork.TYPE_NAME + " FROM " + TypeWork.TABLE_NAME ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeMatNames, null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeMatNamesAllCategories cursor.getCount() =  " + cursor.getCount());
-        return cursor;
     }
 
     //получаем ID категории работы по имени типа работы

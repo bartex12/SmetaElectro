@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 
@@ -39,14 +40,14 @@ public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
         if (isSelectedCat){
             Log.d(TAG, "Tab2MatType updateAdapter isSelectedCat = true " );
             //Курсор  с названиями типов материалов для cat_id
-            cursor = mSmetaOpenHelper.getTypeNamesOneCategory(cat_id);
+            cursor = tableControllerSmeta.getNamesFromCatId(cat_id, TypeMat.TABLE_NAME);
         }else {
             Log.d(TAG, "Tab2MatType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
-            cursor = mSmetaOpenHelper.getTypeMatNamesAllCategories();
+            cursor = tableControllerSmeta.getCursorNames(TypeMat.TABLE_NAME);
         }
         //Строковый массив с именами типов материалов из таблицы FM для файла с file_id
-        String[] typetMatNamesFM = mSmetaOpenHelper.getTypeNamesFM(file_id);
+        String[] typetMatNamesFM = tableControllerSmeta.getTypeNames(file_id, FM.TABLE_NAME);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab2MatType updateAdapter Всего типов материалов = "+ cursor.getCount() );
