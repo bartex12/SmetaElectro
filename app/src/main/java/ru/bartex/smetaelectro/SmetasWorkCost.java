@@ -132,7 +132,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //Вставляем новую работу в таблицу
                 long workID = mSmetaOpenHelper.insertWorkName(matName, type_id);
                 //обновляем цену работы с единицами измерения
-                mSmetaOpenHelper.insertCostWork(workID, cost, unit_work_id);
+                tableControllerSmeta.insertCost(workID, cost, unit_work_id, CostWork.TABLE_NAME);
 
                 // обновляем адаптер
                 updateAdapter(2);

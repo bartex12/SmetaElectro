@@ -2052,7 +2052,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return ID;
     }
 
-    //Добавляем тип материала
+    //Добавляем тип работы
     public long  insertTypeWorkName(String typeMatName, long type_mat_category_Id){
         Log.i(TAG, "SmetaOpenHelper.insertTypeWorkName ... ");
 
@@ -2061,14 +2061,14 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cv.put(TypeWork.TYPE_NAME,typeMatName);
         cv.put(TypeWork.TYPE_CATEGORY_ID,type_mat_category_Id);
         // вставляем строку
-        long ID = db.insert(TypeMat.TABLE_NAME, null, cv);
+        long ID = db.insert(TypeWork.TABLE_NAME, null, cv);
         // закрываем соединение с базой
         db.close();
         Log.d(TAG, "MyDatabaseHelper.insertTypeWorkName  TypeMat._ID = " + ID);
         return ID;
     }
-
-   //Добавляем тип материала
+/*
+   //Добавляем цену материала
     public long  insertCostMat( long matID, float cost, long unit_mat_id){
         Log.i(TAG, "SmetaOpenHelper.insertCostMat ... ");
 
@@ -2084,7 +2084,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "MyDatabaseHelper.insertCostMat  CostMat._ID = " + ID);
         return ID;
     }
-
+    */
+/*
     //Добавляем тип материала
     public long  insertCostWork( long workID, float cost, long unit_work_id){
         Log.i(TAG, "SmetaOpenHelper.insertCostWork ... ");
@@ -2101,5 +2102,5 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "MyDatabaseHelper.insertCostWork  CostWork._ID = " + ID);
         return ID;
     }
-
+*/
 }

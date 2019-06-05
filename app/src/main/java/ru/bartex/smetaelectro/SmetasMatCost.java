@@ -135,7 +135,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //Вставляем новый материал в таблице Mat
                 long matID = mSmetaOpenHelper.insertMatName(matName, type_id);
                 //обновляем цену материала с единицами измерения
-                mSmetaOpenHelper.insertCostMat(matID, cost, unit_mat_id);
+                tableControllerSmeta.insertCost(matID, cost, unit_mat_id, CostMat.TABLE_NAME);
 
                 // обновляем адаптер
                 updateAdapter(2);

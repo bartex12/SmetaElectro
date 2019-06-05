@@ -1507,6 +1507,37 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return cursor;
     }
 
+    //Добавляем цену материала
+    public long  insertCost( long Id, float cost, long unit_id, String table ){
+        Log.i(TAG, "TableControllerSmeta.insertCost ... ");
+        SQLiteDatabase db = getWritableDatabase();
+        long CostId =-1;
+
+        switch (table){
+            case CostWork.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostWork.COST_WORK_ID, Id);
+                cv.put(CostWork.COST_COST,cost);
+                cv.put(CostWork.COST_UNIT_ID,unit_id);
+                // вставляем строку
+                CostId = db.insert(CostWork.TABLE_NAME, null, cv);
+                break;
+
+            case CostMat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostMat.COST_MAT_ID, Id);
+                cv.put(CostMat.COST_MAT_COST,cost);
+                cv.put(CostMat.COST_MAT_UNIT_ID,unit_id);
+                // вставляем строку
+                CostId = db.insert(CostMat.TABLE_NAME, null, cv);
+                break;
+
+        }
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "MyDatabaseHelper.insertCost CostId = " + CostId);
+        return CostId;
+    }
 
     }
 
