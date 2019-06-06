@@ -42,6 +42,7 @@ import java.io.IOException;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -100,7 +101,7 @@ public class SmetasMatCost extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "++++++++ SmetasMatCost  catTypeMatCostNameTransmit ++++++ case 0");
 
-                long newCatMatNameId = mSmetaOpenHelper.insertCatMatName(catName);
+                long newCatMatNameId = tableControllerSmeta.insertCategory(catName, CategoryMat.TABLE_NAME);
                 Log.d(TAG, "catTypeMatCostNameTransmit - catName = " + catName +
                         " typeName=" + typeName + " matName=" + matName +  " newCatMatNameId=" + newCatMatNameId);
 
@@ -134,7 +135,8 @@ public class SmetasMatCost extends AppCompatActivity implements
                         + " matName = " + matName  + " type_id = " + type_id) ;
 
                 //Вставляем новый материал в таблице Mat
-                long matID = mSmetaOpenHelper.insertMatName(matName, type_id);
+                long matID = tableControllerSmeta.insertTypeCatName(
+                        matName, type_id, Mat.TABLE_NAME);
                 //обновляем цену материала с единицами измерения
                 tableControllerSmeta.insertCost(matID, cost, unit_mat_id, CostMat.TABLE_NAME);
 
@@ -290,7 +292,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //находим id категории по имени категории
                 long cat_mat_id = tableControllerSmeta.getIdFromName(name, CategoryMat.TABLE_NAME);
                 //находим количество строк типов материала для cat_mat_id
-                int countType_mat = mSmetaOpenHelper.getCountTypeMat(cat_mat_id);
+                int countType_mat = tableControllerSmeta.getCountLine(cat_mat_id, TypeMat.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onCreateContextMenu - countType = " + countType_mat);
                 if(countType_mat > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -303,7 +305,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //находим id типа по имени типа
                 long type_mat_id = tableControllerSmeta.getIdFromName(typeMatName, TypeMat.TABLE_NAME);
                 //находим количество строк видов материала для type_mat_id
-                int countLineMat = mSmetaOpenHelper.getCountLineMat(type_mat_id);
+                int countLineMat = tableControllerSmeta.getCountLine(type_mat_id, Mat.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineMat = " + countLineMat);
                 if(countLineMat > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -316,7 +318,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //находим id вида  по имени вида материала
                 long mat_id = tableControllerSmeta.getIdFromName(matName, Mat.TABLE_NAME);
                 //находим количество строк видов материала в таблице FM для mat_id
-                int countLineWorkFM = mSmetaOpenHelper.getCountLineMatInFM(mat_id);
+                int countLineWorkFM = tableControllerSmeta.getCountLine(mat_id, FM.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
                 //mSmetaOpenHelper.displayTableCost();
                 if(countLineWorkFM > 0) {

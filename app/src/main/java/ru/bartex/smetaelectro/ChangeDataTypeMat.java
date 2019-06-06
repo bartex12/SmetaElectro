@@ -37,7 +37,7 @@ public class ChangeDataTypeMat extends AppCompatActivity {
         //получаем id выбранного типа материала из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE_MAT);
         Log.d(TAG, "ChangeDataType onCreate type_id = " + type_id);
-        DataTypeMat dataTypeMat = smetaOpenHelper.getTypeMatData((type_id));
+        DataTypeMat dataTypeMat = tableControllerSmeta.getDataTypeMat((type_id));
 
         etTypeName = findViewById(R.id.etChangeTypeName);
         etTypeName.setText(dataTypeMat.getmTypeMatName());

@@ -38,7 +38,7 @@ public class ChangeDataCategory extends AppCompatActivity {
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
         Log.d(TAG, "ChangeDataCategory onCreate cat_id = " + cat_id);
-        DataCategory dataCategory = smetaOpenHelper.getCategoryData(cat_id);
+        DataCategory dataCategory = tableControllerSmeta.getDataCategory(cat_id);
 
         etCatName = findViewById(R.id.etChangeCatName);
         etCatName.setText(dataCategory.getmCategoryName());

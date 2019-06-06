@@ -34,7 +34,7 @@ public class SpecificCategory extends AppCompatActivity {
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
         Log.d(TAG, "SpecificCategory onCreate cat_id = " + cat_id);
-        dataCategory = smetaOpenHelper.getCategoryData(cat_id);
+        dataCategory = tableControllerSmeta.getDataCategory(cat_id);
 
         tvCatName = findViewById(R.id.tvName);
         tvCatName.setText(dataCategory.getmCategoryName());

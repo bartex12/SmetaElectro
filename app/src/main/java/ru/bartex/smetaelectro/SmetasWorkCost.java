@@ -41,6 +41,7 @@ import java.io.IOException;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -99,7 +100,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             case 0:
                 Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 0");
 
-                long newCatWorkCostId = mSmetaOpenHelper.insertCatName(catName);
+                long newCatWorkCostId = tableControllerSmeta.insertCategory(catName, CategoryWork.TABLE_NAME);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatWorkCostId=" + newCatWorkCostId);
 
@@ -131,7 +132,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                         + " workName = " + matName  + " type_id = " + type_id) ;
 
                 //Вставляем новую работу в таблицу
-                long workID = mSmetaOpenHelper.insertWorkName(matName, type_id);
+                long workID = tableControllerSmeta.insertTypeCatName(
+                        matName, type_id, Work.TABLE_NAME);
                 //обновляем цену работы с единицами измерения
                 tableControllerSmeta.insertCost(workID, cost, unit_work_id, CostWork.TABLE_NAME);
 
@@ -305,7 +307,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //находим id категории по имени категории
                 long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
                 //находим количество строк типов работы для cat_id
-                int countLineType = mSmetaOpenHelper.getCountType(cat_id);
+                int countLineType = tableControllerSmeta.getCountLine(cat_id, TypeWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineType = " + countLineType);
                 if(countLineType > 0) {
                     menu.findItem(P.DELETE_ITEM_SMETA).setEnabled(false);
@@ -320,7 +322,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 long type_id = tableControllerSmeta.
                         getIdFromName(typeName, TypeWork.TABLE_NAME);
                 //находим количество строк видов работы для type_id
-                int countLineWork = mSmetaOpenHelper.getCountLineWork(type_id);
+                int countLineWork = tableControllerSmeta.getCountLine(type_id, Work.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWork = " + countLineWork);
                 if(countLineWork > 0) {
                     menu.findItem(P.DELETE_ITEM_SMETA).setEnabled(false); //так лучше
@@ -337,9 +339,9 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 long work_id = tableControllerSmeta.
                         getIdFromName(workName, Work.TABLE_NAME);
                 //находим количество строк видов работы в таблице FW для work_id
-                int countLineWorkFW = mSmetaOpenHelper.getCountLineWorkInFW(work_id);
+                int countLineWorkFW = tableControllerSmeta.getCountLine(work_id, FW.TABLE_NAME);
                 //находим количество строк расценок работы в таблице CostWork для work_id
-                int countCostLineWork = mSmetaOpenHelper.getCountLineWorkInCost(work_id);
+                int countCostLineWork = tableControllerSmeta.getCountLine(work_id, CostWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
                         " countCostLineWork =" + countCostLineWork);
 

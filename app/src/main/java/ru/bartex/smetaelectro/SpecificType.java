@@ -34,7 +34,7 @@ public class SpecificType extends AppCompatActivity {
         //получаем id выбранного файла из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);
         Log.d(TAG, "SpecificType onCreate type_id = " + type_id);
-        dataType = smetaOpenHelper.getTypeData(type_id);
+        dataType = tableControllerSmeta.getDataType(type_id);
 
         tvTypeName = findViewById(R.id.tvName);
         tvTypeName.setText(dataType.getmTypeName());

@@ -34,7 +34,7 @@ public class SpecificCategoryMat extends AppCompatActivity {
         //получаем id выбранного файла из интента
         cat_mat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
         Log.d(TAG, "SpecificCategoryMat onCreate cat_mat_id = " + cat_mat_id);
-        dataCategory = smetaOpenHelper.getCategoryMatData(cat_mat_id);
+        dataCategory =  tableControllerSmeta.getDataCategoryMat(cat_mat_id);
 
         tvCatName = findViewById(R.id.tvName);
         tvCatName.setText(dataCategory.getmCategoryMatName());

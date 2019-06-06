@@ -27,6 +27,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 public class DialogSaveCostWork extends DialogFragment {
@@ -257,7 +258,7 @@ public class DialogSaveCostWork extends DialogFragment {
             });
 
             //получаем массив единиц измерения из таблицы Unit
-            String[] unins = mSmetaOpenHelper.getArrayUnitsNames();
+            String[] unins = tableControllerSmeta.getArrayUnits(Unit.TABLE_NAME);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_spinner_item,unins);

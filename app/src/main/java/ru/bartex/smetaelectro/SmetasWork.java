@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -84,7 +85,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 0");
 
-                long newCatMatNameId = mSmetaOpenHelper.insertCatName(catName);
+                long newCatMatNameId = tableControllerSmeta.insertCategory(catName, CategoryWork.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
@@ -108,7 +109,8 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
                 long work_type_Id = tableControllerSmeta.getIdFromName(typeName, TypeWork.TABLE_NAME);
-                long newWorkNameId = mSmetaOpenHelper.insertWorkName(workName, work_type_Id);
+                long newWorkNameId = tableControllerSmeta.insertTypeCatName(
+                        workName, work_type_Id, Work.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 
@@ -283,7 +285,7 @@ public class SmetasWork extends AppCompatActivity implements
                 //находим id категории по имени категории
                 long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
                 //находим количество строк типов работы для cat_id
-                int countLineType = mSmetaOpenHelper.getCountType(cat_id);
+                int countLineType = tableControllerSmeta.getCountLine(cat_id, TypeWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineType = " + countLineType);
                 if(countLineType > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -297,7 +299,7 @@ public class SmetasWork extends AppCompatActivity implements
                 //находим id типа по имени типа
                 long type_id = tableControllerSmeta.getIdFromName(typeName, TypeWork.TABLE_NAME);
                 //находим количество строк видов работы для type_id
-                int countLineWork = mSmetaOpenHelper.getCountLineWork(type_id);
+                int countLineWork = tableControllerSmeta.getCountLine(type_id, Work.TABLE_NAME);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWork = " + countLineWork);
                 if(countLineWork > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
@@ -313,9 +315,9 @@ public class SmetasWork extends AppCompatActivity implements
                 //находим id вида  по имени вида работ
                 long work_id = tableControllerSmeta.getIdFromName(workName, Work.TABLE_NAME);
                 //находим количество строк видов работы в таблице FW для work_id
-                int countLineWorkFW = mSmetaOpenHelper.getCountLineWorkInFW(work_id);
+                int countLineWorkFW = tableControllerSmeta.getCountLine(work_id, FW.TABLE_NAME);
                 //находим количество строк расценок работы в таблице CostWork для work_id
-                int countCostLineWork = mSmetaOpenHelper.getCountLineWorkInCost(work_id);
+                int countCostLineWork = tableControllerSmeta.getCountLine(work_id, CostWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
                         " countCostLineWork =" + countCostLineWork);
 

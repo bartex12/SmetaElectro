@@ -38,7 +38,7 @@ public class ChangeDataType extends AppCompatActivity {
         //получаем id выбранного типа работы из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);
         Log.d(TAG, "ChangeDataType onCreate type_id = " + type_id);
-        DataType dataType = smetaOpenHelper.getTypeData(type_id);
+        DataType dataType = tableControllerSmeta.getDataType(type_id);
 
         etTypeName = findViewById(R.id.etChangeTypeName);
         etTypeName.setText(dataType.getmTypeName());

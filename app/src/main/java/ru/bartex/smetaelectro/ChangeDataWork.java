@@ -39,7 +39,7 @@ public class ChangeDataWork extends AppCompatActivity {
         //получаем id выбранного типа работы из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);
         Log.d(TAG, "ChangeDataWork onCreate work_id = " + work_id);
-        DataWork dataWork  = smetaOpenHelper.getWorkData(work_id);
+        DataWork dataWork  = tableControllerSmeta.getDataWork(work_id);
 
         etWorkName = findViewById(R.id.etChangeWorkName);
         etWorkName.setText(dataWork.getmWorkName());

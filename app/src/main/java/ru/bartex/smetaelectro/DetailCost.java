@@ -70,14 +70,14 @@ public class DetailCost extends AppCompatActivity {
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost
             // при нажатии кнопки Сохранить
-            mSmetaOpenHelper.insertCostZero(work_id);
+            tableControllerSmeta.insertZero(work_id, CostWork.TABLE_NAME);
         }
         mTextViewCost.setText(Float.toString(cost));
         mTextViewCost.requestFocus();
         mTextViewCost.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
-        String[] unins = mSmetaOpenHelper.getArrayUnitsNames();
+        String[] unins = tableControllerSmeta.getArrayUnits(Unit.TABLE_NAME);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,unins);

@@ -9,7 +9,13 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.bartex.smetaelectro.DataCategory;
+import ru.bartex.smetaelectro.DataCategoryMat;
 import ru.bartex.smetaelectro.DataFile;
+import ru.bartex.smetaelectro.DataMat;
+import ru.bartex.smetaelectro.DataType;
+import ru.bartex.smetaelectro.DataTypeMat;
+import ru.bartex.smetaelectro.DataWork;
 
 public class TableControllerSmeta extends SmetaOpenHelper {
 
@@ -61,6 +67,141 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cursor.close();
         db.close();
         return dataFile;
+    }
+
+    //получаем данные по категории по её id
+    public DataCategory getDataCategory(long cat_id){
+        Log.i(TAG, "TableControllerSmeta.getDataCategory ... ");
+        DataCategory dataCategory = new DataCategory();
+
+        String catData = " SELECT  * FROM " +  CategoryWork.TABLE_NAME +
+                " WHERE " + CategoryWork._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            String currentCatName = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
+            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataCategory currentCatName = " + currentCatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataCategory = new DataCategory(currentCatName, currentCatDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataCategory;
+    }
+
+    //получаем данные по категории по её id
+    public DataType getDataType(long type_id){
+        Log.i(TAG, "TableControllerSmeta.getDataType ... ");
+        DataType dataType = new DataType();
+
+        String typeData = " SELECT  * FROM " +  TypeWork.TABLE_NAME +
+                " WHERE " + TypeWork._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(typeData, new String[]{String.valueOf(type_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentTypeCategoryId = cursor.getLong(cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID));
+            String currentTypeName = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+            String currentTypeDescription = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataType currentTypeName = " + currentTypeName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataType = new DataType(currentTypeCategoryId, currentTypeName, currentTypeDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataType;
+    }
+
+    //получаем данные по работе по её id
+    public DataWork getDataWork(long work_id){
+        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        DataWork dataWork = new DataWork();
+        String workData = " SELECT  * FROM " +  Work.TABLE_NAME +
+                " WHERE " + Work._ID  + " = ? " ;
+        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
+            String currentWorkName = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
+            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(Work.WORK_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
+            //создаём экземпляр класса DataWork в конструкторе
+            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataWork;
+    }
+
+    //получаем данные по категории по её id
+    public DataCategoryMat getDataCategoryMat(long cat_mat_id){
+        Log.i(TAG, "TableControllerSmeta.getDataCategoryMat ... ");
+        DataCategoryMat dataCategory = new DataCategoryMat();
+
+        String catData = " SELECT  * FROM " +  CategoryMat.TABLE_NAME +
+                " WHERE " + CategoryMat._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_mat_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            String currentCatName = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
+            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataCategoryMat currentCatName = " + currentCatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataCategory = new DataCategoryMat(currentCatName, currentCatDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataCategory;
+    }
+
+    //получаем данные по категории по её id
+    public DataTypeMat getDataTypeMat(long type_mat_id){
+        Log.i(TAG, "TableControllerSmeta.getDataTypeMat ... ");
+        DataTypeMat dataTypeMat = new DataTypeMat();
+
+        String typeMatData = " SELECT  * FROM " +  TypeMat.TABLE_NAME +
+                " WHERE " + TypeMat._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(typeMatData, new String[]{String.valueOf(type_mat_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentTypeMatCategoryId = cursor.getLong(cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID));
+            String currentTypeMatName = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
+            String currentTypeMatDescription = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataTypeMat currentTypeName = " + currentTypeMatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataTypeMat = new DataTypeMat(currentTypeMatCategoryId, currentTypeMatName, currentTypeMatDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataTypeMat;
+    }
+
+    //получаем данные по категории по её id
+    public DataMat getDataMat(long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getMatData ... ");
+        DataMat dataMat = new DataMat();
+
+        String matData = " SELECT  * FROM " +  Mat.TABLE_NAME +
+                " WHERE " + Mat._ID  + " = ? " ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(matData, new String[]{String.valueOf(mat_id)});
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentMatTypeId = cursor.getLong(cursor.getColumnIndex(Mat.MAT_TYPE_ID));
+            String currentMatName = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
+            String currentMatDescription = cursor.getString(cursor.getColumnIndex(Mat.MAT_DESCRIPTION));
+            Log.d(TAG, "getMatData currentMatName = " + currentMatName);
+            //создаём экземпляр класса DataWork в конструкторе
+            dataMat = new DataMat(currentMatTypeId, currentMatName, currentMatDescription);
+        }
+        cursor.close();
+        db.close();
+        return dataMat;
     }
 
     //получаем объект DataFile из курсора
@@ -1470,6 +1611,46 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return typeNames;
     }
 
+    //получаем массив единиц измерения
+    public String[] getArrayUnits(String table) {
+        Log.i(TAG, "TableControllerSmeta.getArrayUnits ... ");
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor =null;
+        String select = "";
+        String[] units_name = new String[]{};
+
+        switch (table) {
+            case Unit.TABLE_NAME:
+                select  = " SELECT " + Unit.UNIT_NAME  + " FROM " + Unit.TABLE_NAME;
+                cursor = db.rawQuery(select, null);
+                units_name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units_name[position] = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
+                    Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
+                }
+                break;
+
+            case UnitMat.TABLE_NAME:
+                select  = " SELECT " + UnitMat.UNIT_MAT_NAME  + " FROM " + UnitMat.TABLE_NAME;
+                cursor = db.rawQuery(select, null);
+                units_name = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    units_name[position] = cursor.getString(cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME));
+                    Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
+                }
+                break;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return units_name;
+    }
+
     //получаем курсор с названиями категорий
     public Cursor getCursorNames(String table) {
         Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
@@ -1560,6 +1741,38 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return cursor;
     }
 
+    //Добавляем вид материала с левыми параметрами, чобы удалить при отказе пользователя
+    public long  insertZero(long id, String table){
+        Log.i(TAG, "TableControllerSmeta.insertZero ... ");
+        SQLiteDatabase db = getWritableDatabase();
+        long currentId = -1;
+
+        switch (table) {
+            case CostMat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostMat.COST_MAT_ID, id);
+                cv.put(CostMat.COST_MAT_UNIT_ID, 1);
+                cv.put(CostMat.COST_MAT_COST,0);
+                cv.put(CostMat.COST_MAT_NUMBER,1);
+                // вставляем строку
+                currentId = db.insert(CostMat.TABLE_NAME, null, cv);
+                break;
+
+            case CostWork.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CostWork.COST_WORK_ID,id);
+                cv.put(CostWork.COST_UNIT_ID, 1);
+                cv.put(CostWork.COST_COST,0);
+                cv.put(CostWork.COST_NUMBER,1);
+                // вставляем строку
+                currentId = db.insert(CostWork.TABLE_NAME, null, cv);
+                break;
+        }
+        db.close();
+        Log.d(TAG, "TableControllerSmeta.insertZero  currentId = " + currentId);
+        return currentId;
+    }
+
     //Добавляем цену материала
     public long  insertCost( long Id, float cost, long unit_id, String table ){
         Log.i(TAG, "TableControllerSmeta.insertCost ... ");
@@ -1592,36 +1805,166 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return costId;
     }
 
+    //Добавляем категорию материала
+    public long  insertCategory(String catName, String table){
+        Log.i(TAG, "TableControllerSmeta.insertCategory ... ");
+        SQLiteDatabase db = getWritableDatabase();
+        long _id =-1;
+
+        switch (table) {
+            case CategoryMat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CategoryMat.CATEGORY_MAT_NAME,catName);
+                // вставляем строку
+                _id = db.insert(CategoryMat.TABLE_NAME, null, cv);
+                break;
+
+            case CategoryWork.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(CategoryWork.CATEGORY_NAME,catName);
+                // вставляем строку
+                _id = db.insert(CategoryWork.TABLE_NAME, null, cv);
+                break;
+        }
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "TableControllerSmeta.insertCategory  _id = " + _id);
+        return _id;
+    }
+
     //Добавляем тип материала
-    public long  insertTypeCatName(String typeName, long type_category_Id, String table ){
+    public long  insertTypeCatName(String name, long id, String table ){
         Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
         SQLiteDatabase db = getWritableDatabase();
-        long typeId =-1;
+        long _id =-1;
 
         switch (table) {
             case TypeWork.TABLE_NAME:
                 cv = new ContentValues();
-                cv.put(TypeWork.TYPE_NAME,typeName);
-                cv.put(TypeWork.TYPE_CATEGORY_ID,type_category_Id);
+                cv.put(TypeWork.TYPE_NAME,name);
+                cv.put(TypeWork.TYPE_CATEGORY_ID,id);
                 // вставляем строку
-                typeId = db.insert(TypeWork.TABLE_NAME, null, cv);
+                _id = db.insert(TypeWork.TABLE_NAME, null, cv);
                 break;
 
             case TypeMat.TABLE_NAME:
                 cv = new ContentValues();
-                cv.put(TypeMat.TYPE_MAT_NAME,typeName);
-                cv.put(TypeMat.TYPE_MAT_CATEGORY_ID,type_category_Id);
+                cv.put(TypeMat.TYPE_MAT_NAME,name);
+                cv.put(TypeMat.TYPE_MAT_CATEGORY_ID,id);
                 // вставляем строку
-                typeId = db.insert(TypeMat.TABLE_NAME, null, cv);
+                _id = db.insert(TypeMat.TABLE_NAME, null, cv);
+                break;
+
+            case Mat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(Mat.MAT_NAME,name);
+                cv.put(Mat.MAT_TYPE_ID, id);
+                // вставляем строку
+                _id = db.insert(Mat.TABLE_NAME, null, cv);
+                break;
+
+            case Work.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(Work.WORK_NAME,name);
+                cv.put(Work.WORK_TYPE_ID, id);
+                // вставляем строку
+                _id = db.insert(Work.TABLE_NAME, null, cv);
                 break;
         }
-
-
         // закрываем соединение с базой
         db.close();
-        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  typeId = " + typeId);
-        return typeId;
+        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        return _id;
     }
 
+    //получаем количество видов материала с типом type_mat_id
+    public int getCountLine(long id, String table){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =null;
+        int count = 0;
+        String select = "";
+
+        switch (table) {
+            case Work.TABLE_NAME:
+                select = " SELECT " + Work._ID + " FROM " + Work.TABLE_NAME +
+                        " where " + Work.WORK_TYPE_ID + " =? ";
+                break;
+
+            case Mat.TABLE_NAME:
+                select = " SELECT " + Mat._ID + " FROM " + Mat.TABLE_NAME +
+                        " where " + Mat.MAT_TYPE_ID + " =? ";
+                break;
+
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW._ID + " FROM " + FW.TABLE_NAME +
+                        " where " + FW.FW_WORK_ID + " =? ";
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM._ID + " FROM " + FM.TABLE_NAME +
+                        " where " + FM.FM_MAT_ID + " =? ";
+                break;
+
+            case TypeMat.TABLE_NAME:
+                select = " SELECT " + TypeMat._ID + " FROM " + TypeMat.TABLE_NAME +
+                        " where " + TypeMat.TYPE_MAT_CATEGORY_ID + " =? ";
+                break;
+
+            case TypeWork.TABLE_NAME:
+                select =  " SELECT " + TypeWork._ID + " FROM " + TypeWork.TABLE_NAME +
+                        " where " + TypeWork.TYPE_CATEGORY_ID + " =? ";
+                break;
+
+            case CostWork.TABLE_NAME:
+                select =   " SELECT " + CostWork._ID + " FROM " + CostWork.TABLE_NAME +
+                        " where " + CostWork.COST_WORK_ID + " =? ";
+                break;
+
+            case CostMat.TABLE_NAME:
+                select =   " SELECT " + CostMat._ID + " FROM " + CostMat.TABLE_NAME +
+                        " where " + CostMat.COST_MAT_ID + " =? ";
+                break;
+        }
+        cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        if (cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+        db.close();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        return count;
     }
+
+    //получаем единицы измерения материала с помощью вложенного запроса
+    public String getUnitMat(long mat_id){
+        Log.i(TAG, "SmetaOpenHelper.getCostUnitMatById ... ");
+        String unitMatName = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String unit = " SELECT " +  UnitMat.UNIT_MAT_NAME +
+                " FROM " + UnitMat.TABLE_NAME  +
+                " WHERE " + UnitMat._ID + " IN " +
+                "(" + " SELECT " + CostMat.COST_MAT_UNIT_ID +
+                " FROM " + CostMat.TABLE_NAME +
+                " WHERE " + CostMat.COST_MAT_ID  + " = " +  String.valueOf(mat_id) + ")";
+
+        Cursor cursor = db.rawQuery(unit, null);
+
+        Log.d(TAG, "getCostUnitMatById cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс  столбца
+            int idColumnIndex = cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME);
+            // Используем индекс для получения строки или числа
+            unitMatName = cursor.getString(idColumnIndex);
+            Log.d(TAG, "getCostUnitMatById unitName = " + unitMatName);
+        }
+        cursor.close();
+        db.close();
+        return unitMatName;
+    }
+
+
+
+}
 

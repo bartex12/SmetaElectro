@@ -37,7 +37,7 @@ public class ChangeDataMat extends AppCompatActivity {
         //получаем id выбранного материала из интента
         work_id = getIntent().getExtras().getLong(P.ID_MAT);
         Log.d(TAG, "ChangeDataMat onCreate work_id = " + work_id);
-        DataMat dataMat  = smetaOpenHelper.getMatData(work_id);
+        DataMat dataMat  = tableControllerSmeta.getDataMat(work_id);
 
         etWorkName = findViewById(R.id.etChangeWorkName);
         etWorkName.setText(dataMat.getmMatName());

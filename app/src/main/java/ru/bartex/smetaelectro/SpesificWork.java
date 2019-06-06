@@ -34,7 +34,7 @@ public class SpesificWork extends AppCompatActivity {
         //получаем id выбранного файла из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);
         Log.d(TAG, "SpesificWork onCreate work_id = " + work_id);
-        dataWork = smetaOpenHelper.getWorkData(work_id);
+        dataWork = tableControllerSmeta.getDataWork(work_id);
 
         tvWorkName = findViewById(R.id.tvName);
         tvWorkName.setText(dataWork.getmWorkName());

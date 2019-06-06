@@ -36,7 +36,7 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
         Log.d(TAG, "ChangeDataCategoryMat onCreate cat_id = " + cat_id);
-        DataCategoryMat dataCategoryMat = smetaOpenHelper.getCategoryMatData(cat_id);
+        DataCategoryMat dataCategoryMat = tableControllerSmeta.getDataCategoryMat(cat_id);
 
         etCatName = findViewById(R.id.etChangeCatName);
         etCatName.setText(dataCategoryMat.getmCategoryMatName());

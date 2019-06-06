@@ -97,7 +97,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
-        unit = mSmetaOpenHelper.getCostMatUnitById(mat_id);
+        unit = tableControllerSmeta.getUnitMat(mat_id);
         mTextViewUnit.setText(unit);
 
         //находим поле Сумма
@@ -194,7 +194,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
             mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
 
-            unit = mSmetaOpenHelper.getCostMatUnitById(mat_id);
+            unit = tableControllerSmeta.getUnitMat(mat_id);
             mTextViewUnit.setText(unit);
         }
     }

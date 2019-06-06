@@ -66,14 +66,14 @@ public class CostMatDetail extends AppCompatActivity {
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateMatCost
             // при нажатии кнопки Сохранить
-            mSmetaOpenHelper.insertCostMatZero(mat_id);
+            tableControllerSmeta.insertZero(mat_id, CostMat.TABLE_NAME);
         }
         mTextViewCostMat.setText(Float.toString(cost));
         mTextViewCostMat.requestFocus();
         mTextViewCostMat.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
-        String[] uninsMat = mSmetaOpenHelper.getArrayUnitsMatNames();
+        String[] uninsMat = tableControllerSmeta.getArrayUnits(UnitMat.TABLE_NAME);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,uninsMat);
@@ -85,7 +85,7 @@ public class CostMatDetail extends AppCompatActivity {
         if (cost == 0){
             spinner.setSelection(0);
         }else {
-            String unitMatName = mSmetaOpenHelper.getCostUnitMatById(mat_id);
+            String unitMatName = tableControllerSmeta.getUnitMat(mat_id);
             long unitId = tableControllerSmeta.getIdFromName(unitMatName, UnitMat.TABLE_NAME);
             Log.d(TAG, "CostMatDetail- Spinner -unitMatName = " + unitMatName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)

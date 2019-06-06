@@ -29,6 +29,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.UnitMat;
 
 public class DialogSaveCostMat extends DialogFragment {
 
@@ -256,7 +257,7 @@ public class DialogSaveCostMat extends DialogFragment {
             });
 
             //получаем массив единиц измерения из таблицы Unit
-            String[] unins = mSmetaOpenHelper.getArrayUnitsMatNames();
+            String[] unins = tableControllerSmeta.getArrayUnits(UnitMat.TABLE_NAME);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_spinner_item,unins);

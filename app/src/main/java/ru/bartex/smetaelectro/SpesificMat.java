@@ -33,7 +33,7 @@ public class SpesificMat extends AppCompatActivity {
         //получаем id выбранного файла из интента
         mat_id = getIntent().getExtras().getLong(P.ID_MAT);
         Log.d(TAG, "SpesificMat onCreate mat_id = " + mat_id);
-        dataMat = smetaOpenHelper.getMatData(mat_id);
+        dataMat = tableControllerSmeta.getDataMat(mat_id);
 
         tvMatName = findViewById(R.id.tvName);
         tvMatName.setText(dataMat.getmMatName());
