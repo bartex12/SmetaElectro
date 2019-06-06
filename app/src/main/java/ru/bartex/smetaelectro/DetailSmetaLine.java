@@ -152,6 +152,8 @@ public class DetailSmetaLine extends AppCompatActivity {
                         // поэтому cost и unit входит
                         mSmetaOpenHelper.updateRowInFW_Count_Summa(file_id, work_id, cost,unit, count, count*cost);
                         finish();
+                        //если работы нет, то сначала посмотреть цену работы и если она равна 0.0,
+                        // вызвать диалог установки цены !ПЕРЕДЕЛАТЬ НА ЦЕНА <0
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
                             Log.d(TAG, "DetailSmetaLine.if ((mTextViewCost.getText().toString()).eq...");

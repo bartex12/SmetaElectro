@@ -97,7 +97,8 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
                 long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryMat.TABLE_NAME);
-                long newTypeWorkNameId = mSmetaOpenHelper.insertTypeMatName(typeName, type_category_Id);
+                long newTypeWorkNameId = tableControllerSmeta.insertTypeCatName(
+                        typeName, type_category_Id,TypeMat.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
                 // обновляем адаптер

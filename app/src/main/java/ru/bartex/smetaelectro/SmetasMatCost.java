@@ -114,7 +114,8 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //определяем id категории (будет type_category_Id в таблице типов) по её имени (блин, это же cat_id )
                 long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryMat.TABLE_NAME);
 
-                long newTypeMatNameId = mSmetaOpenHelper.insertTypeMatName(typeName, type_category_Id);
+                long newTypeMatNameId = tableControllerSmeta.insertTypeCatName(
+                        typeName, type_category_Id,TypeMat.TABLE_NAME);
                 Log.d(TAG, "catTypeMatCostNameTransmit - catName = " + catName +
                         " typeName=" + typeName + " matName=" + matName +
                         " newTypeMatNameId=" + newTypeMatNameId);

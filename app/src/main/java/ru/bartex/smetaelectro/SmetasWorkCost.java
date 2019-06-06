@@ -112,7 +112,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //определяем id категории по её имени
                 long type_category_Id = tableControllerSmeta.
                         getIdFromName(catName, CategoryWork.TABLE_NAME);
-                long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
+                long newTypeNameId = tableControllerSmeta.insertTypeCatName(
+                        typeName, type_category_Id,TypeWork.TABLE_NAME);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем вкладку типов работы и показываем её

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,7 +79,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3MatCost - onItemClick  isMat = " + isMat);
 
         //ищем id категории материалов, зная id типа
-        long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
+        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeMat.TABLE_NAME);
 
         Intent intent = new Intent(getActivity(), CostMatDetail.class);
         intent.putExtra(P.ID_FILE, file_id);

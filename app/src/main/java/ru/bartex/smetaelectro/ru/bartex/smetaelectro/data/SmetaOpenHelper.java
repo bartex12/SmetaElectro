@@ -1336,22 +1336,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return category_name;
     }
 
-    //Добавляем тип работы
-    public long  insertTypeName(String typeName, long type_category_Id){
-        Log.i(TAG, "SmetaOpenHelper.insertTypeName ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(TypeWork.TYPE_NAME,typeName);
-        cv.put(TypeWork.TYPE_CATEGORY_ID,type_category_Id);
-        // вставляем строку
-        long ID = db.insert(TypeWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertTypeName  TypeWork._ID = " + ID);
-        return ID;
-    }
-
     //получаем данные по категории по её id
     public DataCategory getCategoryData(long cat_id){
         Log.i(TAG, "SmetaOpenHelper.getCategoryData ... ");
@@ -1545,34 +1529,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return dataWork;
     }
 
-    //получаем ID категории по имени типа материалов
-    public long getCatIdFromTypeMat(long type_id) {
-        Log.d(TAG, "getCatIdFromTypeMat ...");
-        long currentID;
-        // Создадим и откроем для чтения базу данных
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(
-                TypeMat.TABLE_NAME,   // таблица
-                new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
-                TypeMat._ID + "=?",   // столбцы для условия WHERE
-                new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // порядок сортировки
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
-            // Используем индекс для получения строки или числа
-            currentID = cursor.getLong(idColumnIndex);
-        } else {
-            currentID = -1;
-        }
-        Log.d(TAG, "getCatIdFromTypeMat currentID = " + currentID);
-        cursor.close();
-        return currentID;
-    }
     //Смотрим, сколько строк в таблице цен на материалы
     public int getCountLineInCostMat(){
         Log.i(TAG, "SmetaOpenHelper.getCountLineInCostMat ... ");
@@ -2007,100 +1963,5 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return ID;
     }
 
-    //получаем ID категории работы по имени типа работы
-    public long getCatIdFromTypeWork(long type_id) {
-        Log.d(TAG, "getCatIdFromTypeMat ...");
-        long currentID;
-        // Создадим и откроем для чтения базу данных
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(
-                TypeWork.TABLE_NAME,   // таблица
-                new String[]{TypeWork.TYPE_CATEGORY_ID},            // столбцы
-                TypeWork._ID + "=?",   // столбцы для условия WHERE
-                new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // порядок сортировки
 
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID);
-            // Используем индекс для получения строки или числа
-            currentID = cursor.getLong(idColumnIndex);
-        } else {
-            currentID = -1;
-        }
-        Log.d(TAG, "getCatIdFromTypeMat currentID = " + currentID);
-        cursor.close();
-        return currentID;
-    }
-
-    //Добавляем тип материала
-    public long  insertTypeMatName(String typeMatName, long type_mat_category_Id){
-        Log.i(TAG, "SmetaOpenHelper.insertTypeMatName ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(TypeMat.TYPE_MAT_NAME,typeMatName);
-        cv.put(TypeMat.TYPE_MAT_CATEGORY_ID,type_mat_category_Id);
-        // вставляем строку
-        long ID = db.insert(TypeMat.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertTypeMatName  TypeMat._ID = " + ID);
-        return ID;
-    }
-
-    //Добавляем тип работы
-    public long  insertTypeWorkName(String typeMatName, long type_mat_category_Id){
-        Log.i(TAG, "SmetaOpenHelper.insertTypeWorkName ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(TypeWork.TYPE_NAME,typeMatName);
-        cv.put(TypeWork.TYPE_CATEGORY_ID,type_mat_category_Id);
-        // вставляем строку
-        long ID = db.insert(TypeWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertTypeWorkName  TypeMat._ID = " + ID);
-        return ID;
-    }
-/*
-   //Добавляем цену материала
-    public long  insertCostMat( long matID, float cost, long unit_mat_id){
-        Log.i(TAG, "SmetaOpenHelper.insertCostMat ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(CostMat.COST_MAT_ID,matID);
-        cv.put(CostMat.COST_MAT_COST,cost);
-        cv.put(CostMat.COST_MAT_UNIT_ID,unit_mat_id);
-        // вставляем строку
-        long ID = db.insert(CostMat.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertCostMat  CostMat._ID = " + ID);
-        return ID;
-    }
-    */
-/*
-    //Добавляем тип материала
-    public long  insertCostWork( long workID, float cost, long unit_work_id){
-        Log.i(TAG, "SmetaOpenHelper.insertCostWork ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(CostWork.COST_WORK_ID,workID);
-        cv.put(CostWork.COST_COST,cost);
-        cv.put(CostWork.COST_UNIT_ID,unit_work_id);
-        // вставляем строку
-        long ID = db.insert(CostWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertCostWork  CostWork._ID = " + ID);
-        return ID;
-    }
-*/
 }

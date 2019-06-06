@@ -243,8 +243,6 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 }
                 break;
         }
-        // Используем индекс для получения id
-        // currentID = cursor.getLong(idColumnIndex);
         Log.d(TAG, "getIdFromName currentID = " + currentID);
 
         if (cursor != null) {
@@ -253,6 +251,61 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         db.close();
         return currentID;
     }
+
+    //получаем ID категории работы по имени типа работы
+    public long getCatIdFromTypeId(long type_id, String table) {
+        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
+
+        long currentID = -1;
+        int idColumnIndex = -1;
+        Cursor cursor = null;
+        // Создадим и откроем для чтения базу данных
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        switch (table) {
+            case TypeWork.TABLE_NAME:
+                cursor = db.query(
+                        TypeWork.TABLE_NAME,   // таблица
+                        new String[]{TypeWork.TYPE_CATEGORY_ID},            // столбцы
+                        TypeWork._ID + "=?",   // столбцы для условия WHERE
+                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    idColumnIndex = cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID);
+                    // Используем индекс для получения строки или числа
+                    currentID = cursor.getLong(idColumnIndex);
+                }
+                break;
+
+            case TypeMat.TABLE_NAME:
+                cursor = db.query(
+                        TypeMat.TABLE_NAME,   // таблица
+                        new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
+                        TypeMat._ID + "=?",   // столбцы для условия WHERE
+                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        null);                   // порядок сортировки
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
+                    // Используем индекс для получения строки или числа
+                    currentID = cursor.getLong(idColumnIndex);
+                }
+                break;
+        }
+        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId currentID = " + currentID);
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return currentID;
+    }
+
 
     //получаем имя работы по её id
     public String getNameFromId(long id, String table) {
@@ -1248,7 +1301,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         Log.i(TAG, "TableControllerSmeta.getCostById ... ");
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
-        float cost = -1;
+        float cost = 0;
         String select = "";
 
         switch (table) {
@@ -1511,7 +1564,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     public long  insertCost( long Id, float cost, long unit_id, String table ){
         Log.i(TAG, "TableControllerSmeta.insertCost ... ");
         SQLiteDatabase db = getWritableDatabase();
-        long CostId =-1;
+        long costId =-1;
 
         switch (table){
             case CostWork.TABLE_NAME:
@@ -1520,7 +1573,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 cv.put(CostWork.COST_COST,cost);
                 cv.put(CostWork.COST_UNIT_ID,unit_id);
                 // вставляем строку
-                CostId = db.insert(CostWork.TABLE_NAME, null, cv);
+                costId = db.insert(CostWork.TABLE_NAME, null, cv);
                 break;
 
             case CostMat.TABLE_NAME:
@@ -1529,14 +1582,45 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 cv.put(CostMat.COST_MAT_COST,cost);
                 cv.put(CostMat.COST_MAT_UNIT_ID,unit_id);
                 // вставляем строку
-                CostId = db.insert(CostMat.TABLE_NAME, null, cv);
+                costId = db.insert(CostMat.TABLE_NAME, null, cv);
                 break;
 
         }
         // закрываем соединение с базой
         db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertCost CostId = " + CostId);
-        return CostId;
+        Log.d(TAG, "TableControllerSmeta.insertCost costId = " + costId);
+        return costId;
+    }
+
+    //Добавляем тип материала
+    public long  insertTypeCatName(String typeName, long type_category_Id, String table ){
+        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        SQLiteDatabase db = getWritableDatabase();
+        long typeId =-1;
+
+        switch (table) {
+            case TypeWork.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(TypeWork.TYPE_NAME,typeName);
+                cv.put(TypeWork.TYPE_CATEGORY_ID,type_category_Id);
+                // вставляем строку
+                typeId = db.insert(TypeWork.TABLE_NAME, null, cv);
+                break;
+
+            case TypeMat.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(TypeMat.TYPE_MAT_NAME,typeName);
+                cv.put(TypeMat.TYPE_MAT_CATEGORY_ID,type_category_Id);
+                // вставляем строку
+                typeId = db.insert(TypeMat.TABLE_NAME, null, cv);
+                break;
+        }
+
+
+        // закрываем соединение с базой
+        db.close();
+        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  typeId = " + typeId);
+        return typeId;
     }
 
     }

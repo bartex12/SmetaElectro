@@ -85,7 +85,7 @@ public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
 
     @Override
     public long getCatId(long type_id) {
-        long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
+        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeMat.TABLE_NAME);
         return cat_id;
     }
 

@@ -96,7 +96,8 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
                 long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryWork.TABLE_NAME);
-                long newTypeNameId = mSmetaOpenHelper.insertTypeName(typeName, type_category_Id);
+                long newTypeNameId = tableControllerSmeta.insertTypeCatName(
+                        typeName, type_category_Id,TypeWork.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем соседнюю вкладку типов материалов и показываем её

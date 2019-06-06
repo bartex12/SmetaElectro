@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
 /**
@@ -95,7 +96,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Work - onItemClick  isWork = " + isWork);
 
         //ищем id категории работы, зная id типа
-        long cat_id = mSmetaOpenHelper.getCatIdFromTypeWork(type_id);
+        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeWork.TABLE_NAME);
 
         Intent intent = new Intent(getActivity(), DetailSmetaLine.class);
         intent.putExtra(P.ID_FILE_DEFAULT, file_id);
