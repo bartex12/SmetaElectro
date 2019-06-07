@@ -838,19 +838,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return type_id_mat;
     }
 
-    //получаем курсор с названиями  работ  и отметкой о заходе в тип для типа с type_id
-    public Cursor getWorkNames(long type_id) {
-        Log.i(TAG, "SmetaOpenHelper.getWorkNames ... ");
-        String typeNames = " SELECT " + Work._ID + " , " + Work.WORK_TYPE_ID + " , " +
-                Work.WORK_NAME + " FROM " + Work.TABLE_NAME +
-                " WHERE " + Work.WORK_TYPE_ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeNames, new String[]{String.valueOf(type_id)});
-        Log.i(TAG, "SmetaOpenHelper.getWorkNames cursor.getCount() =  " + cursor.getCount());
-        return cursor;
-    }
-
-    //получаем  все ID таблицы Work
+    //получаем  все ID таблицы Work ***
     public int[] getIdFromWorks(SQLiteDatabase db) {
         Log.d(TAG, "getIdFromWorks...");
         Cursor cursor = db.query(
@@ -876,7 +864,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return currentID;
     }
 
-    //получаем  все ID таблицы Mat
+    //получаем  все ID таблицы Mat ***
     public int[] getIdFromMats(SQLiteDatabase db) {
 
         Log.d(TAG, "getIdFromMats...");
@@ -902,185 +890,5 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
         return currentID;
     }
-
-
-    //получаем список типов по id файла из таблицы FW
-    public String[] getTypeNamesFWSort(long file_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort ... ");
-
-        Cursor cursor = db.query(
-                true,
-                FW.TABLE_NAME,   // таблица
-                new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
-                FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FW.FW_TYPE_ID,                 // порядок сортировки
-                null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort cursor.getCount()  " + cursor.getCount());
-
-        String[] typeNamesFW = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            typeNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSort typeNamesFW[position] = " + typeNamesFW[position]);
-        }
-        cursor.close();
-        return typeNamesFW;
-    }
-
-    //получаем курсор с именами типов работ
-    public Cursor getTypeNamesFWSortStructured(long file_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFWSortStructured ... ");
-
-        Cursor curTypeSort = db.query(
-                true,
-                FW.TABLE_NAME,   // таблица
-                new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
-                FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FW.FW_TYPE_ID,                 // порядок сортировки
-                null);
-
-        Log.i(TAG, "getTypeNamesFWSortStructured  curTypeSort.getCount() = " +  curTypeSort.getCount());
-
-        return curTypeSort;
-    }
-
-    //получаем курсор с данными сметы с file_id для типа работ с type_id
-    public Cursor getDataFWSortStructured(long file_id, long type_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getDataFWSortStructured ... ");
-
-        Cursor curStroka = db.query(
-                FW.TABLE_NAME,   // таблица
-                new String[]{FW.FW_WORK_NAME, FW.FW_COST, FW.FW_COUNT, FW.FW_SUMMA},  // столбцы
-                FW.FW_FILE_ID + "=?" + " AND " + FW.FW_TYPE_ID + "=?", // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FW.FW_WORK_ID);                   // порядок сортировки
-        Log.i(TAG, "getDataFWSortStructured  curStroka.getCount() = " + curStroka.getCount());
-
-        return curStroka;
-    }
-
-    //получаем список типов материалов по id файла из таблицы FM
-    public String[] getTypeNamesFMSort(long file_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort ... ");
-
-        Cursor cursor = db.query(
-                true,
-                FM.TABLE_NAME,   // таблица
-                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
-                FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FM.FM_MAT_TYPE_ID,              // порядок сортировки
-                null);
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort cursor.getCount()  " + cursor.getCount());
-        String[] typeNamesFM = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            typeNamesFM[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSort typeNamesFW[position] = " + typeNamesFM[position]);
-        }
-        cursor.close();
-        return typeNamesFM;
-    }
-
-    //получаем курсор с именами типов работ
-    public Cursor getTypeNamesFMSortStructured(long file_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getTypeNamesFMSortStructured ... ");
-
-        Cursor curTypeSort = db.query(
-                true,
-                FM.TABLE_NAME,   // таблица
-                new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
-                FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
-                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FM.FM_MAT_TYPE_ID,                 // порядок сортировки
-                null);
-
-        Log.i(TAG, "getTypeNamesFMSortStructured  curTypeSort.getCount() = " +  curTypeSort.getCount());
-
-        return curTypeSort;
-    }
-
-    //получаем курсор с данными сметы с file_id для типа работ с type_id
-    public Cursor getDataFMSortStructured(long file_id, long type_id){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Log.i(TAG, "SmetaOpenHelper.getDataFMSortStructured ... ");
-
-        Cursor curStroka = db.query(
-                FM.TABLE_NAME,   // таблица
-                new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},// столбцы
-                FM.FM_FILE_ID + "=?"+ " AND " + FM.FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
-                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                FM.FM_MAT_ID);                   // порядок сортировки
-        Log.i(TAG, "getDataFMSortStructured curStroka.getCount() = " +curStroka.getCount());
-
-        return curStroka;
-    }
-
-    //получаем список работ по id файла из таблицы FW
-    public String[] getWorkNamesFW(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getWorkNamesFW ... ");
-        String selectWorkNamesFW =  " select DISTINCT " + FW.FW_WORK_NAME +
-                " from " +  FW.TABLE_NAME + " where " +  FW.FW_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectWorkNamesFW, null);
-        Log.i(TAG, "SmetaOpenHelper.getWorkNamesFW cursor.getCount()  " + cursor.getCount());
-        String[] workNamesFW = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            workNamesFW[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getWorkNamesFW workNamesFW[position] = " + workNamesFW[position]);
-        }
-        cursor.close();
-        return workNamesFW;
-    }
-
-    //получаем список материалов по id файла из таблицы FM
-    public String[] getMatNamesFM(long file_id){
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesFM ... ");
-        String selectMatNamesFM =  " select DISTINCT " + FM.FM_MAT_NAME +
-                " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectMatNamesFM, null);
-        Log.i(TAG, "SmetaOpenHelper.getMatNamesFM cursor.getCount()  " + cursor.getCount());
-        String[] matNamesFW = new String[cursor.getCount()];
-        // Проходим через все строки в курсоре
-        while (cursor.moveToNext()){
-            int position = cursor.getPosition();
-            matNamesFW[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
-            Log.i(TAG, "SmetaOpenHelper.getMatNamesFM workNamesFW[position] = " + matNamesFW[position]);
-        }
-            cursor.close();
-        return matNamesFW;
-    }
-
-
 
 }

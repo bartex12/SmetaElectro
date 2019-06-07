@@ -179,7 +179,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 String[] cat_name = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
-                String[] type_name = mSmetaOpenHelper.getTypeNamesFWSort(file_id);
+                String[] type_name = tableControllerSmeta.getTypeNamesSort(file_id,FW.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_name.length);
 
                 //получаем суммарную стоимомть работ  по смете с id файла file_id
@@ -262,7 +262,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
                 //массив типов материалов для сметы с file_id
                 //String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
-                String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFMSort(file_id);
+                String[] type_mat_name = tableControllerSmeta.getTypeNamesSort(file_id, FM.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_mat_name.length);
 
                 //получаем суммарную стоимомть материалов  по смете с id файла file_id
@@ -467,7 +467,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 if (position_tab==0){
 
                     //получаем курсор с именами типов работы
-                    curTypeSort =  mSmetaOpenHelper.getTypeNamesFWSortStructured(file_id);
+                    curTypeSort =  tableControllerSmeta.getTypeNamesStructured(file_id, FW.TABLE_NAME);
 
                     //для каждого имени типа работы
                 while (curTypeSort.moveToNext()) {
@@ -485,7 +485,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                             typeName + " type_id = " + type_id);
 
                     //получаем курсор с данными сметы с file_id для типа работ с type_id
-                    curStroka = mSmetaOpenHelper.getDataFWSortStructured(file_id,type_id);
+                    curStroka = tableControllerSmeta.getDataSortStructured(file_id,type_id, FW.TABLE_NAME);
 
                     //...выводим все строки с названием, ценой, количеством и суммой
                     while (curStroka.moveToNext()) {
@@ -503,7 +503,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                     }else if (position_tab == 1){
 
                     //получаем курсор с именами типов материала
-                    curTypeSort =  mSmetaOpenHelper.getTypeNamesFMSortStructured(file_id);
+                    curTypeSort =  tableControllerSmeta.getTypeNamesStructured(file_id, FM.TABLE_NAME);
 
                     //для каждого имени типа материала
                     while (curTypeSort.moveToNext()) {
@@ -521,7 +521,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                                 typeName + " type_id = " + type_id);
 
                         //получаем курсор с данными сметы с file_id для типа материала с type_id
-                        curStroka =  mSmetaOpenHelper.getDataFMSortStructured(file_id, type_id);
+                        curStroka =  tableControllerSmeta.getDataSortStructured(file_id, type_id, FM.TABLE_NAME);
 
                         //...выводим все строки с названием, ценой, количеством и суммой
                         while(curStroka.moveToNext()) {

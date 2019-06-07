@@ -58,7 +58,7 @@ public class Tab3Mat extends Tab3SmetasWorkMatAbstrFrag {
         }
 
         //Строковый массив с именами типов материалов из таблицы FW для файла с file_id
-        String[] matNamesFM = mSmetaOpenHelper.getMatNamesFM(file_id);
+        String[] matNamesFM = tableControllerSmeta.getNamesFWFM(file_id, FM.TABLE_NAME);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab3Mat updateAdapter Всего материалов = "+ cursor.getCount() );

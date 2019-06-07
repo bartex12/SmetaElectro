@@ -1476,6 +1476,108 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return units;
     }
 
+    //получаем список работ/материалов по id файла из таблиц FW/FM
+    public String[] getNamesFWFM(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getMatNamesFM ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = null;
+        String select = "";
+        String[] names = new String[]{};
+        switch (table) {
+            case FM.TABLE_NAME:
+                select = " select DISTINCT " + FM.FM_MAT_NAME +
+                        " from " +  FM.TABLE_NAME + " where " +  FM.FM_FILE_ID + " = " + file_id;
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+                names = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    names[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getMatNamesFM names[position] = " + names[position]);
+                }
+                break;
+
+            case FW.TABLE_NAME:
+                select = " select DISTINCT " + FW.FW_WORK_NAME +
+                        " from " +  FW.TABLE_NAME + " where " +  FW.FW_FILE_ID + " = " + file_id;
+                cursor = db.rawQuery(select, null);
+                Log.i(TAG, "TableControllerSmeta.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+                names = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    names[position] = cursor.getString(cursor.getColumnIndex(FW.FW_WORK_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getMatNamesFM names[position] = " + names[position]);
+                }
+                break;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return names;
+    }
+
+    //получаем список типов по id файла из таблицы FW
+    public String[] getTypeNamesSort(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = null;
+        String select = "";
+        String[] names = new String[]{};
+        switch (table) {
+            case FW.TABLE_NAME:
+                cursor = db.query(
+                        true,
+                        FW.TABLE_NAME,   // таблица
+                        new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
+                        FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FW.FW_TYPE_ID,                 // порядок сортировки
+                        null);
+                Log.i(TAG, "TableControllerSmeta.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
+                names = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    names[position] = cursor.getString(cursor.getColumnIndex(FW.FW_TYPE_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getTypeNamesSort names[position] = " + names[position]);
+                }
+                break;
+
+            case FM.TABLE_NAME:
+                cursor = db.query(
+                        true,
+                        FM.TABLE_NAME,   // таблица
+                        new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
+                        FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FM.FM_MAT_TYPE_ID,              // порядок сортировки
+                        null);
+                Log.i(TAG, "TableControllerSmeta.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
+                names = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+                while (cursor.moveToNext()){
+                    int position = cursor.getPosition();
+                    names[position] = cursor.getString(cursor.getColumnIndex(FM.FM_MAT_TYPE_NAME));
+                    Log.i(TAG, "TableControllerSmeta.getTypeNamesSort names[position] = " + names[position]);
+                }
+                break;
+
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return names;
+    }
+
+
     //получаем количество работ  по смете с id файла file_id
     public float[] getArraySumma(long file_id, String table) {
 
@@ -1761,7 +1863,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 while (cursor.moveToNext()){
                     int position = cursor.getPosition();
                     units_name[position] = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
-                    Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnits position = " + position);
                 }
                 break;
 
@@ -1773,7 +1875,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 while (cursor.moveToNext()){
                     int position = cursor.getPosition();
                     units_name[position] = cursor.getString(cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME));
-                    Log.i(TAG, "SmetaOpenHelper.getArrayUnitsNames position = " + position);
+                    Log.i(TAG, "TableControllerSmeta.getArrayUnits position = " + position);
                 }
                 break;
         }
@@ -1782,6 +1884,78 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         }
         db.close();
         return units_name;
+    }
+
+    //получаем курсор с именами типов работ
+    public Cursor getTypeNamesStructured(long file_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesStructured ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =null;
+
+        switch (table) {
+            case FW.TABLE_NAME:
+                cursor = db.query(
+                        true,
+                        FW.TABLE_NAME,   // таблица
+                        new String[]{FW.FW_TYPE_NAME, FW.FW_TYPE_ID},            // столбцы
+                        FW.FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FW.FW_TYPE_ID,                 // порядок сортировки
+                        null);
+                break;
+
+            case FM.TABLE_NAME:
+                cursor = db.query(
+                        true,
+                        FM.TABLE_NAME,   // таблица
+                        new String[]{FM.FM_MAT_TYPE_NAME, FM.FM_MAT_TYPE_ID},            // столбцы
+                        FM.FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FM.FM_MAT_TYPE_ID,                 // порядок сортировки
+                        null);
+                break;
+        }
+        Log.i(TAG, "TableControllerSmeta  getTypeNamesStructured.getCount() = " +  cursor.getCount());
+        db.close();
+        return cursor;
+    }
+
+    //получаем курсор с данными сметы с file_id для типа работ с type_id
+    public Cursor getDataSortStructured(long file_id, long type_id, String table){
+        Log.i(TAG, "TableControllerSmeta.getDataSortStructured ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor =null;
+
+        switch (table) {
+            case FW.TABLE_NAME:
+                cursor = db.query(
+                        FW.TABLE_NAME,   // таблица
+                        new String[]{FW.FW_WORK_NAME, FW.FW_COST, FW.FW_COUNT, FW.FW_SUMMA},  // столбцы
+                        FW.FW_FILE_ID + "=?" + " AND " + FW.FW_TYPE_ID + "=?", // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FW.FW_WORK_ID);                   // порядок сортировки
+                break;
+
+            case FM.TABLE_NAME:
+                cursor = db.query(
+                        FM.TABLE_NAME,   // таблица
+                        new String[]{FM.FM_MAT_NAME,FM.FM_MAT_COST,FM.FM_MAT_COUNT,FM.FM_MAT_SUMMA},// столбцы
+                        FM.FM_FILE_ID + "=?"+ " AND " + FM.FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FM.FM_MAT_ID);                   // порядок сортировки
+                break;
+        }
+        Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
+
+        return cursor;
     }
 
     //получаем курсор с названиями категорий

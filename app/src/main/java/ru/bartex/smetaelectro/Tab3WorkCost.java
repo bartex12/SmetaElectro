@@ -46,7 +46,7 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
         if (isSelectedType){
             Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = true " );
             //Курсор с именами работ с типом type_id
-            cursor = mSmetaOpenHelper.getWorkNames(type_id);
+            cursor =tableControllerSmeta.getNamesFromCatId(type_id, Work.TABLE_NAME);
         }else {
             Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
             //Курсор с именами  всех работ из таблицы Work
