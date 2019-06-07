@@ -33,7 +33,6 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     SimpleAdapter sara;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     boolean isSelectedCat;
     long cat_id;
@@ -55,7 +54,6 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onAttach // " );
-        mSmetaOpenHelper = new SmetaOpenHelper(context);
         tableControllerSmeta  = new TableControllerSmeta(context);
         onClickTypeListener = (OnClickTypekListener)context;
     }

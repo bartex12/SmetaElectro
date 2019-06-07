@@ -64,7 +64,6 @@ public class SmetasMatCost extends AppCompatActivity implements
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     File fileWork; //имя файла с данными по смете на работы
 
@@ -155,7 +154,6 @@ public class SmetasMatCost extends AppCompatActivity implements
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasMatCost onCreate file_id =" + file_id);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
@@ -547,7 +545,7 @@ public class SmetasMatCost extends AppCompatActivity implements
 
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
-                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
+                SQLiteDatabase db = tableControllerSmeta.getReadableDatabase();
 
                 String selectMatName = " SELECT " + Mat.MAT_NAME +
                         " FROM " +  Mat.TABLE_NAME;

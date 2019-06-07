@@ -46,7 +46,7 @@ public class SmetasMat extends AppCompatActivity implements
     boolean isSelectedCat =  false;
     long type_id;
     long cat_id;
-    SmetaOpenHelper mSmetaOpenHelper;
+
     TableControllerSmeta tableControllerSmeta;
     Menu menu;
 
@@ -128,7 +128,7 @@ public class SmetasMat extends AppCompatActivity implements
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
+
         tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);

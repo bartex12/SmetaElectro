@@ -28,7 +28,6 @@ public class SpecificSmeta extends AppCompatActivity {
     long file_id;
     DataFile dataFile;
 
-    private SmetaOpenHelper smetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
@@ -36,7 +35,6 @@ public class SpecificSmeta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_specific);
 
-        smetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента

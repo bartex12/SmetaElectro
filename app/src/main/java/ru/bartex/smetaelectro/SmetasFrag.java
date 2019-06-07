@@ -48,7 +48,6 @@ public class SmetasFrag extends Fragment {
     public static final String TAG = "33333";
 
     ListView lvSmetas;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
@@ -79,7 +78,6 @@ public class SmetasFrag extends Fragment {
         super.onAttach(context);
         //получаем  ViewPager viewPager
         viewPager = getActivity().findViewById(R.id.container);
-        mSmetaOpenHelper = new SmetaOpenHelper(context);
         tableControllerSmeta = new TableControllerSmeta(context);
         Log.d(TAG, "// SmetasFrag onAttach  viewPager = " + viewPager);
     }

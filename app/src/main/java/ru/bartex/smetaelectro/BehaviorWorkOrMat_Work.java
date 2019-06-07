@@ -23,7 +23,6 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
 
     public static final String TAG = "33333";
     ListView lvSmetas;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
@@ -38,16 +37,15 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
 
     Context context;
 
-    public BehaviorWorkOrMat_Work(Context context, SmetaOpenHelper mSmetaOpenHelper,
+    public BehaviorWorkOrMat_Work(Context context,
                                   TableControllerSmeta tableControllerSmeta, ListView lvSmetas,
                                   long file_id){
         Log.d(TAG, "//BehaviorWorkOrMat_Work Конструктор // " );
-        this.mSmetaOpenHelper = mSmetaOpenHelper;
         this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetas = lvSmetas;
         this.file_id = file_id;
         this.context = context;
-        Log.d(TAG, "BehaviorWorkOrMat_Work Конструктор  mSmetaOpenHelper ="+ mSmetaOpenHelper+
+        Log.d(TAG, "BehaviorWorkOrMat_Work Конструктор  tableControllerSmeta ="+ tableControllerSmeta+
                 "  lvSmetas = " + lvSmetas);
     }
 

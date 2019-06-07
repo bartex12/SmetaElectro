@@ -59,7 +59,6 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
     LinearLayout llWork;
     ListView mListViewNames;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     SimpleAdapter sara;
     long file_id;
@@ -87,7 +86,6 @@ public class ListOfSmetasStructured extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_list);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
@@ -434,8 +432,6 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             try {
                fileWork.createNewFile();
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
-
-                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
 
                 Cursor curStroka = null;
                 Cursor curTypeSort = null;

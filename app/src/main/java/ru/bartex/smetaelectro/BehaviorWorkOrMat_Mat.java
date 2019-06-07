@@ -25,7 +25,6 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
     long file_id;
     ListView lvSmetasMaterials;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     float[] mat_summa;
     float totalSumma; // общая стоимость материалов по смете
@@ -38,10 +37,9 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
     Context context;
 
-    public BehaviorWorkOrMat_Mat(Context context, SmetaOpenHelper mSmetaOpenHelper,
+    public BehaviorWorkOrMat_Mat(Context context,
                                  TableControllerSmeta tableControllerSmeta,
                                  ListView lvSmetas, long file_id){
-        this.mSmetaOpenHelper = mSmetaOpenHelper;
         this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetasMaterials = lvSmetas;
         this.file_id = file_id;

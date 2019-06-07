@@ -35,8 +35,6 @@ public class DialogSaveCostMat extends DialogFragment {
 
     public static final String TAG = "33333";
 
-
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     float cost = 0; //цена работы
     boolean isType;
@@ -79,7 +77,6 @@ public class DialogSaveCostMat extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mSmetaOpenHelper = new SmetaOpenHelper(context);
         tableControllerSmeta = new TableControllerSmeta(context);
         catTypeMatCostNameListener = (OnCatTypeMatCostNameListener)context;
     }

@@ -72,9 +72,10 @@ public class MainActivity extends AppCompatActivity {
         //если записи есть, получаем id по имени "Новая смета" (скорее всего, 1)
         //если id = -1, значит ошибка
         file_id = mDbHelper.createDefaultFileIfNeed();
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = tableControllerSmeta.getWritableDatabase();
         Log.d(TAG, "Новая смета - file_id = " + file_id);
         Log.d(TAG, "db  - db.getPath() = " + db.getPath());
+        db.close();
     }
 
     @Override

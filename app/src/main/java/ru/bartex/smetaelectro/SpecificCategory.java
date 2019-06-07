@@ -20,7 +20,6 @@ public class SpecificCategory extends AppCompatActivity {
     long cat_id;
     DataCategory dataCategory;
 
-    private SmetaOpenHelper smetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
@@ -28,7 +27,6 @@ public class SpecificCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
-        smetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента

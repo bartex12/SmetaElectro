@@ -24,14 +24,12 @@ public class ChangeDataMat extends AppCompatActivity {
     long work_id;
 
     private TableControllerSmeta tableControllerSmeta;
-    private SmetaOpenHelper smetaOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_change_data);
 
-        smetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного материала из интента

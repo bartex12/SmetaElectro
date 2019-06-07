@@ -35,7 +35,6 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
 
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     public abstract  void updateAdapter();
@@ -50,7 +49,6 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onAttach // " );
-        mSmetaOpenHelper = new SmetaOpenHelper(context);
         tableControllerSmeta  = new TableControllerSmeta(context);
         onClickCatListener = (OnClickCatListener)context;
 

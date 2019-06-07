@@ -19,7 +19,6 @@ public class SpesificMat extends AppCompatActivity {
     long mat_id;
     DataMat dataMat;
 
-    private SmetaOpenHelper smetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
@@ -27,8 +26,7 @@ public class SpesificMat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
-        smetaOpenHelper = new SmetaOpenHelper(this);
-        tableControllerSmeta  = new TableControllerSmeta(this);
+             tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         mat_id = getIntent().getExtras().getLong(P.ID_MAT);

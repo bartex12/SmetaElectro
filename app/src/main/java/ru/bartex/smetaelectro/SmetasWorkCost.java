@@ -58,7 +58,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     boolean isSelectedCat =  false;
     long type_id;
     long cat_id;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -151,7 +150,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasWorkCost onCreate file_id =" + file_id);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
@@ -578,7 +576,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
-                SQLiteDatabase db = mSmetaOpenHelper.getReadableDatabase();
+                SQLiteDatabase db = tableControllerSmeta.getReadableDatabase();
 
                 String selectWorkName = " SELECT " + Work.WORK_NAME +
                         " FROM " +  Work.TABLE_NAME;

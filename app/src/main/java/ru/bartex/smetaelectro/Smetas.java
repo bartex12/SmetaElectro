@@ -40,7 +40,6 @@ public class Smetas extends AppCompatActivity {
     int pos;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
 
     @Override
@@ -54,7 +53,6 @@ public class Smetas extends AppCompatActivity {
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);

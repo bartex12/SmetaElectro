@@ -22,9 +22,9 @@ public class SmetasFrag_Tab1Rab extends SmetasFrag {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        behaviorWorkOrMat = new BehaviorWorkOrMat_Work(getActivity(), mSmetaOpenHelper,
+        behaviorWorkOrMat = new BehaviorWorkOrMat_Work(getActivity(),
                 tableControllerSmeta, lvSmetas, file_id);
-        Log.d(TAG, "SmetasFrag_Tab1Rab onViewCreated mSmetaOpenHelper ="+ mSmetaOpenHelper+
+        Log.d(TAG, "SmetasFrag_Tab1Rab onViewCreated tableControllerSmeta ="+ tableControllerSmeta+
                 "  lvSmetas = " + lvSmetas + "  file_id = " + file_id);
     }
 }

@@ -29,7 +29,6 @@ public class DetailCost extends AppCompatActivity {
     EditText mTextViewCost;
     Button mButtonSave;
     Button mButtonCancel;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     long cat_id;
     long type_id;
@@ -46,7 +45,6 @@ public class DetailCost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cost_detail);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);

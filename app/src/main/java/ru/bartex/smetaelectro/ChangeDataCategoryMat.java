@@ -24,13 +24,11 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
     long cat_id;
     TableControllerSmeta tableControllerSmeta;
 
-    private SmetaOpenHelper smetaOpenHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_change_data);
 
-        smetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента

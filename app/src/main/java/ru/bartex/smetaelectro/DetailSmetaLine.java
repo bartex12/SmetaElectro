@@ -38,7 +38,6 @@ public class DetailSmetaLine extends AppCompatActivity {
     TextView mTextViewSumma;
     Button mButtonSave;
     Button mButtonCancel;
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     long file_id;
     static long cat_id;
@@ -57,7 +56,6 @@ public class DetailSmetaLine extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_detail);
 
-        mSmetaOpenHelper = new SmetaOpenHelper(this);
         tableControllerSmeta = new TableControllerSmeta(this);
 
         file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);

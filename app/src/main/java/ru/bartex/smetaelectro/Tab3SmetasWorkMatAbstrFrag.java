@@ -35,7 +35,6 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
 
-    SmetaOpenHelper mSmetaOpenHelper;
     TableControllerSmeta tableControllerSmeta;
     boolean isSelectedType;
     long type_id;
@@ -51,7 +50,6 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onAttach // " );
-        mSmetaOpenHelper = new SmetaOpenHelper(context);
         tableControllerSmeta  = new TableControllerSmeta(context);
     }
 
