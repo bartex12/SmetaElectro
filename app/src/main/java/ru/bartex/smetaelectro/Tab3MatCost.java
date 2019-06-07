@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
@@ -75,7 +76,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3MatCost - onItemClick  mat_id = " + mat_id +
                 "  name = " + name);
         // проверяем есть ли такой  материал в FM для файла с file_id
-        final boolean isMat = mSmetaOpenHelper.isMatInFM(file_id, mat_id);
+        final boolean isMat = tableControllerSmeta.isWorkMatInFWFM(file_id, mat_id, FM.TABLE_NAME);
         Log.d(TAG, "Tab3MatCost - onItemClick  isMat = " + isMat);
 
         //ищем id категории материалов, зная id типа

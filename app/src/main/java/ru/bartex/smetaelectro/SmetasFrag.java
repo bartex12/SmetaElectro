@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
@@ -102,8 +104,8 @@ public class SmetasFrag extends Fragment {
                     //switch (positionItem){
                     case 0:
                         long work_id = tableControllerSmeta.getIdFromName(smeta_item_name, Work.TABLE_NAME);
-                        long type_id = mSmetaOpenHelper.getTypeIdWork(file_id, work_id);
-                        long cat_id = mSmetaOpenHelper.getCateIdWork(file_id, work_id);
+                        long type_id = tableControllerSmeta.getTypeIdFWFM(file_id, work_id, FW.TABLE_NAME);
+                        long cat_id = tableControllerSmeta.getCateIdFWFM(file_id, work_id, FW.TABLE_NAME);
 
                         Intent intent_work = new Intent(getActivity(), DetailSmetaLine.class);
                         intent_work.putExtra(P.ID_FILE_DEFAULT, file_id);
@@ -116,8 +118,8 @@ public class SmetasFrag extends Fragment {
 
                     case 1:
                         long mat_id = tableControllerSmeta.getIdFromName(smeta_item_name, Mat.TABLE_NAME);
-                        long type_mat_id = mSmetaOpenHelper.getTypeIdMat(file_id, mat_id);
-                        long cat_mat_id = mSmetaOpenHelper.getCateIdMat(file_id, mat_id);
+                        long type_mat_id = tableControllerSmeta.getTypeIdFWFM(file_id, mat_id, FM.TABLE_NAME);
+                        long cat_mat_id = tableControllerSmeta.getCateIdFWFM(file_id, mat_id, FM.TABLE_NAME);
 
                         Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
                         intent_mat.putExtra(P.ID_FILE, file_id);

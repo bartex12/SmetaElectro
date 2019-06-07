@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
@@ -92,7 +93,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Work - onItemClick  work_id = " + work_id +
                 "  work_name = " + name);
         // проверяем есть ли такая  работа в FW для файла с file_id
-        final boolean isWork = mSmetaOpenHelper.isWorkInFW(file_id, work_id);
+        final boolean isWork = tableControllerSmeta.isWorkMatInFWFM(file_id, work_id, FW.TABLE_NAME);
         Log.d(TAG, "Tab3Work - onItemClick  isWork = " + isWork);
 
         //ищем id категории работы, зная id типа

@@ -447,6 +447,84 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         return currentID;
     }
 
+    //получаем id категории  работы/материала из FW/FM
+    public long getCateIdFWFM(long file_id, long id, String table){
+        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select = "";
+        Cursor cursor =null;
+        long cat_id = -1;
+
+        switch (table) {
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
+                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    cat_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
+                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
+                }
+                break;
+
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_CATEGORY_ID + " FROM " + FW.TABLE_NAME +
+                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
+                Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    cat_id = cursor.getLong(cursor.getColumnIndex(FW.FW_CATEGORY_ID));
+                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
+                }
+                break;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return cat_id;
+    }
+
+    //получаем id категории  работы/материала из FW/FM
+    public long getTypeIdFWFM(long file_id, long id, String table){
+        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select = "";
+        Cursor cursor =null;
+        long type_id = -1;
+
+        switch (table) {
+            case FM.TABLE_NAME:
+                select =select = " SELECT " + FM.FM_MAT_TYPE_ID + " FROM " + FM.TABLE_NAME +
+                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+                        cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    type_id =cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
+                            Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
+                }
+                break;
+
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_TYPE_ID + " FROM " + FW.TABLE_NAME +
+                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
+                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+                Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM cursor.getCount() = " + cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+                    type_id = cursor.getLong(cursor.getColumnIndex(FW.FW_TYPE_ID));
+                    Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
+                    break;
+                }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return type_id;
+    }
 
     //получаем имя работы по её id
     public String getNameFromId(long id, String table) {
@@ -2075,7 +2153,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
     //получаем единицы измерения материала с помощью вложенного запроса
     public String getUnitMat(long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.getCostUnitMatById ... ");
+        Log.i(TAG, "TableControllerSmeta.getUnitMat ... ");
         String unitMatName = "";
         SQLiteDatabase db = this.getReadableDatabase();
         String unit = " SELECT " +  UnitMat.UNIT_MAT_NAME +
@@ -2087,21 +2165,99 @@ public class TableControllerSmeta extends SmetaOpenHelper {
 
         Cursor cursor = db.rawQuery(unit, null);
 
-        Log.d(TAG, "getCostUnitMatById cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "TableControllerSmeta getUnitMat cursor.getCount() = " + cursor.getCount());
 
         if (cursor.moveToFirst()) {
             // Узнаем индекс  столбца
             int idColumnIndex = cursor.getColumnIndex(UnitMat.UNIT_MAT_NAME);
             // Используем индекс для получения строки или числа
             unitMatName = cursor.getString(idColumnIndex);
-            Log.d(TAG, "getCostUnitMatById unitName = " + unitMatName);
+            Log.d(TAG, "TableControllerSmeta getUnitMat unitName = " + unitMatName);
         }
         cursor.close();
         db.close();
         return unitMatName;
     }
 
+    /**
+     * обновляем количество и сумму в таблице FM
+     */
+    public void updateRowInFWFM(
+            long file_id, long id, float cost, String unit,
+            float count, float summa, String table){
+        Log.i(TAG, "TableControllerSmeta.updateRowInFWFM ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        switch (table) {
+            case FW.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(FW.FW_COST, cost);
+                cv.put(FW.FW_UNIT, unit);
+                cv.put(FW.FW_COUNT, count);
+                cv.put(FW.FW_SUMMA, summa);
+                db.update(FW.TABLE_NAME, cv,
+                        FW.FW_FILE_ID + " =? " +" AND " + FW.FW_WORK_ID + " =? ",
+                        new String[]{String.valueOf(file_id), String.valueOf(id)});
+                break;
+            case FM.TABLE_NAME:
+                cv = new ContentValues();
+                cv.put(FM.FM_MAT_COST, cost);
+                cv.put(FM.FM_MAT_UNIT, unit);
+                cv.put(FM.FM_MAT_COUNT, count);
+                cv.put(FM.FM_MAT_SUMMA, summa);
+                db.update(FM.TABLE_NAME, cv,
+                        FM.FM_FILE_ID + " =? " +" AND " + FM.FM_MAT_ID + " =? ",
+                        new String[]{String.valueOf(file_id), String.valueOf(id)});
+                break;
+        }
+        Log.i(TAG, "TableControllerSmeta.updateRowInFWFM - cost =" +
+                cost + "  summa = " + summa);
+        db.close();
+    }
+
+    public boolean isWorkMatInFWFM(long file_id, long mat_id, String table){
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM ... ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String select = "";
+        Cursor cursor =null;
+        switch (table) {
+            case FW.TABLE_NAME:
+                select = " SELECT " + FW.FW_WORK_NAME + " FROM " + FW.TABLE_NAME +
+                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
+                break;
+
+            case FM.TABLE_NAME:
+                select = " SELECT " + FM.FM_MAT_NAME + " FROM " + FM.TABLE_NAME +
+                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+                break;
+        }
+        cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM cursor.getCount() = " + cursor.getCount());
+        if (cursor.getCount() != 0) {
+            return true;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return false;
+    }
+
+    //обновляем данные файла сметы имя, адрес, описание, дата и время
+    public void updateDataFile(long file_id, String name, String adress, String description){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //заполняем данные для обновления в базе
+        ContentValues values = new ContentValues();
+        values.put(FileWork.FILE_NAME, name);
+        values.put(FileWork.ADRESS, adress);
+        values.put(FileWork.DESCRIPTION_OF_FILE, description);
+
+        db.update(FileWork.TABLE_NAME, values,
+                FileWork._ID + "=" + file_id, null);
+        Log.i(TAG, "TableControllerSmeta.updateDataFile - name =" + name + "  file_id = " + file_id);
+    }
 
 }
 

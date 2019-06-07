@@ -60,7 +60,7 @@ public class SmetaNewNameChange extends SmetaNewName {
                     String description = etSmetaDescription.getText().toString();
 
                     //обновляем данные файла
-                    tableControllerSmeta.updateFileData(file_id, nameFile, adress, description);
+                    tableControllerSmeta.updateDataFile(file_id, nameFile, adress, description);
 
                     Toast.makeText(SmetaNewNameChange.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
