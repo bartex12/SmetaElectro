@@ -161,8 +161,8 @@ public class DetailSmetaLine extends AppCompatActivity {
                             DialogFragment dialogFragment = new CostDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost");
                         }else{
-                            long FW_ID = mSmetaOpenHelper.insertRowInFW_Name(file_id, work_id,
-                                    type_id, cat_id, cost, count, unit, count*cost);
+                            long FW_ID = tableControllerSmeta.insertRowInFWFM(file_id, work_id,
+                                    type_id, cat_id, cost, count, unit, count*cost, FW.TABLE_NAME);
                             Log.d(TAG, "DetailSmetaLine-mButtonSave-onClick FW_ID = " + FW_ID);
                             //выводим таблицу FW в лог для проверки
                             tableControllerSmeta.displayTable(FM.TABLE_NAME);

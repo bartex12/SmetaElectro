@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -54,7 +55,7 @@ public class CostMatDetail extends AppCompatActivity {
 
         //выводим название материала
         mTextViewMatName = findViewById(R.id.tv_cost_workName);
-        String matName = mSmetaOpenHelper.getMatNameById(mat_id);
+        String matName = tableControllerSmeta.getNameFromId(mat_id, Mat.TABLE_NAME);
         mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork

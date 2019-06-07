@@ -23,6 +23,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
@@ -189,7 +191,7 @@ public class Smetas extends AppCompatActivity {
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
                             //удаляем пункт сметы из таблицы FW
-                            mSmetaOpenHelper.deleteWorkItemFromFW(file_id, work_id);
+                            tableControllerSmeta.deleteItemFromFWFM(file_id, work_id, FW.TABLE_NAME);
                             //обновляем данные списка фрагмента активности
                             updateAdapter(0);
                             break;
@@ -203,7 +205,7 @@ public class Smetas extends AppCompatActivity {
 
                             //mSmetaOpenHelper.displayFM();
                             //удаляем пункт сметы из таблицы FM
-                            mSmetaOpenHelper.deleteMatItemFromFM(file_id, mat_id);
+                            tableControllerSmeta.deleteItemFromFWFM(file_id, mat_id, FM.TABLE_NAME);
                             //mSmetaOpenHelper.displayFM();
 
                             updateAdapter(1);

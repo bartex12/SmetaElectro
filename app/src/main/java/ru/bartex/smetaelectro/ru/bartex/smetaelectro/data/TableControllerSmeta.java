@@ -515,13 +515,48 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                     currentName = cursor.getString(idColumnIndex);
                 }
                 break;
-        }
 
+            case Mat.TABLE_NAME:
+                name = " SELECT " + Mat._ID + " , " +  Mat.MAT_NAME +
+                        " FROM " + Mat.TABLE_NAME +
+                        " WHERE " + Mat._ID  + " = ?" ;
+                cursor = db.rawQuery(name, new String[]{String.valueOf(id)});
+                if (cursor.moveToFirst()) {
+                    // Узнаем индекс каждого столбца
+                    int idColumnIndex =  cursor.getColumnIndex(Mat.MAT_NAME);
+                    // Используем индекс для получения строки или числа
+                    currentName = cursor.getString(idColumnIndex);
+                }
+                break;
+
+            case TypeMat.TABLE_NAME:
+                cursor = db.query(true, TypeMat.TABLE_NAME,
+                        null,
+                        TypeMat._ID + "=" + id,
+                        null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    // Используем индекс для получения строки или числа
+                    currentName = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
+                }
+                break;
+
+            case CategoryMat.TABLE_NAME:
+                cursor = db.query(true, CategoryMat.TABLE_NAME,
+                        null,
+                        CategoryMat._ID + "=" + id,
+                        null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    // Используем индекс для получения строки или числа
+                    currentName = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
+                }
+                break;
+
+        }
         Log.d(TAG, "getNameFromId currentName = " + currentName);
         if (cursor != null) {
             cursor.close();
         }
-        db.close();
+        //db.close();
         return currentName;
     }
 
@@ -588,6 +623,26 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 break;
         }
         db.close();
+    }
+
+    //удаляем работу/материал  из сметы FW/FM по file_id и work_id/mat_id
+    public void deleteItemFromFWFM(long file_id, long id, String table){
+        Log.i(TAG, "TableControllerSmeta.deleteItemFromFWFM ... ");
+        SQLiteDatabase db = this.getWritableDatabase();
+        int del = -1;
+        switch (table){
+            case FW.TABLE_NAME:
+                db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " + " AND " + FW.FW_WORK_ID + " =? ",
+                        new String[]{String.valueOf(file_id), String.valueOf(id)});
+                break;
+
+            case FM.TABLE_NAME:
+                del = db.delete(
+                        FM.TABLE_NAME, FM.FM_FILE_ID + " =? " + " AND " + FM.FM_MAT_ID + " =? ",
+                        new String[]{String.valueOf(file_id), String.valueOf(id)});
+                break;
+        }
+        Log.i(TAG, "TableControllerSmeta.deleteItemFromFWFM  - del =  " + del);
     }
 
     // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
@@ -1875,6 +1930,88 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         db.close();
         Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
         return _id;
+    }
+
+    /**
+     * Вставляет строку в таблицу FW
+     */
+    public long  insertRowInFWFM(long file_id, long work_mat_id, long type_id, long category_id,
+                                    float cost, float  count, String unit, float summa, String table){
+        Log.i(TAG, "TableControllerSmeta.insertRowInFWFM ... ");
+        long ID = -1;
+        String fileName="";
+
+        switch (table) {
+            case FW.TABLE_NAME:
+                //получаем имя файла по его id
+                fileName = this.getNameFromId(file_id, FileWork.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM fileName =  " + fileName);
+                //получаем имя работы по id работы
+                String workName = this.getNameFromId(work_mat_id, Work.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM workName =  " + workName);
+                //получаем имя типа работы по id типа работы
+                String typeName = this.getNameFromId(type_id, TypeWork.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM typeName =  " + typeName);
+                //получаем имя категории работы по id категории работы
+                String catName = this.getNameFromId(category_id, CategoryWork.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM catName =  " + catName);
+
+                cv = new ContentValues();
+                cv.put(FW.FW_FILE_ID,file_id);
+                cv.put(FW.FW_FILE_NAME,fileName);
+                cv.put(FW.FW_WORK_ID,work_mat_id);
+                cv.put(FW.FW_WORK_NAME,workName);
+                cv.put(FW.FW_TYPE_ID,type_id);
+                cv.put(FW.FW_TYPE_NAME,typeName);
+                cv.put(FW.FW_CATEGORY_ID,category_id);
+                cv.put(FW.FW_CATEGORY_NAME,catName);
+                cv.put(FW.FW_COST,cost);
+                cv.put(FW.FW_COUNT,count);
+                cv.put(FW.FW_UNIT,unit);
+                cv.put(FW.FW_SUMMA,summa);
+                //приходится сдесь открывать, так как она закрыта из getNameFromId
+                SQLiteDatabase db = getWritableDatabase();
+                // вставляем строку
+                ID = db.insert(FW.TABLE_NAME, null, cv);
+                db.close();
+                break;
+
+            case FM.TABLE_NAME:
+                //получаем имя файла по его id
+                fileName = this.getNameFromId(file_id, FileWork.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM fileName =  " + fileName);
+                //получаем имя материала  по id материала
+                String matName = this.getNameFromId(work_mat_id, Mat.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM matName =  " + matName);
+                //получаем имя типа материала по id типа материала
+                String typeMatName = this.getNameFromId(type_id, TypeMat.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM typeMatName =  " + typeMatName);
+                //получаем имя категории материала по id категории материала
+                String catMatName = this.getNameFromId(category_id, CategoryMat.TABLE_NAME);
+                Log.i(TAG, "TableControllerSmeta.insertRowInFWFM catName =  " + catMatName);
+
+                cv = new ContentValues();
+                cv.put(FM.FM_FILE_ID,file_id);
+                cv.put(FM.FM_FILE_NAME,fileName);
+                cv.put(FM.FM_MAT_ID,work_mat_id);
+                cv.put(FM.FM_MAT_NAME,matName);
+                cv.put(FM.FM_MAT_TYPE_ID,type_id);
+                cv.put(FM.FM_MAT_TYPE_NAME,typeMatName);
+                cv.put(FM.FM_MAT_CATEGORY_ID,category_id);
+                cv.put(FM.FM_MAT_CATEGORY_NAME,catMatName);
+                cv.put(FM.FM_MAT_COST,cost);
+                cv.put(FM.FM_MAT_COUNT,count);
+                cv.put(FM.FM_MAT_UNIT,unit);
+                cv.put(FM.FM_MAT_SUMMA,summa);
+                //приходится сдесь открывать, так как она закрыта из getNameFromId
+                SQLiteDatabase db1 = getWritableDatabase();
+                // вставляем строку
+                ID = db1.insert(FM.TABLE_NAME, null, cv);
+                db1.close();
+                break;
+        }
+        Log.d(TAG, "TableControllerSmeta.insertRowInFWFM  FW._ID = " + ID);
+        return ID;
     }
 
     //получаем количество видов материала с типом type_mat_id

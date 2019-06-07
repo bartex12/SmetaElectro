@@ -903,73 +903,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return currentID;
     }
 
-    //получаем имя работы по её id
-    public String getWorkNameById(long work_id){
-        Log.i(TAG, "SmetaOpenHelper.getWorkNameById ... ");
-        String currentWorkName = "";
-        String workName = " SELECT " + Work._ID + " , " +  Work.WORK_NAME +
-                " FROM " + Work.TABLE_NAME +
-                " WHERE " + Work._ID  + " = ?" ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(workName, new String[]{String.valueOf(work_id)});
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            // Узнаем индекс каждого столбца
-            int idColumnIndex = cursor.getColumnIndex(Work.WORK_NAME);
-            // Используем индекс для получения строки или числа
-            currentWorkName = cursor.getString(idColumnIndex);
-        }
-        Log.d(TAG, "getWorkNameById currentWorkName = " + currentWorkName);
-            cursor.close();
-        return currentWorkName;
-    }
-
-    /**
-     * Вставляет строку в таблицу FW
-     */
-    public long  insertRowInFW_Name(long file_id, long work_id, long type_id, long category_id,
-                               float cost_work, float  count, String unit, float summa){
-
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        //получаем имя файла по его id
-        String fileName = this.getFileNameById(file_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name fileName =  " + fileName);
-        //получаем имя работы по id работы
-        String workName = this.getWorkNameById(work_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name workName =  " + workName);
-        //получаем имя типа работы по id типа работы
-        String typeName = this.getTypeNameById(type_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name typeName =  " + typeName);
-        //получаем имя категории работы по id категории работы
-        String catName = this.getCategoryNameById(category_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFW_Name catName =  " + catName);
-
-                ContentValues cv = new ContentValues();
-        cv.put(FW.FW_FILE_ID,file_id);
-        cv.put(FW.FW_FILE_NAME,fileName);
-        cv.put(FW.FW_WORK_ID,work_id);
-        cv.put(FW.FW_WORK_NAME,workName);
-        cv.put(FW.FW_TYPE_ID,type_id);
-        cv.put(FW.FW_TYPE_NAME,typeName);
-        cv.put(FW.FW_CATEGORY_ID,category_id);
-        cv.put(FW.FW_CATEGORY_NAME,catName);
-        cv.put(FW.FW_COST,cost_work);
-        cv.put(FW.FW_COUNT,count);
-        cv.put(FW.FW_UNIT,unit);
-        cv.put(FW.FW_SUMMA,summa);
-
-        // вставляем строку
-        long ID = db.insert(FW.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertRowInFW_Name  FW._ID = " + ID);
-
-        return ID;
-    }
-
     /**
      * обновляем количество и сумму в таблице FW
      */
@@ -991,64 +924,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 count + "  summa = " + summa);
     }
 
-    /**
-     * Возвращает имя файла работы по его ID
-     */
-    public String getFileNameById( long file_id)  {
-        Log.i(TAG, "SmetaOpenHelper.getFileNameById ... ");
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor mCursor = db.query(true, FileWork.TABLE_NAME,
-                null,
-                FileWork._ID + "=" + file_id,
-                null, null, null, null, null);
-        Log.d(TAG, "getFileNameById mCursor.getCount() = " + mCursor.getCount());
-        if (mCursor.getCount() != 0) {
-            mCursor.moveToFirst();
-        }
-        String fileName = mCursor.getString(mCursor.getColumnIndex(FileWork.FILE_NAME));
-        Log.d(TAG, "getFileNameById fileName = " + fileName);
-        mCursor.close();
-        return fileName;
-    }
-
-    /**
-     * Возвращает имя типа работы по его ID
-     */
-    public String getTypeNameById( long type_id){
-        Log.i(TAG, "SmetaOpenHelper.getTypeNameById ... ");
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor = db.query(true, TypeWork.TABLE_NAME,
-                null,
-                TypeWork._ID + "=" + type_id,
-                null, null, null, null, null);
-        if (mCursor.getCount() != 0) {
-            mCursor.moveToFirst();
-        }
-        String typeName = mCursor.getString(mCursor.getColumnIndex(TypeWork.TYPE_NAME));
-        Log.d(TAG, "getTypeNameById typeName = " + typeName);
-        mCursor.close();
-        return typeName;
-    }
-
-    /**
-     * Возвращает имя категории работы по его ID
-     */
-    public String getCategoryNameById( long cat_id) throws SQLException {
-        Log.i(TAG, "SmetaOpenHelper.getCategoryNameById ... ");
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor = db.query(true, CategoryWork.TABLE_NAME,
-                null,
-                CategoryWork._ID + "=" + cat_id,
-                null, null, null, null, null);
-        if (mCursor.getCount() != 0) {
-            mCursor.moveToFirst();
-        }
-        String catName = mCursor.getString(mCursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
-        Log.d(TAG, "getCategoryNameById catName = " + catName);
-        mCursor.close();
-        return catName;
-    }
 
     //получаем список типов по id файла из таблицы FW
     public String[] getTypeNamesFWSort(long file_id){
@@ -1295,33 +1170,6 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return -1;
     }
-
-    //удаляем работу из сметы FW по file_id и work_id
-    public void deleteWorkItemFromFW(long file_id, long work_id){
-        Log.i(TAG, "SmetaOpenHelper.deleteWorkItemFromFW ... ");
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? " + " AND " + FW.FW_WORK_ID + " =? ",
-                new String[]{String.valueOf(file_id), String.valueOf(work_id)});
-    }
-/*
-    //Добавляем вид работы
-    public long  insertCostZero(long work_Id){
-        Log.i(TAG, "SmetaOpenHelper.insertCostZero ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(CostWork.COST_WORK_ID,work_Id);
-        cv.put(CostWork.COST_UNIT_ID, 1);
-        cv.put(CostWork.COST_COST,0);
-        cv.put(CostWork.COST_NUMBER,1);
-        // вставляем строку
-        long ID = db.insert(CostWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertCostZero  CostWork._ID = " + ID);
-        return ID;
-    }
-*/
     public boolean isMatInFM(long file_id, long mat_id){
         Log.i(TAG, "SmetaOpenHelper.isMatInFM ... ");
 
@@ -1336,7 +1184,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return false;
     }
-
+/*
     //получаем имя материала  по его id
     public String getMatNameById(long mat_id){
         Log.i(TAG, "SmetaOpenHelper.getMatNameById ... ");
@@ -1357,7 +1205,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return currentWorkName;
     }
-
+*/
     /**
      * обновляем количество и сумму в таблице FM
      */
@@ -1379,101 +1227,12 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.i(TAG, "SmetaOpenHelper.updateRowInFM_Count_Summa - cost_mat =" +
                 cost_mat + "  summa = " + summaMat + " ");
     }
-    /**
-     * Вставляет строку в таблицу FW
-     */
-    public long  insertRowInFM_Name(long file_id, long mat_id, long type_mat_id, long category_mat_id,
-                                    float cost_mat, float  count_mat, String unit_mat, float summa_mat){
-
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFM_Name ... ");
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        //получаем имя файла по его id
-        String fileName = this.getFileNameById(file_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFM_Name fileName =  " + fileName);
-        //получаем имя материала  по id материала
-        String matName = this.getMatNameById(mat_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFM_Name matName =  " + matName);
-        //получаем имя типа материала по id типа материала
-        String typeMatName = this.getTypeNameMatById(type_mat_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFM_Name typeMatName =  " + typeMatName);
-        //получаем имя категории материала по id категории материала
-        String catMatName = this.getCategoryMatNameById(category_mat_id);
-        Log.i(TAG, "SmetaOpenHelper.insertRowInFM_Name catName =  " + catMatName);
-
-        ContentValues cv = new ContentValues();
-        cv.put(FM.FM_FILE_ID,file_id);
-        cv.put(FM.FM_FILE_NAME,fileName);
-        cv.put(FM.FM_MAT_ID,mat_id);
-        cv.put(FM.FM_MAT_NAME,matName);
-        cv.put(FM.FM_MAT_TYPE_ID,type_mat_id);
-        cv.put(FM.FM_MAT_TYPE_NAME,typeMatName);
-        cv.put(FM.FM_MAT_CATEGORY_ID,category_mat_id);
-        cv.put(FM.FM_MAT_CATEGORY_NAME,catMatName);
-        cv.put(FM.FM_MAT_COST,cost_mat);
-        cv.put(FM.FM_MAT_COUNT,count_mat);
-        cv.put(FM.FM_MAT_UNIT,unit_mat);
-        cv.put(FM.FM_MAT_SUMMA,summa_mat);
-
-        // вставляем строку
-        long ID = db.insert(FM.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertRowInFM_Name  FM._ID = " + ID);
-
-        return ID;
-    }
-
-    /**
-     * Возвращает имя типа татериала  по  ID типа
-     */
-    public String getTypeNameMatById( long type_id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor = db.query(true, TypeMat.TABLE_NAME,
-                null,
-                TypeMat._ID + "=" + type_id,
-                null, null, null, null, null);
-        if (mCursor.getCount() != 0) {
-            mCursor.moveToFirst();
-        }
-        String typeMatName = mCursor.getString(mCursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-        Log.d(TAG, "getTypeNameMatById typeMatName = " + typeMatName);
-        mCursor.close();
-        return typeMatName;
-    }
-
-    /**
-     * Возвращает имя категории работы по его ID
-     */
-    public String getCategoryMatNameById( long cat_mat_id) throws SQLException {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor = db.query(true, CategoryMat.TABLE_NAME,
-                null,
-                CategoryMat._ID + "=" + cat_mat_id,
-                null, null, null, null, null);
-        if (mCursor.getCount() != 0) {
-            mCursor.moveToFirst();
-        }
-        String catMatName = mCursor.getString(mCursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
-        Log.d(TAG, "getCategoryMatNameById catMatName = " + catMatName);
-        mCursor.close();
-        return catMatName;
-    }
-
-    //удаляем работу из сметы FW по file_id и mat_id
-    public void deleteMatItemFromFM(long file_id, long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.deleteMatItemFromFM ... ");
-        SQLiteDatabase db = this.getWritableDatabase();
-        int del = db.delete(
-                FM.TABLE_NAME, FM.FM_FILE_ID + " =? " + " AND " + FM.FM_MAT_ID + " =? ",
-                new String[]{String.valueOf(file_id), String.valueOf(mat_id)});
-        Log.i(TAG, "SmetaOpenHelper.deleteMatItemFromFM  - del =  " + del);
-    }
 
 
 
-    //получаем id типа работы
+
+
+    //получаем id типа работы ***
     public long getTypeIdMat(long file_id, long mat_id){
         Log.i(TAG, "SmetaOpenHelper.getTypeIdMat ... ");
         String select = " SELECT " + FM.FM_MAT_TYPE_ID + " FROM " + FM.TABLE_NAME +
@@ -1492,7 +1251,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    //получаем id категории работы
+    //получаем id категории работы ***
     public long getCateIdMat(long file_id, long mat_id){
         Log.i(TAG, "SmetaOpenHelper.getCateIdMat ... ");
         String select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
@@ -1510,23 +1269,5 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             cursor.close();
         return -1;
     }
-/*
-    //Добавляем вид материала с левыми параметрами, чобы удалить при отказе пользователя
-    public long  insertCostMatZero(long mat_Id){
-        Log.i(TAG, "SmetaOpenHelper.insertCostMatZero ... ");
 
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(CostMat.COST_MAT_ID, mat_Id);
-        cv.put(CostMat.COST_MAT_UNIT_ID, 1);
-        cv.put(CostMat.COST_MAT_COST,0);
-        cv.put(CostMat.COST_MAT_NUMBER,1);
-        // вставляем строку
-        long ID = db.insert(CostMat.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        db.close();
-        Log.d(TAG, "MyDatabaseHelper.insertCostMatZero  CostMat._ID = " + ID);
-        return ID;
-    }
-*/
 }

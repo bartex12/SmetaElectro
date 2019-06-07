@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
 
@@ -86,8 +88,8 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
         }else{
             Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = false  cat_id = " +
                     cat_id + "  type_id = " + type_id);
-           typeName = smetaOpenHelper.getTypeNameMatById(type_id);
-           catName = smetaOpenHelper.getCategoryMatNameById(cat_id);
+           typeName = tableControllerSmeta.getNameFromId(type_id, TypeMat.TABLE_NAME);
+           catName = tableControllerSmeta.getNameFromId(cat_id, CategoryMat.TABLE_NAME);
         }
         tvCatName.setText(catName);
         tvTypeName.setText(typeName);

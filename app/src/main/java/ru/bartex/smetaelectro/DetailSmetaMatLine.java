@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
@@ -77,7 +78,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //выводим название материала
         mTextViewMatName = findViewById(R.id.tv_cost_workName);
-        String matName = mSmetaOpenHelper.getMatNameById(mat_id);
+        String matName = tableControllerSmeta.getNameFromId(mat_id, Mat.TABLE_NAME);
         mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork
@@ -157,8 +158,9 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                             DialogFragment dialogFragment = new CostMatDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost_mat");
                         }else{
-                            long FM_ID = mSmetaOpenHelper.insertRowInFM_Name(file_id, mat_id,
-                                    type_mat_id, cat_mat_id, costMat, countMat, unit, countMat*costMat);
+                            long FM_ID = tableControllerSmeta.insertRowInFWFM(file_id, mat_id,
+                                    type_mat_id, cat_mat_id, costMat, countMat,
+                                    unit, countMat*costMat, FM.TABLE_NAME);
                             Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
                                     " unit = " + unit);
                             //выводим таблицу FM в лог для проверки

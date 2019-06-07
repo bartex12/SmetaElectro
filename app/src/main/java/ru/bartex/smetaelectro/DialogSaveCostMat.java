@@ -226,7 +226,7 @@ public class DialogSaveCostMat extends DialogFragment {
                         Log.d(TAG, "Такое название отсутствует typeId = " + typeId);
 
                        //получаем имя категории по её Id
-                        String catMatName = mSmetaOpenHelper.getCategoryMatNameById(cat_id);
+                        String catMatName = tableControllerSmeta.getNameFromId(cat_id, CategoryMat.TABLE_NAME);
 
                         //Вызываем метод интерфейса, передаём название типа в SmetaMatCost
                         catTypeMatCostNameListener.catTypeMatCostNameTransmit(
