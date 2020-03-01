@@ -5,23 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Objects;
-
-import ru.bartex.smetaelectro.DataCategory;
-import ru.bartex.smetaelectro.DataCategoryMat;
 import ru.bartex.smetaelectro.DataFile;
-import ru.bartex.smetaelectro.DataMat;
-import ru.bartex.smetaelectro.DataType;
-import ru.bartex.smetaelectro.DataTypeMat;
-import ru.bartex.smetaelectro.DataWork;
 import ru.bartex.smetaelectro.R;
 
 public class SmetaOpenHelper extends SQLiteOpenHelper {
@@ -41,7 +30,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public SmetaOpenHelper(Context context){
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         fContext = context;
         Log.d(TAG, "SmetaOpenHelper - конструктор хелпера  DATABASE_NAME = " + DATABASE_NAME);
     }
@@ -52,7 +41,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "SmetaOpenHelper - onCreate");
 
-        // Строка для создания таблицы наименований смет FileData
+        // Строка для создания таблицы наименований смет FileWork
         String SQL_CREATE_TAB_FILE = "CREATE TABLE " + FileWork.TABLE_NAME + " ("
                 + FileWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FileWork.WORK_OR_MATERIAL + " INTEGER NOT NULL DEFAULT 0, "
@@ -63,7 +52,8 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 + FileWork.DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FileData");
+        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FileWork");
+
         // Если файлов в базе нет, вносим запись с именем файла по умолчанию P.FILENAME_DEFAULT
         this.createDefaultFile(db);
 
@@ -248,7 +238,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     // Когда файлов в базе нет, вносим запись с именем файла по умолчанию (Используем здесь)
-    public void createDefaultFile(SQLiteDatabase db) {
+    private void createDefaultFile(SQLiteDatabase db) {
         Log.d(TAG, "MyDatabaseHelper.createDefaultFile..." );
             //получаем дату и время в нужном для базы данных формате
             String dateFormat = this.getDateString();
@@ -271,7 +261,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     // Если файлов в базе нет, вносим запись с именем файла по умолчанию (используем в MainActiviti)
     public long createDefaultFileIfNeed() {
         int count = this.getFilesCount();
-        long file1_id = -1;
+        long file1_id ;
         if (count == 0) {
             //получаем дату и время в нужном для базы данных формате
             String dateFormat = this.getDateString();
@@ -291,7 +281,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем количество файлов  в базе
-    public int getFilesCount() {
+    private int getFilesCount() {
         Log.i(TAG, "TempDBHelper.getFilesCount ... ");
         String countQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -302,7 +292,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //формируем строку с датой
-    public String getDateString() {
+    String getDateString() {
         Calendar calendar = new GregorianCalendar();
         return String.format("%s-%s-%s",
                 calendar.get(Calendar.YEAR),
@@ -311,7 +301,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //формируем строку с временем
-    public String getTimeString() {
+    String getTimeString() {
         Calendar calendar = new GregorianCalendar();
         return String.format("%s:%s:%s",
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -320,7 +310,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //Метод для добавления нового файла в таблицу файлов
-    public long addFile(DataFile file) {
+    private long addFile(DataFile file) {
         Log.d(TAG, "TempDBHelper.addFile ... " + file.getFileName());
 
         SQLiteDatabase db = getWritableDatabase();
@@ -340,7 +330,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
 
     //получаем ID по имени файла
-    public long getIdFromFileName(String name) {
+    private long getIdFromFileName(String name) {
         long currentID;
         // Создадим и откроем для чтения базу данных
         SQLiteDatabase db = this.getReadableDatabase();
@@ -369,7 +359,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //создаём категории из ресурсов
-    public void createDefaultCategory(SQLiteDatabase db) {
+    private void createDefaultCategory(SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
@@ -388,7 +378,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //создаём категории из ресурсов
-    public void createDefaultCategoryMat(SQLiteDatabase db) {
+    private void createDefaultCategoryMat(SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
@@ -407,7 +397,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем курсор с Category._id  и делаем массив id
-    public int[] getArrayCategoryId(SQLiteDatabase db) {
+    private int[] getArrayCategoryId(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId ... ");
         String categoryId = " SELECT " + CategoryWork._ID  + " FROM " + CategoryWork.TABLE_NAME;
         Cursor cursor = db.rawQuery(categoryId, null);
@@ -423,7 +413,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем курсор с Category._id  и делаем массив id
-    public int[] getArrayCategoryIdMat( SQLiteDatabase db) {
+    private int[] getArrayCategoryIdMat(SQLiteDatabase db) {
 
         Log.i(TAG, "SmetaOpenHelper.getArrayCategoryIdMat ... ");
         String categoryIdMat = " SELECT " + CategoryMat._ID  + " FROM " + CategoryMat.TABLE_NAME;
@@ -440,7 +430,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //создаём типы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
-    public void createDefaultType(SQLiteDatabase db) {
+    private void createDefaultType(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.createDefaultType...");
         // Добавляем записи в таблицу
         ContentValues values = new ContentValues();
@@ -454,18 +444,18 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         int[] category_id = this.getArrayCategoryId(db);
         // проходим через массив и вставляем записи в таблицу
         int ii = 0; //type_name_category_electro
-        for (int i = 0; i <type_name_category_electro.length; i++ ){
-            this.InsertType(db, values, category_id[ii], type_name_category_electro[i]);
+        for (String s : type_name_category_electro) {
+            this.InsertType(db, values, category_id[ii], s);
         }
         ii = 1; //type_name_category_drugoe
-        for (int i = 0; i <type_name_category_drugoe.length; i++ ){
-            this.InsertType(db, values, category_id[ii], type_name_category_drugoe[i]);
+        for (String s : type_name_category_drugoe) {
+            this.InsertType(db, values, category_id[ii], s);
         }
         Log.d(TAG, "createDefaultType type_name_category_electro.length = " + type_name_category_electro.length);
     }
 
     //создаём типы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
-    public void createDefaultTypeMat(SQLiteDatabase db) {
+    private void createDefaultTypeMat(SQLiteDatabase db) {
 
         Log.i(TAG, "SmetaOpenHelper.createDefaultTypeMat...");
         // Добавляем записи в таблицу
@@ -480,33 +470,33 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         int[] category_id_mat = this.getArrayCategoryIdMat(db);
         // проходим через массив и вставляем записи в таблицу
         int ii = 0; //type_mat_name_electro
-        for (int i = 0; i <type_mat_name_electro.length; i++ ){
-            this.InsertTypeMat(db, values, category_id_mat[ii], type_mat_name_electro[i]);
+        for (String s : type_mat_name_electro) {
+            this.InsertTypeMat(db, values, category_id_mat[ii], s);
         }
         ii = 1; //type_mat_name_drugoe
-        for (int i = 0; i <type_mat_name_drugoe.length; i++ ){
-            this.InsertTypeMat(db, values, category_id_mat[ii], type_mat_name_drugoe[i]);
+        for (String s : type_mat_name_drugoe) {
+            this.InsertTypeMat(db, values, category_id_mat[ii], s);
         }
         Log.d(TAG, "createDefaultTypeMat type_mat_name_electro.length = " +
                 type_mat_name_electro.length + " type_mat_name_drugoe.length = " +type_mat_name_drugoe.length);
     }
 
-    public void InsertType( SQLiteDatabase db,ContentValues values,
-                            int category_id,  String type_name){
+    private void InsertType(SQLiteDatabase db, ContentValues values,
+                            int category_id, String type_name){
         values.put(TypeWork.TYPE_CATEGORY_ID, category_id);
         values.put(TypeWork.TYPE_NAME, type_name);
         db.insert(TypeWork.TABLE_NAME, null, values);
     }
 
-    public void InsertTypeMat( SQLiteDatabase db,ContentValues values,
-                            int category_id,  String type_name){
+    private void InsertTypeMat(SQLiteDatabase db, ContentValues values,
+                               int category_id, String type_name){
         values.put(TypeMat.TYPE_MAT_CATEGORY_ID, category_id);
         values.put(TypeMat.TYPE_MAT_NAME, type_name);
         db.insert(TypeMat.TABLE_NAME, null, values);
     }
 
     //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
-    public void createDefaultWork(SQLiteDatabase db) {
+    private void createDefaultWork(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.createDefaultWork...");
         // Добавляем записи в таблицу
         ContentValues values = new ContentValues();
@@ -533,71 +523,71 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         int[] type_id = this.getArrayTypeId(db);
         // проходим через массив и вставляем записи в таблицу
         int ii = 0; //work_name_type_demontag
-            for (int i = 0; i <work_name_type_demontag.length; i++ ){
-                this.InsertWork(db, values, type_id[ii], work_name_type_demontag[i]);
-            }
+        for (String s : work_name_type_demontag) {
+            this.InsertWork(db, values, type_id[ii], s);
+        }
         ii = 1; //work_name_type_podgotovka
-        for (int i = 0; i <work_name_type_podgotovka.length; i++ ){
-            this.InsertWork(db, values, type_id[ii], work_name_type_podgotovka[i]);
+        for (String s : work_name_type_podgotovka) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
            ii = 2; //work_name_type_shtroby_otverstia
-        for (int i = 0; i <work_name_type_shtroby_otverstia.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_shtroby_otverstia[i]);
+        for (String s : work_name_type_shtroby_otverstia) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 3; //work_name_type_kabel_kabelkanaly
-        for (int i = 0; i <work_name_type_kabel_kabelkanaly.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_kabel_kabelkanaly[i]);
+        for (String s : work_name_type_kabel_kabelkanaly) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 4; //work_name_type_korobki
-        for (int i = 0; i <work_name_type_korobki.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_korobki[i]);
+        for (String s : work_name_type_korobki) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 5; //work_name_type_sverlenie_otverstii
-        for (int i = 0; i <work_name_type_sverlenie_otverstii.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_sverlenie_otverstii[i]);
+        for (String s : work_name_type_sverlenie_otverstii) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 6; //work_name_type_shchit
-        for (int i = 0; i <work_name_type_shchit.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_shchit[i]);
+        for (String s : work_name_type_shchit) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 7; //work_name_type_set_rozetki
-        for (int i = 0; i <work_name_type_set_rozetki.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_set_rozetki[i]);
+        for (String s : work_name_type_set_rozetki) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 8; //work_name_type_set_svetilniki
-        for (int i = 0; i <work_name_type_set_svetilniki.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_set_svetilniki[i]);
+        for (String s : work_name_type_set_svetilniki) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 9; //work_name_type_LED
-        for (int i = 0; i <work_name_type_LED.length; i++ ){
-            this.InsertWork(db, values, type_id[ii], work_name_type_LED[i]);
+        for (String s : work_name_type_LED) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 10; //work_name_type_oborudovanie
-        for (int i = 0; i <work_name_type_oborudovanie.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_oborudovanie[i]);
+        for (String s : work_name_type_oborudovanie) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 11; //work_name_type_soputstv
-        for (int i = 0; i <work_name_type_soputstv.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_soputstv[i]);
+        for (String s : work_name_type_soputstv) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 12; //work_name_type_primechania
-        for (int i = 0; i <work_name_type_primechania.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_primechania[i]);
+        for (String s : work_name_type_primechania) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 13; //work_name_type_musor
-        for (int i = 0; i <work_name_type_musor.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_musor[i]);
+        for (String s : work_name_type_musor) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         ii = 14; //work_name_type_tovary
-        for (int i = 0; i <work_name_type_tovary.length; i++ ){
-            this.InsertWork(db, values, type_id[ii],  work_name_type_tovary[i]);
+        for (String s : work_name_type_tovary) {
+            this.InsertWork(db, values, type_id[ii], s);
         }
         Log.d(TAG, "createDefaultWork type_id.length = " +
                 type_id.length + " work_name_type_demontag.length = " +work_name_type_demontag.length);
     }
 
     //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
-    public void createDefaultMat(SQLiteDatabase db) {
+    private void createDefaultMat(SQLiteDatabase db) {
 
         Log.i(TAG, "SmetaOpenHelper.createDefaultMat...");
         // Добавляем записи в таблицу
@@ -624,112 +614,110 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         int[] type_id = this.getArrayTypeIdMat(db);
         // проходим через массив и вставляем записи в таблицу
         int ii = 0; //mat_name_type_kabeli
-        for (int i = 0; i <mat_name_type_kabeli.length; i++ ){
-            this.InsertMat(db, values, type_id[ii], mat_name_type_kabeli[i]);
+        for (String s : mat_name_type_kabeli) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 1; //mat_name_type_kabel_kanali
-        for (int i = 0; i <mat_name_type_kabel_kanali.length; i++ ){
-            this.InsertMat(db, values, type_id[ii], mat_name_type_kabel_kanali[i]);
+        for (String s : mat_name_type_kabel_kanali) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 2; //mat_name_type_korobki
-        for (int i = 0; i <mat_name_type_korobki.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_korobki[i]);
+        for (String s : mat_name_type_korobki) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 3; //mat_name_type_vremianki
-        for (int i = 0; i <mat_name_type_vremianki.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_vremianki[i]);
+        for (String s : mat_name_type_vremianki) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 4; //mat_name_type_rozetki
-        for (int i = 0; i <mat_name_type_rozetki.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_rozetki[i]);
+        for (String s : mat_name_type_rozetki) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 5; //mat_name_type_shchity
-        for (int i = 0; i <mat_name_type_shchity.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_shchity[i]);
+        for (String s : mat_name_type_shchity) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 6; //mat_name_type_led
-        for (int i = 0; i <mat_name_type_led.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_led[i]);
+        for (String s : mat_name_type_led) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 7; //mat_name_type_svetilniki
-        for (int i = 0; i <mat_name_type_svetilniki.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_svetilniki[i]);
+        for (String s : mat_name_type_svetilniki) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 8; //mat_name_type_bury
-        for (int i = 0; i <mat_name_type_bury.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_bury[i]);
+        for (String s : mat_name_type_bury) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 9; //mat_name_type_krepez
-        for (int i = 0; i <mat_name_type_krepez.length; i++ ){
-            this.InsertMat(db, values, type_id[ii], mat_name_type_krepez[i]);
+        for (String s : mat_name_type_krepez) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 10; //mat_name_type_sypuchie
-        for (int i = 0; i <mat_name_type_sypuchie.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_sypuchie[i]);
+        for (String s : mat_name_type_sypuchie) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 11; //mat_name_type_vspomogat
-        for (int i = 0; i <mat_name_type_vspomogat.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_vspomogat[i]);
+        for (String s : mat_name_type_vspomogat) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 12; //mat_name_type_instr
-        for (int i = 0; i <mat_name_type_instr.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_instr[i]);
+        for (String s : mat_name_type_instr) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         ii = 13; //mat_name_type_obschestroy
-        for (int i = 0; i <mat_name_type_obschestroy.length; i++ ){
-            this.InsertMat(db, values, type_id[ii],  mat_name_type_obschestroy[i]);
+        for (String s : mat_name_type_obschestroy) {
+            this.InsertMat(db, values, type_id[ii], s);
         }
         Log.d(TAG, "createDefaultMat type_id.length = " +
                 type_id.length + " mat_name_type_kabeli.length = " + mat_name_type_kabeli.length);
     }
 
-    public void InsertWork( SQLiteDatabase db,ContentValues values,
-                            int type_id,  String work_name){
+    private void InsertWork(SQLiteDatabase db, ContentValues values,
+                            int type_id, String work_name){
         values.put(Work.WORK_TYPE_ID, type_id);
         values.put(Work.WORK_NAME, work_name);
         db.insert(Work.TABLE_NAME, null, values);
     }
 
-    public void InsertMat( SQLiteDatabase db,ContentValues values,
-                            int type_id,  String work_name){
+    private void InsertMat(SQLiteDatabase db, ContentValues values,
+                           int type_id, String work_name){
         values.put(Mat.MAT_TYPE_ID, type_id);
         values.put(Mat.MAT_NAME, work_name);
         db.insert(Mat.TABLE_NAME, null, values);
     }
 
-    public void createDefaultUnit(SQLiteDatabase db){
+    private void createDefaultUnit(SQLiteDatabase db){
         Log.i(TAG, "SmetaOpenHelper.createDefaultUnit...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
         String[] unit_name = res.getStringArray(R.array.unit_name);
         // проходим через массив и вставляем записи в таблицу
-        int length = unit_name.length;
-        for (int i = 0; i<length ; i++){
-            values.put(Unit.UNIT_NAME, unit_name[i]);
+        for (String s : unit_name) {
+            values.put(Unit.UNIT_NAME, s);
             // Добавляем записи в таблицу
             db.insert(Unit.TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultUnit unit_name.length = " + unit_name.length );
     }
 
-    public void createDefaultUnitMat(SQLiteDatabase db){
+    private void createDefaultUnitMat(SQLiteDatabase db){
         Log.i(TAG, "SmetaOpenHelper.createDefaultUnitMat...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
         String[] unit_name = res.getStringArray(R.array.unit_name);
         // проходим через массив и вставляем записи в таблицу
-        int length = unit_name.length;
-        for (int i = 0; i<length ; i++){
-            values.put(UnitMat.UNIT_MAT_NAME, unit_name[i]);
+        for (String s : unit_name) {
+            values.put(UnitMat.UNIT_MAT_NAME, s);
             // Добавляем записи в таблицу
             db.insert(UnitMat.TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultUnitMat unit_name.length = " + unit_name.length );
     }
 
-    public void createDefaultCost(SQLiteDatabase db){
+    private void createDefaultCost(SQLiteDatabase db){
         Log.i(TAG, "SmetaOpenHelper.createDefaultCost...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
@@ -756,7 +744,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         Log.d(TAG, "createDefaultCost unit_id.length = " + unit_id.length );
     }
 
-    public void createDefaultCostMat(SQLiteDatabase db){
+    private void createDefaultCostMat(SQLiteDatabase db){
         Log.i(TAG, "SmetaOpenHelper.createDefaultCostMat...");
         ContentValues values = new ContentValues();
 
@@ -787,16 +775,16 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
                 unit_id.length + "  cost_of_mat.length" + cost_of_mat.length);
     }
 
-    public void InsertCost( SQLiteDatabase db,ContentValues values,
-                            long work_id,  long unit_id, float cost){
+    private void InsertCost(SQLiteDatabase db, ContentValues values,
+                            long work_id, long unit_id, float cost){
         values.put(CostWork.COST_WORK_ID, work_id);
         values.put(CostWork.COST_UNIT_ID, unit_id);
         values.put(CostWork.COST_COST, cost);
         db.insert(CostWork.TABLE_NAME, null, values);
     }
 
-    public void InsertCostMat( SQLiteDatabase db,ContentValues values,
-                            long work_id,  long unit_id, float cost){
+    private void InsertCostMat(SQLiteDatabase db, ContentValues values,
+                               long work_id, long unit_id, float cost){
         values.put(CostMat.COST_MAT_ID, work_id);
         values.put(CostMat.COST_MAT_UNIT_ID, unit_id);
         values.put(CostMat.COST_MAT_COST, cost);
@@ -804,7 +792,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем курсор с Work_Type_id  и делаем массив id
-    public int[] getArrayTypeId(SQLiteDatabase db) {
+    private int[] getArrayTypeId(SQLiteDatabase db) {
         Log.i(TAG, "SmetaOpenHelper.getArrayTypeId ... ");
         String typeId = " SELECT " + TypeWork._ID  + " FROM " + TypeWork.TABLE_NAME;
         Cursor cursor = db.rawQuery(typeId, null);
@@ -821,7 +809,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем курсор с Work_Type_id  и делаем массив id
-    public int[] getArrayTypeIdMat(SQLiteDatabase db) {
+    private int[] getArrayTypeIdMat(SQLiteDatabase db) {
 
         Log.i(TAG, "SmetaOpenHelper.getArrayTypeIdMat ... ");
         String typeIdMat = " SELECT " + TypeMat._ID  + " FROM " + TypeMat.TABLE_NAME;
@@ -839,7 +827,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
     }
 
     //получаем  все ID таблицы Work ***
-    public int[] getIdFromWorks(SQLiteDatabase db) {
+    private int[] getIdFromWorks(SQLiteDatabase db) {
         Log.d(TAG, "getIdFromWorks...");
         Cursor cursor = db.query(
                 Work.TABLE_NAME,   // таблица
@@ -860,12 +848,14 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             }
         }
             cursor.close();
-        Log.d(TAG, "getIdFromWorks currentID.length = " +currentID.length);
+        if (currentID != null) {
+            Log.d(TAG, "getIdFromWorks currentID.length = " +currentID.length);
+        }
         return currentID;
     }
 
     //получаем  все ID таблицы Mat ***
-    public int[] getIdFromMats(SQLiteDatabase db) {
+    private int[] getIdFromMats(SQLiteDatabase db) {
 
         Log.d(TAG, "getIdFromMats...");
         Cursor cursor = db.query(
@@ -887,7 +877,9 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
-        Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
+        if (currentID != null) {
+            Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
+        }
         return currentID;
     }
 
