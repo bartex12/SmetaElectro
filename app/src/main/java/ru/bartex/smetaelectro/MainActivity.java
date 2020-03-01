@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     final String ATTR_PICTURE = "PICTURE";
     final String ATTR_BASE_TEXT = "BASE_TEXT";
 
-    //создаём базу данных, если ее не было
     SmetaOpenHelper mDbHelper;
     TableControllerSmeta tableControllerSmeta;
     long file_id;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //создаём базу данных, если ее не было
         mDbHelper = new SmetaOpenHelper(this);
 
         tableControllerSmeta = new TableControllerSmeta(this);
