@@ -26,11 +26,11 @@ public class Work {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы конкретных работ Work
-        String SQL_CREATE_TAB_WORK = "CREATE TABLE " + Work.TABLE_NAME + " ("
-                + Work._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Work.WORK_TYPE_ID + " INTEGER NOT NULL, "
-                + Work.WORK_NAME + " TEXT NOT NULL, "
-                + Work.WORK_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
+        String SQL_CREATE_TAB_WORK = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + WORK_TYPE_ID + " INTEGER NOT NULL, "
+                + WORK_NAME + " TEXT NOT NULL, "
+                + WORK_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_WORK);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Work");
@@ -147,8 +147,8 @@ public class Work {
 
     private static void InsertWork(SQLiteDatabase db, ContentValues values,
                             int type_id, String work_name){
-        values.put(Work.WORK_TYPE_ID, type_id);
-        values.put(Work.WORK_NAME, work_name);
-        db.insert(Work.TABLE_NAME, null, values);
+        values.put(WORK_TYPE_ID, type_id);
+        values.put(WORK_NAME, work_name);
+        db.insert(TABLE_NAME, null, values);
     }
 }

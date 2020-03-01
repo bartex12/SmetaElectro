@@ -51,10 +51,10 @@ public class CategoryWork {
         // проходим через массив и вставляем записи в таблицу
         int length = cat_name.length;
         for (int i = 0; i<length ; i++){
-            values.put(CategoryWork.CATEGORY_NAME, cat_name[i]);
-            values.put(CategoryWork.CATEGORY_DESCRIPTION, cat_descr[i]);
+            values.put(CATEGORY_NAME, cat_name[i]);
+            values.put(CATEGORY_DESCRIPTION, cat_descr[i]);
             // Добавляем записи в таблицу
-            db.insert(CategoryWork.TABLE_NAME, null, values);
+            db.insert(TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name.length);
     }

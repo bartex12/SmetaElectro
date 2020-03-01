@@ -27,12 +27,12 @@ public class CostWork {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы расценок CostWork
-        String SQL_CREATE_TAB_COST = "CREATE TABLE " + CostWork.TABLE_NAME + " ("
-                + CostWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CostWork.COST_WORK_ID + " INTEGER NOT NULL, "
-                + CostWork.COST_UNIT_ID + " INTEGER NOT NULL, "
-                + CostWork.COST_COST + " REAL NOT NULL DEFAULT 0, "
-                + CostWork.COST_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
+        String SQL_CREATE_TAB_COST = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COST_WORK_ID + " INTEGER NOT NULL, "
+                + COST_UNIT_ID + " INTEGER NOT NULL, "
+                + COST_COST + " REAL NOT NULL DEFAULT 0, "
+                + COST_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_COST);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostWork");
@@ -97,9 +97,9 @@ public class CostWork {
 
     private static void InsertCost(SQLiteDatabase db, ContentValues values,
                             long work_id, long unit_id, float cost){
-        values.put(CostWork.COST_WORK_ID, work_id);
-        values.put(CostWork.COST_UNIT_ID, unit_id);
-        values.put(CostWork.COST_COST, cost);
-        db.insert(CostWork.TABLE_NAME, null, values);
+        values.put(COST_WORK_ID, work_id);
+        values.put(COST_UNIT_ID, unit_id);
+        values.put(COST_COST, cost);
+        db.insert(TABLE_NAME, null, values);
     }
 }

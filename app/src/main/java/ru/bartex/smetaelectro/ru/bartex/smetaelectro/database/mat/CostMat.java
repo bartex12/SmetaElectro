@@ -27,12 +27,12 @@ public class CostMat {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы расценок CostMat
-        String SQL_CREATE_TAB_COST_MAT = "CREATE TABLE " + CostMat.TABLE_NAME + " ("
-                + CostMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CostMat.COST_MAT_ID + " INTEGER NOT NULL, "
-                + CostMat.COST_MAT_UNIT_ID + " INTEGER NOT NULL, "
-                + CostMat.COST_MAT_COST + " REAL NOT NULL DEFAULT 0, "
-                + CostMat.COST_MAT_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
+        String SQL_CREATE_TAB_COST_MAT = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COST_MAT_ID + " INTEGER NOT NULL, "
+                + COST_MAT_UNIT_ID + " INTEGER NOT NULL, "
+                + COST_MAT_COST + " REAL NOT NULL DEFAULT 0, "
+                + COST_MAT_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_COST_MAT);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostMat");
@@ -102,10 +102,10 @@ public class CostMat {
 
     private static void InsertCostMat(SQLiteDatabase db, ContentValues values,
                                long work_id, long unit_id, float cost){
-        values.put(CostMat.COST_MAT_ID, work_id);
-        values.put(CostMat.COST_MAT_UNIT_ID, unit_id);
-        values.put(CostMat.COST_MAT_COST, cost);
-        db.insert(CostMat.TABLE_NAME, null, values);
+        values.put(COST_MAT_ID, work_id);
+        values.put(COST_MAT_UNIT_ID, unit_id);
+        values.put(COST_MAT_COST, cost);
+        db.insert(TABLE_NAME, null, values);
     }
 
 }

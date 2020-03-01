@@ -26,11 +26,11 @@ public class Mat {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы конкретных материалов Mat
-        String SQL_CREATE_TAB_MAT = "CREATE TABLE " + Mat.TABLE_NAME + " ("
-                + Mat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Mat.MAT_TYPE_ID + " INTEGER NOT NULL, "
-                + Mat.MAT_NAME + " TEXT NOT NULL, "
-                + Mat.MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
+        String SQL_CREATE_TAB_MAT = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + MAT_TYPE_ID + " INTEGER NOT NULL, "
+                + MAT_NAME + " TEXT NOT NULL, "
+                + MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_MAT);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Mat");
@@ -58,7 +58,6 @@ public class Mat {
         String[] mat_name_type_krepez = res.getStringArray(R.array.mat_name_type_krepez);
         String[] mat_name_type_sypuchie = res.getStringArray(R.array.mat_name_type_sypuchie);
         String[] mat_name_type_vspomogat = res.getStringArray(R.array.mat_name_type_vspomogat);
-
         String[] mat_name_type_instr = res.getStringArray(R.array.mat_name_type_instr);
         String[] mat_name_type_obschestroy = res.getStringArray(R.array.mat_name_type_obschestroy);
 
@@ -137,7 +136,6 @@ public class Mat {
         while (cursor.moveToNext()){
             int position = cursor.getPosition();
             type_id_mat[position] = cursor.getInt(cursor.getColumnIndex(TypeMat._ID));
-            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
         }
         cursor.close();
         return type_id_mat;
@@ -145,8 +143,8 @@ public class Mat {
 
     private static void InsertMat(SQLiteDatabase db, ContentValues values,
                            int type_id, String work_name){
-        values.put(Mat.MAT_TYPE_ID, type_id);
-        values.put(Mat.MAT_NAME, work_name);
-        db.insert(Mat.TABLE_NAME, null, values);
+        values.put(MAT_TYPE_ID, type_id);
+        values.put(MAT_NAME, work_name);
+        db.insert(TABLE_NAME, null, values);
     }
 }

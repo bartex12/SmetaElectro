@@ -31,14 +31,14 @@ public class FileWork {
     //создание таблицы
     public static void createTable(SQLiteDatabase db){
     // Строка для создания таблицы наименований смет FileWork
-        String SQL_CREATE_TAB_FILE = "CREATE TABLE " + FileWork.TABLE_NAME + " ("
-                + FileWork._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FileWork.WORK_OR_MATERIAL + " INTEGER NOT NULL DEFAULT 0, "
-                + FileWork.FILE_NAME + " TEXT NOT NULL, "
-                + FileWork.ADRESS + " TEXT, "
-                + FileWork.FILE_NAME_DATE + " TEXT NOT NULL DEFAULT current_date, "
-                + FileWork.FILE_NAME_TIME + " TEXT NOT NULL DEFAULT current_time, "
-                + FileWork.DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
+        String SQL_CREATE_TAB_FILE = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + WORK_OR_MATERIAL + " INTEGER NOT NULL DEFAULT 0, "
+                + FILE_NAME + " TEXT NOT NULL, "
+                + ADRESS + " TEXT, "
+                + FILE_NAME_DATE + " TEXT NOT NULL DEFAULT current_date, "
+                + FILE_NAME_TIME + " TEXT NOT NULL DEFAULT current_time, "
+                + DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FileWork");
@@ -67,9 +67,8 @@ public class FileWork {
         cv.put(FILE_NAME_TIME, timeFormat);
         cv.put(DESCRIPTION_OF_FILE, P.DESCRIPTION_DEFAULT);
         // вставляем строку
-        long ID = db.insert(FileWork.TABLE_NAME, null, cv);
-        // закрываем соединение с базой
-        //db.close();
+        long ID = db.insert(TABLE_NAME, null, cv);
+
         Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
     }
 

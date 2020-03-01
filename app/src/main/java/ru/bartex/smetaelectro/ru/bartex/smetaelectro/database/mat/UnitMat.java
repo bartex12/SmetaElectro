@@ -23,9 +23,9 @@ public class UnitMat {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы единиц измерения UnitMat для материалов
-        String SQL_CREATE_TAB_UNIT_MAT = "CREATE TABLE " + UnitMat.TABLE_NAME + " ("
-                + UnitMat._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + UnitMat.UNIT_MAT_NAME + " TEXT NOT NULL);";
+        String SQL_CREATE_TAB_UNIT_MAT = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + UNIT_MAT_NAME + " TEXT NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_UNIT_MAT);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы UnitMat");
@@ -41,9 +41,9 @@ public class UnitMat {
         String[] unit_name = res.getStringArray(R.array.unit_name);
         // проходим через массив и вставляем записи в таблицу
         for (String s : unit_name) {
-            values.put(UnitMat.UNIT_MAT_NAME, s);
+            values.put(UNIT_MAT_NAME, s);
             // Добавляем записи в таблицу
-            db.insert(UnitMat.TABLE_NAME, null, values);
+            db.insert(TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultUnitMat unit_name.length = " + unit_name.length );
     }

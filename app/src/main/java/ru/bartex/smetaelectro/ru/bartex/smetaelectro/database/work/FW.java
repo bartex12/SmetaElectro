@@ -29,7 +29,7 @@ public class FW {
     //создание таблицы
     public static void createTable(SQLiteDatabase db){
     // Строка для создания основной таблицы базы по работе, записи добавляются только программно
-        String SQL_CREATE_TAB_FILE_AND_WORK  = "CREATE TABLE " + FW.TABLE_NAME + " ("
+        String SQL_CREATE_TAB_FILE_AND_WORK  = "CREATE TABLE " + TABLE_NAME + " ("
                 + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FW_FILE_ID + " INTEGER NOT NULL, "
                 + FW_FILE_NAME + " TEXT NOT NULL, "

@@ -85,8 +85,8 @@ public class TypeMat {
 
     private static void InsertTypeMat(SQLiteDatabase db, ContentValues values,
                                int category_id, String type_name){
-        values.put(TypeMat.TYPE_MAT_CATEGORY_ID, category_id);
-        values.put(TypeMat.TYPE_MAT_NAME, type_name);
-        db.insert(TypeMat.TABLE_NAME, null, values);
+        values.put(TYPE_MAT_CATEGORY_ID, category_id);
+        values.put(TYPE_MAT_NAME, type_name);
+        db.insert(TABLE_NAME, null, values);
     }
 }

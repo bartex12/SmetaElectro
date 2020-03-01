@@ -23,9 +23,9 @@ public class Unit {
     //создание таблицы
     public static void createTable(SQLiteDatabase db, Context fContext){
         // Строка для создания таблицы единиц измерения Unit для работ
-        String SQL_CREATE_TAB_UNIT = "CREATE TABLE " + Unit.TABLE_NAME + " ("
-                + Unit._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Unit.UNIT_NAME + " TEXT NOT NULL);";
+        String SQL_CREATE_TAB_UNIT = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + UNIT_NAME + " TEXT NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_UNIT);
         Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Unit");
@@ -41,9 +41,9 @@ public class Unit {
         String[] unit_name = res.getStringArray(R.array.unit_name);
         // проходим через массив и вставляем записи в таблицу
         for (String s : unit_name) {
-            values.put(Unit.UNIT_NAME, s);
+            values.put(UNIT_NAME, s);
             // Добавляем записи в таблицу
-            db.insert(Unit.TABLE_NAME, null, values);
+            db.insert(TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultUnit unit_name.length = " + unit_name.length );
     }
