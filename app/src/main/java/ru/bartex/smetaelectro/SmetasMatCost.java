@@ -40,15 +40,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.UnitMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 
 public class SmetasMatCost extends AppCompatActivity implements
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,

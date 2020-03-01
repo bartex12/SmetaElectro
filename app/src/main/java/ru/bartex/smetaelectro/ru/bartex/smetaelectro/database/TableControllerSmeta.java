@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
+package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +16,19 @@ import ru.bartex.smetaelectro.DataMat;
 import ru.bartex.smetaelectro.DataType;
 import ru.bartex.smetaelectro.DataTypeMat;
 import ru.bartex.smetaelectro.DataWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class TableControllerSmeta extends SmetaOpenHelper {
 

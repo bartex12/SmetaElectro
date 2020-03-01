@@ -3,7 +3,6 @@ package ru.bartex.smetaelectro;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,34 +23,21 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
 

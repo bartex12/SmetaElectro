@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-
 public class DialogWorkOrMatCosts extends DialogFragment {
 
     static String TAG = "33333";

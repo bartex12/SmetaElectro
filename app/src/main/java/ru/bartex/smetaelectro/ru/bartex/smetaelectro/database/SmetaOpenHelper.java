@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
+package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database;
 
 
 import android.content.ContentValues;
@@ -12,6 +12,19 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import ru.bartex.smetaelectro.DataFile;
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class SmetaOpenHelper extends SQLiteOpenHelper {
 

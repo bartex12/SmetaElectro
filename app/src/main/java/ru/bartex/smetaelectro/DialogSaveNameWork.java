@@ -14,13 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class DialogSaveNameWork extends DialogSaveNameAbstract {
 

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 /**
  * A simple {@link Fragment} subclass.

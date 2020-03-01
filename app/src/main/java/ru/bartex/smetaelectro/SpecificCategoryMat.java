@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public class SpecificCategoryMat extends AppCompatActivity {
 

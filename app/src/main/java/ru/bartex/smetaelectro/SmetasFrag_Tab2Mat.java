@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 
 public class SmetasFrag_Tab2Mat extends SmetasFrag {
 

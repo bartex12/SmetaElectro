@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 /**
  * A simple {@link Fragment} subclass.

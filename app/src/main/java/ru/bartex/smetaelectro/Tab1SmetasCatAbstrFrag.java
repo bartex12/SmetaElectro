@@ -1,11 +1,9 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +14,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
 

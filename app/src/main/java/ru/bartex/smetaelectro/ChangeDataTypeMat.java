@@ -9,10 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class ChangeDataTypeMat extends AppCompatActivity {
     static String TAG = "33333";

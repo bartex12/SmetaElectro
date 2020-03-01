@@ -1,6 +1,5 @@
 package ru.bartex.smetaelectro;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -15,10 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public class SmetaNewName extends AppCompatActivity {
 

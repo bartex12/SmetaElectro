@@ -39,15 +39,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCostWork.OnCatTypeMatCostNameListener,
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{

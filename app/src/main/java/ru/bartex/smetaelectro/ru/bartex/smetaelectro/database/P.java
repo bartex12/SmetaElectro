@@ -1,15 +1,8 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
-
-import android.app.AlertDialog;
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.LayoutInflater;
+package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-
-import ru.bartex.smetaelectro.DialogWorkOrMatCosts;
 
 public class P {
 

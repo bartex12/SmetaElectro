@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.data;
+package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
 
 import android.provider.BaseColumns;
 

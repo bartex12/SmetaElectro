@@ -22,13 +22,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TableControllerSmeta;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Unit;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.data.Work;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class DialogSaveCostWork extends DialogFragment {
 
