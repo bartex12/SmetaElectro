@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.data.DataCategory;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 

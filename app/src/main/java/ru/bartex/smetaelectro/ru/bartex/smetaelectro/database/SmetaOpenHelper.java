@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import ru.bartex.smetaelectro.DataFile;
+import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.TotalTab;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;

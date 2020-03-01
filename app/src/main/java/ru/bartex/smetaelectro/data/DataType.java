@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.data;
 
 import java.io.Serializable;
 

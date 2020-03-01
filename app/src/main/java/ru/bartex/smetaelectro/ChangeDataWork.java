@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.data.DataWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
