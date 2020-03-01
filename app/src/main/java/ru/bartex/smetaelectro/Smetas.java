@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;

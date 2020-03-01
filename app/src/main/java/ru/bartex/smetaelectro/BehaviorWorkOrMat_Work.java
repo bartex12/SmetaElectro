@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 

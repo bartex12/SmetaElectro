@@ -25,7 +25,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -742,8 +742,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         //получаем дату и время в нужном для базы данных формате
-        String dateFormat = this.getDateString();
-        String timeFormat = this.getTimeString();
+        String dateFormat = P.getDateString();
+        String timeFormat = P.getTimeString();
 
         cv = new ContentValues();
         cv.put(FileWork.FILE_NAME, fileName);

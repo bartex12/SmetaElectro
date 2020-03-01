@@ -159,5 +159,21 @@ public class P {
         return totalSumma;
     }
 
+    //формируем строку с датой
+    public static String getDateString() {
+        Calendar calendar = new GregorianCalendar();
+        return String.format("%s-%s-%s",
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+    }
 
+    //формируем строку с временем
+    public static String getTimeString() {
+        Calendar calendar = new GregorianCalendar();
+        return String.format("%s:%s:%s",
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND));
+    }
 }
