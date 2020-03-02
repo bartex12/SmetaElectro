@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SpecificSmeta extends AppCompatActivity {
 
@@ -24,19 +27,30 @@ public class SpecificSmeta extends AppCompatActivity {
     DataFile dataFile;
 
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_specific);
 
+        initDB();
+
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, "SpecificSmeta onCreate file_id = " + file_id);
-        dataFile = new TableControllerSmeta(this).getFileData(file_id);
+        dataFile = FileWork.getFileData(database, file_id);
 
+        initViews();
+    }
+
+    private void initDB(){
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews(){
         tvSmetaName = findViewById(R.id.tvName);
         tvSmetaName.setText(dataFile.getFileName());
         Log.d(TAG, "SpecificSmeta onCreate tvSmetaName = " + dataFile.getFileName());

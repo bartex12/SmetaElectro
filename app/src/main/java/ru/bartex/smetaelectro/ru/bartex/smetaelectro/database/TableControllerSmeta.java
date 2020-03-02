@@ -41,70 +41,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cv = new ContentValues();
     }
 
-    //получаем список объектов DataFile
-    public List<DataFile> readFilesData() {
-        Log.i(TAG, "TableControllerSmeta.readFilesData ... ");
-        List<DataFile> recordsList = new ArrayList<DataFile>();
-
-        String dataQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(dataQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                DataFile dataFile = this.getFileDataFromCurcor(cursor);
-                //добавляем в список
-                recordsList.add(dataFile);
-
-            } while (cursor.moveToNext());
-        }
-        Log.d(TAG, "TableControllerSmeta readFilesData cursor.getCount() = " + cursor.getCount());
-        cursor.close();
-        db.close();
-        return recordsList;
-    }
-
-    //получаем объект DataFile для файла с file_id
-    public DataFile getFileData(long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getFileData ... ");
-        DataFile dataFile = new DataFile();
-        String fileName = " SELECT  * FROM " + FileWork.TABLE_NAME +
-                " WHERE " + FileWork._ID + " = ? ";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(fileName, new String[]{String.valueOf(file_id)});
-        if (cursor.moveToFirst()) {
-            dataFile = this.getFileDataFromCurcor(cursor);
-        }
-        Log.d(TAG, "TableControllerSmeta.getFileData cursor.getCount() = " + cursor.getCount());
-        cursor.close();
-        db.close();
-        return dataFile;
-    }
-
-    //получаем данные по категории по её id
-    public DataCategory getDataCategory(long cat_id){
-        Log.i(TAG, "TableControllerSmeta.getDataCategory ... ");
-        DataCategory dataCategory = new DataCategory();
-
-        String catData = " SELECT  * FROM " +  CategoryWork.TABLE_NAME +
-                " WHERE " + CategoryWork._ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            String currentCatName = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
-            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataCategory currentCatName = " + currentCatName);
-            //создаём экземпляр класса DataFile в конструкторе
-            dataCategory = new DataCategory(currentCatName, currentCatDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataCategory;
-    }
-
-    //получаем данные по категории по её id
+    //получаем данные по  типу работы по её id
     public DataType getDataType(long type_id){
         Log.i(TAG, "TableControllerSmeta.getDataType ... ");
         DataType dataType = new DataType();
@@ -215,22 +152,6 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cursor.close();
         db.close();
         return dataMat;
-    }
-
-    //получаем объект DataFile из курсора
-    public DataFile getFileDataFromCurcor(Cursor cursor) {
-        // Узнаем индекс каждого столбца и Используем индекс для получения строки
-        long id = cursor.getLong(cursor.getColumnIndex(FileWork._ID));
-        String currentFileName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
-        String currentAdress = cursor.getString(cursor.getColumnIndex(FileWork.ADRESS));
-        String currentDate = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME_DATE));
-        String currentTime = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME_TIME));
-        String currentDescription = cursor.getString(cursor.getColumnIndex(FileWork.DESCRIPTION_OF_FILE));
-        //Log.d(TAG, "getFileData currentFileName = " + currentFileName);
-        //создаём экземпляр класса DataFile в конструкторе
-        DataFile dataFile = new DataFile(id, currentFileName, currentAdress,
-                currentDate, currentTime, currentDescription);
-        return dataFile;
     }
 
     //получаем id по имени в зависимости от имени таблицы

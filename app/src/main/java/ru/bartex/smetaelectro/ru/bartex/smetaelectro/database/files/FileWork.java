@@ -1,10 +1,15 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 
 import static ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P.getDateString;
@@ -71,5 +76,60 @@ public class FileWork {
 
         Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
     }
+
+    //получаем список объектов DataFile
+    public static List<DataFile> readFilesData(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.readFilesData ... ");
+        List<DataFile> recordsList = new ArrayList<DataFile>();
+
+        String dataQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
+        Cursor cursor = db.rawQuery(dataQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                DataFile dataFile = getFileDataFromCurcor(cursor);
+                //добавляем в список
+                recordsList.add(dataFile);
+
+            } while (cursor.moveToNext());
+        }
+        Log.d(TAG, "TableControllerSmeta readFilesData cursor.getCount() = " + cursor.getCount());
+        cursor.close();
+        return recordsList;
+    }
+
+    //получаем объект DataFile для файла с file_id
+    public static DataFile getFileData(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getFileData ... ");
+        DataFile dataFile = new DataFile();
+
+        String fileName = " SELECT  * FROM " + FileWork.TABLE_NAME +
+                " WHERE " + FileWork._ID + " = ? ";
+        Cursor cursor = db.rawQuery(fileName, new String[]{String.valueOf(file_id)});
+
+        if (cursor.moveToFirst()) {
+            dataFile = getFileDataFromCurcor(cursor);
+        }
+        Log.d(TAG, "TableControllerSmeta.getFileData cursor.getCount() = " + cursor.getCount());
+        cursor.close();
+        return dataFile;
+    }
+
+    //получаем объект DataFile из курсора
+    private static DataFile getFileDataFromCurcor(Cursor cursor) {
+        // Узнаем индекс каждого столбца и Используем индекс для получения строки
+        long id = cursor.getLong(cursor.getColumnIndex(FileWork._ID));
+        String currentFileName = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME));
+        String currentAdress = cursor.getString(cursor.getColumnIndex(FileWork.ADRESS));
+        String currentDate = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME_DATE));
+        String currentTime = cursor.getString(cursor.getColumnIndex(FileWork.FILE_NAME_TIME));
+        String currentDescription = cursor.getString(cursor.getColumnIndex(FileWork.DESCRIPTION_OF_FILE));
+        //Log.d(TAG, "getFileData currentFileName = " + currentFileName);
+        //создаём экземпляр класса DataFile в конструкторе и возвращаем его
+        return new DataFile(id, currentFileName, currentAdress,
+                currentDate, currentTime, currentDescription);
+    }
+
+
 
 }

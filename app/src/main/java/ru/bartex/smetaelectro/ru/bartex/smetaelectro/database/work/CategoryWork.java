@@ -3,11 +3,13 @@ package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.data.DataCategory;
 
 public class CategoryWork {
     public static final String TAG = "33333";
@@ -58,4 +60,26 @@ public class CategoryWork {
         }
         Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name.length);
     }
+
+    //получаем данные по категории работы по её id
+    public static DataCategory getDataCategory(SQLiteDatabase db, long cat_id){
+        Log.i(TAG, "CategoryWork.getDataCategory ... ");
+        DataCategory dataCategory = new DataCategory();
+
+        String catData = " SELECT  * FROM " +  TABLE_NAME +
+                " WHERE " + _ID  + " = ? " ;
+        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            String currentCatName = cursor.getString(cursor.getColumnIndex(CATEGORY_NAME));
+            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CATEGORY_DESCRIPTION));
+            Log.d(TAG, "CategoryWork.getDataCategory currentCatName = " + currentCatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataCategory = new DataCategory(currentCatName, currentCatDescription);
+        }
+        cursor.close();
+        return dataCategory;
+    }
+
 }

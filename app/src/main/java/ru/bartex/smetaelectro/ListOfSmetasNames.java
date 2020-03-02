@@ -2,6 +2,7 @@ package ru.bartex.smetaelectro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.data.DataFile;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
@@ -39,18 +41,35 @@ public class ListOfSmetasNames extends AppCompatActivity {
     ArrayList<Map<String, Object>> data;
     Map<String,Object> m;
     SimpleAdapter sara;
-    Button newSmeta;
+
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_smetas_names);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_smetas_list);
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initDB();
+        initBottomNavigationView();
+        initViews();
 
         tableControllerSmeta = new TableControllerSmeta(this);
 
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(mListViewNames);
+
+    }
+
+    private void initDB(){
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initBottomNavigationView(){
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_smetas_list);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void initViews(){
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
         //находим View, которое выводит текст Список пуст
         View empty = findViewById(android.R.id.empty);
@@ -75,10 +94,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //объявляем о регистрации контекстного меню
-        registerForContextMenu(mListViewNames);
-
     }
 
    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener=
@@ -103,6 +118,12 @@ public class ListOfSmetasNames extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         updateAdapter();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
     }
 
     @Override
@@ -206,7 +227,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
     public void updateAdapter() {
 
         //Курсор с данными файловБ из которых берём имена
-        List<DataFile> recordsList = new TableControllerSmeta(this).readFilesData();
+        List<DataFile> recordsList = FileWork.readFilesData(database);
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(recordsList.size());
 
