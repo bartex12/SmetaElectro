@@ -31,232 +31,60 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cv = new ContentValues();
     }
 
-//    //получаем id по имени в зависимости от имени таблицы
-//    public long getIdFromName(String name, String tableName) {
-//        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+
+//    //получаем ID категории работы по имени типа работы
+//    public long getCatIdFromTypeId(long type_id, String table) {
+//        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
+//
 //        long currentID = -1;
 //        int idColumnIndex = -1;
 //        Cursor cursor = null;
 //        // Создадим и откроем для чтения базу данных
 //        SQLiteDatabase db = this.getReadableDatabase();
 //
-//        switch (tableName) {
-//            case FileWork.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case FileWork.TABLE_NAME...");
-//                cursor = db.query(
-//                        FileWork.TABLE_NAME,   // таблица
-//                        new String[]{FileWork._ID},            // столбцы
-//                        FileWork.FILE_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(FileWork._ID);
-//                    // Используем индекс для получения id
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case CategoryWork.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case CategoryWork.TABLE_NAME...");
-//                cursor = db.query(
-//                        CategoryWork.TABLE_NAME,   // таблица
-//                        new String[]{CategoryWork._ID},            // столбцы
-//                        CategoryWork.CATEGORY_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(CategoryWork._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case CategoryMat.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case CategoryMat.TABLE_NAME...");
-//                cursor = db.query(
-//                        CategoryMat.TABLE_NAME,   // таблица
-//                        new String[]{CategoryMat._ID},            // столбцы
-//                        CategoryMat.CATEGORY_MAT_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(CategoryMat._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
+//        switch (table) {
 //            case TypeWork.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case TypeWork.TABLE_NAME...");
 //                cursor = db.query(
 //                        TypeWork.TABLE_NAME,   // таблица
-//                        new String[]{TypeWork._ID},            // столбцы
-//                        TypeWork.TYPE_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
+//                        new String[]{TypeWork.TYPE_CATEGORY_ID},            // столбцы
+//                        TypeWork._ID + "=?",   // столбцы для условия WHERE
+//                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
 //                        null,                  // Don't group the rows
 //                        null,                  // Don't filter by row groups
 //                        null);                   // порядок сортировки
+//
 //                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(TypeWork._ID);
+//                    // Узнаем индекс каждого столбца
+//                    idColumnIndex = cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID);
+//                    // Используем индекс для получения строки или числа
 //                    currentID = cursor.getLong(idColumnIndex);
 //                }
 //                break;
 //
 //            case TypeMat.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case TypeMat.TABLE_NAME...");
 //                cursor = db.query(
 //                        TypeMat.TABLE_NAME,   // таблица
-//                        new String[]{TypeMat._ID},            // столбцы
-//                        TypeMat.TYPE_MAT_NAME + "=?",   // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
+//                        new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
+//                        TypeMat._ID + "=?",   // столбцы для условия WHERE
+//                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
 //                        null,                  // Don't group the rows
 //                        null,                  // Don't filter by row groups
 //                        null);                   // порядок сортировки
 //                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(TypeMat._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case Work.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case Work.TABLE_NAME...");
-//                cursor = db.query(
-//                        Work.TABLE_NAME,   // таблица
-//                        new String[]{Work._ID},            // столбцы
-//                        Work.WORK_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(Work._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case Mat.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case Mat.TABLE_NAME...");
-//                cursor = db.query(
-//                        Mat.TABLE_NAME,   // таблица
-//                        new String[]{Mat._ID},            // столбцы
-//                        Mat.MAT_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(Mat._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case Unit.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case Unit.TABLE_NAME...");
-//                cursor = db.query(
-//                        Unit.TABLE_NAME,   // таблица
-//                        new String[]{Unit._ID},            // столбцы
-//                        Unit.UNIT_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(Unit._ID);
-//                    currentID = cursor.getLong(idColumnIndex);
-//                }
-//                break;
-//
-//            case UnitMat.TABLE_NAME:
-//                Log.d(TAG, "getIdFromName case UnitMat.TABLE_NAME...");
-//                cursor = db.query(
-//                        UnitMat.TABLE_NAME,   // таблица
-//                        new String[]{UnitMat._ID},            // столбцы
-//                        UnitMat.UNIT_MAT_NAME + "=?",                  // столбцы для условия WHERE
-//                        new String[]{name},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс  столбца FileWork._ID
-//                    idColumnIndex = cursor.getColumnIndex(UnitMat._ID);
+//                    // Узнаем индекс каждого столбца
+//                    idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
+//                    // Используем индекс для получения строки или числа
 //                    currentID = cursor.getLong(idColumnIndex);
 //                }
 //                break;
 //        }
-//        Log.d(TAG, "getIdFromName currentID = " + currentID);
-//
+//        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId currentID = " + currentID);
 //        if (cursor != null) {
 //            cursor.close();
 //        }
 //        db.close();
 //        return currentID;
 //    }
-
-    //получаем ID категории работы по имени типа работы
-    public long getCatIdFromTypeId(long type_id, String table) {
-        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
-
-        long currentID = -1;
-        int idColumnIndex = -1;
-        Cursor cursor = null;
-        // Создадим и откроем для чтения базу данных
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        switch (table) {
-            case TypeWork.TABLE_NAME:
-                cursor = db.query(
-                        TypeWork.TABLE_NAME,   // таблица
-                        new String[]{TypeWork.TYPE_CATEGORY_ID},            // столбцы
-                        TypeWork._ID + "=?",   // столбцы для условия WHERE
-                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-                        null,                  // Don't group the rows
-                        null,                  // Don't filter by row groups
-                        null);                   // порядок сортировки
-
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс каждого столбца
-                    idColumnIndex = cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID);
-                    // Используем индекс для получения строки или числа
-                    currentID = cursor.getLong(idColumnIndex);
-                }
-                break;
-
-            case TypeMat.TABLE_NAME:
-                cursor = db.query(
-                        TypeMat.TABLE_NAME,   // таблица
-                        new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
-                        TypeMat._ID + "=?",   // столбцы для условия WHERE
-                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-                        null,                  // Don't group the rows
-                        null,                  // Don't filter by row groups
-                        null);                   // порядок сортировки
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс каждого столбца
-                    idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
-                    // Используем индекс для получения строки или числа
-                    currentID = cursor.getLong(idColumnIndex);
-                }
-                break;
-        }
-        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId currentID = " + currentID);
-        if (cursor != null) {
-            cursor.close();
-        }
-        db.close();
-        return currentID;
-    }
 
     //получаем id категории  работы/материала из FW/FM
     public long getCateIdFWFM(long file_id, long id, String table){

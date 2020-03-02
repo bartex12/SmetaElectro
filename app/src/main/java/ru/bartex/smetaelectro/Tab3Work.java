@@ -96,7 +96,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Work - onItemClick  isWork = " + isWork);
 
         //ищем id категории работы, зная id типа
-        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeWork.TABLE_NAME);
+        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), DetailSmetaLine.class);
         intent.putExtra(P.ID_FILE_DEFAULT, file_id);

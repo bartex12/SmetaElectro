@@ -99,7 +99,7 @@ public class Tab3Mat extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Mat - onItemClick  isMat = " + isMat);
         Log.d(TAG, "Tab3Mat - onItemClick  type_id = " + type_id);
         //ищем id категории материалов, зная id типа
-        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeMat.TABLE_NAME);
+        long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
         Log.d(TAG, "Tab3Mat - listView.onItemClick  file_id = " + file_id +
                 "  cat_id = " + cat_id + "  type_id = " + type_id +
                 "  mat_id = " + mat_id + "  isMat = " + isMat);

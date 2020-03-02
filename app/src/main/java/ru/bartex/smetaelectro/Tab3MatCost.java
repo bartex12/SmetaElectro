@@ -80,7 +80,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3MatCost - onItemClick  isMat = " + isMat);
 
         //ищем id категории материалов, зная id типа
-        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeMat.TABLE_NAME);
+        long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), CostMatDetail.class);
         intent.putExtra(P.ID_FILE, file_id);

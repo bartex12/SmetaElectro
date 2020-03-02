@@ -131,4 +131,27 @@ public class TypeWork {
         return currentID;
     }
 
+    //получаем ID категории работы по имени типа работы
+    public static long getCatIdFromTypeId(SQLiteDatabase db, long type_id) {
+        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
+
+        long currentID = -1;
+
+        Cursor cursor = db.query(
+                TABLE_NAME,   // таблица
+                new String[]{TYPE_CATEGORY_ID},            // столбцы
+                _ID + "=?",   // столбцы для условия WHERE
+                new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(cursor.getColumnIndex(TYPE_CATEGORY_ID));
+        }
+        cursor.close();
+        return currentID;
+    }
+
 }

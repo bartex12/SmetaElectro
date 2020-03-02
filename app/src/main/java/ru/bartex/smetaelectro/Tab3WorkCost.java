@@ -71,10 +71,10 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
 
     @Override
     public void sendIntent(String name) {
-//находим id по имени работы
+        //находим id по имени работы
         long work_id = Work.getIdFromName(database, name);
         //ищем id категории работы, зная id типа
-        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeWork.TABLE_NAME);
+        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), DetailCost.class);
         intent.putExtra(P.ID_CATEGORY, cat_id);

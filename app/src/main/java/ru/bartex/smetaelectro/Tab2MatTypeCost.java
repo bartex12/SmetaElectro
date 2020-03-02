@@ -68,7 +68,7 @@ public class Tab2MatTypeCost extends Tab2SmetasTypeAbstrFrag {
 
     @Override
     public long getCatId(long type_id) {
-        long cat_id = tableControllerSmeta.getCatIdFromTypeId(type_id, TypeMat.TABLE_NAME);
+        long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
         return cat_id;
     }
 
