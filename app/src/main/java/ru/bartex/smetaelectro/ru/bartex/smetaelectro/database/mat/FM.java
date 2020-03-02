@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -51,5 +52,24 @@ public class FM {
     static void onUpgrade(SQLiteDatabase database) {
         //обновлять пока не собираюсь
     }
+
+    //получаем id категории  материала из FM
+    public static long getCatId_FM(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
+
+        long cat_id = -1;
+
+        String select = " SELECT " + FM_MAT_CATEGORY_ID + " FROM " + TABLE_NAME +
+                " where " + FM_FILE_ID + " =? " + " and " + FM_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения количества работы
+            cat_id = cursor.getLong(cursor.getColumnIndex(FM_MAT_CATEGORY_ID));
+        }
+        cursor.close();
+        return cat_id;
+    }
+
 
 }

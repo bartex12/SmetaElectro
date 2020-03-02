@@ -98,7 +98,7 @@ public class SmetasFrag extends Fragment {
                     case 0:
                         long work_id = Work.getIdFromName(database, smeta_item_name);
                         long type_id = tableControllerSmeta.getTypeIdFWFM(file_id, work_id, FW.TABLE_NAME);
-                        long cat_id = tableControllerSmeta.getCateIdFWFM(file_id, work_id, FW.TABLE_NAME);
+                        long cat_id = FW.getCatId_FW(database, file_id, work_id);
 
                         Intent intent_work = new Intent(getActivity(), DetailSmetaLine.class);
                         intent_work.putExtra(P.ID_FILE_DEFAULT, file_id);
@@ -112,7 +112,7 @@ public class SmetasFrag extends Fragment {
                     case 1:
                         long mat_id = Mat.getIdFromName(database, smeta_item_name);
                         long type_mat_id = tableControllerSmeta.getTypeIdFWFM(file_id, mat_id, FM.TABLE_NAME);
-                        long cat_mat_id = tableControllerSmeta.getCateIdFWFM(file_id, mat_id, FM.TABLE_NAME);
+                        long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
 
                         Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
                         intent_mat.putExtra(P.ID_FILE, file_id);

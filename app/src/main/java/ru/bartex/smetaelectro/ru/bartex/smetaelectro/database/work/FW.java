@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -51,6 +52,24 @@ public class FW {
     //обновление таблицы
     static void onUpgrade(SQLiteDatabase database) {
         //обновлять пока не собираюсь
+    }
+
+    //получаем id категории  работы из FW
+    public static long getCatId_FW(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
+
+        long cat_id = -1;
+
+        String select = " SELECT " + FW_CATEGORY_ID + " FROM " + TABLE_NAME +
+                " where " + FW_FILE_ID + " =? " + " and " + FW_WORK_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения количества работы
+            cat_id = cursor.getLong(cursor.getColumnIndex(FW_CATEGORY_ID));
+        }
+        cursor.close();
+        return cat_id;
     }
 
 }

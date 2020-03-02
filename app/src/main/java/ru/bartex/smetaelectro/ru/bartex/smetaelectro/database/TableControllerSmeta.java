@@ -31,100 +31,45 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cv = new ContentValues();
     }
 
-
-//    //получаем ID категории работы по имени типа работы
-//    public long getCatIdFromTypeId(long type_id, String table) {
-//        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
-//
-//        long currentID = -1;
-//        int idColumnIndex = -1;
-//        Cursor cursor = null;
-//        // Создадим и откроем для чтения базу данных
+//    //получаем id категории  работы/материала из FW/FM
+//    public long getCateIdFWFM(long file_id, long id, String table){
+//        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
 //        SQLiteDatabase db = this.getReadableDatabase();
+//        String select = "";
+//        Cursor cursor =null;
+//        long cat_id = -1;
 //
 //        switch (table) {
-//            case TypeWork.TABLE_NAME:
-//                cursor = db.query(
-//                        TypeWork.TABLE_NAME,   // таблица
-//                        new String[]{TypeWork.TYPE_CATEGORY_ID},            // столбцы
-//                        TypeWork._ID + "=?",   // столбцы для условия WHERE
-//                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
-//
+//            case FM.TABLE_NAME:
+//                select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
+//                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
+//                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
 //                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс каждого столбца
-//                    idColumnIndex = cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID);
-//                    // Используем индекс для получения строки или числа
-//                    currentID = cursor.getLong(idColumnIndex);
+//                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+//                    cat_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
+//                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
 //                }
 //                break;
 //
-//            case TypeMat.TABLE_NAME:
-//                cursor = db.query(
-//                        TypeMat.TABLE_NAME,   // таблица
-//                        new String[]{TypeMat.TYPE_MAT_CATEGORY_ID},            // столбцы
-//                        TypeMat._ID + "=?",   // столбцы для условия WHERE
-//                        new String[]{String.valueOf(type_id)},                  // значения для условия WHERE
-//                        null,                  // Don't group the rows
-//                        null,                  // Don't filter by row groups
-//                        null);                   // порядок сортировки
+//            case FW.TABLE_NAME:
+//                select = " SELECT " + FW.FW_CATEGORY_ID + " FROM " + FW.TABLE_NAME +
+//                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
+//                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
+//                Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cursor.getCount() = " + cursor.getCount());
 //                if (cursor.moveToFirst()) {
-//                    // Узнаем индекс каждого столбца
-//                    idColumnIndex = cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID);
-//                    // Используем индекс для получения строки или числа
-//                    currentID = cursor.getLong(idColumnIndex);
+//                    // Узнаем индекс столбца и Используем индекс для получения количества работы
+//                    cat_id = cursor.getLong(cursor.getColumnIndex(FW.FW_CATEGORY_ID));
+//                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
 //                }
 //                break;
 //        }
-//        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId currentID = " + currentID);
+//
 //        if (cursor != null) {
 //            cursor.close();
 //        }
 //        db.close();
-//        return currentID;
+//        return cat_id;
 //    }
-
-    //получаем id категории  работы/материала из FW/FM
-    public long getCateIdFWFM(long file_id, long id, String table){
-        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
-        SQLiteDatabase db = this.getReadableDatabase();
-        String select = "";
-        Cursor cursor =null;
-        long cat_id = -1;
-
-        switch (table) {
-            case FM.TABLE_NAME:
-                select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
-                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
-                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-                    cat_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
-                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
-                }
-                break;
-
-            case FW.TABLE_NAME:
-                select = " SELECT " + FW.FW_CATEGORY_ID + " FROM " + FW.TABLE_NAME +
-                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
-                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
-                Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cursor.getCount() = " + cursor.getCount());
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-                    cat_id = cursor.getLong(cursor.getColumnIndex(FW.FW_CATEGORY_ID));
-                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
-                }
-                break;
-        }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-        db.close();
-        return cat_id;
-    }
 
     //получаем id категории  работы/материала из FW/FM
     public long getTypeIdFWFM(long file_id, long id, String table){
