@@ -71,5 +71,22 @@ public class FM {
         return cat_id;
     }
 
+    //получаем id типа  материала из FM
+    public static long getTypeId_FM(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
+
+        long type_id = -1;
+
+        String select = " SELECT " + FM_MAT_TYPE_ID + " FROM " + TABLE_NAME +
+                " where " + FM_FILE_ID + " =? " + " and " + FM_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения id типа материала
+            type_id = cursor.getLong(cursor.getColumnIndex(FM_MAT_TYPE_ID));
+        }
+        cursor.close();
+        return type_id;
+    }
 
 }

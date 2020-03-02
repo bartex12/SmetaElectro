@@ -72,4 +72,22 @@ public class FW {
         return cat_id;
     }
 
+    //получаем id типа  работы из FW
+    public static long getTypeId_FW(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
+
+        long type_id = -1;
+
+        String select = " SELECT " + FW_TYPE_ID + " FROM " + TABLE_NAME +
+                " where " + FW_FILE_ID + " =? " + " and " + FW_WORK_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения id типа работы
+            type_id = cursor.getLong(cursor.getColumnIndex(FW_TYPE_ID));
+        }
+        cursor.close();
+        return type_id;
+    }
+
 }

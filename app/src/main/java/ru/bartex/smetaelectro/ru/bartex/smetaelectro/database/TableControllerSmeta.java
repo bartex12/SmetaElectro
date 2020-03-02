@@ -32,83 +32,43 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     }
 
 //    //получаем id категории  работы/материала из FW/FM
-//    public long getCateIdFWFM(long file_id, long id, String table){
-//        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
+//    public long getTypeIdFWFM(long file_id, long id, String table){
+//        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
 //        SQLiteDatabase db = this.getReadableDatabase();
 //        String select = "";
 //        Cursor cursor =null;
-//        long cat_id = -1;
+//        long type_id = -1;
 //
 //        switch (table) {
 //            case FM.TABLE_NAME:
-//                select = " SELECT " + FM.FM_MAT_CATEGORY_ID + " FROM " + FM.TABLE_NAME +
+//                select =select = " SELECT " + FM.FM_MAT_TYPE_ID + " FROM " + FM.TABLE_NAME +
 //                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
-//                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
+//                        cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
 //                if (cursor.moveToFirst()) {
 //                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-//                    cat_id = cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_CATEGORY_ID));
-//                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
+//                    type_id =cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
+//                            Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
 //                }
 //                break;
 //
 //            case FW.TABLE_NAME:
-//                select = " SELECT " + FW.FW_CATEGORY_ID + " FROM " + FW.TABLE_NAME +
+//                select = " SELECT " + FW.FW_TYPE_ID + " FROM " + FW.TABLE_NAME +
 //                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
-//                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(id)});
-//                Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cursor.getCount() = " + cursor.getCount());
+//                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+//                Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM cursor.getCount() = " + cursor.getCount());
 //                if (cursor.moveToFirst()) {
 //                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-//                    cat_id = cursor.getLong(cursor.getColumnIndex(FW.FW_CATEGORY_ID));
-//                    Log.i(TAG, "TableControllerSmeta.getCateIdFWFM cat_id = " + cat_id );
+//                    type_id = cursor.getLong(cursor.getColumnIndex(FW.FW_TYPE_ID));
+//                    Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
+//                    break;
 //                }
-//                break;
 //        }
-//
 //        if (cursor != null) {
 //            cursor.close();
 //        }
 //        db.close();
-//        return cat_id;
+//        return type_id;
 //    }
-
-    //получаем id категории  работы/материала из FW/FM
-    public long getTypeIdFWFM(long file_id, long id, String table){
-        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
-        SQLiteDatabase db = this.getReadableDatabase();
-        String select = "";
-        Cursor cursor =null;
-        long type_id = -1;
-
-        switch (table) {
-            case FM.TABLE_NAME:
-                select =select = " SELECT " + FM.FM_MAT_TYPE_ID + " FROM " + FM.TABLE_NAME +
-                        " where " + FM.FM_FILE_ID + " =? " + " and " + FM.FM_MAT_ID + " =? ";
-                        cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-                    type_id =cursor.getLong(cursor.getColumnIndex(FM.FM_MAT_TYPE_ID));
-                            Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
-                }
-                break;
-
-            case FW.TABLE_NAME:
-                select = " SELECT " + FW.FW_TYPE_ID + " FROM " + FW.TABLE_NAME +
-                        " where " + FW.FW_FILE_ID + " =? " + " and " + FW.FW_WORK_ID + " =? ";
-                cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
-                Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM cursor.getCount() = " + cursor.getCount());
-                if (cursor.moveToFirst()) {
-                    // Узнаем индекс столбца и Используем индекс для получения количества работы
-                    type_id = cursor.getLong(cursor.getColumnIndex(FW.FW_TYPE_ID));
-                    Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM type_id = " + type_id);
-                    break;
-                }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-        db.close();
-        return type_id;
-    }
 
     //получаем имя работы по её id
     public String getNameFromId(long id, String table) {
