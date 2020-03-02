@@ -3,6 +3,7 @@ package ru.bartex.smetaelectro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +20,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 /**
@@ -49,6 +51,7 @@ public class SmetasFrag extends Fragment {
 
     ViewPager viewPager;
     BehaviorWorkOrMat behaviorWorkOrMat;
+    private SQLiteDatabase database;
 
     public void performUpdateAdapter(Context context){
         behaviorWorkOrMat.updateAdapter(context);
@@ -71,6 +74,7 @@ public class SmetasFrag extends Fragment {
         viewPager = getActivity().findViewById(R.id.container);
         tableControllerSmeta = new TableControllerSmeta(context);
         Log.d(TAG, "// SmetasFrag onAttach  viewPager = " + viewPager);
+        database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
@@ -92,7 +96,7 @@ public class SmetasFrag extends Fragment {
                 switch (viewPager.getCurrentItem()){
                     //switch (positionItem){
                     case 0:
-                        long work_id = tableControllerSmeta.getIdFromName(smeta_item_name, Work.TABLE_NAME);
+                        long work_id = Work.getIdFromName(database, smeta_item_name);
                         long type_id = tableControllerSmeta.getTypeIdFWFM(file_id, work_id, FW.TABLE_NAME);
                         long cat_id = tableControllerSmeta.getCateIdFWFM(file_id, work_id, FW.TABLE_NAME);
 
@@ -106,7 +110,7 @@ public class SmetasFrag extends Fragment {
                         break;
 
                     case 1:
-                        long mat_id = tableControllerSmeta.getIdFromName(smeta_item_name, Mat.TABLE_NAME);
+                        long mat_id = Mat.getIdFromName(database, smeta_item_name);
                         long type_mat_id = tableControllerSmeta.getTypeIdFWFM(file_id, mat_id, FM.TABLE_NAME);
                         long cat_mat_id = tableControllerSmeta.getCateIdFWFM(file_id, mat_id, FM.TABLE_NAME);
 

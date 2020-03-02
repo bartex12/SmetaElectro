@@ -110,4 +110,25 @@ public class TypeWork {
         return dataType;
     }
 
+    //получаем id типа работы по имени
+    public static long getIdFromName(SQLiteDatabase db, String name) {
+        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        long currentID = -1;
+        Cursor cursor = db.query(
+                TABLE_NAME,                     // таблица
+                new String[]{_ID},            // столбцы
+                TYPE_NAME + "=?",    // столбцы для условия WHERE
+                new String[]{name},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if (cursor.moveToFirst()) {
+            // получаем id по индексу
+            currentID = cursor.getLong(cursor.getColumnIndex(_ID));
+        }
+        cursor.close();
+        return currentID;
+    }
+
 }

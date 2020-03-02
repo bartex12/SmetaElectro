@@ -2,36 +2,36 @@ package ru.bartex.smetaelectro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
@@ -47,8 +47,10 @@ public class SmetasWork extends AppCompatActivity implements
     long cat_id;
     TableControllerSmeta tableControllerSmeta;
 
+
     private SmetasWork.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private SQLiteDatabase database;
 
     @Override
     public void catAndClickTransmit(long cat_id, boolean isSelected) {
@@ -94,7 +96,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 1:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryWork.TABLE_NAME);
+                long type_category_Id = CategoryWork.getIdFromName(database, catName);
                 long newTypeNameId = tableControllerSmeta.insertTypeCatName(
                         typeName, type_category_Id,TypeWork.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
@@ -106,7 +108,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 2:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
-                long work_type_Id = tableControllerSmeta.getIdFromName(typeName, TypeWork.TABLE_NAME);
+                long work_type_Id = TypeWork.getIdFromName(database, typeName);
                 long newWorkNameId = tableControllerSmeta.insertTypeCatName(
                         workName, work_type_Id, Work.TABLE_NAME);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
@@ -123,15 +125,17 @@ public class SmetasWork extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas_work);
 
+        initDB();
+
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
 
         tableControllerSmeta  = new TableControllerSmeta(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarWork);
+        Toolbar toolbar = findViewById(R.id.toolbarWork);
         setSupportActionBar(toolbar);
         //показываем заголовокмв заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasWork);
@@ -140,13 +144,13 @@ public class SmetasWork extends AppCompatActivity implements
         //Создаём адаптер для фрагментов
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Привязываем ViewPager к адаптеру
-        mViewPager = (ViewPager) findViewById(R.id.containerWork);
+        mViewPager = findViewById(R.id.containerWork);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
         // mViewPager.setOffscreenPageLimit(0);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsWork);
+        TabLayout tabLayout = findViewById(R.id.tabsWork);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
         //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -167,7 +171,7 @@ public class SmetasWork extends AppCompatActivity implements
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabWork);
+        FloatingActionButton fab = findViewById(R.id.fabWork);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,6 +180,11 @@ public class SmetasWork extends AppCompatActivity implements
             }
         });
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  **************************");
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -280,7 +289,7 @@ public class SmetasWork extends AppCompatActivity implements
                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
-                long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
+                long cat_id = CategoryWork.getIdFromName(database, name);
                 //находим количество строк типов работы для cat_id
                 int countLineType = tableControllerSmeta.getCountLine(cat_id, TypeWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineType = " + countLineType);
@@ -294,7 +303,7 @@ public class SmetasWork extends AppCompatActivity implements
                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeName = tvType.getText().toString();
                 //находим id типа по имени типа
-                long type_id = tableControllerSmeta.getIdFromName(typeName, TypeWork.TABLE_NAME);
+                long type_id = TypeWork.getIdFromName(database, typeName);
                 //находим количество строк видов работы для type_id
                 int countLineWork = tableControllerSmeta.getCountLine(type_id, Work.TABLE_NAME);
                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWork = " + countLineWork);
@@ -310,7 +319,7 @@ public class SmetasWork extends AppCompatActivity implements
                 TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                 String workName = tvWork.getText().toString();
                 //находим id вида  по имени вида работ
-                long work_id = tableControllerSmeta.getIdFromName(workName, Work.TABLE_NAME);
+                long work_id = Work.getIdFromName(database, workName);
                 //находим количество строк видов работы в таблице FW для work_id
                 int countLineWorkFW = tableControllerSmeta.getCountLine(work_id, FW.TABLE_NAME);
                 //находим количество строк расценок работы в таблице CostWork для work_id
@@ -350,8 +359,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvSpecificCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_specific = tvSpecificCat.getText().toString();
                         //находим id по имени категории
-                        long cat_id_specific = tableControllerSmeta.
-                                getIdFromName(cat_name_specific, CategoryWork.TABLE_NAME);
+                        long cat_id_specific = CategoryWork.getIdFromName(database, cat_name_specific);
                         Log.d(TAG, "SmetasWork onContextItemSelected case P.SPECIFIC_ID " +
                                 "cat_name_specific = " + cat_name_specific +  " cat_id_specific =" + cat_id_specific);
                         //отправляем интент с id категории
@@ -366,8 +374,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvSpecificType = acmi.targetView.findViewById(R.id.base_text);
                         String type_name_specific = tvSpecificType.getText().toString();
                         //находим id по имени типа
-                        long type_id_specific = tableControllerSmeta.
-                                getIdFromName(type_name_specific, TypeWork.TABLE_NAME);
+                        long type_id_specific = TypeWork.getIdFromName(database, type_name_specific);
                         Log.d(TAG, "SmetaTypeElectro onContextItemSelected case P.SPECIFIC_ID case 1:" +
                                 "type_name_specific = " + type_name_specific +  " type_id_specific =" + type_id_specific);
                         //отправляем интент с id типа
@@ -382,8 +389,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvSpecificWork = acmi.targetView.findViewById(R.id.base_text);
                         String work_name_specific = tvSpecificWork.getText().toString();
                         //находим id по имени типа
-                        long work_id_specific = tableControllerSmeta.
-                                getIdFromName(work_name_specific, Work.TABLE_NAME);
+                        long work_id_specific = Work.getIdFromName(database, work_name_specific);
                         //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.SPECIFIC_ID " +
                         //        "work_name_specific = " + work_name_specific +  " work_id_specific =" + work_id_specific);
                         //отправляем интент с id типа
@@ -403,8 +409,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvChangCat = acmi.targetView.findViewById(R.id.base_text);
                         String cat_name_chang = tvChangCat.getText().toString();
                         //находим id категории по имени категории
-                        long cat_id_Change = tableControllerSmeta.
-                                getIdFromName(cat_name_chang, CategoryWork.TABLE_NAME);
+                        long cat_id_Change = CategoryWork.getIdFromName(database, cat_name_chang);
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID   case 0" +
                                 "cat_name_chang = " + cat_name_chang + " cat_id_Change =" + cat_id_Change);
                         //отправляем интент с id категории
@@ -419,8 +424,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvChangType = acmi.targetView.findViewById(R.id.base_text);
                         String type_name_chang = tvChangType.getText().toString();
                         //находим id по имени типа
-                        long type_id_Change =  tableControllerSmeta.
-                                getIdFromName(type_name_chang, TypeWork.TABLE_NAME);
+                        long type_id_Change = TypeWork.getIdFromName(database, type_name_chang);
                         Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 1" +
                                 "type_name_chang = " + type_name_chang + " type_id_Change =" + type_id_Change);
                         //отправляем интент с id типа
@@ -434,8 +438,7 @@ public class SmetasWork extends AppCompatActivity implements
                         TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text);
                         String work_name_chang = tvChangWork.getText().toString();
                         //находим id по имени работы
-                        long work_id_Change = tableControllerSmeta.
-                                getIdFromName(work_name_chang, Work.TABLE_NAME);
+                        long work_id_Change = Work.getIdFromName(database, work_name_chang);
                         Log.d(TAG, "SmetasWork onContextItemSelected P.CHANGE_NAME_ID case 2" +
                                 "work_name_chang = " + work_name_chang + " work_id_Change =" + work_id_Change);
                         //отправляем интент с id работы
@@ -464,8 +467,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
                                 String cat_name = tvCat.getText().toString();
                                 //находим id по имени файла
-                                long cat_id = tableControllerSmeta.
-                                        getIdFromName(cat_name, CategoryWork.TABLE_NAME);
+                                long cat_id = CategoryWork.getIdFromName(database, cat_name);
                                 Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
                                         " cat_name = " + cat_name + " cat_id =" + cat_id);
                                 //Удаляем файл из таблицы CategoryWork когда в категории нет типов
@@ -479,8 +481,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                                 String type_name = tvType.getText().toString();
                                 //находим id по имени файла
-                                long type_id = tableControllerSmeta.
-                                        getIdFromName(type_name, TypeWork.TABLE_NAME);
+                                long type_id = TypeWork.getIdFromName(database, type_name);
                                 Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
                                         " type_name = " + type_name + " type_id =" + type_id);
                                 //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
@@ -497,8 +498,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                                 String work_Name = tvWork.getText().toString();
                                 //находим id по имени файла
-                                long work_id = tableControllerSmeta.
-                                        getIdFromName(work_Name, Work.TABLE_NAME);
+                                long work_id = Work.getIdFromName(database, work_Name);
                                 //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
                                  //       " work_Name = " + work_Name + " work_id =" + work_id);
                                 //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы

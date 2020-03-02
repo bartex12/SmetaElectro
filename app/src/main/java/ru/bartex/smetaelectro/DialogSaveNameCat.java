@@ -14,16 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 
 
 public class DialogSaveNameCat extends DialogSaveNameAbstract {
 
     static String TAG = "33333";
     boolean isWorkDialog;
-    public DialogSaveNameCat(){};
+
+    public DialogSaveNameCat() {
+    }
 
     public static DialogSaveNameCat newInstance(boolean isWorkDialog) {
         Log.d(TAG, "DialogSaveNameCat newInstance. isWorkDialog =   " + isWorkDialog);
@@ -82,10 +84,10 @@ public class DialogSaveNameCat extends DialogSaveNameAbstract {
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long catId;
                 if (isWorkDialog){
-                    catId = tableControllerSmeta.getIdFromName(nameCat, CategoryWork.TABLE_NAME);
+                    catId = CategoryWork.getIdFromName(database, nameCat);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
                 }else {
-                    catId = tableControllerSmeta.getIdFromName(nameCat, CategoryMat.TABLE_NAME);
+                    catId = CategoryMat.getIdFromName(database, nameCat);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " +catId);
                 }
 

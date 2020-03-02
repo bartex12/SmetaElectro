@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +59,7 @@ public class Tab1WorkCatCost extends Tab1SmetasCatAbstrFrag {
 
     @Override
     public long getCatId(String catName) {
-        long cat_id = tableControllerSmeta.getIdFromName(catName, CategoryWork.TABLE_NAME);
+        long cat_id = CategoryWork.getIdFromName(database, catName);
         return cat_id;
     }
 

@@ -1,10 +1,11 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,9 +15,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
@@ -38,11 +40,14 @@ public class DetailCost extends AppCompatActivity {
     String unit; //единицы измерения
 
     public static final String REQUEST_CODE = "request_codeCostDetail";
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cost_detail);
+
+        initDB();
 
         tableControllerSmeta = new TableControllerSmeta(this);
 
@@ -80,14 +85,14 @@ public class DetailCost extends AppCompatActivity {
                 android.R.layout.simple_spinner_item,unins);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final Spinner spinner = (Spinner)findViewById(R.id.spinnerUnits);
+        final Spinner spinner = findViewById(R.id.spinnerUnits);
         spinner.setAdapter(adapter);
         //spinner.setPrompt("Спиннер");
         if (cost == 0){
             spinner.setSelection(0);
         }else {
             String unitName = tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
-            long unitId = tableControllerSmeta.getIdFromName(unitName, Unit.TABLE_NAME);
+            long unitId = Unit.getIdFromName(database, unitName);
             Log.d(TAG, "DetailCost- Spinner -unitName = " + unitName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
             spinner.setSelection((int)unitId - 1);
@@ -127,7 +132,7 @@ public class DetailCost extends AppCompatActivity {
                 }else {
                     cost =  Float.parseFloat(costOfWork);
                     String unit = spinner.getSelectedItem().toString();
-                    long unit_id =  tableControllerSmeta.getIdFromName(unit, Unit.TABLE_NAME);
+                    long unit_id = Unit.getIdFromName(database, unit);
                     Log.d(TAG, "DetailCost-mButtonSave.setOnClickListener work_id = " +
                             work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
 
@@ -156,6 +161,11 @@ public class DetailCost extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override

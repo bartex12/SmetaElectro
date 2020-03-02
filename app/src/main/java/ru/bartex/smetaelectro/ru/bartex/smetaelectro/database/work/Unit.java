@@ -3,6 +3,7 @@ package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -48,4 +49,24 @@ public class Unit {
         Log.d(TAG, "createDefaultUnit unit_name.length = " + unit_name.length );
     }
 
+    //получаем id по имени
+    public static long getIdFromName(SQLiteDatabase db, String name) {
+        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        long currentID = -1;
+        Cursor cursor = db.query(
+                TABLE_NAME,                     // таблица
+                new String[]{_ID},            // столбцы
+                UNIT_NAME + "=?",    // столбцы для условия WHERE
+                new String[]{name},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if (cursor.moveToFirst()) {
+            // получаем id по индексу
+            currentID = cursor.getLong(cursor.getColumnIndex(_ID));
+        }
+        cursor.close();
+        return currentID;
+    }
 }

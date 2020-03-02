@@ -9,23 +9,22 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -39,11 +38,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -58,6 +58,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     long type_id;
     long cat_id;
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -109,8 +110,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             case 1:
                 Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = tableControllerSmeta.
-                        getIdFromName(catName, CategoryWork.TABLE_NAME);
+                long type_category_Id = CategoryWork.
+                        getIdFromName(database, catName);
                 long newTypeNameId = tableControllerSmeta.insertTypeCatName(
                         typeName, type_category_Id,TypeWork.TABLE_NAME);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
@@ -124,7 +125,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
                 float cost = Float.parseFloat(costOfMat);
 
-                long unit_work_id = tableControllerSmeta.getIdFromName(unit, Unit.TABLE_NAME);
+                long unit_work_id = Unit.getIdFromName(database, unit);
                 Log.d(TAG, "SmetasWorkCost  unit_work_id = " +
                         unit_work_id + " cost = " + cost + " unit = " + unit
                         + " workName = " + matName  + " type_id = " + type_id) ;
@@ -146,15 +147,17 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas_work_cost);
 
+        initDB();
+
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasWorkCost onCreate file_id =" + file_id);
 
         tableControllerSmeta = new TableControllerSmeta(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarWork);
+        Toolbar toolbar = findViewById(R.id.toolbarWork);
         setSupportActionBar(toolbar);
         //показываем заголовок в заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasWorkCost);
@@ -163,13 +166,13 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         //Создаём адаптер для фрагментов
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Привязываем ViewPager к адаптеру
-        mViewPager = (ViewPager) findViewById(R.id.containerWork);
+        mViewPager = findViewById(R.id.containerWork);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
         // mViewPager.setOffscreenPageLimit(0);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsWork);
+        TabLayout tabLayout = findViewById(R.id.tabsWork);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
         //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -181,17 +184,19 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
                 invalidateOptionsMenu();
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
 
         //в макете стоит GONE
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabWork);
+        FloatingActionButton fab = findViewById(R.id.fabWork);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +212,11 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 mViewPager.getCurrentItem() + "  view = " + view );
 
         Log.d(TAG, " ))))))))SmetasWorkCost  onCreate((((((((  **************************");
+    }
 
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -302,7 +311,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
-                long cat_id = tableControllerSmeta.getIdFromName(name, CategoryWork.TABLE_NAME);
+                long cat_id = CategoryWork.getIdFromName(database, name);
                 //находим количество строк типов работы для cat_id
                 int countLineType = tableControllerSmeta.getCountLine(cat_id, TypeWork.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineType = " + countLineType);
@@ -316,8 +325,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeName = tvType.getText().toString();
                 //находим id типа по имени типа
-                long type_id = tableControllerSmeta.
-                        getIdFromName(typeName, TypeWork.TABLE_NAME);
+                long type_id = TypeWork.getIdFromName(database, typeName);
                 //находим количество строк видов работы для type_id
                 int countLineWork = tableControllerSmeta.getCountLine(type_id, Work.TABLE_NAME);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWork = " + countLineWork);
@@ -333,8 +341,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
                 String workName = tvWork.getText().toString();
                 //находим id вида  по имени вида работ
-                long work_id = tableControllerSmeta.
-                        getIdFromName(workName, Work.TABLE_NAME);
+                long work_id = Work.getIdFromName(database, workName);
                 //находим количество строк видов работы в таблице FW для work_id
                 int countLineWorkFW = tableControllerSmeta.getCountLine(work_id, FW.TABLE_NAME);
                 //находим количество строк расценок работы в таблице CostWork для work_id
@@ -384,8 +391,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
                             String cat_name = tvCat.getText().toString();
                             //находим id по имени файла
-                            long cat_id = tableControllerSmeta.
-                                    getIdFromName(cat_name, CategoryWork.TABLE_NAME);
+                            long cat_id = CategoryWork.getIdFromName(database, cat_name);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected case P.DELETE_ID" +
                                     " cat_name = " + cat_name + " cat_id =" + cat_id);
                             //Удаляем файл из таблицы CategoryWork когда в категории нет типов
@@ -399,8 +405,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                             String type_name = tvType.getText().toString();
                             //находим id по имени файла
-                            long type_id = tableControllerSmeta.
-                                    getIdFromName(type_name, TypeWork.TABLE_NAME);
+                            long type_id = TypeWork.getIdFromName(database, type_name);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected case P.DELETE_ID" +
                                     " type_name = " + type_name + " type_id =" + type_id);
                             //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
@@ -414,8 +419,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                         case 2:
                             Log.d(TAG, "SmetasWorkCost P.DELETE_ITEM_SMETA case 2");
                             //находим id по имени работы
-                            long work_id = tableControllerSmeta.
-                                    getIdFromName(name, Work.TABLE_NAME);
+                            long work_id = Work.getIdFromName(database, name);
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected file_id = " +
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
@@ -595,12 +599,11 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                     int idColumnIndex = curName.getColumnIndex(Work.WORK_NAME);
                     // Используем индекс для получения строки или числа
                     String currentWorkName = curName.getString(idColumnIndex);
-                    long workId = tableControllerSmeta.
-                            getIdFromName(currentWorkName, Work.TABLE_NAME);
+                    long workId = Work.getIdFromName(database, currentWorkName);
 
                     String selectWorkCost = " SELECT " + CostWork.COST_COST +
                             " FROM " +  CostWork.TABLE_NAME  +
-                            " WHERE " + CostWork.COST_WORK_ID  + " = " + String.valueOf(workId);
+                            " WHERE " + CostWork.COST_WORK_ID + " = " + workId;
                     curCost = db.rawQuery(selectWorkCost, null);
                     Log.d(TAG, "SmetasWorkCost - doInBackground curCost.getCount= " + curCost.getCount());
 

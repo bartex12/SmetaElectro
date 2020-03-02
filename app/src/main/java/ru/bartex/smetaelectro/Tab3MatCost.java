@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 /**
@@ -72,7 +72,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
     @Override
     public void sendIntent(String name) {
         //находим id материала по имени материала
-        final long mat_id = tableControllerSmeta.getIdFromName(name, Mat.TABLE_NAME);
+        final long mat_id = Mat.getIdFromName(database, name);
         Log.d(TAG, "Tab3MatCost - onItemClick  mat_id = " + mat_id +
                 "  name = " + name);
         // проверяем есть ли такой  материал в FM для файла с file_id

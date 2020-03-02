@@ -3,15 +3,16 @@ package ru.bartex.smetaelectro;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,12 +32,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
@@ -63,13 +65,16 @@ public class ListOfSmetasStructured extends AppCompatActivity {
     Map<String,String> mm;
 
     File fileWork; //имя файла с данными по смете на работы
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_list_structured);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_list);
+        initDB();
+
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_list);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         tableControllerSmeta = new TableControllerSmeta(this);
@@ -86,6 +91,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -177,8 +187,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         data.add(mm);
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
-                        long type_id = tableControllerSmeta.
-                                getIdFromName(type_name[i], TypeWork.TABLE_NAME);
+                        long type_id = TypeWork.getIdFromName(database, type_name[i]);
                         Log.i(TAG, "ListOfSmetasStructured updateAdapter type_name[i] = " +
                                 type_name[i] + " type_id = " + type_id);
 
@@ -260,8 +269,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         data.add(mm);
                         Log.d(TAG, "ListOfSmetasStructured - updateAdapter  data.size()1 = " + data.size());
 
-                        long type_mat_id = tableControllerSmeta.
-                                getIdFromName(type_mat_name[i], TypeMat.TABLE_NAME);
+                        long type_mat_id = TypeMat.getIdFromName(database, type_mat_name[i]);
                         Log.i(TAG, "ListOfSmetasStructured updateAdapter type_mat_name[i] = " +
                                 type_mat_name[i] + " type_mat_id = " + type_mat_id);
 
@@ -461,8 +469,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                     //csvWrite.writeNext(typeNameArray);
 
                     //получаем id типа работы ...
-                    long type_id = tableControllerSmeta.
-                            getIdFromName(typeName, TypeWork.TABLE_NAME);
+                    long type_id = TypeWork.getIdFromName(database, typeName);
                     Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=0 type_name = " +
                             typeName + " type_id = " + type_id);
 
@@ -498,7 +505,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //csvWrite.writeNext(typeNameArray);
 
                         //получаем id типа материала...
-                        long type_id =tableControllerSmeta.getIdFromName(typeName, TypeMat.TABLE_NAME);
+                        long type_id = TypeMat.getIdFromName(database, typeName);
                         Log.i(TAG, "ListOfSmetasStructured doInBackground position_tab=1 type_name = " +
                                 typeName + " type_id = " + type_id);
 

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -17,16 +18,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -40,12 +39,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 
@@ -64,6 +64,7 @@ public class SmetasMatCost extends AppCompatActivity implements
     private ViewPager mViewPager;
 
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
     File fileWork; //имя файла с данными по смете на работы
 
     @Override
@@ -111,7 +112,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasMatCost  catTypeMatCostNameTransmit ++++++ case 1");
 
                 //определяем id категории (будет type_category_Id в таблице типов) по её имени (блин, это же cat_id )
-                long type_category_Id = tableControllerSmeta.getIdFromName(catName, CategoryMat.TABLE_NAME);
+                long type_category_Id = CategoryMat.getIdFromName(database, catName);
 
                 long newTypeMatNameId = tableControllerSmeta.insertTypeCatName(
                         typeName, type_category_Id,TypeMat.TABLE_NAME);
@@ -127,7 +128,7 @@ public class SmetasMatCost extends AppCompatActivity implements
 
                 float cost = Float.parseFloat(costOfMat);
 
-                long unit_mat_id = tableControllerSmeta.getIdFromName(unit, UnitMat.TABLE_NAME);
+                long unit_mat_id = UnitMat.getIdFromName(database, unit);
                 Log.d(TAG, "SmetasMatCost  unit_mat_id = " +
                         unit_mat_id + " cost = " + cost + " unit = " + unit
                         + " matName = " + matName  + " type_id = " + type_id) ;
@@ -150,16 +151,18 @@ public class SmetasMatCost extends AppCompatActivity implements
         setContentView(R.layout.activity_smetas_mat_cost);
         Log.d(TAG, "//  SmetasMatCost onCreate // " );
 
+        initDB();
+
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasMatCost onCreate file_id =" + file_id);
 
         tableControllerSmeta  = new TableControllerSmeta(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navigation.setSelectedItemId(R.id.navigation_smetas_smetas_mat_cost);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMat);
+        Toolbar toolbar = findViewById(R.id.toolbarMat);
         setSupportActionBar(toolbar);
         //показываем заголовокмв заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasMatCost);
@@ -169,12 +172,12 @@ public class SmetasMatCost extends AppCompatActivity implements
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMatCost);
+        TabLayout tabLayout = findViewById(R.id.tabsMatCost);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -192,7 +195,7 @@ public class SmetasMatCost extends AppCompatActivity implements
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +203,11 @@ public class SmetasMatCost extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -287,7 +295,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                 String name = tvName.getText().toString();
                 //находим id категории по имени категории
-                long cat_mat_id = tableControllerSmeta.getIdFromName(name, CategoryMat.TABLE_NAME);
+                long cat_mat_id = CategoryMat.getIdFromName(database, name);
                 //находим количество строк типов материала для cat_mat_id
                 int countType_mat = tableControllerSmeta.getCountLine(cat_mat_id, TypeMat.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onCreateContextMenu - countType = " + countType_mat);
@@ -300,7 +308,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                 String typeMatName = tvType.getText().toString();
                 //находим id типа по имени типа
-                long type_mat_id = tableControllerSmeta.getIdFromName(typeMatName, TypeMat.TABLE_NAME);
+                long type_mat_id = TypeMat.getIdFromName(database, typeMatName);
                 //находим количество строк видов материала для type_mat_id
                 int countLineMat = tableControllerSmeta.getCountLine(type_mat_id, Mat.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineMat = " + countLineMat);
@@ -313,7 +321,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 TextView tvMat = acmi.targetView.findViewById(R.id.base_text);
                 String matName = tvMat.getText().toString();
                 //находим id вида  по имени вида материала
-                long mat_id = tableControllerSmeta.getIdFromName(matName, Mat.TABLE_NAME);
+                long mat_id = Mat.getIdFromName(database, matName);
                 //находим количество строк видов материала в таблице FM для mat_id
                 int countLineWorkFM = tableControllerSmeta.getCountLine(mat_id, FM.TABLE_NAME);
                 Log.d(TAG, "SmetasMatCost onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
@@ -356,7 +364,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                                 TextView tvName = acmi.targetView.findViewById(R.id.base_text);
                                 final String name = tvName.getText().toString();
                                 //находим id категории по имени категории
-                                final long cat_mat_id = tableControllerSmeta.getIdFromName(name, CategoryMat.TABLE_NAME);
+                                final long cat_mat_id = CategoryMat.getIdFromName(database, name);
                                 Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 0" +
                                         " name = " + name +  " cat_mat_id =" + cat_mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
@@ -372,7 +380,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                                 TextView tvType = acmi.targetView.findViewById(R.id.base_text);
                                 final String type = tvType.getText().toString();
                                 //находим id типа по имени типа
-                                final long type_mat_id = tableControllerSmeta.getIdFromName(type, TypeMat.TABLE_NAME);
+                                final long type_mat_id = TypeMat.getIdFromName(database, type);
                                 Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 1" +
                                         " type = " + type +  " type_mat_id =" + type_mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
@@ -391,7 +399,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                                 TextView tvmat = acmi.targetView.findViewById(R.id.base_text);
                                 final String mat = tvmat.getText().toString();
                                 //находим id типа по имени типа
-                                final long mat_id = tableControllerSmeta.getIdFromName(mat, Mat.TABLE_NAME);
+                                final long mat_id = Mat.getIdFromName(database, mat);
                                 Log.d(TAG, "SmetasMatCost onContextItemSelected  P.DELETE_ID  case 1" +
                                         " mat = " + mat +  " mat_id =" + mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
@@ -565,11 +573,11 @@ public class SmetasMatCost extends AppCompatActivity implements
                     // Используем индекс для получения строки или числа
                     String currentMatName = curName.getString(idColumnIndex);
 
-                    long workId = tableControllerSmeta.getIdFromName(currentMatName, Mat.TABLE_NAME);
+                    long workId = Mat.getIdFromName(database, currentMatName);
 
                     String selectMatCost = " SELECT " + CostMat.COST_MAT_COST +
                             " FROM " +  CostMat.TABLE_NAME  +
-                            " WHERE " + CostMat.COST_MAT_ID  + " = " + String.valueOf(workId);
+                            " WHERE " + CostMat.COST_MAT_ID + " = " + workId;
                     curCost = db.rawQuery(selectMatCost, null);
                     Log.d(TAG, "SmetasMatCost - doInBackground curCost.getCount= " + curCost.getCount());
 

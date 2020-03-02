@@ -2,9 +2,10 @@ package ru.bartex.smetaelectro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,9 +15,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewName extends AppCompatActivity {
 
@@ -31,11 +33,14 @@ public class SmetaNewName extends AppCompatActivity {
     Button btnSave;
 
     private TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_new_name);
+
+        initDB();
 
         tableControllerSmeta  = new TableControllerSmeta(this);
 
@@ -69,7 +74,7 @@ public class SmetaNewName extends AppCompatActivity {
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = tableControllerSmeta.getIdFromName(nameFile, FileWork.TABLE_NAME);
+                long fileId = FileWork.getIdFromName(database, nameFile);
                 Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                 //если имя - пустая строка
@@ -108,8 +113,12 @@ public class SmetaNewName extends AppCompatActivity {
                 }
             }
 
-            ;
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     //принудительно вызываем клавиатуру - повторный вызов ее скроет

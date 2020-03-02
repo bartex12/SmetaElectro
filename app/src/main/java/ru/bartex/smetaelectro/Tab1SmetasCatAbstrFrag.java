@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
@@ -30,6 +32,7 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
     Map<String, Object> m;
 
     TableControllerSmeta tableControllerSmeta;
+    public SQLiteDatabase database;
 
     public abstract  void updateAdapter();
     public abstract  long getCatId(String catName);
@@ -45,7 +48,7 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
         Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onAttach // " );
         tableControllerSmeta  = new TableControllerSmeta(context);
         onClickCatListener = (OnClickCatListener)context;
-
+        database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override

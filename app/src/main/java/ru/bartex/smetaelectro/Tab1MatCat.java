@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +37,7 @@ public class Tab1MatCat extends Tab1SmetasCatAbstrFrag {
 
     @Override
     public long getCatId(String catName) {
-        long cat_id = tableControllerSmeta.getIdFromName(catName, CategoryMat.TABLE_NAME);
+        long cat_id = CategoryMat.getIdFromName(database, catName);
         return cat_id;
     }
 

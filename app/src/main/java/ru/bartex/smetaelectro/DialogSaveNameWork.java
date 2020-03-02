@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
@@ -110,10 +110,10 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long workId;
                 if (isWorkDialog){
-                    workId = tableControllerSmeta.getIdFromName(workName, Work.TABLE_NAME);
+                    workId = Work.getIdFromName(database, workName);
                     Log.d(TAG, "workName = " + workName + "  workId = " + workId);
                 }else{
-                    workId = tableControllerSmeta.getIdFromName(workName, Mat.TABLE_NAME);
+                    workId = Mat.getIdFromName(database, workName);
                     Log.d(TAG, "workName = " + workName + "  workId = " + workId);
                 }
                 //если имя - пустая строка

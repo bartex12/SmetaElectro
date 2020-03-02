@@ -83,7 +83,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                 TextView tv = view.findViewById(R.id.base_text);
                 String file_name = tv.getText().toString();
                 //находим id по имени файла
-                long file_id = tableControllerSmeta.getIdFromName(file_name, FileWork.TABLE_NAME);
+                long file_id = FileWork.getIdFromName(database, file_name);
 
                 Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id +
                         "  Name = " + tv.getText());
@@ -175,7 +175,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         TextView tv = acmi.targetView.findViewById(R.id.base_text);
         String file_name = tv.getText().toString();
         //находим id по имени файла
-        final long file_id = tableControllerSmeta.getIdFromName(file_name, FileWork.TABLE_NAME);
+        final long file_id = FileWork.getIdFromName(database, file_name);
         Log.d(TAG, "ListOfSmetasNames onContextItemSelected file_name = " + file_name +
                 " file_id_cpecific =" + file_id);
 

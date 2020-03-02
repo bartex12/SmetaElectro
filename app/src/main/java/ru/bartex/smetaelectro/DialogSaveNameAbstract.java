@@ -2,16 +2,19 @@ package ru.bartex.smetaelectro;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.inputmethod.InputMethodManager;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 abstract public class DialogSaveNameAbstract extends DialogFragment {
 
     static String TAG = "33333";
     TableControllerSmeta tableControllerSmeta;
+    public SQLiteDatabase database;
 
     public DialogSaveNameAbstract(){
         //пустой конструктор
@@ -27,6 +30,7 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
         super.onAttach(context);
         tableControllerSmeta = new TableControllerSmeta(context);
         workCategoryTypeNameListener = (WorkCategoryTypeNameListener)context;
+        database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     //абстрактный класс

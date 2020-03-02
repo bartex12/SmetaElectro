@@ -47,7 +47,7 @@ public class SmetaNewNameChange extends SmetaNewName {
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = tableControllerSmeta.getIdFromName(nameFile, FileWork.TABLE_NAME);
+                long fileId = FileWork.getIdFromName(database, nameFile);
                 Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                 //если имя - пустая строка

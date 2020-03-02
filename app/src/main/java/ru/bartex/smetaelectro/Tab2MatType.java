@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 /**
@@ -79,7 +79,7 @@ public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
 
     @Override
     public long getTypeId(String typeName) {
-        long type_id = tableControllerSmeta.getIdFromName(typeName, TypeMat.TABLE_NAME);
+        long type_id = TypeMat.getIdFromName(database, typeName);
         return type_id;
     }
 

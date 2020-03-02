@@ -14,10 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 public class DialogSaveNameType extends DialogSaveNameAbstract {
@@ -103,11 +103,10 @@ public class DialogSaveNameType extends DialogSaveNameAbstract {
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
                 long typeId;
                 if (isWorkDialog){
-                    typeId = tableControllerSmeta.
-                            getIdFromName(nameType, TypeWork.TABLE_NAME);
+                    typeId = TypeWork.getIdFromName(database, nameType);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
                 }else {
-                    typeId = tableControllerSmeta.getIdFromName(nameType, TypeMat.TABLE_NAME);
+                    typeId = TypeMat.getIdFromName(database, nameType);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
                 }
 

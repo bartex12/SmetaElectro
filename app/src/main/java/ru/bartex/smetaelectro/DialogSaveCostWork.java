@@ -3,6 +3,7 @@ package ru.bartex.smetaelectro;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,9 +23,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -49,6 +51,8 @@ public class DialogSaveCostWork extends DialogFragment {
     Button buttonCostSave;
     Button buttonCostCancel;
     TextView textView18;
+
+    private SQLiteDatabase database;
 
     public DialogSaveCostWork() {
         // Required empty public constructor
@@ -78,6 +82,7 @@ public class DialogSaveCostWork extends DialogFragment {
         super.onAttach(context);
         tableControllerSmeta = new TableControllerSmeta(context);
         catTypeMatCostNameListener = (OnCatTypeMatCostNameListener)context;
+        database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
@@ -154,7 +159,7 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameCat = " + nameCat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long  catId = tableControllerSmeta.getIdFromName(nameCat, CategoryWork.TABLE_NAME);
+                    long catId = CategoryWork.getIdFromName(database, nameCat);
                     Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
 
                     //если имя - пустая строка
@@ -200,8 +205,7 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameType = " + nameType);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя типа   +++++++++++++//
-                    long  typeId = tableControllerSmeta.
-                            getIdFromName(nameType, TypeWork.TABLE_NAME);
+                    long typeId = TypeWork.getIdFromName(database, nameType);
                     Log.d(TAG, "nameType = " + nameType + "  typeId = " + typeId);
 
                     //если имя - пустая строка
@@ -284,7 +288,7 @@ public class DialogSaveCostWork extends DialogFragment {
                     Log.d(TAG, " onCreateDialog nameMat = " + nameMat);
 
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long matId = tableControllerSmeta.getIdFromName(nameMat, Work.TABLE_NAME);
+                    long matId = Work.getIdFromName(database, nameMat);
                     Log.d(TAG, "nameMat = " + nameMat + "  matId = " + matId);
 
                     //если имя - пустая строка

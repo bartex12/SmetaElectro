@@ -2,19 +2,20 @@ package ru.bartex.smetaelectro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -23,12 +24,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class Smetas extends AppCompatActivity {
@@ -40,13 +42,16 @@ public class Smetas extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        initDB();
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Intent intent = getIntent();
@@ -60,7 +65,7 @@ public class Smetas extends AppCompatActivity {
         String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
         Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //показываем имя текущей сметы в заголовке экрана
         toolbar.setTitle(R.string.smetas_name_on_bar);
@@ -69,16 +74,16 @@ public class Smetas extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsWork);
+        TabLayout tabLayout = findViewById(R.id.tabsWork);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         //fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +106,11 @@ public class Smetas extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -183,7 +193,7 @@ public class Smetas extends AppCompatActivity {
                         case 0:
                             Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
                             //находим id по имени работы
-                            long work_id = tableControllerSmeta.getIdFromName(name, Work.TABLE_NAME);
+                            long work_id = Work.getIdFromName(database, name);
                             Log.d(TAG, "Smetas onContextItemSelected file_id = " +
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
@@ -196,7 +206,7 @@ public class Smetas extends AppCompatActivity {
                         case 1:
                             Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
                             //находим id по имени работы
-                            long mat_id = tableControllerSmeta.getIdFromName(name, Mat.TABLE_NAME);
+                            long mat_id = Mat.getIdFromName(database, name);
                             Log.d(TAG, "Smetas onContextItemSelected file_id = " +
                                     file_id + " mat_id =" + mat_id + " mat_name =" + name);
 
@@ -307,7 +317,7 @@ public class Smetas extends AppCompatActivity {
 
     //можно так обновлять адаптер, если бы контекстное меню было сдесь
     private void updateAdapter(int currentItem){
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());;
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(currentItem);
         mSectionsPagerAdapter.notifyDataSetChanged();

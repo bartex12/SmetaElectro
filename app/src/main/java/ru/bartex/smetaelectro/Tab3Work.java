@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
@@ -88,8 +88,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
     @Override
     public void sendIntent(String name) {
         //находим id работы по имени работы
-        final long work_id = tableControllerSmeta.
-                getIdFromName(name, Work.TABLE_NAME);
+        final long work_id = Work.getIdFromName(database, name);
         Log.d(TAG, "Tab3Work - onItemClick  work_id = " + work_id +
                 "  work_name = " + name);
         // проверяем есть ли такая  работа в FW для файла с file_id
