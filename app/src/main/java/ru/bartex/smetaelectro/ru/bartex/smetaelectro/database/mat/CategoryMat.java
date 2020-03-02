@@ -102,4 +102,25 @@ public class CategoryMat {
         cursor.close();
         return currentID;
     }
+
+    //получаем имя категории  по  id
+    public static String getNameFromId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+
+        String currentName = "";
+
+        Cursor cursor = db.query(
+                true,
+                TABLE_NAME,
+                null,
+                _ID + "=" + id,
+                null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            currentName = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_NAME));
+        }
+
+        cursor.close();
+        return currentName;
+    }
 }

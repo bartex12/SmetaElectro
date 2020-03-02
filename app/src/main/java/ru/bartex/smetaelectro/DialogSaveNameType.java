@@ -80,10 +80,10 @@ public class DialogSaveNameType extends DialogSaveNameAbstract {
         TextView tvCatName = view.findViewById(R.id.tvCatName);
         final String catName;
         if (isWorkDialog){
-            catName = tableControllerSmeta.getNameFromId(cat_id, CategoryWork.TABLE_NAME);
+            catName = CategoryWork.getNameFromId(database, cat_id);
             Log.d(TAG, "DialogSaveNameType onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
         }else {
-            catName = tableControllerSmeta.getNameFromId(cat_id, CategoryMat.TABLE_NAME);
+            catName = CategoryMat.getNameFromId(database, cat_id);
             Log.d(TAG, "DialogSaveNameType onCreateDialog. cat_id =   " + cat_id + " catName = " + catName);
         }
         tvCatName.setText(catName);

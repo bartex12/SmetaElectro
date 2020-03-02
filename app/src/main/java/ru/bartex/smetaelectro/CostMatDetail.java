@@ -57,7 +57,7 @@ public class CostMatDetail extends AppCompatActivity {
 
         //выводим название материала
         mTextViewMatName = findViewById(R.id.tv_cost_workName);
-        String matName = tableControllerSmeta.getNameFromId(mat_id, Mat.TABLE_NAME);
+        String matName = Mat.getNameFromId(database, mat_id);
         mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork

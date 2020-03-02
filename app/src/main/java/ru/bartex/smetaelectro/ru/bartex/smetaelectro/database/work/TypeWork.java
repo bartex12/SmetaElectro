@@ -154,4 +154,24 @@ public class TypeWork {
         return currentID;
     }
 
+    //получаем имя типа работы  по  id
+    public static String getNameFromId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+
+        String currentName = "";
+
+        Cursor cursor = db.query(
+                true,
+                TABLE_NAME,
+                null,
+                _ID + "=" + id,
+                null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            currentName = cursor.getString(cursor.getColumnIndex(TYPE_NAME));
+        }
+
+        cursor.close();
+        return currentName;
+    }
+
 }

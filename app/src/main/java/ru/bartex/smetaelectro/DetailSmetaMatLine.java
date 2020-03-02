@@ -3,12 +3,13 @@ package ru.bartex.smetaelectro;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,11 +20,12 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public class DetailSmetaMatLine extends AppCompatActivity {
 
@@ -48,12 +50,15 @@ public class DetailSmetaMatLine extends AppCompatActivity {
     String unit; //единицы измерения
 
     static final int request_code_add_cost_mat = 222;
+    private SQLiteDatabase database;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_mat_detail);
+
+        initDB();
 
         tableControllerSmeta = new TableControllerSmeta(this);
 
@@ -75,7 +80,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //выводим название материала
         mTextViewMatName = findViewById(R.id.tv_cost_workName);
-        String matName = tableControllerSmeta.getNameFromId(mat_id, Mat.TABLE_NAME);
+        String matName = Mat.getNameFromId(database, mat_id);
         mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork
@@ -178,6 +183,11 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override

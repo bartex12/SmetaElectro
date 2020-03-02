@@ -191,4 +191,23 @@ public class Mat {
         cursor.close();
         return currentID;
     }
+
+    //получаем имя материала по  id
+    public static String getNameFromId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+
+        String currentName = "";
+
+        String name = " SELECT " + _ID + " , " + MAT_NAME +
+                " FROM " + TABLE_NAME + " WHERE " + _ID + " = ?";
+        Cursor cursor = db.rawQuery(name, new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения id
+            currentName = cursor.getString(cursor.getColumnIndex(MAT_NAME));
+        }
+
+        cursor.close();
+        return currentName;
+    }
 }

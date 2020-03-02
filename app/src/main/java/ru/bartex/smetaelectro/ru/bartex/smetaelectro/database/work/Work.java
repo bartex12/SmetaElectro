@@ -196,4 +196,23 @@ public class Work {
         cursor.close();
         return currentID;
     }
+
+    //получаем имя работы по её id
+    public static String getNameFromId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+
+        String currentName = "";
+
+        String name = " SELECT " + _ID + " , " + WORK_NAME +
+                " FROM " + TABLE_NAME + " WHERE " + _ID + " = ?";
+        Cursor cursor = db.rawQuery(name, new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            currentName = cursor.getString(cursor.getColumnIndex(WORK_NAME));
+        }
+
+        cursor.close();
+        return currentName;
+    }
 }

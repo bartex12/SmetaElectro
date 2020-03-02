@@ -62,7 +62,7 @@ public class Smetas extends AppCompatActivity {
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
         //Получаем имя файла с текущей  сметой
-        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
+        String fileName = FileWork.getNameFromId(database, file_id);
         Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

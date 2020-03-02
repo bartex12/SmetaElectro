@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 
 public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
@@ -35,6 +37,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
     View footer;
 
     Context context;
+    private SQLiteDatabase database;
 
     public BehaviorWorkOrMat_Mat(Context context,
                                  TableControllerSmeta tableControllerSmeta,
@@ -43,6 +46,8 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         this.lvSmetasMaterials = lvSmetas;
         this.file_id = file_id;
         this.context = context;
+
+        database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
@@ -93,7 +98,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         lvSmetasMaterials.removeHeaderView(header);
         //добавляем хедер
         header = LayoutInflater.from(context).inflate(R.layout.list_item_single, null);
-        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
+        String fileName = FileWork.getNameFromId(database, file_id);
         ((TextView)header.findViewById(R.id.base_text)).setText(
                 String.format(Locale.ENGLISH,"Смета на материалы:   %s", fileName));
         lvSmetasMaterials.addHeaderView(header, null, false);

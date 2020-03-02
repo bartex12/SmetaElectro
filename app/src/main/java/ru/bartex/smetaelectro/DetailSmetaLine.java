@@ -1,14 +1,15 @@
 package ru.bartex.smetaelectro;
 
 import android.app.Dialog;
-import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,11 +20,12 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class DetailSmetaLine extends AppCompatActivity {
@@ -49,11 +51,14 @@ public class DetailSmetaLine extends AppCompatActivity {
     String unit; //единицы измерения
 
     static final int request_code_add_cost = 111;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smeta_detail);
+
+        initDB();
 
         tableControllerSmeta = new TableControllerSmeta(this);
 
@@ -75,7 +80,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = tableControllerSmeta.getNameFromId(work_id, Work.TABLE_NAME);
+        String workName = Work.getNameFromId(database, work_id);
         mTextViewWorkName.setText(workName);
 
         //выводим таблицу CostWork
@@ -96,7 +101,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
-        unit = tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
+        unit = CostWork.getNameFromId(database, work_id);
         mTextViewUnit.setText(unit);
 
         //находим поле Сумма
@@ -182,17 +187,21 @@ public class DetailSmetaLine extends AppCompatActivity {
         });
     }
 
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "DetailSmetaLine.onActivityResult...  resultCode = "+ (resultCode == RESULT_OK?true:false) +
+        Log.d(TAG, "DetailSmetaLine.onActivityResult...  resultCode = " + (resultCode == RESULT_OK) +
                 "  requestCode = " +(requestCode==P.REQUEST_COST));
         if (resultCode == RESULT_OK) {
                 Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
                 cost = tableControllerSmeta.getCostById(work_id, CostWork.TABLE_NAME);
                 mTextViewCost.setText(Float.toString(cost));
-                unit =tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
+            unit = CostWork.getNameFromId(database, work_id);
                 mTextViewUnit.setText(unit);
                 mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
         }

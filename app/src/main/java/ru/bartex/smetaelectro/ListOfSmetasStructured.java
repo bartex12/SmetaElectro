@@ -163,7 +163,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
     public void updateAdapter() {
 
-        String fileName = tableControllerSmeta.getNameFromId(file_id, FileWork.TABLE_NAME);
+        String fileName = FileWork.getNameFromId(database, file_id);
         switch (position_tab){
             case 0:
                 data = new  ArrayList<Map<String, String>>();

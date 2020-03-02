@@ -83,13 +83,13 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
         if (isWorkDialog){
             Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = true  cat_id = " +
             cat_id + "  type_id = " + type_id);
-           typeName = tableControllerSmeta.getNameFromId(type_id, TypeWork.TABLE_NAME);
-           catName = tableControllerSmeta.getNameFromId(cat_id, CategoryWork.TABLE_NAME);
+            typeName = TypeWork.getNameFromId(database, type_id);
+            catName = CategoryWork.getNameFromId(database, cat_id);
         }else{
             Log.d(TAG, "DialogSaveNameWork onCreateDialog. isWorkDialog = false  cat_id = " +
                     cat_id + "  type_id = " + type_id);
-           typeName = tableControllerSmeta.getNameFromId(type_id, TypeMat.TABLE_NAME);
-           catName = tableControllerSmeta.getNameFromId(cat_id, CategoryMat.TABLE_NAME);
+            typeName = TypeMat.getNameFromId(database, type_id);
+            catName = CategoryMat.getNameFromId(database, cat_id);
         }
         tvCatName.setText(catName);
         tvTypeName.setText(typeName);

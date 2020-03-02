@@ -102,4 +102,27 @@ public class CostWork {
         values.put(COST_COST, cost);
         db.insert(TABLE_NAME, null, values);
     }
+
+    //получаем имя  по её id
+    public static String getNameFromId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+
+        String currentName = "";
+
+        String name = " SELECT " + Unit.UNIT_NAME +
+                " FROM " + Unit.TABLE_NAME +
+                " WHERE " + Unit._ID + " IN " +
+                "(" + " SELECT " + CostWork.COST_UNIT_ID +
+                " FROM " + CostWork.TABLE_NAME +
+                " WHERE " + CostWork.COST_WORK_ID + " = " + id + ")";
+        Cursor cursor = db.rawQuery(name, null);
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            currentName = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
+        }
+
+        cursor.close();
+        return currentName;
+    }
 }

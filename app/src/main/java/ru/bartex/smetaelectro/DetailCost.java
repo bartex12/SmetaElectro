@@ -60,7 +60,7 @@ public class DetailCost extends AppCompatActivity {
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = tableControllerSmeta.getNameFromId(work_id, Work.TABLE_NAME);
+        String workName = Work.getNameFromId(database, work_id);
         mTextViewWorkName.setText(workName);
 
         //выводим таблицу CostWork
@@ -91,7 +91,7 @@ public class DetailCost extends AppCompatActivity {
         if (cost == 0){
             spinner.setSelection(0);
         }else {
-            String unitName = tableControllerSmeta.getNameFromId(work_id, CostWork.TABLE_NAME);
+            String unitName = CostWork.getNameFromId(database, work_id);
             long unitId = Unit.getIdFromName(database, unitName);
             Log.d(TAG, "DetailCost- Spinner -unitName = " + unitName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
