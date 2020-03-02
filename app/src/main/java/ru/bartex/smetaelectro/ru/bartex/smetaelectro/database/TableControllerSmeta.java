@@ -8,9 +8,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.data.DataCategoryMat;
 import ru.bartex.smetaelectro.data.DataMat;
-import ru.bartex.smetaelectro.data.DataType;
 import ru.bartex.smetaelectro.data.DataTypeMat;
-import ru.bartex.smetaelectro.data.DataWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
@@ -36,50 +34,30 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         cv = new ContentValues();
     }
 
-    //получаем данные по  типу работы по её id
-    public DataType getDataType(long type_id){
-        Log.i(TAG, "TableControllerSmeta.getDataType ... ");
-        DataType dataType = new DataType();
-
-        String typeData = " SELECT  * FROM " +  TypeWork.TABLE_NAME +
-                " WHERE " + TypeWork._ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeData, new String[]{String.valueOf(type_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            long currentTypeCategoryId = cursor.getLong(cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID));
-            String currentTypeName = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
-            String currentTypeDescription = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataType currentTypeName = " + currentTypeName);
-            //создаём экземпляр класса DataFile в конструкторе
-            dataType = new DataType(currentTypeCategoryId, currentTypeName, currentTypeDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataType;
-    }
-
-    //получаем данные по работе по её id
-    public DataWork getDataWork(long work_id){
-        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
-        SQLiteDatabase db = this.getReadableDatabase();
-        DataWork dataWork = new DataWork();
-        String workData = " SELECT  * FROM " +  Work.TABLE_NAME +
-                " WHERE " + Work._ID  + " = ? " ;
-        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
-            String currentWorkName = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
-            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(Work.WORK_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
-            //создаём экземпляр класса DataWork в конструкторе
-            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataWork;
-    }
+//
+//    //получаем данные по работе по её id
+//    public DataWork getDataWork(long work_id){
+//        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        DataWork dataWork = new DataWork();
+//
+//        String workData = " SELECT  * FROM " +  Work.TABLE_NAME +
+//                " WHERE " + Work._ID  + " = ? " ;
+//        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
+//
+//        if (cursor.moveToFirst()) {
+//            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+//            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
+//            String currentWorkName = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
+//            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(Work.WORK_DESCRIPTION));
+//            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
+//            //создаём экземпляр класса DataWork в конструкторе
+//            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
+//        }
+//        cursor.close();
+//        db.close();
+//        return dataWork;
+//    }
 
     //получаем данные по категории по её id
     public DataCategoryMat getDataCategoryMat(long cat_mat_id){

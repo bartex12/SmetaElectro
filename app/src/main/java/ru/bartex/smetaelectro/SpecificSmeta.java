@@ -47,6 +47,7 @@ public class SpecificSmeta extends AppCompatActivity {
     }
 
     private void initDB() {
+        //
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 

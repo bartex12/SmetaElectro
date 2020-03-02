@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.data.DataWork;
 
 public class Work {
     public static final String TAG = "33333";
@@ -150,5 +151,28 @@ public class Work {
         values.put(WORK_TYPE_ID, type_id);
         values.put(WORK_NAME, work_name);
         db.insert(TABLE_NAME, null, values);
+    }
+
+
+    //получаем данные по работе по её id
+    public static DataWork getDataWork(SQLiteDatabase db, long work_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+        DataWork dataWork = new DataWork();
+
+        String workData = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + _ID + " = ? ";
+        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(WORK_TYPE_ID));
+            String currentWorkName = cursor.getString(cursor.getColumnIndex(WORK_NAME));
+            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(WORK_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
+            //создаём экземпляр класса DataWork в конструкторе
+            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
+        }
+        cursor.close();
+        return dataWork;
     }
 }

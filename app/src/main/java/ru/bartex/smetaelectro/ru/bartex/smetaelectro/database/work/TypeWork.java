@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.data.DataType;
 
 public class TypeWork {
     public static final String TAG = "33333";
@@ -85,6 +86,28 @@ public class TypeWork {
         values.put(TYPE_CATEGORY_ID, category_id);
         values.put(TYPE_NAME, type_name);
         db.insert(TABLE_NAME, null, values);
+    }
+
+    //получаем данные по  типу работы по её id
+    public static DataType getDataType(SQLiteDatabase db, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataType ... ");
+        DataType dataType = new DataType();
+
+        String typeData = " SELECT  * FROM " + TypeWork.TABLE_NAME +
+                " WHERE " + TypeWork._ID + " = ? ";
+        Cursor cursor = db.rawQuery(typeData, new String[]{String.valueOf(type_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentTypeCategoryId = cursor.getLong(cursor.getColumnIndex(TypeWork.TYPE_CATEGORY_ID));
+            String currentTypeName = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+            String currentTypeDescription = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataType currentTypeName = " + currentTypeName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataType = new DataType(currentTypeCategoryId, currentTypeName, currentTypeDescription);
+        }
+        cursor.close();
+        return dataType;
     }
 
 }

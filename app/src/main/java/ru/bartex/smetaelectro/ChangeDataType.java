@@ -1,8 +1,9 @@
 package ru.bartex.smetaelectro;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.data.DataType;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
@@ -25,19 +27,31 @@ public class ChangeDataType extends AppCompatActivity {
     long type_id;
 
     private TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_change_data);
 
+        initDB();
+
         tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного типа работы из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);
         Log.d(TAG, "ChangeDataType onCreate type_id = " + type_id);
-        DataType dataType = tableControllerSmeta.getDataType(type_id);
+        DataType dataType = TypeWork.getDataType(database, type_id);
 
+        initViews(dataType);
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews(DataType dataType) {
         etTypeName = findViewById(R.id.etChangeTypeName);
         etTypeName.setText(dataType.getmTypeName());
 
@@ -86,7 +100,7 @@ public class ChangeDataType extends AppCompatActivity {
                 }
             }
 
-            ;
         });
     }
+
 }

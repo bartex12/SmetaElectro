@@ -1,8 +1,9 @@
 package ru.bartex.smetaelectro;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.data.DataWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
@@ -23,21 +25,34 @@ public class ChangeDataWork extends AppCompatActivity {
     Button btnCancelChangeWork;
     Button btnSaveChangeWork;
     long work_id;
+    DataWork dataWork;
 
     private TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_change_data);
 
+        initDB();
+
         tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного типа работы из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);
         Log.d(TAG, "ChangeDataWork onCreate work_id = " + work_id);
-        DataWork dataWork  = tableControllerSmeta.getDataWork(work_id);
+        dataWork = Work.getDataWork(database, work_id);
 
+        initViews();
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews() {
         etWorkName = findViewById(R.id.etChangeWorkName);
         etWorkName.setText(dataWork.getmWorkName());
 
@@ -85,8 +100,6 @@ public class ChangeDataWork extends AppCompatActivity {
                     finish();
                 }
             }
-
-            ;
         });
     }
 }
