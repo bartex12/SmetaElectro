@@ -1,7 +1,8 @@
 package ru.bartex.smetaelectro;
 
-import android.support.v7.app.AppCompatActivity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.data.DataCategory;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class SpecificCategory extends AppCompatActivity {
 
@@ -21,19 +24,32 @@ public class SpecificCategory extends AppCompatActivity {
     DataCategory dataCategory;
 
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
+        initDB();
+
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
         Log.d(TAG, "SpecificCategory onCreate cat_id = " + cat_id);
-        dataCategory = tableControllerSmeta.getDataCategory(cat_id);
+        dataCategory = CategoryWork.getDataCategory(database, cat_id);
 
+        initViews();
+
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews() {
         tvCatName = findViewById(R.id.tvName);
         tvCatName.setText(dataCategory.getmCategoryName());
         Log.d(TAG, "SpecificCategory onCreate tvCatName = " + dataCategory.getmCategoryName());
@@ -49,6 +65,7 @@ public class SpecificCategory extends AppCompatActivity {
                 finish();
             }
         });
-
     }
+
+
 }

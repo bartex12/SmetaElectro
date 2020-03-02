@@ -1,8 +1,9 @@
 package ru.bartex.smetaelectro;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ru.bartex.smetaelectro.data.DataCategory;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class ChangeDataCategory extends AppCompatActivity {
 
@@ -23,21 +25,34 @@ public class ChangeDataCategory extends AppCompatActivity {
     Button btnCancelChangeCat;
     Button btnSaveChangeCat;
     long cat_id;
+    DataCategory dataCategory;
 
     private TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_change_data);
 
+        initDB();
+
         tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);
         Log.d(TAG, "ChangeDataCategory onCreate cat_id = " + cat_id);
-        DataCategory dataCategory = tableControllerSmeta.getDataCategory(cat_id);
+        dataCategory = CategoryWork.getDataCategory(database, cat_id);
 
+        initViews();
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews() {
         etCatName = findViewById(R.id.etChangeCatName);
         etCatName.setText(dataCategory.getmCategoryName());
 
@@ -63,10 +78,6 @@ public class ChangeDataCategory extends AppCompatActivity {
                 String nameCat = etCatName.getText().toString();
                 Log.d(TAG, "ChangeDataCategory nameCat = " + nameCat);
 
-                //++++++++++++++++++   проверяем, пустое ли имя   +++++++++++++//
-               // long catId = smetaOpenHelper.getIdFromCategoryName(nameCat);
-                //Log.d(TAG, "nameCat = " + nameCat + "  catId = " + catId);
-
                 //если имя - пустая строка
                 if (nameCat.trim().isEmpty()) {
                     //Чтобы Snackbar появлялся над клавиатурой, в манифесте в активности
@@ -89,7 +100,6 @@ public class ChangeDataCategory extends AppCompatActivity {
                 }
             }
 
-            ;
         });
     }
 
