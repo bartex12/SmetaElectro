@@ -6,16 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.bartex.smetaelectro.data.DataCategory;
 import ru.bartex.smetaelectro.data.DataCategoryMat;
-import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.data.DataMat;
 import ru.bartex.smetaelectro.data.DataType;
 import ru.bartex.smetaelectro.data.DataTypeMat;
 import ru.bartex.smetaelectro.data.DataWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
@@ -25,7 +21,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -518,7 +513,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                         " WHERE " + Unit._ID + " IN " +
                         "(" + " SELECT " + CostWork.COST_UNIT_ID +
                         " FROM " + CostWork.TABLE_NAME +
-                        " WHERE " + CostWork.COST_WORK_ID + " = " + String.valueOf(id) + ")";
+                        " WHERE " + CostWork.COST_WORK_ID + " = " + id + ")";
                 cursor = db.rawQuery(name, null);
                 if (cursor.moveToFirst()) {
                     // Узнаем индекс  столбца
@@ -1043,7 +1038,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 Log.i(TAG, "TableControllerSmeta.getArrayNames  case FW ");
                 select = " SELECT " + FW.FW_WORK_NAME +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id;
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
@@ -1059,7 +1054,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_NAME +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
@@ -1090,8 +1085,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType  case FW ");
                 select = " SELECT " + FW.FW_WORK_NAME +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                        " AND " + FW.FW_TYPE_ID + " = " + type_id;
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
@@ -1107,8 +1102,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_NAME +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
                 name = new String[cursor.getCount()];
@@ -1139,7 +1134,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COST +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id;
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
@@ -1155,7 +1150,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_COST +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
@@ -1186,8 +1181,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FW ");
                 select = " SELECT " + FW.FW_COST +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                        " AND " + FW.FW_TYPE_ID + " = " + type_id;
 
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
@@ -1204,8 +1199,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FM ");
                 select = " SELECT " + FM.FM_MAT_COST +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
                 cost = new float[cursor.getCount()];
@@ -1236,7 +1231,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COUNT +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
@@ -1251,7 +1246,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_COUNT +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
@@ -1282,8 +1277,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_COUNT +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                        " AND " + FW.FW_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
@@ -1298,8 +1293,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_COUNT +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
                 amount = new float[cursor.getCount()];
@@ -1329,7 +1324,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_UNIT +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
@@ -1344,7 +1339,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_UNIT +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
@@ -1374,8 +1369,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_UNIT +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                        " AND " + FW.FW_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
@@ -1390,8 +1385,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_UNIT +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
                 units = new String[cursor.getCount()];
@@ -1524,7 +1519,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_SUMMA +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
@@ -1539,7 +1534,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_SUMMA +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
@@ -1570,8 +1565,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FW.TABLE_NAME:
                 select = " SELECT " + FW.FW_SUMMA +
                         " FROM " + FW.TABLE_NAME +
-                        " WHERE " + FW.FW_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FW.FW_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                        " AND " + FW.FW_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
@@ -1586,8 +1581,8 @@ public class TableControllerSmeta extends SmetaOpenHelper {
             case FM.TABLE_NAME:
                 select = " SELECT " + FM.FM_MAT_SUMMA +
                         " FROM " + FM.TABLE_NAME +
-                        " WHERE " + FM.FM_FILE_ID + " = " + String.valueOf(file_id) +
-                        " AND " + FM.FM_MAT_TYPE_ID + " = " + String.valueOf(type_id);
+                        " WHERE " + FM.FM_FILE_ID + " = " + file_id +
+                        " AND " + FM.FM_MAT_TYPE_ID + " = " + type_id;
                 cursor = db.rawQuery(select, null);
                 Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
                 summa = new float[cursor.getCount()];
@@ -2269,7 +2264,7 @@ public class TableControllerSmeta extends SmetaOpenHelper {
                 " WHERE " + UnitMat._ID + " IN " +
                 "(" + " SELECT " + CostMat.COST_MAT_UNIT_ID +
                 " FROM " + CostMat.TABLE_NAME +
-                " WHERE " + CostMat.COST_MAT_ID  + " = " +  String.valueOf(mat_id) + ")";
+                " WHERE " + CostMat.COST_MAT_ID + " = " + mat_id + ")";
 
         Cursor cursor = db.rawQuery(unit, null);
 

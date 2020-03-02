@@ -62,12 +62,12 @@ public class CategoryWork {
     }
 
     //получаем данные по категории работы по её id
-    public static DataCategory getDataCategory(SQLiteDatabase db, long cat_id){
+    public static DataCategory getDataCategory(SQLiteDatabase db, long cat_id) {
         Log.i(TAG, "CategoryWork.getDataCategory ... ");
         DataCategory dataCategory = new DataCategory();
 
-        String catData = " SELECT  * FROM " +  TABLE_NAME +
-                " WHERE " + _ID  + " = ? " ;
+        String catData = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + _ID + " = ? ";
         Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_id)});
 
         if (cursor.moveToFirst()) {

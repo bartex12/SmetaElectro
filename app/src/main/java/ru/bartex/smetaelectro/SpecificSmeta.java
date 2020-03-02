@@ -1,8 +1,8 @@
 package ru.bartex.smetaelectro;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,11 +46,11 @@ public class SpecificSmeta extends AppCompatActivity {
         initViews();
     }
 
-    private void initDB(){
+    private void initDB() {
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
-    private void initViews(){
+    private void initViews() {
         tvSmetaName = findViewById(R.id.tvName);
         tvSmetaName.setText(dataFile.getFileName());
         Log.d(TAG, "SpecificSmeta onCreate tvSmetaName = " + dataFile.getFileName());

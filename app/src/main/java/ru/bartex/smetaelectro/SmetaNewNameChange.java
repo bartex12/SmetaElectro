@@ -1,17 +1,17 @@
 package ru.bartex.smetaelectro;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import ru.bartex.smetaelectro.data.DataFile;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewNameChange extends SmetaNewName {
 
@@ -76,7 +76,7 @@ public class SmetaNewNameChange extends SmetaNewName {
     }
 
     //инициализируем базу данных
-    private void initDB(){
+    private void initDB() {
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 }
