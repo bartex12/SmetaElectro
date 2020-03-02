@@ -1,7 +1,8 @@
 package ru.bartex.smetaelectro;
 
-import android.support.v7.app.AppCompatActivity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.data.DataCategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 
 public class SpecificCategoryMat extends AppCompatActivity {
 
@@ -21,19 +24,31 @@ public class SpecificCategoryMat extends AppCompatActivity {
     DataCategoryMat dataCategory;
 
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
+        initDB();
+
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_mat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);
         Log.d(TAG, "SpecificCategoryMat onCreate cat_mat_id = " + cat_mat_id);
-        dataCategory =  tableControllerSmeta.getDataCategoryMat(cat_mat_id);
+        dataCategory = CategoryMat.getDataCategoryMat(database, cat_mat_id);
 
+        initView();
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initView() {
         tvCatName = findViewById(R.id.tvName);
         tvCatName.setText(dataCategory.getmCategoryMatName());
         Log.d(TAG, "SpecificCategoryMat onCreate tvCatName = " + dataCategory.getmCategoryMatName());

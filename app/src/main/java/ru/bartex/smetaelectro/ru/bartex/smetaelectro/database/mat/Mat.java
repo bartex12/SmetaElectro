@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.data.DataMat;
 
 public class Mat {
     public static final String TAG = "33333";
@@ -146,5 +147,27 @@ public class Mat {
         values.put(MAT_TYPE_ID, type_id);
         values.put(MAT_NAME, work_name);
         db.insert(TABLE_NAME, null, values);
+    }
+
+    //получаем данные по материалу  по  id
+    public static DataMat getDataMat(SQLiteDatabase db, long mat_id) {
+        Log.i(TAG, "SmetaOpenHelper.getMatData ... ");
+        DataMat dataMat = new DataMat();
+
+        String matData = " SELECT  * FROM " + Mat.TABLE_NAME +
+                " WHERE " + Mat._ID + " = ? ";
+        Cursor cursor = db.rawQuery(matData, new String[]{String.valueOf(mat_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentMatTypeId = cursor.getLong(cursor.getColumnIndex(Mat.MAT_TYPE_ID));
+            String currentMatName = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
+            String currentMatDescription = cursor.getString(cursor.getColumnIndex(Mat.MAT_DESCRIPTION));
+            Log.d(TAG, "getMatData currentMatName = " + currentMatName);
+            //создаём экземпляр класса DataWork в конструкторе
+            dataMat = new DataMat(currentMatTypeId, currentMatName, currentMatDescription);
+        }
+        cursor.close();
+        return dataMat;
     }
 }

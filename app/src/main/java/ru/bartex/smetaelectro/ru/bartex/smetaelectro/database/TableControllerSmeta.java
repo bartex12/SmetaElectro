@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import ru.bartex.smetaelectro.data.DataCategoryMat;
-import ru.bartex.smetaelectro.data.DataMat;
-import ru.bartex.smetaelectro.data.DataTypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
@@ -32,99 +29,6 @@ public class TableControllerSmeta extends SmetaOpenHelper {
         super(context);
 
         cv = new ContentValues();
-    }
-
-//
-//    //получаем данные по работе по её id
-//    public DataWork getDataWork(long work_id){
-//        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        DataWork dataWork = new DataWork();
-//
-//        String workData = " SELECT  * FROM " +  Work.TABLE_NAME +
-//                " WHERE " + Work._ID  + " = ? " ;
-//        Cursor cursor = db.rawQuery(workData, new String[]{String.valueOf(work_id)});
-//
-//        if (cursor.moveToFirst()) {
-//            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-//            long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(Work.WORK_TYPE_ID));
-//            String currentWorkName = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
-//            String currentWorkDescription = cursor.getString(cursor.getColumnIndex(Work.WORK_DESCRIPTION));
-//            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
-//            //создаём экземпляр класса DataWork в конструкторе
-//            dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
-//        }
-//        cursor.close();
-//        db.close();
-//        return dataWork;
-//    }
-
-    //получаем данные по категории по её id
-    public DataCategoryMat getDataCategoryMat(long cat_mat_id){
-        Log.i(TAG, "TableControllerSmeta.getDataCategoryMat ... ");
-        DataCategoryMat dataCategory = new DataCategoryMat();
-
-        String catData = " SELECT  * FROM " +  CategoryMat.TABLE_NAME +
-                " WHERE " + CategoryMat._ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_mat_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            String currentCatName = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_NAME));
-            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CategoryMat.CATEGORY_MAT_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataCategoryMat currentCatName = " + currentCatName);
-            //создаём экземпляр класса DataFile в конструкторе
-            dataCategory = new DataCategoryMat(currentCatName, currentCatDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataCategory;
-    }
-
-    //получаем данные по категории по её id
-    public DataTypeMat getDataTypeMat(long type_mat_id){
-        Log.i(TAG, "TableControllerSmeta.getDataTypeMat ... ");
-        DataTypeMat dataTypeMat = new DataTypeMat();
-
-        String typeMatData = " SELECT  * FROM " +  TypeMat.TABLE_NAME +
-                " WHERE " + TypeMat._ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(typeMatData, new String[]{String.valueOf(type_mat_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            long currentTypeMatCategoryId = cursor.getLong(cursor.getColumnIndex(TypeMat.TYPE_MAT_CATEGORY_ID));
-            String currentTypeMatName = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            String currentTypeMatDescription = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataTypeMat currentTypeName = " + currentTypeMatName);
-            //создаём экземпляр класса DataFile в конструкторе
-            dataTypeMat = new DataTypeMat(currentTypeMatCategoryId, currentTypeMatName, currentTypeMatDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataTypeMat;
-    }
-
-    //получаем данные по категории по её id
-    public DataMat getDataMat(long mat_id){
-        Log.i(TAG, "SmetaOpenHelper.getMatData ... ");
-        DataMat dataMat = new DataMat();
-
-        String matData = " SELECT  * FROM " +  Mat.TABLE_NAME +
-                " WHERE " + Mat._ID  + " = ? " ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(matData, new String[]{String.valueOf(mat_id)});
-        if (cursor.moveToFirst()) {
-            // Узнаем индекс каждого столбца и Используем индекс для получения строки
-            long currentMatTypeId = cursor.getLong(cursor.getColumnIndex(Mat.MAT_TYPE_ID));
-            String currentMatName = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
-            String currentMatDescription = cursor.getString(cursor.getColumnIndex(Mat.MAT_DESCRIPTION));
-            Log.d(TAG, "getMatData currentMatName = " + currentMatName);
-            //создаём экземпляр класса DataWork в конструкторе
-            dataMat = new DataMat(currentMatTypeId, currentMatName, currentMatDescription);
-        }
-        cursor.close();
-        db.close();
-        return dataMat;
     }
 
     //получаем id по имени в зависимости от имени таблицы

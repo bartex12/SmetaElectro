@@ -3,12 +3,13 @@ package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.data.DataCategoryMat;
 
 public class CategoryMat {
     public static final String TAG = "33333";
@@ -58,5 +59,26 @@ public class CategoryMat {
             db.insert(TABLE_NAME, null, values);
         }
         Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name_mat.length);
+    }
+
+    //получаем данные по категории материалов по её id
+    public static DataCategoryMat getDataCategoryMat(SQLiteDatabase db, long cat_mat_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataCategoryMat ... ");
+        DataCategoryMat dataCategory = new DataCategoryMat();
+
+        String catData = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + _ID + " = ? ";
+        Cursor cursor = db.rawQuery(catData, new String[]{String.valueOf(cat_mat_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            String currentCatName = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_NAME));
+            String currentCatDescription = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataCategoryMat currentCatName = " + currentCatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataCategory = new DataCategoryMat(currentCatName, currentCatDescription);
+        }
+        cursor.close();
+        return dataCategory;
     }
 }

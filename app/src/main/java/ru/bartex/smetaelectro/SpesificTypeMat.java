@@ -1,7 +1,8 @@
 package ru.bartex.smetaelectro;
 
-import android.support.v7.app.AppCompatActivity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.data.DataTypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class SpesificTypeMat extends AppCompatActivity {
     public static final String TAG = "33333";
@@ -20,18 +23,31 @@ public class SpesificTypeMat extends AppCompatActivity {
     DataTypeMat dataTypeMat;
 
     TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_specific);
 
+        initDB();
+
         tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         type_mat_id = getIntent().getExtras().getLong(P.ID_TYPE_MAT);
         Log.d(TAG, "SpesificTypeMat onCreate type_mat_id = " + type_mat_id);
-        dataTypeMat = tableControllerSmeta.getDataTypeMat((type_mat_id));
+        dataTypeMat = TypeMat.getDataTypeMat(database, type_mat_id);
+
+        initViews();
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews() {
 
         tvTypeMatName = findViewById(R.id.tvName);
         tvTypeMatName.setText(dataTypeMat.getmTypeMatName());

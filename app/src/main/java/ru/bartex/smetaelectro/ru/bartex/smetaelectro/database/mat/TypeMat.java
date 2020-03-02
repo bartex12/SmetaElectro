@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.data.DataTypeMat;
 
 public class TypeMat {
     public static final String TAG = "33333";
@@ -88,5 +89,28 @@ public class TypeMat {
         values.put(TYPE_MAT_CATEGORY_ID, category_id);
         values.put(TYPE_MAT_NAME, type_name);
         db.insert(TABLE_NAME, null, values);
+    }
+
+
+    //получаем данные по типу материалов  по  id
+    public static DataTypeMat getDataTypeMat(SQLiteDatabase db, long type_mat_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataTypeMat ... ");
+        DataTypeMat dataTypeMat = new DataTypeMat();
+
+        String typeMatData = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + _ID + " = ? ";
+        Cursor cursor = db.rawQuery(typeMatData, new String[]{String.valueOf(type_mat_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long currentTypeMatCategoryId = cursor.getLong(cursor.getColumnIndex(TYPE_MAT_CATEGORY_ID));
+            String currentTypeMatName = cursor.getString(cursor.getColumnIndex(TYPE_MAT_NAME));
+            String currentTypeMatDescription = cursor.getString(cursor.getColumnIndex(TYPE_MAT_DESCRIPTION));
+            Log.d(TAG, "TableControllerSmeta.getDataTypeMat currentTypeName = " + currentTypeMatName);
+            //создаём экземпляр класса DataFile в конструкторе
+            dataTypeMat = new DataTypeMat(currentTypeMatCategoryId, currentTypeMatName, currentTypeMatDescription);
+        }
+        cursor.close();
+        return dataTypeMat;
     }
 }
