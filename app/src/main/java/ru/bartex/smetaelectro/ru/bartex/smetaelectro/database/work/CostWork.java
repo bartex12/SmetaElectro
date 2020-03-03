@@ -131,5 +131,51 @@ public class CostWork {
         db.delete(TABLE_NAME, COST_WORK_ID + " =? ", new String[]{String.valueOf(id)});
     }
 
+    //обновляем цену работы
+    public static void updateCost(SQLiteDatabase db, long id, float cost, long unit_Id) {
+        Log.i(TAG, "TableControllerSmeta.updateCost ...");
+        //заполняем данные для обновления в базе
+        ContentValues cv = new ContentValues();
+        cv.put(COST_COST, cost);
+        cv.put(COST_UNIT_ID, unit_Id);
+        cv.put(COST_NUMBER, 1);
+        db.update(TABLE_NAME, cv, COST_WORK_ID + "=" + id, null);
+        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost);
+    }
 
+    //вывод в лог всех строк CostWork
+    public static void displayTable(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        // Создадим и откроем для чтения базу данных
+        Cursor cursor = null;
+        // Зададим условие для выборки - список столбцов
+        String[] projectionCostWork = {_ID, COST_WORK_ID, COST_UNIT_ID, COST_COST, COST_NUMBER};
+        // Делаем запрос
+        cursor = db.query(
+                TABLE_NAME,   // таблица
+                projectionCostWork,            // столбцы
+                null,                  // столбцы для условия WHERE
+                null,                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        // Проходим через все ряды в таблице CostWork
+        while (cursor.moveToNext()) {
+            // Используем индекс для получения строки или числа
+            int currentID = cursor.getInt(cursor.getColumnIndex(_ID));
+            int current_WORK_ID = cursor.getInt(cursor.getColumnIndex(COST_WORK_ID));
+            String current_UNIT = cursor.getString(cursor.getColumnIndex(COST_UNIT_ID));
+            float current_COST = cursor.getFloat(cursor.getColumnIndex(COST_COST));
+            int current_NUMBER = cursor.getInt(cursor.getColumnIndex(COST_NUMBER));
+
+            // Выводим построчно значения каждого столбца
+            Log.d(TAG, "\n" + "ID = " + currentID + " - " +
+                    " WORK_ID = " + current_WORK_ID + " - " +
+                    " UNIT = " + current_UNIT + " - " +
+                    " COST = " + current_COST + " - " +
+                    " NUMBER = " + current_NUMBER);
+        }
+        cursor.close();
+    }
 }

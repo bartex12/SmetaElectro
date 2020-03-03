@@ -192,8 +192,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                                 type_name[i] + " type_id = " + type_id);
 
                         //получаем имена работ  по смете с id файла file_id и id типа type_id
-                        String[] work_names = tableControllerSmeta.
-                                getArrayNamesSelectedType(file_id, type_id, FW.TABLE_NAME);
+                        String[] work_names = FW.getArrayNamesSelectedType(database, file_id, type_id);
                         //получаем расценки работ  по смете с id файла file_idи id типа type_id
                         float[] work_cost = tableControllerSmeta.getArrayCostSelectedType(
                                 file_id, type_id, FW.TABLE_NAME);
@@ -274,8 +273,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                                 type_mat_name[i] + " type_mat_id = " + type_mat_id);
 
                         //получаем имена материалов  по смете с id файла file_id и id типа type_mat_name
-                        String[] mat_names = tableControllerSmeta.
-                                getArrayNamesSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
+                        String[] mat_names = FM.getArrayNamesSelectedType(database, file_id, type_mat_id);
                         //получаем расценки материалов  по смете с id файла file_idи id типа type_id
                         float[] mat_cost = tableControllerSmeta.getArrayCostSelectedType(
                                 file_id, type_mat_id, FM.TABLE_NAME);

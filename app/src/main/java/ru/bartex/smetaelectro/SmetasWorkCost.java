@@ -423,14 +423,14 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                             Log.d(TAG, "SmetasWorkCost onContextItemSelected file_id = " +
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
-                            tableControllerSmeta.displayTable(CostWork.TABLE_NAME);
+                            CostWork.displayTable(database);
                             //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
                             // проверка в onCreateContextMenu
                             Work.deleteObject(database, work_id);
                             //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
                             CostWork.deleteObject(database, work_id);
                             // проверка в onCreateContextMenu
-                            tableControllerSmeta.displayTable(CostWork.TABLE_NAME);
+                            CostWork.displayTable(database);
                             //после удаления в работах не даём появиться + в тулбаре
                             isSelectedType = false;
                             //обновляем данные списка фрагмента активности

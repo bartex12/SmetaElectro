@@ -60,7 +60,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         String[] type_mat_name = tableControllerSmeta.getTypeNames(file_id, FM.TABLE_NAME);
         Log.d(TAG, "SmetasTab2Materialy - updateAdapter  type_name.length = " + type_mat_name.length);
         //Массив материалов в файле с file_id
-        String[] mat_name = tableControllerSmeta.getArrayNames(file_id, FM.TABLE_NAME);
+        String[] mat_name = FM.getArrayNames(database, file_id);
         //Массив цен для материалов в файле с file_id
         float[] mat_cost = tableControllerSmeta.getArrayCost(file_id, FM.TABLE_NAME);
         //Массив количества работ для работ в файле с file_id

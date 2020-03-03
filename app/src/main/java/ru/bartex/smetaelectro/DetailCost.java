@@ -137,7 +137,7 @@ public class DetailCost extends AppCompatActivity {
                             work_id + " cost = " + cost + " unit = " + unit + " unit_id = " + unit_id);
 
                     //обновляем стоимость работы с единицами измерения
-                    tableControllerSmeta.updateCost(work_id, cost, unit_id, CostWork.TABLE_NAME);
+                    CostWork.updateCost(database, work_id, cost, unit_id);
 
                     Bundle extras = getIntent().getExtras();
                     if(extras != null) {

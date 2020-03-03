@@ -167,7 +167,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                             Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
                                     " unit = " + unit);
                             //выводим таблицу FM в лог для проверки
-                            tableControllerSmeta.displayTable(FM.TABLE_NAME);
+                            FM.displayTable(database);
                             finish();
                         }
                     }

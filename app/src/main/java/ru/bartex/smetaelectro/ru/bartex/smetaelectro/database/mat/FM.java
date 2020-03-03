@@ -97,4 +97,122 @@ public class FM {
                 new String[]{String.valueOf(file_id), String.valueOf(id)});
     }
 
+    //вывод в лог всех строк FM
+    public static void displayTable(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        // Создадим и откроем для чтения базу данных
+        Cursor cursor = null;
+        // Зададим условие для выборки - список столбцов
+        String[] projectionFM = {
+                _ID,
+                FM_FILE_ID,
+                FM_FILE_NAME,
+                FM_MAT_ID,
+                FM_MAT_NAME,
+                FM_MAT_TYPE_ID,
+                FM_MAT_TYPE_NAME,
+                FM_MAT_CATEGORY_ID,
+                FM_MAT_CATEGORY_NAME,
+                FM_MAT_COST,
+                FM_MAT_COUNT,
+                FM_MAT_UNIT,
+                FM_MAT_SUMMA};
+        // Делаем запрос
+        cursor = db.query(
+                TABLE_NAME,   // таблица
+                projectionFM,            // столбцы
+                null,                  // столбцы для условия WHERE
+                null,                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+        // Проходим через все ряды в таблице CostWork
+        while (cursor.moveToNext()) {
+            // Используем индекс для получения строки или числа
+            int currentID = cursor.getInt(
+                    cursor.getColumnIndex(_ID));
+            int current_FILE_ID = cursor.getInt(
+                    cursor.getColumnIndex(FM_FILE_ID));
+            String current_FILE_NAME = cursor.getString(
+                    cursor.getColumnIndex(FM_FILE_NAME));
+            int current_WORK_ID = cursor.getInt(
+                    cursor.getColumnIndex(FM_MAT_ID));
+            String current_WORK_NAME = cursor.getString(
+                    cursor.getColumnIndex(FM_MAT_NAME));
+            int current_TYPE_ID = cursor.getInt(
+                    cursor.getColumnIndex(FM_MAT_TYPE_ID));
+            String current_TYPE_NAME = cursor.getString(
+                    cursor.getColumnIndex(FM_MAT_TYPE_NAME));
+            int current_CATEGORY_ID = cursor.getInt(
+                    cursor.getColumnIndex(FM_MAT_CATEGORY_ID));
+            String current_CATEGORY_NAME = cursor.getString(
+                    cursor.getColumnIndex(FM_MAT_CATEGORY_NAME));
+            float current_COST = cursor.getFloat(
+                    cursor.getColumnIndex(FM_MAT_COST));
+            int current_COUNT = cursor.getInt(
+                    cursor.getColumnIndex(FM_MAT_COUNT));
+            String current_UNIT = cursor.getString(
+                    cursor.getColumnIndex(FM_MAT_UNIT));
+            float current_SUMMA = cursor.getFloat(
+                    cursor.getColumnIndex(FM_MAT_SUMMA));
+            // Выводим построчно значения каждого столбца
+            Log.d(TAG, "\n" + "ID = " + currentID + "/" +
+                    " FILE_ID = " + current_FILE_ID + "/" +
+                    " FILE_NAME = " + current_FILE_NAME + "/" +
+                    " MAT_ID = " + current_WORK_ID + "/" +
+                    " MAT_NAME = " + current_WORK_NAME + "/" +
+                    " MAT_TYPE_ID = " + current_TYPE_ID + "/" +
+                    " MAT_TYPE_NAME = " + current_TYPE_NAME + "/" +
+                    " MAT_CATEGORY_ID = " + current_CATEGORY_ID + "/" +
+                    " MAT_CATEGORY_NAME = " + current_CATEGORY_NAME + "/" +
+                    " MAT_COST = " + current_COST + "/" +
+                    " MAT_COUNT = " + current_COUNT + "/" +
+                    " MAT_UNIT = " + current_UNIT + "/" +
+                    " MAT_SUMMA = " + current_SUMMA);
+        }
+        cursor.close();
+    }
+
+    //получаем имена   по смете с id файла file_id
+    public static String[] getArrayNames(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayNames ... ");
+
+        String select = " SELECT " + FM_MAT_NAME +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FM_FILE_ID + " = " + file_id;
+
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
+
+        String[] name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            name[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_NAME));
+        }
+        cursor.close();
+        return name;
+    }
+
+    //получаем имена   по смете с id файла file_id и id типа type_id
+    public static String[] getArrayNamesSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType ... ");
+
+        String select = " SELECT " + FM_MAT_NAME +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FM_FILE_ID + " = " + file_id +
+                " AND " + FM_MAT_TYPE_ID + " = " + type_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
+
+        String[] name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            name[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_NAME));
+        }
+        cursor.close();
+        return name;
+    }
+
 }

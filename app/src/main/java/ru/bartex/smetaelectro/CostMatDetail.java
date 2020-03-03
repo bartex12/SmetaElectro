@@ -140,14 +140,14 @@ public class CostMatDetail extends AppCompatActivity {
                         if (requestCode == 222) {
                             //добавляем стоимость cost работы с mat_id  с единицами измерения unit_mat_id
                             //long costId = mSmetaOpenHelper.insertCostMat(mat_id,cost,unit_mat_id);
-                            tableControllerSmeta.updateCost(mat_id, cost, unit_mat_id, CostMat.TABLE_NAME);
+                            CostMat.updateCost(database, mat_id, cost, unit_mat_id);
                             Intent intent = new Intent();
                             intent.putExtra(P.ID_MAT,mat_id);
                             setResult(RESULT_OK, intent);
                             Log.d(TAG, "CostMatDetail-mButtonSave requestCode =  " + requestCode +
                                     "  RESULT_OK = " + RESULT_OK );
                         }else {
-                            tableControllerSmeta.updateCost(mat_id, cost, unit_mat_id, CostMat.TABLE_NAME);
+                            CostMat.updateCost(database, mat_id, cost, unit_mat_id);
                         }
 
 

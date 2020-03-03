@@ -63,7 +63,7 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  type_name.length = " + type_name.length);
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  file_id= " + file_id);
         //Массив материалов в файле с file_id
-        String[] work_name = tableControllerSmeta.getArrayNames(file_id, FW.TABLE_NAME);
+        String[] work_name = FW.getArrayNames(database, file_id);
         //Массив цен для материалов в файле с file_id
         float[] work_cost = tableControllerSmeta.getArrayCost(file_id, FW.TABLE_NAME);
         //Массив количества материалов для материалов в файле с file_id

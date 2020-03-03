@@ -168,7 +168,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                                     type_id, cat_id, cost, count, unit, count*cost, FW.TABLE_NAME);
                             Log.d(TAG, "DetailSmetaLine-mButtonSave-onClick FW_ID = " + FW_ID);
                             //выводим таблицу FW в лог для проверки
-                            tableControllerSmeta.displayTable(FM.TABLE_NAME);
+                            FM.displayTable(database);
                             finish();
                         }
                     }
