@@ -62,11 +62,11 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         //Массив материалов в файле с file_id
         String[] mat_name = FM.getArrayNames(database, file_id);
         //Массив цен для материалов в файле с file_id
-        float[] mat_cost = tableControllerSmeta.getArrayCost(file_id, FM.TABLE_NAME);
+        float[] mat_cost = FM.getArrayCost(database, file_id);
         //Массив количества работ для работ в файле с file_id
-        float[] mat_amount = tableControllerSmeta.getArrayAmount(file_id, FM.TABLE_NAME);
+        float[] mat_amount = FM.getArrayAmount(database, file_id);
         //Массив единиц измерения для материалов в файле с file_id
-        String[] mat_units = tableControllerSmeta.getArrayUnit(file_id, FM.TABLE_NAME);
+        String[] mat_units = FM.getArrayUnit(database, file_id);
         //Массив стоимости материалов  для работ в файле с file_id
         mat_summa = tableControllerSmeta.getArraySumma(file_id, FM.TABLE_NAME);
 

@@ -65,11 +65,11 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
         //Массив материалов в файле с file_id
         String[] work_name = FW.getArrayNames(database, file_id);
         //Массив цен для материалов в файле с file_id
-        float[] work_cost = tableControllerSmeta.getArrayCost(file_id, FW.TABLE_NAME);
+        float[] work_cost = FW.getArrayCost(database, file_id);
         //Массив количества материалов для материалов в файле с file_id
-        float[] work_amount = tableControllerSmeta.getArrayAmount(file_id, FW.TABLE_NAME);
+        float[] work_amount = FW.getArrayAmount(database, file_id);
         //Массив единиц измерения для материалов в файле с file_id
-        String[] work_units = tableControllerSmeta.getArrayUnit(file_id, FW.TABLE_NAME);
+        String[] work_units = FW.getArrayUnit(database, file_id);
         //Массив стоимости материалов  для материалов в файле с file_id
         summa = tableControllerSmeta.getArraySumma(file_id, FW.TABLE_NAME);
 

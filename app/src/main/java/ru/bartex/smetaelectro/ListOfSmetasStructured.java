@@ -194,14 +194,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //получаем имена работ  по смете с id файла file_id и id типа type_id
                         String[] work_names = FW.getArrayNamesSelectedType(database, file_id, type_id);
                         //получаем расценки работ  по смете с id файла file_idи id типа type_id
-                        float[] work_cost = tableControllerSmeta.getArrayCostSelectedType(
-                                file_id, type_id, FW.TABLE_NAME);
+                        float[] work_cost = FW.getArrayCostSelectedType(database, file_id, type_id);
                         //получаем количество работ  по смете с id файла file_id и id типа type_id
-                        float[] work_amount = tableControllerSmeta.
-                                getArrayAmountSelectedType(file_id, type_id, FW.TABLE_NAME);
+                        float[] work_amount = FW.getArrayAmountSelectedType(database, file_id, type_id);
                         //получаем единицы измерения для  работ  по смете с id файла file_id
-                        String[]  work_units = tableControllerSmeta.
-                                getArrayUnitSelectedType(file_id, type_id, FW.TABLE_NAME);
+                        String[] work_units = FW.getArrayUnitSelectedType(database, file_id, type_id);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
                         float[] work_summa =  tableControllerSmeta.
                                 getArraySummaSelectedType(file_id, type_id, FW.TABLE_NAME );
@@ -275,14 +272,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //получаем имена материалов  по смете с id файла file_id и id типа type_mat_name
                         String[] mat_names = FM.getArrayNamesSelectedType(database, file_id, type_mat_id);
                         //получаем расценки материалов  по смете с id файла file_idи id типа type_id
-                        float[] mat_cost = tableControllerSmeta.getArrayCostSelectedType(
-                                file_id, type_mat_id, FM.TABLE_NAME);
+                        float[] mat_cost = FM.getArrayCostSelectedType(database, file_id, type_mat_id);
                         //получаем количество работ  по смете с id файла file_id и id типа type_id
-                        float[] mat_amount = tableControllerSmeta.
-                                getArrayAmountSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
+                        float[] mat_amount = FM.getArrayAmountSelectedType(database, file_id, type_mat_id);
                         //получаем единицы измерения для  работ  по смете с id файла file_id
-                        String[]  mat_units = tableControllerSmeta.
-                                getArrayUnitSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
+                        String[] mat_units = FM.getArrayUnitSelectedType(database, file_id, type_mat_id);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
                         float[] mat_summa =  tableControllerSmeta.
                                 getArraySummaSelectedType(file_id, type_mat_id, FM.TABLE_NAME);

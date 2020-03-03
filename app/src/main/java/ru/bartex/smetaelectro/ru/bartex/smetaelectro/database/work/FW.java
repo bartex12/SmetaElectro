@@ -216,5 +216,131 @@ public class FW {
         cursor.close();
     }
 
+    //получаем расценки  по смете с id файла file_id
+    public static float[] getArrayCost(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayCost ... ");
+
+        String select = " SELECT " + FW_COST +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
+
+        float[] cost = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            cost[position] = cursor.getFloat(cursor.getColumnIndex(FW_COST));
+        }
+        cursor.close();
+        return cost;
+    }
+
+    //получаем расценки  по смете с id файла file_id и id типа type_id
+    public static float[] getArrayCostSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType ... ");
+
+
+        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FW ");
+        String select = " SELECT " + FW_COST +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id +
+                " AND " + FW_TYPE_ID + " = " + type_id;
+
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
+
+        float[] cost = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            cost[position] = cursor.getFloat(cursor.getColumnIndex(FW_COST));
+        }
+        cursor.close();
+        return cost;
+    }
+
+    //получаем количество работ по смете с id файла file_id
+    public static float[] getArrayAmount(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+
+        String select = " SELECT " + FW_COUNT +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
+
+        float[] amount = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            amount[position] = cursor.getFloat(cursor.getColumnIndex(FW_COUNT));
+        }
+        cursor.close();
+        return amount;
+    }
+
+    //получаем количество работ  по смете с id файла file_id и id типа type_id
+    public static float[] getArrayAmountSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+
+        String select = " SELECT " + FW_COUNT +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id +
+                " AND " + FW_TYPE_ID + " = " + type_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
+
+        float[] amount = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            amount[position] = cursor.getFloat(cursor.getColumnIndex(FW_COUNT));
+        }
+        cursor.close();
+        return amount;
+    }
+
+    //получаем единицы измерения для  работ  по смете с id файла file_id
+    public static String[] getArrayUnit(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayUnit ... ");
+
+        String select = " SELECT " + FW_UNIT +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
+
+        String[] units = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            units[position] = cursor.getString(cursor.getColumnIndex(FW_UNIT));
+            Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
+        }
+        cursor.close();
+        return units;
+    }
+
+    //получаем единицы измерения для  работ  по смете с id файла file_id
+    public static String[] getArrayUnitSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType ... ");
+
+        String select = " SELECT " + FW_UNIT +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id +
+                " AND " + FW_TYPE_ID + " = " + type_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
+
+        String[] units = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            units[position] = cursor.getString(cursor.getColumnIndex(FW_UNIT));
+        }
+        cursor.close();
+        return units;
+    }
 
 }
