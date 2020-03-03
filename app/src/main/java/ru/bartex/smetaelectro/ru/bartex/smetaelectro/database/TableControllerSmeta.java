@@ -146,73 +146,13 @@ public class TableControllerSmeta extends SmetaOpenHelper {
     //********************************
     //здесь остановился 02-03
     //***********************************
-    
+
+
     //Обновляем данные по категории работ
     public void updateData(long id, String name, String description, String tableName) {
         Log.i(TAG, "TableControllerSmeta.updateData ...");
         SQLiteDatabase db = this.getWritableDatabase();
 
-        switch (tableName) {
-            case CategoryWork.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case CategoryWork");
-                //заполняем данные для обновления в базе
-                cv = new ContentValues();
-                cv.put(CategoryWork.CATEGORY_NAME, name);
-                cv.put(CategoryWork.CATEGORY_DESCRIPTION, description);
-                db.update(CategoryWork.TABLE_NAME, cv,
-                        CategoryWork._ID + "=" + id, null);
-                break;
-
-            case TypeWork.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case TypeWork");
-                //заполняем данные для обновления в базе
-                cv = new ContentValues();
-                cv.put(TypeWork.TYPE_NAME, name);
-                cv.put(TypeWork.TYPE_DESCRIPTION, description);
-                db.update(TypeWork.TABLE_NAME, cv,
-                        TypeWork._ID + "=" + id, null);
-                break;
-
-            case Work.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case Work");
-                //заполняем данные для обновления в базе
-                cv = new ContentValues();
-                cv.put(Work.WORK_NAME, name);
-                cv.put(Work.WORK_DESCRIPTION, description);
-                db.update(Work.TABLE_NAME, cv,
-                        Work._ID + "=" + id, null);
-                break;
-
-            case CategoryMat.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case CategoryMat");
-                cv = new ContentValues();
-                cv.put(CategoryMat.CATEGORY_MAT_NAME, name);
-                cv.put(CategoryMat.CATEGORY_MAT_DESCRIPTION, description);
-                db.update(CategoryMat.TABLE_NAME, cv,
-                        CategoryMat._ID + "=" + id, null);
-                break;
-
-            case TypeMat.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case TypeMat");
-                cv = new ContentValues();
-                cv.put(TypeMat.TYPE_MAT_NAME, name);
-                cv.put(TypeMat.TYPE_MAT_DESCRIPTION, description);
-                db.update(TypeMat.TABLE_NAME, cv,
-                        TypeMat._ID + "=" + id, null);
-                break;
-
-            case Mat.TABLE_NAME:
-                Log.i(TAG, "TableControllerSmeta.updateData case Mat");
-                //заполняем данные для обновления в базе
-                cv = new ContentValues();
-                cv.put(Mat.MAT_NAME, name);
-                cv.put(Mat.MAT_DESCRIPTION, description);
-                db.update(Mat.TABLE_NAME, cv,
-                        Mat._ID + "=" + id, null);
-                break;
-        }
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
-        db.close();
     }
 
     //обновляем цену работы

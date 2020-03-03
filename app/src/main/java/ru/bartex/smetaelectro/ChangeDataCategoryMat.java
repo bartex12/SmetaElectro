@@ -95,7 +95,7 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
                     String description = etCatDescription.getText().toString();
 
                     //обновляем данные файла
-                    tableControllerSmeta.updateData(cat_id, nameCat, description, CategoryMat.TABLE_NAME);
+                    CategoryMat.updateData(database, cat_id, nameCat, description);
 
                     Toast.makeText(ChangeDataCategoryMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

@@ -129,4 +129,16 @@ public class CategoryWork {
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
+    //Обновляем данные по категории работ
+    public static void updateData(SQLiteDatabase db, long id, String name, String description) {
+        Log.i(TAG, "TableControllerSmeta.updateData ...");
+
+        //заполняем данные для обновления в базе
+        ContentValues cv = new ContentValues();
+        cv.put(CATEGORY_NAME, name);
+        cv.put(CATEGORY_DESCRIPTION, description);
+        db.update(TABLE_NAME, cv, _ID + "=" + id, null);
+
+        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+    }
 }

@@ -93,7 +93,7 @@ public class ChangeDataWork extends AppCompatActivity {
                     String description = etWorkDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    tableControllerSmeta.updateData(work_id, nameWork, description, Work.TABLE_NAME);
+                    Work.updateData(database, work_id, nameWork, description);
 
                     Toast.makeText(ChangeDataWork.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();

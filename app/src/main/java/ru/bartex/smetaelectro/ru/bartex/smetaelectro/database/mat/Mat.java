@@ -215,4 +215,17 @@ public class Mat {
         Log.i(TAG, "TableControllerSmeta.deleteObject  case Mat ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
+
+    //Обновляем данные по  материалам
+    public static void updateData(SQLiteDatabase db, long id, String name, String description) {
+        Log.i(TAG, "TableControllerSmeta.updateData ...");
+
+        //заполняем данные для обновления в базе
+        ContentValues cv = new ContentValues();
+        cv.put(MAT_NAME, name);
+        cv.put(MAT_DESCRIPTION, description);
+        db.update(TABLE_NAME, cv, _ID + "=" + id, null);
+
+        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+    }
 }

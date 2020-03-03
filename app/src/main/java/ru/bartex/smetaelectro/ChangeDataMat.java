@@ -93,7 +93,7 @@ public class ChangeDataMat extends AppCompatActivity {
                     String description = etWorkDescription.getText().toString();
 
                     //обновляем данные типа работы
-                    tableControllerSmeta.updateData(work_id, nameWork, description, Mat.TABLE_NAME);
+                    Mat.updateData(database, work_id, nameWork, description);
 
                     Toast.makeText(ChangeDataMat.this,"Обновлено ",
                             Toast.LENGTH_SHORT).show();
