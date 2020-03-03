@@ -184,7 +184,7 @@ public class CostMatDetail extends AppCompatActivity {
         // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfMat)==0){
-            tableControllerSmeta.deleteObject(mat_id, CostMat.TABLE_NAME);
+            CostMat.deleteObject(database, mat_id);
         }
     }
 }

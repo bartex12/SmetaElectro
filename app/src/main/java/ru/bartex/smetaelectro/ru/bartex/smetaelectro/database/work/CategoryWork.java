@@ -123,4 +123,10 @@ public class CategoryWork {
         return currentName;
     }
 
+    //удаляем категорию работы из таблицы CategoryWork по id категории
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject case CategoryWork ");
+        db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
+    }
+
 }

@@ -108,4 +108,9 @@ public class CostMat {
         db.insert(TABLE_NAME, null, values);
     }
 
+    //удаляем цену на материал из таблицы CostMat по id цены на материал
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject ... ");
+        db.delete(TABLE_NAME, COST_MAT_ID + " =? ", new String[]{String.valueOf(id)});
+    }
 }

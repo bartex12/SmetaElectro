@@ -182,7 +182,7 @@ public class DetailCost extends AppCompatActivity {
         // для чего переделать макет DetailCost
         //---макет переделан а вставка не сделана пока---
         if (Float.parseFloat(costOfWork)==0){
-           tableControllerSmeta.deleteObject(work_id, CostWork.TABLE_NAME);
+            CostWork.deleteObject(database, work_id);
         }
 
     }

@@ -464,7 +464,7 @@ public class SmetasMat extends AppCompatActivity implements
                                         " name = " + name +  " cat_mat_id =" + cat_mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
                                 //это проверили в onCreateContextMenu
-                               tableControllerSmeta.deleteObject(cat_mat_id, CategoryMat.TABLE_NAME);
+                                CategoryMat.deleteObject(database, cat_mat_id);
 
                                 // обновляем соседнюю вкладку типов материалов и показываем её
                                 updateAdapter(0);
@@ -480,7 +480,7 @@ public class SmetasMat extends AppCompatActivity implements
                                         " type = " + type +  " type_mat_id =" + type_mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
                                 //это проверили в onCreateContextMenu
-                                tableControllerSmeta.deleteObject(type_mat_id, TypeMat.TABLE_NAME);
+                                TypeMat.deleteObject(database, type_mat_id);
 
                                 //после удаления в типемматериалов не даём появиться + в тулбаре
                                 isSelectedCat = false;
@@ -499,10 +499,10 @@ public class SmetasMat extends AppCompatActivity implements
                                         " mat = " + mat +  " mat_id =" + mat_id);
                                 //Удаляем файл из таблицы CategoryMat когда в категории нет типов
                                 //это проверили в onCreateContextMenu
-                                tableControllerSmeta.deleteObject(mat_id, Mat.TABLE_NAME);
+                                Mat.deleteObject(database, mat_id);
                                 //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
                                 // проверка в onCreateContextMenu
-                                tableControllerSmeta.deleteObject(mat_id, CostMat.TABLE_NAME);
+                                CostMat.deleteObject(database, mat_id);
                                 //после удаления в материалах не даём появиться + в тулбаре
                                 isSelectedType = false;
 

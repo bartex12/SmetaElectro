@@ -100,7 +100,7 @@ public class SmetaNewName extends AppCompatActivity {
                     String adress = etObjectAdress.getText().toString();
                     String description = etSmetaDescription.getText().toString();
 
-                    long file_id = tableControllerSmeta.addFile(nameFile,adress,description);
+                    long file_id = FileWork.addFile(database, nameFile, adress, description);
                     Toast.makeText(SmetaNewName.this,"Сохранено ",
                                  Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Сохранено имя файла  = " + nameFile + "  id = " + file_id);

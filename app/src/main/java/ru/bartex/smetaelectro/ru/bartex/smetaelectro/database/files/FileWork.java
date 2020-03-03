@@ -11,6 +11,7 @@ import java.util.List;
 
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 
 import static ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P.getDateString;
 import static ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P.getTimeString;
@@ -168,6 +169,50 @@ public class FileWork {
         }
         cursor.close();
         return currentName;
+    }
+
+    //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject case FileWork ");
+        db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? ",
+                new String[]{String.valueOf(id)});
+        db.delete(TABLE_NAME, _ID + " =? ",
+                new String[]{String.valueOf(id)});
+    }
+
+    // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
+    public static long addFile(SQLiteDatabase db, String fileName, String adress, String description) {
+        Log.i(TAG, "TableControllerSmeta.addFile ... ");
+
+        //получаем дату и время в нужном для базы данных формате
+        String dateFormat = P.getDateString();
+        String timeFormat = P.getTimeString();
+
+        //заполняем данные для обновления в базе
+        ContentValues cv = new ContentValues();
+        cv.put(FILE_NAME, fileName);
+        cv.put(ADRESS, adress);
+        cv.put(FILE_NAME_DATE, dateFormat);
+        cv.put(FILE_NAME_TIME, timeFormat);
+        cv.put(DESCRIPTION_OF_FILE, description);
+        // вставляем строку
+        long ID = db.insert(TABLE_NAME, null, cv);
+
+        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
+        return ID;
+    }
+
+    //обновляем данные файла сметы имя, адрес, описание, дата и время - на всякий случай
+    public void updateFileData(SQLiteDatabase db, long file_id, String name, String adress, String description) {
+        Log.i(TAG, "TableControllerSmeta.updateFileData ... ");
+
+        //заполняем данные для обновления в базе
+        ContentValues cv = new ContentValues();
+        cv.put(FILE_NAME, name);
+        cv.put(ADRESS, adress);
+        cv.put(DESCRIPTION_OF_FILE, description);
+
+        db.update(TABLE_NAME, cv, _ID + "=" + file_id, null);
     }
 
 }

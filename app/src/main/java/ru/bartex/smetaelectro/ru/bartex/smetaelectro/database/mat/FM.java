@@ -89,4 +89,12 @@ public class FM {
         return type_id;
     }
 
+    //удаляем работу/материал  из сметы FW/FM по file_id и work_id/mat_id
+    public static void deleteItemFrom_FM(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteItemFrom_FM ... ");
+
+        db.delete(TABLE_NAME, FM_FILE_ID + " =? " + " AND " + FM_MAT_ID + " =? ",
+                new String[]{String.valueOf(file_id), String.valueOf(id)});
+    }
+
 }

@@ -208,7 +208,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Удаляем файл из таблицы FileWork и данные из таблицы FW по file_id
-                        tableControllerSmeta.deleteObject(file_id, FileWork.TABLE_NAME);
+                        FileWork.deleteObject(database, file_id);
                         Toast.makeText(ListOfSmetasNames.this,"Удалено ",
                                 Toast.LENGTH_SHORT).show();
 

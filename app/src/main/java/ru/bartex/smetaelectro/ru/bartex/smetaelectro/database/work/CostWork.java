@@ -121,8 +121,15 @@ public class CostWork {
             // Используем индекс для получения строки или числа
             currentName = cursor.getString(cursor.getColumnIndex(Unit.UNIT_NAME));
         }
-
         cursor.close();
         return currentName;
     }
+
+    //удаляем цену на работу из таблицы CostWork по id цены на работу
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject case CostWork ");
+        db.delete(TABLE_NAME, COST_WORK_ID + " =? ", new String[]{String.valueOf(id)});
+    }
+
+
 }

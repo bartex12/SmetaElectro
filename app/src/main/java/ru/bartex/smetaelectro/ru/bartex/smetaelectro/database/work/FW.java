@@ -90,4 +90,12 @@ public class FW {
         return type_id;
     }
 
+    //удаляем работу из сметы FW по file_id и work_id
+    public static void deleteItemFrom_FW(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteItemFrom_FW ... ");
+        db.delete(TABLE_NAME, FW_FILE_ID + " =? " + " AND " + FW_WORK_ID + " =? ",
+                new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+    }
+
 }

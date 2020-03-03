@@ -471,7 +471,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
                                         " cat_name = " + cat_name + " cat_id =" + cat_id);
                                 //Удаляем файл из таблицы CategoryWork когда в категории нет типов
-                                tableControllerSmeta.deleteObject(cat_id, CategoryWork.TABLE_NAME);
+                                CategoryWork.deleteObject(database, cat_id);
                                 // обновляем соседнюю вкладку категорий работы и показываем её
                                 updateAdapter(0);
                                 break;
@@ -485,7 +485,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
                                         " type_name = " + type_name + " type_id =" + type_id);
                                 //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
-                                tableControllerSmeta.deleteObject(type_id, TypeWork.TABLE_NAME);
+                                TypeWork.deleteObject(database, type_id);
 
                                 //после удаления в типе работ не даём появиться + в тулбаре
                                 isSelectedCat = false;
@@ -503,10 +503,10 @@ public class SmetasWork extends AppCompatActivity implements
                                  //       " work_Name = " + work_Name + " work_id =" + work_id);
                                 //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
                                 // проверка в onCreateContextMenu
-                                tableControllerSmeta.deleteObject(work_id, Work.TABLE_NAME);
+                                Work.deleteObject(database, work_id);
                                 //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
                                 // проверка в onCreateContextMenu
-                                tableControllerSmeta.deleteObject(work_id, CostWork.TABLE_NAME);
+                                CostWork.deleteObject(database, work_id);
                                 //после удаления в работах не даём появиться + в тулбаре
                                 isSelectedType = false;
                                 // обновляем соседнюю вкладку работы и показываем её

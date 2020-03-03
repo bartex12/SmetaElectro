@@ -215,4 +215,10 @@ public class Work {
         cursor.close();
         return currentName;
     }
+
+    //удаляем  работу из таблицы Work по id работы
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject  case Work ");
+        db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
+    }
 }

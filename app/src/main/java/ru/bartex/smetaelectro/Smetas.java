@@ -198,7 +198,7 @@ public class Smetas extends AppCompatActivity {
                                     file_id + " work_id =" + work_id+ " work_name =" + name);
 
                             //удаляем пункт сметы из таблицы FW
-                            tableControllerSmeta.deleteItemFromFWFM(file_id, work_id, FW.TABLE_NAME);
+                            FW.deleteItemFrom_FW(database, file_id, work_id);
                             //обновляем данные списка фрагмента активности
                             updateAdapter(0);
                             break;
@@ -212,7 +212,7 @@ public class Smetas extends AppCompatActivity {
 
                             //mSmetaOpenHelper.displayFM();
                             //удаляем пункт сметы из таблицы FM
-                            tableControllerSmeta.deleteItemFromFWFM(file_id, mat_id, FM.TABLE_NAME);
+                            FM.deleteItemFrom_FM(database, file_id, mat_id);
                             //mSmetaOpenHelper.displayFM();
 
                             updateAdapter(1);

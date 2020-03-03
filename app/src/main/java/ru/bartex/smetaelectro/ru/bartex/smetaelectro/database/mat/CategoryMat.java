@@ -119,8 +119,13 @@ public class CategoryMat {
             // Используем индекс для получения строки или числа
             currentName = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_NAME));
         }
-
         cursor.close();
         return currentName;
+    }
+
+    //удаляем категорию материала из таблицы CategoryMat по id категории материала
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject  case CategoryMat ");
+        db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 }

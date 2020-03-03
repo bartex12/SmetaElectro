@@ -177,4 +177,10 @@ public class TypeMat {
         cursor.close();
         return currentName;
     }
+
+    //удаляем тип материала из таблицы CategoryMat по id типа материала
+    public static void deleteObject(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.deleteObject case TypeMat ");
+        db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
+    }
 }
