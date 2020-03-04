@@ -11,7 +11,6 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.data.DataCategory;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class SpecificCategory extends AppCompatActivity {
@@ -23,7 +22,6 @@ public class SpecificCategory extends AppCompatActivity {
     long cat_id;
     DataCategory dataCategory;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -32,8 +30,6 @@ public class SpecificCategory extends AppCompatActivity {
         setContentView(R.layout.activity_category_specific);
 
         initDB();
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);

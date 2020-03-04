@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
@@ -39,7 +38,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
     TextView mTextViewSumma;
     Button mButtonSave;
     Button mButtonCancel;
-    TableControllerSmeta tableControllerSmeta;
+
     long file_id;
     static long cat_mat_id;
     static long type_mat_id;
@@ -60,8 +59,6 @@ public class DetailSmetaMatLine extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_mat_detail);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         file_id = getIntent().getLongExtra(P.ID_FILE, 1);
         cat_mat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);

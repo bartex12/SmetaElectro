@@ -16,7 +16,6 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 
@@ -26,7 +25,6 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
 
     long file_id;
     ListView lvSmetasMaterials;
-    TableControllerSmeta tableControllerSmeta;
     float[] mat_summa;
     float totalSumma; // общая стоимость материалов по смете
     ArrayList<Map<String, Object>> data;
@@ -40,9 +38,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
     private SQLiteDatabase database;
 
     public BehaviorWorkOrMat_Mat(Context context,
-                                 TableControllerSmeta tableControllerSmeta,
                                  ListView lvSmetas, long file_id){
-        this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetasMaterials = lvSmetas;
         this.file_id = file_id;
         this.context = context;

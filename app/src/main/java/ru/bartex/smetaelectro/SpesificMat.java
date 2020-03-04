@@ -11,7 +11,6 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.data.DataMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
 public class SpesificMat extends AppCompatActivity {
@@ -22,7 +21,6 @@ public class SpesificMat extends AppCompatActivity {
     long mat_id;
     DataMat dataMat;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -31,8 +29,6 @@ public class SpesificMat extends AppCompatActivity {
         setContentView(R.layout.activity_category_specific);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         mat_id = getIntent().getExtras().getLong(P.ID_MAT);

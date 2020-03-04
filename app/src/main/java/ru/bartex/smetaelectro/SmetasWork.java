@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
@@ -45,8 +44,6 @@ public class SmetasWork extends AppCompatActivity implements
     boolean isSelectedCat =  false;
     long type_id;
     long cat_id;
-    TableControllerSmeta tableControllerSmeta;
-
 
     private SmetasWork.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -127,8 +124,6 @@ public class SmetasWork extends AppCompatActivity implements
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

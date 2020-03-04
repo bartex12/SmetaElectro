@@ -8,12 +8,10 @@ import android.support.v4.app.DialogFragment;
 import android.view.inputmethod.InputMethodManager;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 abstract public class DialogSaveNameAbstract extends DialogFragment {
 
     static String TAG = "33333";
-    TableControllerSmeta tableControllerSmeta;
     public SQLiteDatabase database;
 
     public DialogSaveNameAbstract(){
@@ -28,7 +26,6 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        tableControllerSmeta = new TableControllerSmeta(context);
         workCategoryTypeNameListener = (WorkCategoryTypeNameListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }

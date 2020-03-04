@@ -10,13 +10,12 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewNameChange extends SmetaNewName {
 
     long file_id;
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -29,7 +28,6 @@ public class SmetaNewNameChange extends SmetaNewName {
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, "SmetaNewNameChange onCreate file_id = " + file_id);
 
-        tableControllerSmeta = new TableControllerSmeta(this);
         DataFile dataFile = FileWork.getFileData(database, file_id);
 
         etSmetaName.setText(dataFile.getFileName());

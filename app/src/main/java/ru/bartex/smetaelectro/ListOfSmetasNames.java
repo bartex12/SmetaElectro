@@ -28,7 +28,6 @@ import java.util.Map;
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class ListOfSmetasNames extends AppCompatActivity {
@@ -36,7 +35,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
     public static final String TAG = "33333";
 
     ListView mListViewNames;
-    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String,Object> m;
     SimpleAdapter sara;
@@ -51,8 +49,6 @@ public class ListOfSmetasNames extends AppCompatActivity {
         initDB();
         initBottomNavigationView();
         initViews();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //объявляем о регистрации контекстного меню
         registerForContextMenu(mListViewNames);

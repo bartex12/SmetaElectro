@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
@@ -47,7 +47,6 @@ public class SmetasMat extends AppCompatActivity implements
     long type_id;
     long cat_id;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
     Menu menu;
 
@@ -130,8 +129,6 @@ public class SmetasMat extends AppCompatActivity implements
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

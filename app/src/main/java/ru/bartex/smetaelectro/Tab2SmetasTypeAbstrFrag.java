@@ -20,7 +20,6 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +33,6 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     SimpleAdapter sara;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
-    TableControllerSmeta tableControllerSmeta;
     public SQLiteDatabase database;
     boolean isSelectedCat;
     long cat_id;
@@ -56,7 +54,6 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onAttach // " );
-        tableControllerSmeta  = new TableControllerSmeta(context);
         onClickTypeListener = (OnClickTypekListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }

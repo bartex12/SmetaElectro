@@ -13,7 +13,6 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.data.DataCategory;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class ChangeDataCategory extends AppCompatActivity {

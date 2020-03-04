@@ -11,7 +11,6 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.data.DataWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class SpesificWork extends AppCompatActivity {
@@ -23,7 +22,6 @@ public class SpesificWork extends AppCompatActivity {
     long work_id;
     DataWork dataWork;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -32,8 +30,6 @@ public class SpesificWork extends AppCompatActivity {
         setContentView(R.layout.activity_category_specific);
 
         initDB();
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         work_id = getIntent().getExtras().getLong(P.ID_WORK);

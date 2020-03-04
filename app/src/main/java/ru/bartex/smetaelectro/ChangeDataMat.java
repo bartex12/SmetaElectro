@@ -13,7 +13,6 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.data.DataMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
 public class ChangeDataMat extends AppCompatActivity {
@@ -26,7 +25,6 @@ public class ChangeDataMat extends AppCompatActivity {
     long work_id;
     DataMat dataMat;
 
-    private TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
 
@@ -36,8 +34,6 @@ public class ChangeDataMat extends AppCompatActivity {
         setContentView(R.layout.activity_work_change_data);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного материала из интента
         work_id = getIntent().getExtras().getLong(P.ID_MAT);

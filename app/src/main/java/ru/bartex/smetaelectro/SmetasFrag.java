@@ -22,7 +22,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
@@ -41,7 +41,6 @@ public class SmetasFrag extends Fragment {
     public static final String TAG = "33333";
 
     ListView lvSmetas;
-    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;
@@ -72,7 +71,6 @@ public class SmetasFrag extends Fragment {
         super.onAttach(context);
         //получаем  ViewPager viewPager
         viewPager = getActivity().findViewById(R.id.container);
-        tableControllerSmeta = new TableControllerSmeta(context);
         Log.d(TAG, "// SmetasFrag onAttach  viewPager = " + viewPager);
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }

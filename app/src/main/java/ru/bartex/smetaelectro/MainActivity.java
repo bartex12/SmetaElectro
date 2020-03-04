@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     final String ATTR_BASE_TEXT = "BASE_TEXT";
 
     SmetaOpenHelper mDbHelper;
-    TableControllerSmeta tableControllerSmeta;
+    private SQLiteDatabase database;
     long file_id;
 
     @Override
@@ -42,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initDB();
+
         //создаём базу данных, если ее не было
         mDbHelper = new SmetaOpenHelper(this);
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_main);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -71,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
         //если записи есть, получаем id по имени "Новая смета" (скорее всего, 1)
         //если id = -1, значит ошибка
         file_id = mDbHelper.createDefaultFileIfNeed();
-        SQLiteDatabase db = tableControllerSmeta.getWritableDatabase();
         Log.d(TAG, "Новая смета - file_id = " + file_id);
-        Log.d(TAG, "db  - db.getPath() = " + db.getPath());
-        db.close();
+        //Log.d(TAG, "db  - db.getPath() = " + database.getPath());
+        //database.close();
     }
+
+//    private void initDB() {
+//        //
+//        database = new SmetaOpenHelper(this).getWritableDatabase();
+//    }
 
     @Override
     protected void onResume() {

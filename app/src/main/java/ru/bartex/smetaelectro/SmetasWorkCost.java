@@ -40,7 +40,6 @@ import java.io.IOException;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
@@ -57,7 +56,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
     boolean isSelectedCat =  false;
     long type_id;
     long cat_id;
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -150,8 +148,6 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasWorkCost onCreate file_id =" + file_id);
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -578,11 +574,11 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
 
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(fileWork));
 
-                SQLiteDatabase db = tableControllerSmeta.getReadableDatabase();
+
 
                 String selectWorkName = " SELECT " + Work.WORK_NAME +
                         " FROM " +  Work.TABLE_NAME;
-                Cursor curName = db.rawQuery(selectWorkName, null);
+                Cursor curName = database.rawQuery(selectWorkName, null);
                 Log.d(TAG, "SmetasWorkCost - doInBackground curName.getCount= " + curName.getCount());
 
                 String [] titleNames = new String[]{"Название работы","Цена, руб"};
@@ -603,7 +599,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                     String selectWorkCost = " SELECT " + CostWork.COST_COST +
                             " FROM " +  CostWork.TABLE_NAME  +
                             " WHERE " + CostWork.COST_WORK_ID + " = " + workId;
-                    curCost = db.rawQuery(selectWorkCost, null);
+                    curCost = database.rawQuery(selectWorkCost, null);
                     Log.d(TAG, "SmetasWorkCost - doInBackground curCost.getCount= " + curCost.getCount());
 
                     if (curCost.getCount() != 0) {

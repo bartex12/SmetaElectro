@@ -13,7 +13,6 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.data.DataType;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 public class ChangeDataType extends AppCompatActivity {
@@ -26,7 +25,6 @@ public class ChangeDataType extends AppCompatActivity {
     Button btnSaveChangeType;
     long type_id;
 
-    private TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -35,8 +33,6 @@ public class ChangeDataType extends AppCompatActivity {
         setContentView(R.layout.activity_type_change_data);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного типа работы из интента
         type_id = getIntent().getExtras().getLong(P.ID_TYPE);

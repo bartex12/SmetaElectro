@@ -16,7 +16,6 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 
@@ -24,7 +23,6 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
 
     public static final String TAG = "33333";
     ListView lvSmetas;
-    TableControllerSmeta tableControllerSmeta;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;
@@ -40,15 +38,14 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
     private SQLiteDatabase database;
 
     public BehaviorWorkOrMat_Work(Context context,
-                                  TableControllerSmeta tableControllerSmeta, ListView lvSmetas,
+                                  ListView lvSmetas,
                                   long file_id){
         Log.d(TAG, "//BehaviorWorkOrMat_Work Конструктор // " );
-        this.tableControllerSmeta = tableControllerSmeta;
         this.lvSmetas = lvSmetas;
         this.file_id = file_id;
         this.context = context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
-        Log.d(TAG, "BehaviorWorkOrMat_Work Конструктор  tableControllerSmeta ="+ tableControllerSmeta+
+        Log.d(TAG, "BehaviorWorkOrMat_Work Конструктор  tableControllerSmeta =" +
                 "  lvSmetas = " + lvSmetas);
     }
 

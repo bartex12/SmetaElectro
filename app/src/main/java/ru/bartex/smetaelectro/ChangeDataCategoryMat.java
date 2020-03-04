@@ -13,7 +13,6 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.data.DataCategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 
 public class ChangeDataCategoryMat extends AppCompatActivity {
@@ -26,7 +25,6 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
     long cat_id;
     DataCategoryMat dataCategoryMat;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -35,8 +33,6 @@ public class ChangeDataCategoryMat extends AppCompatActivity {
         setContentView(R.layout.activity_category_change_data);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY_MAT);

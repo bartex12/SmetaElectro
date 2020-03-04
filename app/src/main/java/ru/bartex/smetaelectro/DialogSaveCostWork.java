@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
@@ -36,7 +35,6 @@ public class DialogSaveCostWork extends DialogFragment {
 
     public static final String TAG = "33333";
 
-    TableControllerSmeta tableControllerSmeta;
     float cost = 0; //цена работы
     boolean isType;
     boolean isCat;
@@ -80,7 +78,6 @@ public class DialogSaveCostWork extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        tableControllerSmeta = new TableControllerSmeta(context);
         catTypeMatCostNameListener = (OnCatTypeMatCostNameListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }

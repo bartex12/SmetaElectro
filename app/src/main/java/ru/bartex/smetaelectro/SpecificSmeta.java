@@ -11,7 +11,6 @@ import android.widget.TextView;
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SpecificSmeta extends AppCompatActivity {
@@ -26,7 +25,6 @@ public class SpecificSmeta extends AppCompatActivity {
     long file_id;
     DataFile dataFile;
 
-    TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -35,8 +33,6 @@ public class SpecificSmeta extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_specific);
 
         initDB();
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);

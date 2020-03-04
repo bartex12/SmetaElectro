@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
@@ -29,7 +28,7 @@ public class CostMatDetail extends AppCompatActivity {
     EditText mTextViewCostMat;
     Button mButtonSave;
     Button mButtonCancel;
-    TableControllerSmeta tableControllerSmeta;
+
     long cat_id;
     long type_id;
     long mat_id;
@@ -45,8 +44,6 @@ public class CostMatDetail extends AppCompatActivity {
         setContentView(R.layout.activity_cost_detail);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE_MAT, 1);

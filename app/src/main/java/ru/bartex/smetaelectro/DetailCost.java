@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -30,7 +29,7 @@ public class DetailCost extends AppCompatActivity {
     EditText mTextViewCost;
     Button mButtonSave;
     Button mButtonCancel;
-    TableControllerSmeta tableControllerSmeta;
+
     long cat_id;
     long type_id;
     long work_id;
@@ -48,8 +47,6 @@ public class DetailCost extends AppCompatActivity {
         setContentView(R.layout.activity_cost_detail);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
         type_id = getIntent().getLongExtra(P.ID_TYPE, 1);

@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewName extends AppCompatActivity {
@@ -32,7 +31,6 @@ public class SmetaNewName extends AppCompatActivity {
     Button btnCancel;
     Button btnSave;
 
-    private TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -41,8 +39,6 @@ public class SmetaNewName extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_new_name);
 
         initDB();
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         //InputMethodManager imm = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

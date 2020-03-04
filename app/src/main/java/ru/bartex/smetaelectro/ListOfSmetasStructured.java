@@ -34,7 +34,6 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
@@ -47,7 +46,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
     LinearLayout llWork;
     ListView mListViewNames;
-    TableControllerSmeta tableControllerSmeta;
+
     SimpleAdapter sara;
     long file_id;
     View header;
@@ -76,8 +75,6 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation_smetas_list);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         position_tab = getIntent().getExtras().getInt(P.TAB_POSITION);

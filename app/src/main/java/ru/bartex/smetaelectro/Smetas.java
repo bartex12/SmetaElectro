@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSmeta;
+
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
@@ -41,7 +41,7 @@ public class Smetas extends AppCompatActivity {
     int pos;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
-    TableControllerSmeta tableControllerSmeta;
+
     private SQLiteDatabase database;
 
     @Override
@@ -56,8 +56,6 @@ public class Smetas extends AppCompatActivity {
 
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
-
-        tableControllerSmeta  = new TableControllerSmeta(this);
 
         Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
 
