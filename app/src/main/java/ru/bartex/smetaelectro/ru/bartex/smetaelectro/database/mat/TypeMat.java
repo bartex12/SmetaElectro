@@ -208,4 +208,30 @@ public class TypeMat {
         Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
+
+    //получаем курсор с названиями типов материалов
+    public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        String  select =  " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
+                " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + TYPE_MAT_CATEGORY_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+                "  id = " + id);
+        return cursor;
+    }
+
+    //Добавляем тип материалов
+    public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
+        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        long _id =-1;
+
+        ContentValues cv = new ContentValues();
+        cv.put(TYPE_MAT_NAME,name);
+        cv.put(TYPE_MAT_CATEGORY_ID,id);
+        // вставляем строку
+        _id = db.insert(TABLE_NAME, null, cv);
+        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        return _id;
+    }
 }

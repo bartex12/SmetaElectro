@@ -99,7 +99,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
             case 0:
                 Log.d(TAG, "++++++++ SmetasWorkCost  catTypeMatCostNameTransmit ++++++ case 0");
 
-                long newCatWorkCostId = tableControllerSmeta.insertCategory(catName, CategoryWork.TABLE_NAME);
+                long newCatWorkCostId = CategoryWork.insertCategory(database, catName);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatWorkCostId=" + newCatWorkCostId);
 
@@ -112,8 +112,8 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //определяем id категории по её имени
                 long type_category_Id = CategoryWork.
                         getIdFromName(database, catName);
-                long newTypeNameId = tableControllerSmeta.insertTypeCatName(
-                        typeName, type_category_Id,TypeWork.TABLE_NAME);
+                long newTypeNameId = TypeWork.insertTypeCatName(database,
+                        typeName, type_category_Id);
                 Log.d(TAG, "catTypeMatCostNameTransmit - workName = " + matName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем вкладку типов работы и показываем её
@@ -131,10 +131,9 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                         + " workName = " + matName  + " type_id = " + type_id) ;
 
                 //Вставляем новую работу в таблицу
-                long workID = tableControllerSmeta.insertTypeCatName(
-                        matName, type_id, Work.TABLE_NAME);
+                long workID = Work.insertTypeCatName(database, matName, type_id);
                 //обновляем цену работы с единицами измерения
-                tableControllerSmeta.insertCost(workID, cost, unit_work_id, CostWork.TABLE_NAME);
+                CostWork.insertCost(database, workID, cost, unit_work_id);
 
                 // обновляем адаптер
                 updateAdapter(2);

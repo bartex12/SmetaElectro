@@ -46,11 +46,11 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
         if (isSelectedType){
             Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = true " );
             //Курсор с именами работ с типом type_id
-            cursor =tableControllerSmeta.getNamesFromCatId(type_id, Work.TABLE_NAME);
+            cursor =Work.getNamesFromCatId(database, type_id);
         }else {
             Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
             //Курсор с именами  всех работ из таблицы Work
-            cursor = tableControllerSmeta.getNamesAllTypes(Work.TABLE_NAME);
+            cursor = Work.getNamesAllTypes(database);
         }
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab3WorkCost updateAdapter Всего материалов = "+ cursor.getCount() );

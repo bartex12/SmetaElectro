@@ -85,7 +85,7 @@ public class SmetasWork extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 0");
 
-                long newCatMatNameId = tableControllerSmeta.insertCategory(catName, CategoryWork.TABLE_NAME);
+                long newCatMatNameId = CategoryWork.insertCategory(database, catName);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
@@ -97,8 +97,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
                 long type_category_Id = CategoryWork.getIdFromName(database, catName);
-                long newTypeNameId = tableControllerSmeta.insertTypeCatName(
-                        typeName, type_category_Id,TypeWork.TABLE_NAME);
+                long newTypeNameId = TypeWork.insertTypeCatName(database, typeName, type_category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем соседнюю вкладку типов материалов и показываем её
@@ -109,8 +108,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
                 long work_type_Id = TypeWork.getIdFromName(database, typeName);
-                long newWorkNameId = tableControllerSmeta.insertTypeCatName(
-                        workName, work_type_Id, Work.TABLE_NAME);
+                long newWorkNameId = Work.insertTypeCatName(database,  workName, work_type_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 

@@ -69,7 +69,7 @@ public class CostMatDetail extends AppCompatActivity {
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateMatCost
             // при нажатии кнопки Сохранить
-            tableControllerSmeta.insertZero(mat_id, CostMat.TABLE_NAME);
+            CostMat.insertZero(database, mat_id);
         }
         mTextViewCostMat.setText(Float.toString(cost));
         mTextViewCostMat.requestFocus();

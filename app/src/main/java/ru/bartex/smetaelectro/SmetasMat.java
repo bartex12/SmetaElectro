@@ -87,7 +87,7 @@ public class SmetasMat extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 0");
 
-                long newCatMatNameId = tableControllerSmeta.insertCategory(catName, CategoryMat.TABLE_NAME);
+                long newCatMatNameId = CategoryMat.insertCategory(database, catName);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
@@ -99,8 +99,8 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
                 long type_category_Id = CategoryMat.getIdFromName(database, catName);
-                long newTypeWorkNameId = tableControllerSmeta.insertTypeCatName(
-                        typeName, type_category_Id,TypeMat.TABLE_NAME);
+                long newTypeWorkNameId = TypeMat.insertTypeCatName(database,
+                        typeName, type_category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
                 // обновляем адаптер
@@ -111,8 +111,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
                 long work_type_Id = TypeMat.getIdFromName(database, typeName);
-                long newWorkNameId = tableControllerSmeta.insertTypeCatName(
-                        workName, work_type_Id, Mat.TABLE_NAME);
+                long newWorkNameId = Mat.insertTypeCatName(database, workName, work_type_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
 

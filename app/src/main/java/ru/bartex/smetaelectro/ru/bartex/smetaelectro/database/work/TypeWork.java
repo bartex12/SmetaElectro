@@ -10,6 +10,8 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataType;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class TypeWork {
     public static final String TAG = "33333";
@@ -205,4 +207,29 @@ public class TypeWork {
         return cursor;
     }
 
+    //получаем курсор с названиями типов работ
+    public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        String  select = " SELECT " + _ID + " , " + TYPE_CATEGORY_ID +
+                        " , " + TYPE_NAME + " FROM " + TABLE_NAME +
+                        " WHERE " + TYPE_CATEGORY_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+                "  id = " + id);
+        return cursor;
+    }
+
+    //Добавляем тип работ
+    public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
+        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        long _id =-1;
+
+        ContentValues cv = new ContentValues();
+        cv.put(TYPE_NAME,name);
+        cv.put(TYPE_CATEGORY_ID,id);
+        // вставляем строку
+        _id = db.insert(TABLE_NAME, null, cv);
+        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        return _id;
+    }
 }

@@ -100,7 +100,7 @@ public class SmetasMatCost extends AppCompatActivity implements
             case 0:
                 Log.d(TAG, "++++++++ SmetasMatCost  catTypeMatCostNameTransmit ++++++ case 0");
 
-                long newCatMatNameId = tableControllerSmeta.insertCategory(catName, CategoryMat.TABLE_NAME);
+                long newCatMatNameId = CategoryMat.insertCategory(database, catName);
                 Log.d(TAG, "catTypeMatCostNameTransmit - catName = " + catName +
                         " typeName=" + typeName + " matName=" + matName +  " newCatMatNameId=" + newCatMatNameId);
 
@@ -114,8 +114,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                 //определяем id категории (будет type_category_Id в таблице типов) по её имени (блин, это же cat_id )
                 long type_category_Id = CategoryMat.getIdFromName(database, catName);
 
-                long newTypeMatNameId = tableControllerSmeta.insertTypeCatName(
-                        typeName, type_category_Id,TypeMat.TABLE_NAME);
+                long newTypeMatNameId = TypeMat.insertTypeCatName(database,typeName, type_category_Id);
                 Log.d(TAG, "catTypeMatCostNameTransmit - catName = " + catName +
                         " typeName=" + typeName + " matName=" + matName +
                         " newTypeMatNameId=" + newTypeMatNameId);
@@ -134,10 +133,9 @@ public class SmetasMatCost extends AppCompatActivity implements
                         + " matName = " + matName  + " type_id = " + type_id) ;
 
                 //Вставляем новый материал в таблице Mat
-                long matID = tableControllerSmeta.insertTypeCatName(
-                        matName, type_id, Mat.TABLE_NAME);
+                long matID = Mat.insertTypeCatName(database, matName, type_id);
                 //обновляем цену материала с единицами измерения
-                tableControllerSmeta.insertCost(matID, cost, unit_mat_id, CostMat.TABLE_NAME);
+                CostMat.insertCost(database, matID, cost, unit_mat_id);
 
                 // обновляем адаптер
                 updateAdapter(2);

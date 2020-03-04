@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 
 public class CostWork {
     public static final String TAG = "33333";
@@ -198,4 +199,38 @@ public class CostWork {
         cursor.close();
         return cost;
     }
+
+    //Добавляем вид работы с левыми параметрами, чобы удалить при отказе пользователя
+    public static long  insertZero(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.insertZero ... ");
+
+        ContentValues cv = new ContentValues();
+        cv.put(COST_WORK_ID,id);
+        cv.put(COST_UNIT_ID, 1);
+        cv.put(COST_COST,0);
+        cv.put(COST_NUMBER,1);
+        // вставляем строку
+        long currentId = db.insert(TABLE_NAME, null, cv);
+
+        Log.d(TAG, "TableControllerSmeta.insertZero  currentId = " + currentId);
+        return currentId;
+    }
+
+    //Добавляем цену работы
+    public static long  insertCost(SQLiteDatabase db, long Id, float cost, long unit_id){
+        Log.i(TAG, "TableControllerSmeta.insertCost ... ");
+        long costId =-1;
+
+        ContentValues cv = new ContentValues();
+        cv.put(COST_WORK_ID, Id);
+        cv.put(COST_COST,cost);
+        cv.put(COST_UNIT_ID,unit_id);
+        // вставляем строку
+        costId = db.insert(TABLE_NAME, null, cv);
+
+        Log.d(TAG, "TableControllerSmeta.insertCost costId = " + costId);
+        return costId;
+    }
+
+
 }

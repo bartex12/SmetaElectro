@@ -10,6 +10,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class Mat {
     public static final String TAG = "33333";
@@ -227,5 +228,41 @@ public class Mat {
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
         Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+    }
+
+    //получаем курсор с названиями  материалов
+    public static Cursor getNamesAllTypes(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
+        String  names = " SELECT " + _ID + " , " +
+                        MAT_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(names, null);
+        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с названиями типов материалов
+    public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        String  select = " SELECT " + _ID + " , " +
+                MAT_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + MAT_TYPE_ID  + " = ? " ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+                "  id = " + id);
+        return cursor;
+    }
+
+    //Добавляем  материал
+    public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
+        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        long _id =-1;
+
+        ContentValues cv = new ContentValues();
+        cv.put(MAT_NAME,name);
+        cv.put(MAT_TYPE_ID, id);
+        // вставляем строку
+        _id = db.insert(TABLE_NAME, null, cv);
+        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        return _id;
     }
 }

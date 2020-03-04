@@ -72,7 +72,7 @@ public class DetailCost extends AppCompatActivity {
         if (cost == 0){
             //вставляем строку с левыми параметрами, чтобы ее потом изменить в updateWorkCost
             // при нажатии кнопки Сохранить
-            tableControllerSmeta.insertZero(work_id, CostWork.TABLE_NAME);
+            CostWork.insertZero(database, work_id);
         }
         mTextViewCost.setText(Float.toString(cost));
         mTextViewCost.requestFocus();

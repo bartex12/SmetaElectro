@@ -10,6 +10,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class CategoryMat {
     public static final String TAG = "33333";
@@ -153,4 +154,20 @@ public class CategoryMat {
         Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
+
+    //Добавляем категорию материала
+    public static long  insertCategory(SQLiteDatabase db, String catName){
+        Log.i(TAG, "TableControllerSmeta.insertCategory ... ");
+        long _id =-1;
+
+        ContentValues cv = new ContentValues();
+        cv = new ContentValues();
+        cv.put(CATEGORY_MAT_NAME,catName);
+        // вставляем строку
+        _id = db.insert(TABLE_NAME, null, cv);
+
+        Log.d(TAG, "TableControllerSmeta.insertCategory  _id = " + _id);
+        return _id;
+    }
+
 }

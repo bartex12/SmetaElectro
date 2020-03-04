@@ -42,7 +42,7 @@ public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
         if (isSelectedCat){
             Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = true " );
             //курсор с именами типов работы для категорий с cat_id
-            cursor = tableControllerSmeta.getNamesFromCatId(cat_id, TypeWork.TABLE_NAME);
+            cursor = TypeWork.getNamesFromCatId(database, cat_id);
         }else {
             Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
