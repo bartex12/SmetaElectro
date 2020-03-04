@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+
 public class FW {
     public static final String TAG = "33333";
 
@@ -444,5 +446,77 @@ public class FW {
         return count;
     }
 
+    //получаем список категорий по id файла из таблицы FW
+    public static String[] getArrayCategory(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayCategory ... ");
+
+        String  select = " select DISTINCT " + FW_CATEGORY_NAME +
+                " from " + TABLE_NAME + " where " + FW_FILE_ID + " = " + file_id;
+        Cursor  cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayCategory cursor.getCount()  " + cursor.getCount());
+
+        String[] categoryNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            categoryNames[position] = cursor.getString(cursor.getColumnIndex(FW_CATEGORY_NAME));
+        }
+        cursor.close();
+        return categoryNames;
+    }
+
+    //получаем список типов по id файла из таблицы FW
+    public static String[] getTypeNames(SQLiteDatabase db, long file_id){
+        Log.i(TAG, "TableControllerSmeta.getTypeNames ... ");
+
+        String select =  " select DISTINCT " + FW_TYPE_NAME +
+                        " from " +  TABLE_NAME + " where " +  FW_FILE_ID + " = " + file_id;
+        Cursor  cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getTypeNames cursor.getCount()  " + cursor.getCount());
+
+        String[] typeNames = new String[cursor.getCount()];
+                // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(FW_TYPE_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем курсор с именами типов работ
+    public static Cursor getTypeNamesStructured(SQLiteDatabase db, long file_id){
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesStructured ... ");
+
+        Cursor   cursor = db.query(
+                        true,
+                        TABLE_NAME,                                  // таблица
+                        new String[]{FW_TYPE_NAME, FW_TYPE_ID},            // столбцы
+                        FW_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FW_TYPE_ID,                 // порядок сортировки
+                        null);
+        Log.i(TAG, "TableControllerSmeta  getTypeNamesStructured.getCount() = " +  cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с данными сметы с file_id для типа работ с type_id
+    public static Cursor getDataSortStructured(SQLiteDatabase db, long file_id, long type_id){
+        Log.i(TAG, "TableControllerSmeta.getDataSortStructured ... ");
+
+        Cursor cursor = db.query(
+                        TABLE_NAME,   // таблица
+                        new String[]{FW_WORK_NAME, FW_COST, FW_COUNT, FW_SUMMA},  // столбцы
+                        FW_FILE_ID + "=?" + " AND " + FW_TYPE_ID + "=?", // столбцы для условия WHERE
+                        new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                        null,                  // Don't group the rows
+                        null,                  // Don't filter by row groups
+                        FW_WORK_ID);                   // порядок сортировки
+
+        Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
+        return cursor;
+    }
 
 }

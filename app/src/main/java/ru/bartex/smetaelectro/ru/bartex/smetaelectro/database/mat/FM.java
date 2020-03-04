@@ -444,4 +444,77 @@ public class FM {
         return count;
     }
 
+    //получаем список категорий по id файла из таблицы FM
+    public static String[] getArrayCategory(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArrayCategory ... ");
+
+        String  select = " select DISTINCT " + FM_MAT_CATEGORY_NAME +
+                " from " + TABLE_NAME + " where " + FM_FILE_ID + " = " + file_id;
+        Cursor  cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArrayCategory cursor.getCount()  " + cursor.getCount());
+
+        String[] categoryNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            categoryNames[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_CATEGORY_NAME));
+        }
+        cursor.close();
+        return categoryNames;
+    }
+
+    //получаем список типов по id файла из таблицы FM
+    public static String[] getTypeNames(SQLiteDatabase db, long file_id){
+        Log.i(TAG, "TableControllerSmeta.getTypeNames ... ");
+
+        String  select =  " select DISTINCT " + FM_MAT_TYPE_NAME +
+                " from " +  TABLE_NAME + " where " +  FM_FILE_ID + " = " + file_id;
+        Cursor  cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getTypeNames cursor.getCount()  " + cursor.getCount());
+
+        String[] typeNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_TYPE_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем курсор с именами типов материалов
+    public static Cursor getTypeNamesStructured(SQLiteDatabase db, long file_id){
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesStructured ... ");
+
+        Cursor   cursor = db.query(
+                true,
+                TABLE_NAME,                                      // таблица
+                new String[]{FM_MAT_TYPE_NAME, FM_MAT_TYPE_ID},            // столбцы
+                FM_FILE_ID  + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM_MAT_TYPE_ID,                 // порядок сортировки
+                null);
+        Log.i(TAG, "TableControllerSmeta  getTypeNamesStructured.getCount() = " +  cursor.getCount());
+        return cursor;
+    }
+
+    //получаем курсор с данными сметы с file_id для типа материалов с type_id
+    public static Cursor getDataSortStructured(SQLiteDatabase db, long file_id, long type_id){
+        Log.i(TAG, "TableControllerSmeta.getDataSortStructured ... ");
+
+        Cursor cursor = db.query(
+                TABLE_NAME,   // таблица
+                new String[]{FM_MAT_NAME,FM_MAT_COST,FM_MAT_COUNT,FM_MAT_SUMMA},// столбцы
+                FM_FILE_ID + "=?"+ " AND " + FM_MAT_TYPE_ID + "=?",// столбцы для условия WHERE
+                new String[]{String.valueOf(file_id), String.valueOf(type_id)}, // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM_MAT_ID);                   // порядок сортировки
+
+        Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
+        return cursor;
+    }
+
 }

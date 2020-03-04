@@ -10,6 +10,8 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategory;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class CategoryWork {
     public static final String TAG = "33333";
@@ -140,5 +142,16 @@ public class CategoryWork {
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
         Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+    }
+
+    //получаем курсор с названиями категорий
+    public static Cursor getCursorNames(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+
+        String select = " SELECT " + _ID + " , " + CATEGORY_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
     }
 }

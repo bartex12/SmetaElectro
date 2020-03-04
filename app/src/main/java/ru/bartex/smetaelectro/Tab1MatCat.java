@@ -45,9 +45,9 @@ public class Tab1MatCat extends Tab1SmetasCatAbstrFrag {
     public void updateAdapter() {
         Log.d(TAG, "//  Tab1MatCat updateAdapter // " );
         //Курсор с именами категорий из таблицы категорий CategoryMat
-        Cursor cursor = tableControllerSmeta.getCursorNames(CategoryMat.TABLE_NAME);
+        Cursor cursor = CategoryMat.getCursorNames(database);
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
-        String[] catMatNamesFM =tableControllerSmeta.getArrayCategory(file_id, FM.TABLE_NAME);
+        String[] catMatNamesFM =FM.getArrayCategory(database, file_id);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

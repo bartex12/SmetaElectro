@@ -44,10 +44,10 @@ public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
         }else {
             Log.d(TAG, "Tab2MatType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
-            cursor = tableControllerSmeta.getCursorNames(TypeMat.TABLE_NAME);
+            cursor = TypeMat.getCursorNames(database);
         }
         //Строковый массив с именами типов материалов из таблицы FM для файла с file_id
-        String[] typetMatNamesFM = tableControllerSmeta.getTypeNames(file_id, FM.TABLE_NAME);
+        String[] typetMatNamesFM = FM.getTypeNames(database, file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab2MatType updateAdapter Всего типов материалов = "+ cursor.getCount() );

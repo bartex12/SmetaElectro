@@ -79,7 +79,7 @@ public class DetailCost extends AppCompatActivity {
         mTextViewCost.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
-        String[] unins = tableControllerSmeta.getArrayUnits(Unit.TABLE_NAME);
+        String[] unins = Unit.getArrayUnits(database);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,unins);

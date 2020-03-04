@@ -39,9 +39,9 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
     public void updateAdapter() {
         Log.d(TAG, "//  Tab1WorkCat updateAdapter // " );
         //Курсор с именами категорий из таблицы категорий CategoryMat
-        Cursor cursor = tableControllerSmeta.getCursorNames(CategoryWork.TABLE_NAME);
+        Cursor cursor = CategoryWork.getCursorNames(database);
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
-        String[] catMatNamesFW = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
+        String[] catMatNamesFW = FW.getArrayCategory(database, file_id);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

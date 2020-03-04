@@ -56,10 +56,10 @@ public class BehaviorWorkOrMat_Work implements BehaviorWorkOrMat {
     public void updateAdapter(Context context) {
         Log.d(TAG, "//BehaviorWorkOrMat_Work updateAdapter // " );
         //Массив категорий материалов для сметы с file_id
-        String[] cat_name = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
+        String[] cat_name = FW.getArrayCategory(database, file_id);
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  cat_name.length = " + cat_name.length);
         //массив типов материалов для сметы с file_id
-        String[] type_name = tableControllerSmeta.getTypeNames(file_id, FW.TABLE_NAME);
+        String[] type_name = FW.getTypeNames(database, file_id);
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  type_name.length = " + type_name.length);
         Log.d(TAG, "BehaviorWorkOrMat_Work - updateAdapter  file_id= " + file_id);
         //Массив материалов в файле с file_id

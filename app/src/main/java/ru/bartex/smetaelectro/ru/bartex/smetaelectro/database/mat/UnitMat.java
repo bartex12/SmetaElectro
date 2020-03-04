@@ -69,4 +69,23 @@ public class UnitMat {
         cursor.close();
         return currentID;
     }
+
+    //получаем массив единиц измерения
+    public static String[] getArrayUnits(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.getArrayUnits ... ");
+
+        String  select  = " SELECT " + UNIT_MAT_NAME  + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[]  units_name = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()){
+            int position = cursor.getPosition();
+            units_name[position] = cursor.getString(cursor.getColumnIndex(UNIT_MAT_NAME));
+        }
+        cursor.close();
+        return units_name;
+    }
+
+
 }

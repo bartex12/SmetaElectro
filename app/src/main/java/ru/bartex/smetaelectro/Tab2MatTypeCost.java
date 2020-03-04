@@ -42,7 +42,7 @@ public class Tab2MatTypeCost extends Tab2SmetasTypeAbstrFrag {
         }else{
             Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов материалов по всем категориям
-            cursor =tableControllerSmeta.getCursorNames(TypeMat.TABLE_NAME);
+            cursor =TypeMat.getCursorNames(database);
         }
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());

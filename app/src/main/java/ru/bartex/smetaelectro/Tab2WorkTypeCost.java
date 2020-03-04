@@ -45,10 +45,10 @@ public class Tab2WorkTypeCost extends Tab2SmetasTypeAbstrFrag {
         }else {
             Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
-            cursor =tableControllerSmeta.getCursorNames(TypeWork.TABLE_NAME );
+            cursor =TypeWork.getCursorNames(database );
         }
         //Строковый массив с именами типов из таблицы FW для файла с file_id
-        String[] typetNamesFW = tableControllerSmeta.getTypeNames(file_id, FW.TABLE_NAME);
+        String[] typetNamesFW = FW.getTypeNames(database, file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab2WorkTypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );

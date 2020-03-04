@@ -37,7 +37,7 @@ public class Tab1MatCatCost extends Tab1SmetasCatAbstrFrag {
     @Override
     public void updateAdapter() {
         //Курсор с именами категорий материалов
-        Cursor cursor = tableControllerSmeta.getCursorNames(CategoryMat.TABLE_NAME);
+        Cursor cursor = CategoryMat.getCursorNames(database);
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         while (cursor.moveToNext()) {

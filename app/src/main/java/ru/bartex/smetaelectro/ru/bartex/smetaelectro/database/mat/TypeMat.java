@@ -196,4 +196,16 @@ public class TypeMat {
 
         Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
     }
+
+    //получаем курсор с названиями категорий
+    public static Cursor getCursorNames(SQLiteDatabase db) {
+        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+
+        String select =  " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
+                " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME ;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        return cursor;
+    }
 }

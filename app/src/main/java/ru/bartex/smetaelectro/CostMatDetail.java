@@ -76,7 +76,7 @@ public class CostMatDetail extends AppCompatActivity {
         mTextViewCostMat.selectAll();
 
         //получаем массив единиц измерения из таблицы Unit
-        String[] uninsMat = tableControllerSmeta.getArrayUnits(UnitMat.TABLE_NAME);
+        String[] uninsMat = UnitMat.getArrayUnits(database);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,uninsMat);

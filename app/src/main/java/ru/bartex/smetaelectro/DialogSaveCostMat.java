@@ -258,7 +258,7 @@ public class DialogSaveCostMat extends DialogFragment {
             });
 
             //получаем массив единиц измерения из таблицы Unit
-            String[] unins = tableControllerSmeta.getArrayUnits(UnitMat.TABLE_NAME);
+            String[] unins = UnitMat.getArrayUnits(database);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_spinner_item,unins);

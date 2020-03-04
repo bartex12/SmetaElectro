@@ -38,7 +38,7 @@ public class Tab1WorkCatCost extends Tab1SmetasCatAbstrFrag {
     public void updateAdapter() {
         Log.d(TAG, "//  Tab1WorkCatCost updateAdapter // " );
         //Курсор с именами категорий из таблицы категорий CategoryMat
-        Cursor cursor = tableControllerSmeta.getCursorNames(CategoryWork.TABLE_NAME);
+        Cursor cursor = CategoryWork.getCursorNames(database);
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab1WorkCatCost updateAdapter Всего категорий  = "+ cursor.getCount() );
