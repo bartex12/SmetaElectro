@@ -54,7 +54,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
             cursor = tableControllerSmeta.getNamesAllTypes(Work.TABLE_NAME);
         }
         //Строковый массив с именами работы из таблицы FW для файла с file_id
-        String[] workNamesFW = tableControllerSmeta.getNamesFWFM(file_id, FW.TABLE_NAME);
+        String[] workNamesFW = FW.getNames_FW(database, file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
         Log.d(TAG, " Tab3Work updateAdapter Всего материалов = "+ cursor.getCount() );

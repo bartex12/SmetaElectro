@@ -68,7 +68,7 @@ public class BehaviorWorkOrMat_Mat implements BehaviorWorkOrMat {
         //Массив единиц измерения для материалов в файле с file_id
         String[] mat_units = FM.getArrayUnit(database, file_id);
         //Массив стоимости материалов  для работ в файле с file_id
-        mat_summa = tableControllerSmeta.getArraySumma(file_id, FM.TABLE_NAME);
+        mat_summa = FM.getArraySumma(database, file_id);
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(mat_name.length);

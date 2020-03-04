@@ -169,4 +169,23 @@ public class CostMat {
         }
         cursor.close();
     }
+
+    //получаем стоимость материалов по  id
+    public static float getCostById(SQLiteDatabase db, long id) {
+        Log.i(TAG, "TableControllerSmeta.getCostById ... ");
+        float cost = -1;
+
+        String select = " SELECT " + COST_MAT_COST +
+                " FROM " + TABLE_NAME +
+                " WHERE " + COST_MAT_ID + " = ?";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+        Log.d(TAG, "getCostById cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            cost = cursor.getFloat(cursor.getColumnIndex(COST_MAT_COST));
+        }
+        cursor.close();
+        return cost;
+    }
 }

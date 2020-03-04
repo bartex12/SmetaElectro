@@ -69,7 +69,7 @@ public class DetailSmetaLine extends AppCompatActivity {
         isWork = getIntent().getBooleanExtra(P.IS_WORK, false);
         //Если такая работа есть в FW, то считываем из таблицы количество для file_id и work_id
         if (isWork){
-            count = tableControllerSmeta.getCount(file_id, work_id, FW.TABLE_NAME);
+            count = FW.getCount(database, file_id, work_id);
         }else {
             count = 0;
         }
@@ -88,7 +88,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         //выводим цену работы
         mTextViewCost = findViewById(R.id.etCost);
-        cost = tableControllerSmeta.getCostById(work_id, CostWork.TABLE_NAME);
+        cost = CostWork.getCostById(database, work_id);
         mTextViewCost.setText(Float.toString(cost));
         if ((mTextViewCost.getText().toString()).equals("0.0")){
             Log.d(TAG, "DetailSmetaLine.(mTextViewCost.getText().toString()).equals");
@@ -199,7 +199,7 @@ public class DetailSmetaLine extends AppCompatActivity {
                 "  requestCode = " +(requestCode==P.REQUEST_COST));
         if (resultCode == RESULT_OK) {
                 Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
-                cost = tableControllerSmeta.getCostById(work_id, CostWork.TABLE_NAME);
+            cost = CostWork.getCostById(database, work_id);
                 mTextViewCost.setText(Float.toString(cost));
             unit = CostWork.getNameFromId(database, work_id);
                 mTextViewUnit.setText(unit);

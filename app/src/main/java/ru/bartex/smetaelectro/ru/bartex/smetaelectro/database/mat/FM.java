@@ -343,4 +343,105 @@ public class FM {
         return units;
     }
 
+    //получаем список материалов по id файла из таблиц FM
+    public static String[] getNames_FM(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getMatNamesFM ... ");
+
+        String select = " select DISTINCT " + FM_MAT_NAME +
+                " from " + TABLE_NAME + " where " + FM_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем список типов по id файла из таблицы FM
+    public static String[] getTypeNamesSort(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort ... ");
+        Cursor cursor = db.query(
+                true,
+                TABLE_NAME,   // таблица
+                new String[]{FM_MAT_TYPE_NAME, FM_MAT_TYPE_ID},            // столбцы
+                FM_FILE_ID + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FM_MAT_TYPE_ID,              // порядок сортировки
+                null);
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_TYPE_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем количество материалов  по смете с id файла file_id
+    public static float[] getArraySumma(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+
+        String select = " SELECT " + FM_MAT_SUMMA +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FM_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+
+        float[] summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            summa[position] = cursor.getFloat(cursor.getColumnIndex(FM_MAT_SUMMA));
+        }
+        cursor.close();
+        return summa;
+    }
+
+    //получаем количество материалов  по смете с id файла file_id
+    public static float[] getArraySummaSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+
+        String select = " SELECT " + FM_MAT_SUMMA +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FM_FILE_ID + " = " + file_id +
+                " AND " + FM_MAT_TYPE_ID + " = " + type_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+        float[] summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            summa[position] = cursor.getFloat(cursor.getColumnIndex(FM_MAT_SUMMA));
+        }
+        cursor.close();
+        return summa;
+    }
+
+    //получаем значение количества материалов для сметы с file_id   MAT_ID
+    public static float getCount(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getCount ... ");
+        float count = -1;
+
+        String select = " SELECT " + FM_MAT_COUNT + " FROM " + TABLE_NAME +
+                " where " + FM_FILE_ID + " =? " + " and " + FM_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения количества материалов
+            count = cursor.getFloat(cursor.getColumnIndex(FM_MAT_COUNT));
+        }
+        Log.d(TAG, "TableControllerSmeta getCostById count = " + count);
+        cursor.close();
+        return count;
+    }
+
 }

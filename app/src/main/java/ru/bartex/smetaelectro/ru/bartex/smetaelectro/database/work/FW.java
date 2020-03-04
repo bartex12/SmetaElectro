@@ -343,4 +343,106 @@ public class FW {
         return units;
     }
 
+    //получаем список работ по id файла из таблиц FW
+    public static String[] getNames_FW(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getMatNamesFM ... ");
+
+        String select = " select DISTINCT " + FW_WORK_NAME +
+                " from " + TABLE_NAME + " where " + FW_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(FW_WORK_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем список типов по id файла из таблицы FW
+    public static String[] getTypeNamesSort(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort ... ");
+        Cursor cursor = db.query(
+                true,
+                TABLE_NAME,                                 // таблица
+                new String[]{FW_TYPE_NAME, FW_TYPE_ID},            // столбцы
+                FW_FILE_ID + "=?",                  // столбцы для условия WHERE
+                new String[]{String.valueOf(file_id)},     // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                FW_TYPE_ID,                 // порядок сортировки
+                null);
+        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(FW_TYPE_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public static float[] getArraySumma(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+
+        String select = " SELECT " + FW_SUMMA +
+                " FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = " + file_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+
+        float[] summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            summa[position] = cursor.getFloat(cursor.getColumnIndex(FW_SUMMA));
+        }
+        cursor.close();
+        return summa;
+    }
+
+    //получаем количество работ  по смете с id файла file_id
+    public static float[] getArraySummaSelectedType(SQLiteDatabase db, long file_id, long type_id) {
+        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+
+        String select = " SELECT " + FW.FW_SUMMA +
+                " FROM " + FW.TABLE_NAME +
+                " WHERE " + FW.FW_FILE_ID + " = " + file_id +
+                " AND " + FW.FW_TYPE_ID + " = " + type_id;
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+        float[] summa = new float[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            summa[position] = cursor.getFloat(cursor.getColumnIndex(FW.FW_SUMMA));
+        }
+        cursor.close();
+        return summa;
+    }
+
+    //получаем значение количества работы для сметы с file_id   work_id
+    public static float getCount(SQLiteDatabase db, long file_id, long id) {
+        Log.i(TAG, "TableControllerSmeta.getCount ... ");
+        float count = -1;
+
+        String select = " SELECT " + FW_COUNT + " FROM " + TABLE_NAME +
+                " where " + FW_FILE_ID + " =? " + " and " + FW_WORK_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс столбца и Используем индекс для получения количества работы
+            count = cursor.getFloat(cursor.getColumnIndex(FW_COUNT));
+        }
+        Log.d(TAG, "TableControllerSmeta getCostById count = " + count);
+        cursor.close();
+        return count;
+    }
+
+
 }

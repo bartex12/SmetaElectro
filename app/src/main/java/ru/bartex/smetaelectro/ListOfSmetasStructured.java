@@ -173,11 +173,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 String[] cat_name = tableControllerSmeta.getArrayCategory(file_id, FW.TABLE_NAME);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_name.length = " + cat_name.length);
                 //массив типов работ для сметы с file_id
-                String[] type_name = tableControllerSmeta.getTypeNamesSort(file_id,FW.TABLE_NAME);
+                String[] type_name = FW.getTypeNamesSort(database, file_id);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_name.length);
 
                 //получаем суммарную стоимомть работ  по смете с id файла file_id
-                work_summas = tableControllerSmeta.getArraySumma(file_id, FW.TABLE_NAME);
+                work_summas = FW.getArraySumma(database, file_id);
 
                 int length = type_name.length;
                 if (length >0){
@@ -200,8 +200,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //получаем единицы измерения для  работ  по смете с id файла file_id
                         String[] work_units = FW.getArrayUnitSelectedType(database, file_id, type_id);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
-                        float[] work_summa =  tableControllerSmeta.
-                                getArraySummaSelectedType(file_id, type_id, FW.TABLE_NAME );
+                        float[] work_summa = FW.getArraySummaSelectedType(database, file_id, type_id);
 
                         for (int k = 0; k<work_names.length; k++){
                             mm = new HashMap<>();
@@ -251,11 +250,11 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  cat_mat_name.length = " + cat_mat_name.length);
                 //массив типов материалов для сметы с file_id
                 //String[] type_mat_name = mSmetaOpenHelper.getTypeNamesFM(file_id);
-                String[] type_mat_name = tableControllerSmeta.getTypeNamesSort(file_id, FM.TABLE_NAME);
+                String[] type_mat_name = FM.getTypeNamesSort(database, file_id);
                 Log.d(TAG, "ListOfSmetasStructured - updateAdapter  type_name.length = " + type_mat_name.length);
 
                 //получаем суммарную стоимомть материалов  по смете с id файла file_id
-                mat_summas = tableControllerSmeta.getArraySumma(file_id, FM.TABLE_NAME);
+                mat_summas = FM.getArraySumma(database, file_id);
 
                 int length_mat = type_mat_name.length;
                 if (length_mat >0){
@@ -278,8 +277,7 @@ public class ListOfSmetasStructured extends AppCompatActivity {
                         //получаем единицы измерения для  работ  по смете с id файла file_id
                         String[] mat_units = FM.getArrayUnitSelectedType(database, file_id, type_mat_id);
                         //получаем стоимомть работ  по смете с id файла file_id и id типа type_id
-                        float[] mat_summa =  tableControllerSmeta.
-                                getArraySummaSelectedType(file_id, type_mat_id, FM.TABLE_NAME);
+                        float[] mat_summa = FM.getArraySummaSelectedType(database, file_id, type_mat_id);
 
                         for (int k = 0; k<mat_names.length; k++){
                             mm = new HashMap<>();
