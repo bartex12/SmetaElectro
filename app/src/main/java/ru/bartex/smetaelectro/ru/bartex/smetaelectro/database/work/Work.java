@@ -10,6 +10,10 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class Work {
     public static final String TAG = "33333";
@@ -270,4 +274,19 @@ public class Work {
         Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
         return _id;
     }
+
+    //получаем количество видов работ с типом WORK_TYPE_ID
+    public static int getCountLine(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String  select = " SELECT " + _ID + " FROM " + TABLE_NAME +
+                        " where " + WORK_TYPE_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
+    }
+
 }

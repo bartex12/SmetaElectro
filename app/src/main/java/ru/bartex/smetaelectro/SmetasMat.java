@@ -288,7 +288,7 @@ public class SmetasMat extends AppCompatActivity implements
                 //находим id категории по имени категории
                 long cat_mat_id = CategoryMat.getIdFromName(database, name);
                 //находим количество строк типов материала для cat_mat_id
-                int countType_mat = tableControllerSmeta.getCountLine(cat_mat_id, TypeMat.TABLE_NAME);
+                int countType_mat = TypeMat.getCountLine(database, cat_mat_id);
                 Log.d(TAG, "onCreateContextMenu - countType = " + countType_mat);
                 if(countType_mat > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -301,7 +301,7 @@ public class SmetasMat extends AppCompatActivity implements
                 //находим id типа по имени типа
                 long type_mat_id = TypeMat.getIdFromName(database, typeMatName);
                 //находим количество строк видов материала для type_mat_id
-                int countLineMat = tableControllerSmeta.getCountLine(type_mat_id, Mat.TABLE_NAME);
+                int countLineMat = Mat.getCountLine(database, type_mat_id);
                 Log.d(TAG, "onContextItemSelected - countLineMat = " + countLineMat);
                 if(countLineMat > 0) {
                     menu.findItem(P.DELETE_ID).setEnabled(false);
@@ -314,7 +314,7 @@ public class SmetasMat extends AppCompatActivity implements
                 //находим id вида  по имени вида материала
                 long mat_id = Mat.getIdFromName(database, matName);
                 //находим количество строк видов материала в таблице FM для mat_id
-                int countLineWorkFM = tableControllerSmeta.getCountLine(mat_id, FM.TABLE_NAME);
+                int countLineWorkFM = FM.getCountLine(database, mat_id);
                 Log.d(TAG, "SmetasMat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
                 //mSmetaOpenHelper.displayTableCost();
                 if(countLineWorkFM > 0) {

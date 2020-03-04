@@ -222,4 +222,18 @@ public class CostMat {
         return costId;
     }
 
+    //получаем количество  с типом TYPE_MAT_CATEGORY_ID
+    public static int getCountLine(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String   select =   " SELECT " + _ID + " FROM " + TABLE_NAME +
+                " where " + COST_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
+    }
+
 }

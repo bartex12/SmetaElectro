@@ -1,9 +1,15 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class FM {
     public static final String TAG = "33333";
@@ -515,6 +521,62 @@ public class FM {
 
         Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
         return cursor;
+    }
+
+    /**
+     * Вставляет строку в таблицу FM
+     */
+    public static long  insertRowInFM(SQLiteDatabase db, long file_id, long work_mat_id,
+                                      long type_id, long category_id,  float cost,
+                                      float  count, String unit, float summa){
+        Log.i(TAG, "TableControllerSmeta.insertRowInFM ... ");
+        long ID = -1;
+
+        //получаем имя файла по его id
+        String fileName = FileWork.getNameFromId(db, file_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFM fileName =  " + fileName);
+        //получаем имя материала  по id материала
+        String matName = Mat.getNameFromId(db, work_mat_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFM matName =  " + matName);
+        //получаем имя типа материала по id типа материала
+        String typeMatName = TypeMat.getNameFromId(db, type_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFM typeMatName =  " + typeMatName);
+        //получаем имя категории материала по id категории материала
+        String catMatName = CategoryMat.getNameFromId(db, category_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFM catName =  " + catMatName);
+
+        ContentValues cv = new ContentValues();
+        cv.put(FM_FILE_ID,file_id);
+        cv.put(FM_FILE_NAME,fileName);
+        cv.put(FM_MAT_ID,work_mat_id);
+        cv.put(FM_MAT_NAME,matName);
+        cv.put(FM_MAT_TYPE_ID,type_id);
+        cv.put(FM_MAT_TYPE_NAME,typeMatName);
+        cv.put(FM_MAT_CATEGORY_ID,category_id);
+        cv.put(FM_MAT_CATEGORY_NAME,catMatName);
+        cv.put(FM_MAT_COST,cost);
+        cv.put(FM_MAT_COUNT,count);
+        cv.put(FM_MAT_UNIT,unit);
+        cv.put(FM_MAT_SUMMA,summa);
+
+        // вставляем строку
+        ID = db.insert(FM.TABLE_NAME, null, cv);
+        Log.d(TAG, "TableControllerSmeta.insertRowInFM  FW._ID = " + ID);
+        return ID;
+    }
+
+    //получаем количество  с типом FM_MAT_ID
+    public static int getCountLine(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String    select = " SELECT " + _ID + " FROM " + TABLE_NAME +
+                " where " + FM_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
     }
 
 }

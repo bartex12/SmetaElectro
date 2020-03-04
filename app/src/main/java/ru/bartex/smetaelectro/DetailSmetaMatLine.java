@@ -26,6 +26,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.TableControllerSme
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 
 public class DetailSmetaMatLine extends AppCompatActivity {
 
@@ -100,7 +101,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
-        unit = tableControllerSmeta.getUnitMat(mat_id);
+        unit = UnitMat.getUnitMat(database, mat_id);
         mTextViewUnit.setText(unit);
 
         //находим поле Сумма
@@ -161,9 +162,9 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                             DialogFragment dialogFragment = new CostMatDialogFragment();
                             dialogFragment.show(fragmentManager,"Save_Cost_mat");
                         }else{
-                            long FM_ID = tableControllerSmeta.insertRowInFWFM(file_id, mat_id,
+                            long FM_ID = FM.insertRowInFM(database, file_id, mat_id,
                                     type_mat_id, cat_mat_id, costMat, countMat,
-                                    unit, countMat*costMat, FM.TABLE_NAME);
+                                    unit, countMat*costMat);
                             Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
                                     " unit = " + unit);
                             //выводим таблицу FM в лог для проверки
@@ -204,7 +205,7 @@ public class DetailSmetaMatLine extends AppCompatActivity {
 
             mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
 
-            unit = tableControllerSmeta.getUnitMat(mat_id);
+            unit = UnitMat.getUnitMat(database, mat_id);
             mTextViewUnit.setText(unit);
         }
     }

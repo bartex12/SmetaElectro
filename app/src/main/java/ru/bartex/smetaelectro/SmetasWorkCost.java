@@ -312,7 +312,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //находим id категории по имени категории
                 long cat_id = CategoryWork.getIdFromName(database, name);
                 //находим количество строк типов работы для cat_id
-                int countLineType = tableControllerSmeta.getCountLine(cat_id, TypeWork.TABLE_NAME);
+                int countLineType = TypeWork.getCountLine(database, cat_id);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineType = " + countLineType);
                 if(countLineType > 0) {
                     menu.findItem(P.DELETE_ITEM_SMETA).setEnabled(false);
@@ -326,7 +326,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //находим id типа по имени типа
                 long type_id = TypeWork.getIdFromName(database, typeName);
                 //находим количество строк видов работы для type_id
-                int countLineWork = tableControllerSmeta.getCountLine(type_id, Work.TABLE_NAME);
+                int countLineWork = Work.getCountLine(database, type_id);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWork = " + countLineWork);
                 if(countLineWork > 0) {
                     menu.findItem(P.DELETE_ITEM_SMETA).setEnabled(false); //так лучше
@@ -342,9 +342,9 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
                 //находим id вида  по имени вида работ
                 long work_id = Work.getIdFromName(database, workName);
                 //находим количество строк видов работы в таблице FW для work_id
-                int countLineWorkFW = tableControllerSmeta.getCountLine(work_id, FW.TABLE_NAME);
+                int countLineWorkFW = FW.getCountLine(database, work_id);
                 //находим количество строк расценок работы в таблице CostWork для work_id
-                int countCostLineWork = tableControllerSmeta.getCountLine(work_id, CostWork.TABLE_NAME);
+                int countCostLineWork = CostWork.getCountLine(database, work_id);
                 Log.d(TAG, "SmetasWorkCost onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
                         " countCostLineWork =" + countCostLineWork);
 

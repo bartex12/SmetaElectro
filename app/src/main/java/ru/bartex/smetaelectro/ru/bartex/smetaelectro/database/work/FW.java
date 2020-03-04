@@ -1,11 +1,16 @@
 package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class FW {
     public static final String TAG = "33333";
@@ -517,6 +522,62 @@ public class FW {
 
         Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
         return cursor;
+    }
+
+    /**
+     * Вставляет строку в таблицу FW
+     */
+    public static long  insertRowInFW(SQLiteDatabase db, long file_id, long work_mat_id,
+                                        long type_id, long category_id,  float cost,
+                                        float  count, String unit, float summa){
+        Log.i(TAG, "TableControllerSmeta.insertRowInFWFM ... ");
+        long ID = -1;
+
+        //получаем имя файла по его id
+        String fileName = FileWork.getNameFromId(db, file_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFW fileName =  " + fileName);
+        //получаем имя работы по id работы
+        String workName = Work.getNameFromId(db, work_mat_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFW workName =  " + workName);
+        //получаем имя типа работы по id типа работы
+        String typeName = TypeWork.getNameFromId(db, type_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFW typeName =  " + typeName);
+        //получаем имя категории работы по id категории работы
+        String catName = CategoryWork.getNameFromId(db, category_id);
+        Log.i(TAG, "TableControllerSmeta.insertRowInFW catName =  " + catName);
+
+        ContentValues cv = new ContentValues();
+        cv.put(FW_FILE_ID,file_id);
+        cv.put(FW_FILE_NAME,fileName);
+        cv.put(FW_WORK_ID,work_mat_id);
+        cv.put(FW_WORK_NAME,workName);
+        cv.put(FW_TYPE_ID,type_id);
+        cv.put(FW_TYPE_NAME,typeName);
+        cv.put(FW_CATEGORY_ID,category_id);
+        cv.put(FW_CATEGORY_NAME,catName);
+        cv.put(FW_COST,cost);
+        cv.put(FW_COUNT,count);
+        cv.put(FW_UNIT,unit);
+        cv.put(FW_SUMMA,summa);
+
+        // вставляем строку
+        ID = db.insert(TABLE_NAME, null, cv);
+        Log.d(TAG, "TableControllerSmeta.insertRowInFW  FW._ID = " + ID);
+        return ID;
+    }
+
+    //получаем количество  с типом FW_WORK_ID
+    public static int getCountLine(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
+                " where " + FW_WORK_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
     }
 
 }

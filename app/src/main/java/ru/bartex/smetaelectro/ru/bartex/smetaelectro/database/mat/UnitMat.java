@@ -87,5 +87,28 @@ public class UnitMat {
         return units_name;
     }
 
+    //получаем единицы измерения материала с помощью вложенного запроса
+    public static String getUnitMat(SQLiteDatabase db, long mat_id){
+        Log.i(TAG, "TableControllerSmeta.getUnitMat ... ");
+        String unitMatName = "";
+        String unit = " SELECT " +  UNIT_MAT_NAME +
+                " FROM " + TABLE_NAME  +
+                " WHERE " + _ID + " IN " +
+                "(" + " SELECT " + CostMat.COST_MAT_UNIT_ID +
+                " FROM " + CostMat.TABLE_NAME +
+                " WHERE " + CostMat.COST_MAT_ID + " = " + mat_id + ")";
+
+        Cursor cursor = db.rawQuery(unit, null);
+
+        Log.d(TAG, "TableControllerSmeta getUnitMat cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.moveToFirst()) {
+            // Используем индекс для получения строки или числа
+            unitMatName = cursor.getString(cursor.getColumnIndex(UNIT_MAT_NAME));
+            Log.d(TAG, "TableControllerSmeta getUnitMat unitName = " + unitMatName);
+        }
+        cursor.close();
+        return unitMatName;
+    }
 
 }

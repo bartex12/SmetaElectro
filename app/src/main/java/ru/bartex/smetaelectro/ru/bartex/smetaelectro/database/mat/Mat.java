@@ -265,4 +265,18 @@ public class Mat {
         Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
         return _id;
     }
+
+    //получаем количество видов материалов с типом MAT_TYPE_ID
+    public static int getCountLine(SQLiteDatabase db, long id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
+                " where " + MAT_TYPE_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
+    }
 }

@@ -88,7 +88,7 @@ public class CostMatDetail extends AppCompatActivity {
         if (cost == 0){
             spinner.setSelection(0);
         }else {
-            String unitMatName = tableControllerSmeta.getUnitMat(mat_id);
+            String unitMatName = UnitMat.getUnitMat(database, mat_id);
             long unitId = UnitMat.getIdFromName(database, unitMatName);
             Log.d(TAG, "CostMatDetail- Spinner -unitMatName = " + unitMatName + "  unitId = " + unitId);
             //!!! - может быть опасно, так как id и позиция не одно и то же (позиция с нуля а id с 1)
