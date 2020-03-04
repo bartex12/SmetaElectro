@@ -92,7 +92,7 @@ public class Tab3Work extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Work - onItemClick  work_id = " + work_id +
                 "  work_name = " + name);
         // проверяем есть ли такая  работа в FW для файла с file_id
-        final boolean isWork = tableControllerSmeta.isWorkMatInFWFM(file_id, work_id, FW.TABLE_NAME);
+        final boolean isWork = FW.isWorkInFW(database, file_id, work_id);
         Log.d(TAG, "Tab3Work - onItemClick  isWork = " + isWork);
 
         //ищем id категории работы, зная id типа

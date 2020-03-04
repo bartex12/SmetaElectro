@@ -580,4 +580,42 @@ public class FW {
         return count;
     }
 
+    /**
+     * обновляем количество и сумму в таблице FW
+     */
+    public static void updateRowInFW(SQLiteDatabase db, long file_id,
+                                     long id, float cost, String unit,
+                                     float count, float summa){
+        Log.i(TAG, "TableControllerSmeta.updateRowInFW ... ");
+
+        ContentValues cv = new ContentValues();
+        cv.put(FW_COST, cost);
+        cv.put(FW_UNIT, unit);
+        cv.put(FW_COUNT, count);
+        cv.put(FW_SUMMA, summa);
+
+        db.update(TABLE_NAME, cv,
+                FW_FILE_ID + " =? " +" AND " + FW_WORK_ID + " =? ",
+                new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        Log.i(TAG, "TableControllerSmeta.updateRowInFW - cost =" +
+                cost + "  summa = " + summa);
+    }
+
+    public static boolean isWorkInFW(SQLiteDatabase db, long file_id, long mat_id){
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM ... ");
+
+        String select = " SELECT " + FW_WORK_NAME + " FROM " + TABLE_NAME +
+                        " where " + FW_FILE_ID + " =? " + " and " + FW_WORK_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            return true;
+        }
+
+        cursor.close();
+        return false;
+    }
+
 }

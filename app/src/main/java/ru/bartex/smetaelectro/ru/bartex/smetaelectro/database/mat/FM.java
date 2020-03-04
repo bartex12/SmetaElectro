@@ -579,4 +579,39 @@ public class FM {
         return count;
     }
 
-}
+    /**
+     * обновляем количество и сумму в таблице FM
+     */
+    public static void updateRowInFM(SQLiteDatabase db, long file_id,
+                                     long id, float cost, String unit,
+                                     float count, float summa){
+        Log.i(TAG, "TableControllerSmeta.updateRowInFW ... ");
+
+        ContentValues cv = new ContentValues();
+        cv.put(FM_MAT_COST, cost);
+        cv.put(FM_MAT_UNIT, unit);
+        cv.put(FM_MAT_COUNT, count);
+        cv.put(FM_MAT_SUMMA, summa);
+
+        db.update(TABLE_NAME, cv,
+                FM_FILE_ID + " =? " +" AND " + FM_MAT_ID + " =? ",
+                new String[]{String.valueOf(file_id), String.valueOf(id)});
+
+        Log.i(TAG, "TableControllerSmeta.updateRowInFW - cost =" +
+                cost + "  summa = " + summa);
+    }
+
+    public static boolean isMatInFM(SQLiteDatabase db, long file_id, long mat_id){
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM ... ");
+
+        String select = " SELECT " + FM_MAT_NAME + " FROM " + TABLE_NAME +
+                " where " + FM_FILE_ID + " =? " + " and " + FM_MAT_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
+        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM cursor.getCount() = " + cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            return true;
+        }
+        cursor.close();
+        return false;
+    }}

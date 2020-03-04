@@ -151,9 +151,9 @@ public class DetailSmetaMatLine extends AppCompatActivity {
                         //Если такой материал уже есть в смете, то не вставлять, а обновлять строку
                         //но сначала нужно посмотреть, не изменилась ли расценка и единица измерения,
                         // поэтому cost и unit входит
-                        tableControllerSmeta.updateRowInFWFM(
+                        FM.updateRowInFM(database,
                                 file_id, mat_id, costMat, unit, countMat,
-                                countMat*costMat, FM.TABLE_NAME);
+                                countMat*costMat);
                         finish();
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){

@@ -152,8 +152,8 @@ public class DetailSmetaLine extends AppCompatActivity {
                         //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
                         //но сначала нужно посмотреть, не изменилась ли расценка и единица измерения,
                         // поэтому cost и unit входит
-                        tableControllerSmeta.updateRowInFWFM(
-                                file_id, work_id, cost,unit, count, count*cost, FW.TABLE_NAME);
+                        FW.updateRowInFW(database,
+                                file_id, work_id, cost,unit, count, count*cost);
                         finish();
                         //если работы нет, то сначала посмотреть цену работы и если она равна 0.0,
                         // вызвать диалог установки цены !ПЕРЕДЕЛАТЬ НА ЦЕНА <0

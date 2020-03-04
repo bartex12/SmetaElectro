@@ -95,7 +95,7 @@ public class Tab3Mat extends Tab3SmetasWorkMatAbstrFrag {
         Log.d(TAG, "Tab3Mat - listView.onItemClick  mat_id = " + mat_id +
                 "  name = " + name);
         // проверяем есть ли такой  материал в FM для файла с file_id
-        final boolean isMat = tableControllerSmeta.isWorkMatInFWFM(file_id, mat_id, FM.TABLE_NAME);
+        final boolean isMat = FM.isMatInFM(database, file_id, mat_id);
         Log.d(TAG, "Tab3Mat - onItemClick  isMat = " + isMat);
         Log.d(TAG, "Tab3Mat - onItemClick  type_id = " + type_id);
         //ищем id категории материалов, зная id типа

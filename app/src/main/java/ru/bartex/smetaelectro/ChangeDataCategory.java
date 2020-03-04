@@ -26,8 +26,6 @@ public class ChangeDataCategory extends AppCompatActivity {
     Button btnSaveChangeCat;
     long cat_id;
     DataCategory dataCategory;
-
-    private TableControllerSmeta tableControllerSmeta;
     private SQLiteDatabase database;
 
     @Override
@@ -36,8 +34,6 @@ public class ChangeDataCategory extends AppCompatActivity {
         setContentView(R.layout.activity_category_change_data);
 
         initDB();
-
-        tableControllerSmeta = new TableControllerSmeta(this);
 
         //получаем id выбранного файла из интента
         cat_id = getIntent().getExtras().getLong(P.ID_CATEGORY);

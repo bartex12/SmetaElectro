@@ -215,4 +215,18 @@ public class FileWork {
         db.update(TABLE_NAME, cv, _ID + "=" + file_id, null);
     }
 
+    //обновляем данные файла сметы имя, адрес, описание, дата и время
+    public static void updateDataFile(SQLiteDatabase db, long file_id, String name, String adress, String description){
+
+        //заполняем данные для обновления в базе
+        ContentValues values = new ContentValues();
+        values.put(FILE_NAME, name);
+        values.put(ADRESS, adress);
+        values.put(DESCRIPTION_OF_FILE, description);
+
+        db.update(TABLE_NAME, values,
+                _ID + "=" + file_id, null);
+        Log.i(TAG, "TableControllerSmeta.updateDataFile - name =" + name + "  file_id = " + file_id);
+    }
+
 }
