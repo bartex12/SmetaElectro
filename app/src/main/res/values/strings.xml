@@ -1767,5 +1767,7 @@
     <string name="list_empty_names">Для создания новой сметы нажмите на "+" сверху экрана</string>
     <string name="header_main">Заголовок</string>
     <string name="chooce_var_smeta">Выберите вариант</string>
+    <string name="dataOfFles">Данные</string>
+    <string name="new_smeta">Новая смета</string>
 
 </resources>

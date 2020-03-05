@@ -40,6 +40,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
+import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
 

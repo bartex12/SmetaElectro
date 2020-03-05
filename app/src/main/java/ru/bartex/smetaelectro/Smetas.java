@@ -33,6 +33,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
+import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 
 public class Smetas extends AppCompatActivity {
 

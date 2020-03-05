@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetabefore;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,23 +15,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.Smetas;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewName extends AppCompatActivity {
 
-    static String TAG = "33333";
+    //все поля public - так как будет их наследование
+    public static String TAG = "33333";
+    public LinearLayout linearLayout;
+    public EditText etSmetaName;
+    public EditText etSmetaDescription;
+    public EditText etObjectAdress;
+    public CheckBox checkBoxDateTime;
+    public Button btnCancel;
+    public Button btnSave;
 
-    LinearLayout linearLayout;
-    EditText etSmetaName;
-    EditText etSmetaDescription;
-    EditText etObjectAdress;
-    CheckBox checkBoxDateTime;
-    Button btnCancel;
-    Button btnSave;
-
-    private SQLiteDatabase database;
+    public SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +41,12 @@ public class SmetaNewName extends AppCompatActivity {
         setContentView(R.layout.activity_smeta_new_name);
 
         initDB();
+        initViews();
+        initCancelOnClick();
+        initSaveOnClick();
+    }
 
-        //InputMethodManager imm = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-        linearLayout = findViewById(R.id.llNewFileName);
-        etSmetaName = findViewById(R.id.etNameOfSmetaFile);
-        etSmetaDescription = findViewById(R.id.etSmetaShortDescription);
-        etObjectAdress = findViewById(R.id.etAdressOfObject);
-        checkBoxDateTime = findViewById(R.id.checkBoxDateTime);
-        btnCancel = findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                //takeOnAndOffSoftInput();
-                finish();
-            }
-        });
-        btnSave = findViewById(R.id.btnSave);
+    private void initSaveOnClick() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +69,6 @@ public class SmetaNewName extends AppCompatActivity {
                    Snackbar.make(linearLayout, "Введите непустое название сметы",
                            Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название сметы ");
-                    return;
 
                     //если такое имя уже есть в базе
                 } else if (fileId != -1) {
@@ -88,7 +76,6 @@ public class SmetaNewName extends AppCompatActivity {
                                     " Введите другое название.",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Такое название уже существует. Введите другое название. fileId = " + fileId);
-                    return;
 
                     //если имя не повторяется, оно не пустое то
                 } else {
@@ -101,9 +88,9 @@ public class SmetaNewName extends AppCompatActivity {
                                  Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Сохранено имя файла  = " + nameFile + "  id = " + file_id);
 
-                    Intent intent = new Intent(SmetaNewName.this, ListOfSmetasNames.class);
-                    //если бы вызывали Smetas, тогда надо было бы
-                    //intent.putExtra(P.ID_FILE, file_id);
+                    Intent intent = new Intent(SmetaNewName.this, Smetas.class);
+                    //если  вызываем Smetas, тогда передаем file_id
+                    intent.putExtra(P.ID_FILE, file_id);
                     startActivity(intent);
                     finish();  //чтобы не возвращаться в эту активность по кнопке Назад
                 }
@@ -112,9 +99,31 @@ public class SmetaNewName extends AppCompatActivity {
         });
     }
 
+    private void initCancelOnClick() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //принудительно прячем  клавиатуру - повторный вызов ее покажет
+                //takeOnAndOffSoftInput();
+                finish();
+            }
+        });
+    }
+
+
     private void initDB() {
         //
         database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initViews() {
+        linearLayout = findViewById(R.id.llNewFileName);
+        etSmetaName = findViewById(R.id.etNameOfSmetaFile);
+        etSmetaDescription = findViewById(R.id.etSmetaShortDescription);
+        etObjectAdress = findViewById(R.id.etAdressOfObject);
+        checkBoxDateTime = findViewById(R.id.checkBoxDateTime);
+        btnCancel = findViewById(R.id.btnCancel);
+        btnSave = findViewById(R.id.btnSave);
     }
 
     //принудительно вызываем клавиатуру - повторный вызов ее скроет

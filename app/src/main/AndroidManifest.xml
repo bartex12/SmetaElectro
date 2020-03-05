@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SmetaNewNameChange"></activity>
+        <activity android:name=".ui.smetabefore.SmetaNewNameChange"></activity>
         <activity
             android:name=".SmetasWorkCost"
             android:label="@string/title_activity_smetas_work_cost"
@@ -81,9 +81,9 @@
             android:name=".SpecificCategory"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
-        <activity android:name=".SpecificSmeta" />
+        <activity android:name=".ui.smetabefore.SmetaSpecification" />
         <activity
-            android:name=".SmetaNewName"
+            android:name=".ui.smetabefore.SmetaNewName"
             android:label="@string/title_activity_SmetaNewName"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -110,7 +110,7 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ListOfSmetasNames"
+            android:name=".ui.smetabefore.ListOfSmetasNames"
             android:label="@string/title_activity_ListOfSmetasNames"
             android:launchMode="singleTask" />
     </application>

@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetabefore;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,24 +21,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.Smetas;
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
+import ru.bartex.smetaelectro.ui.main.RecyclerViewMainAdapter;
 
 public class ListOfSmetasNames extends AppCompatActivity {
 
-    public static final String TAG = "33333";
+    private static final String TAG = "33333";
 
-    ListView mListViewNames;
-    ArrayList<Map<String, Object>> data;
-    Map<String,Object> m;
-    SimpleAdapter sara;
+    private ListView mListViewNames;
+    private ArrayList<Map<String, Object>> data;
+    private Map<String,Object> m;
+    private SimpleAdapter sara;
+//    private Re
 
     private SQLiteDatabase database;
 
@@ -49,14 +55,13 @@ public class ListOfSmetasNames extends AppCompatActivity {
 
         initDB();
         initBottomNavigationView();
-        initViews();
-
+        initListView();
         //объявляем о регистрации контекстного меню
         registerForContextMenu(mListViewNames);
-
     }
 
     private void initDB() {
+        //
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
@@ -65,13 +70,17 @@ public class ListOfSmetasNames extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private void initViews() {
+    private void initListView() {
         mListViewNames = findViewById(R.id.listViewSmetasRabota);
         //находим View, которое выводит текст Список пуст
         View empty = findViewById(android.R.id.empty);
         TextView tvEmpty = (TextView)empty;
         tvEmpty.setText(R.string.list_empty_names);
         mListViewNames.setEmptyView(empty);
+        listSetOnCLickListener();
+    }
+
+    private void listSetOnCLickListener() {
         mListViewNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,7 +101,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         });
     }
 
-   private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener=
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener=
            new BottomNavigationView.OnNavigationItemSelectedListener() {
                @Override
                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -113,6 +122,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        //initRecycledView();
         updateAdapter();
     }
 
@@ -179,7 +189,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
         switch (id){
             case P.SPECIFIC_ID:
                 //отправляем интент с id файла
-                Intent intentSpecific = new Intent(ListOfSmetasNames.this, SpecificSmeta.class);
+                Intent intentSpecific = new Intent(ListOfSmetasNames.this, SmetaSpecification.class);
                 intentSpecific.putExtra(P.ID_FILE, file_id);
                 startActivity(intentSpecific);
                 return true;
@@ -220,9 +230,41 @@ public class ListOfSmetasNames extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+//    //инициализация RecycledView
+//    private void initRecycledView() {
+//        Log.d(TAG, "ListOfSmetasNames initRecycledView");
+//        //Курсор с данными файлов из которых берём имена
+//        List<DataFile> recordsList = FileWork.readFilesData(database);
+//
+//        //используем встроенный LinearLayoutManager
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//
+////        RecyclerViewMainAdapter.OnMainListClickListener onMainListClickListener =
+////                new RecyclerViewMainAdapter.OnMainListClickListener() {
+////                    @Override
+////                    public void onMainListClick(int position) {
+////                        if (position == 2){
+////                            dialogNewOrCurrentFragment();
+////                        }else if (position == 3){
+////                            dialogNewOrCurrentFragment();
+////                        }else{
+////                            //todo сделать для 0 и 1
+////                            dialogNewOrCurrentFragment();
+////                        }
+////                    }
+////                };
+//
+//        // вызываем конструктор адаптера, передаём список
+//        RecyclerViewMainAdapter mainAdapter = new RecyclerViewMainAdapter(listOfMain);
+//        //устанавливаем onMainListClickListener в качестве слушателя на щелчках списка
+//        mainAdapter.setOnMainListClickListener(onMainListClickListener);
+//        recyclerViewMain.setLayoutManager(layoutManager);
+//        recyclerViewMain.setAdapter(mainAdapter);
+//    }
+
     public void updateAdapter() {
 
-        //Курсор с данными файловБ из которых берём имена
+        //Курсор с данными файлов из которых берём имена
         List<DataFile> recordsList = FileWork.readFilesData(database);
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(recordsList.size());

@@ -1,6 +1,5 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetabefore;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
@@ -9,20 +8,19 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 
 public class SmetaNewNameChange extends SmetaNewName {
 
     long file_id;
-    private SQLiteDatabase database;
+    //private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initDB();
+//        initDB();
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
@@ -73,8 +71,9 @@ public class SmetaNewNameChange extends SmetaNewName {
         });
     }
 
-    //инициализируем базу данных
-    private void initDB() {
-        database = new SmetaOpenHelper(this).getWritableDatabase();
-    }
+//    //инициализируем базу данных
+//    private void initDB() {
+//        //
+//        database = new SmetaOpenHelper(this).getWritableDatabase();
+//    }
 }

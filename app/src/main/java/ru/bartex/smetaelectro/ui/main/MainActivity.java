@@ -17,7 +17,7 @@ import java.util.List;
 
 import ru.bartex.smetaelectro.ui.dialogs.DialogNewOrCurrentFragment;
 import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
-import ru.bartex.smetaelectro.ListOfSmetasNames;
+import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         String[] stringListMain = getResources().getStringArray(R.array.MenuMain);
         //делаем список из массива - Arrays.asList -это неизменяемый список
         List<String> listOfMain = new ArrayList<>(Arrays.asList(stringListMain));
+
         //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 

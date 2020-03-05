@@ -83,7 +83,7 @@ public class FileWork {
         Log.i(TAG, "TableControllerSmeta.readFilesData ... ");
         List<DataFile> recordsList = new ArrayList<DataFile>();
 
-        String dataQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
+        String dataQuery = "SELECT  * FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(dataQuery, null);
 
         if (cursor.moveToFirst()) {

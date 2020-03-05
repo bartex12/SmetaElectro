@@ -8,9 +8,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import ru.bartex.smetaelectro.ListOfSmetasNames;
+import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.SmetaNewName;
+import ru.bartex.smetaelectro.ui.smetabefore.SmetaNewName;
 
 import android.view.View;
 import android.widget.Button;
@@ -57,8 +57,6 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getActivity().finish(); //закрывает и диалог и активность
-                //getDialog().dismiss();  //закрывает только диалог
                 Intent intent = new Intent(getActivity(), SmetaNewName.class);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
@@ -68,12 +66,11 @@ public class DialogNewOrCurrentFragment extends DialogFragment {
 
     private void initCurrentButton(View view) {
         Button currentButton = view.findViewById(R.id.btnCurrent);
-        //действия при нажатии кнопки "Нет" в диалоге сохранения данных в базу
+        //действия при нажатии кнопки "Существующая смета" в диалоге сохранения данных в базу
         currentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListOfSmetasNames.class);
-                //intent.putExtra(P.ID_FILE_DEFAULT, file_id);
                 startActivity(intent);
                 getDialog().dismiss();  //закрывает только диалог
             }
