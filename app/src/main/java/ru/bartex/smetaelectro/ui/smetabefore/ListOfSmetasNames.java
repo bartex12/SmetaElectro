@@ -60,6 +60,19 @@ public class ListOfSmetasNames extends AppCompatActivity {
         registerForContextMenu(mListViewNames);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //initRecycledView();
+        updateAdapter();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
+
     private void initDB() {
         //
         database = new SmetaOpenHelper(this).getWritableDatabase();
@@ -119,18 +132,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                }
            };
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //initRecycledView();
-        updateAdapter();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        database.close();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
