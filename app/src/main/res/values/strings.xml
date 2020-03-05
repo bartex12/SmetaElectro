@@ -1765,5 +1765,6 @@
     <string name="list_empty">Начните составление сметы с нажатия на зелёную кнопку</string>
     <string name="list_empty_tab">Для добавления нового пункта нажмите на "+" сверху экрана</string>
     <string name="list_empty_names">Для создания новой сметы нажмите на "+" сверху экрана</string>
+    <string name="header_main">Заголовок</string>
 
 </resources>
