@@ -35,6 +35,10 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameAbstract;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameCat;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 
 public class SmetasMat extends AppCompatActivity implements

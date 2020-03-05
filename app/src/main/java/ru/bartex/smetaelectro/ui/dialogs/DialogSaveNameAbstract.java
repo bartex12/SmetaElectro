@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

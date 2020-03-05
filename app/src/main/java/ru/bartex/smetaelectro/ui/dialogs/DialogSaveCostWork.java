@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;

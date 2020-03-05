@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.SmetasMatCost;
+import ru.bartex.smetaelectro.SmetasWorkCost;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;

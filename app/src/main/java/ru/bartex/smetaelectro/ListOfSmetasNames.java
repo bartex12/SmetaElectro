@@ -29,6 +29,7 @@ import ru.bartex.smetaelectro.data.DataFile;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
 
 public class ListOfSmetasNames extends AppCompatActivity {
 

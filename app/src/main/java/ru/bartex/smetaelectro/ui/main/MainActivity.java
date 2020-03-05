@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.bartex.smetaelectro.DialogNewOrCurrentFragment;
-import ru.bartex.smetaelectro.DialogWorkOrMatCosts;
+import ru.bartex.smetaelectro.ui.dialogs.DialogNewOrCurrentFragment;
+import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
 import ru.bartex.smetaelectro.ListOfSmetasNames;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;

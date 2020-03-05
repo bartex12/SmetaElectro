@@ -33,6 +33,10 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameAbstract;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameCat;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
+import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 
 public class SmetasWork extends AppCompatActivity implements
