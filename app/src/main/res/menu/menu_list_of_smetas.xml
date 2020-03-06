@@ -7,7 +7,7 @@
         android:title="@string/action_create_add_name"
         android:icon="@drawable/ic_action_new"
         android:orderInCategory="10"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"

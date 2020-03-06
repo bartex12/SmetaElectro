@@ -7,15 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <ListView
-        android:id="@+id/listViewSmetasRabota"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:choiceMode="singleChoice"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNewSmeta"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="46dp" />
+<!--    <ListView-->
+<!--        android:id="@+id/listViewSmetasRabota"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:choiceMode="singleChoice"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/buttonNewSmeta"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.0"-->
+<!--        tools:layout_editor_absoluteX="46dp" />-->
 
     <TextView
         android:id="@android:id/empty"
@@ -23,21 +23,25 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:text="@string/list_empty"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39999998"/>
+       />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMainSmetasNames"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNewSmeta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_smetas_list"

@@ -43,8 +43,14 @@ public class SmetaSpecification extends AppCompatActivity {
         initViews();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
+
     private void initDB() {
-        //
+        // вызываем здесь, закрываем в onDestroy()
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 

@@ -1769,5 +1769,6 @@
     <string name="chooce_var_smeta">Выберите вариант</string>
     <string name="dataOfFles">Данные</string>
     <string name="new_smeta">Новая смета</string>
+    <string name="deleted">Удалено</string>
 
 </resources>

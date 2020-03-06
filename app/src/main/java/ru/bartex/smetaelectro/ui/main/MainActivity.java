@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "33333";
     private RecyclerView recyclerViewMain; //RecyclerView для списка в MainActivity
-
     long file_id;
 
     @Override
@@ -49,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-
-        initRecycledView();
+        initRecycledViewAdapter();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -76,16 +73,15 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //инициализация RecycledView
-    private void initRecycledView() {
+    private void initRecycledViewAdapter() {
         Log.d(TAG, "MainActivity initRecycledView");
         // получаем массив из ресурсов
         String[] stringListMain = getResources().getStringArray(R.array.MenuMain);
         //делаем список из массива - Arrays.asList -это неизменяемый список
         List<String> listOfMain = new ArrayList<>(Arrays.asList(stringListMain));
-
         //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
+        // инициализируем слушатель щелчков на списке действий главного экрана
         RecyclerViewMainAdapter.OnMainListClickListener onMainListClickListener =
                 new RecyclerViewMainAdapter.OnMainListClickListener() {
                     @Override

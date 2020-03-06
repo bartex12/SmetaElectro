@@ -46,6 +46,12 @@ public class SmetaNewName extends AppCompatActivity {
         initSaveOnClick();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
+
     private void initSaveOnClick() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,9 +116,8 @@ public class SmetaNewName extends AppCompatActivity {
         });
     }
 
-
     private void initDB() {
-        //
+        // вызываем здесь, закрываем в onDestroy()
         database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 

@@ -14,13 +14,10 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 public class SmetaNewNameChange extends SmetaNewName {
 
     long file_id;
-    //private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        initDB();
 
         //получаем id выбранного файла из интента
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
@@ -71,9 +68,4 @@ public class SmetaNewNameChange extends SmetaNewName {
         });
     }
 
-//    //инициализируем базу данных
-//    private void initDB() {
-//        //
-//        database = new SmetaOpenHelper(this).getWritableDatabase();
-//    }
 }
