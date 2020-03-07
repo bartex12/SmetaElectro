@@ -41,8 +41,8 @@ public class Smetas extends AppCompatActivity {
    // public ViewPager mViewPager;
 
     private SQLiteDatabase database;
-    ViewPager viewPager;
-    WorkMatPagerAdapter adapter;
+    private ViewPager viewPager;
+    private WorkMatPagerAdapter adapter;
 
 
     @Override
@@ -62,14 +62,8 @@ public class Smetas extends AppCompatActivity {
         initToolbar();
         initFab();
 
-        Fragment fragment1 = SmetasFrag_Tab1Rab.newInstance(file_id, 0);
-        Fragment fragment2 = SmetasFrag_Tab2Mat.newInstance(file_id, 1);
-
-        //здесь используется вариант добавления фрагментов в адаптер из активити
-        //есть ещё вариант добавления фрагментов внутри адаптера
-        adapter = new WorkMatPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(fragment1, getResources().getString(R.string.tab_text_1));
-        adapter.addFragment(fragment2, getResources().getString(R.string.tab_text_2));
+        //здесь используется вариант  добавления фрагментов внутри адаптера
+        adapter = new WorkMatPagerAdapter(getSupportFragmentManager(), file_id);
 
         viewPager = findViewById(R.id.container_smetas_work_mat);
         viewPager.setAdapter(adapter);

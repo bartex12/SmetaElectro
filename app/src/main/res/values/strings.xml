@@ -1772,5 +1772,7 @@
     <string name="deleted">Удалено</string>
     <string name="delete_smetas_item">Удалить пункт</string>
     <string name="otmena">Отмена</string>
+    <string name="header_work">заголовок</string>
+    <string name="footer_work">сумма</string>
 
 </resources>

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import ru.bartex.smetaelectro.data.DataFW;
+import ru.bartex.smetaelectro.data.DataWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
@@ -566,7 +568,7 @@ public class FW {
         return ID;
     }
 
-    //получаем количество  с типом FW_WORK_ID
+    //получаем количество строк  с типом FW_WORK_ID
     public static int getCountLine(SQLiteDatabase db, long id){
         Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
 
@@ -618,4 +620,43 @@ public class FW {
         return false;
     }
 
+    //получаем данные по таблице FW  по  id файла
+    public static DataFW getDataFW(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+        DataFW dataFW = new DataFW();
+
+        String select = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + FW_FILE_ID + " = ? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id)});
+
+        if (cursor.moveToFirst()) {
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long FW_File_ID = cursor.getLong(cursor.getColumnIndex(FW_FILE_ID));
+            String FW_File_Name = cursor.getString(cursor.getColumnIndex(FW_FILE_NAME));
+
+            long FW_Work_ID = cursor.getLong(cursor.getColumnIndex(FW_WORK_ID));
+            String FW_Work_Name = cursor.getString(cursor.getColumnIndex(FW_WORK_NAME));
+
+            long FW_Type_ID = cursor.getLong(cursor.getColumnIndex(FW_TYPE_ID));
+            String FW_Type_Name = cursor.getString(cursor.getColumnIndex(FW_TYPE_NAME));
+
+            long FW_Category_ID = cursor.getLong(cursor.getColumnIndex(FW_CATEGORY_ID));
+            String FW_Category_Name = cursor.getString(cursor.getColumnIndex(FW_CATEGORY_NAME));
+
+            float FW_Cost = cursor.getLong(cursor.getColumnIndex(FW_COST));
+            int FW_Count = cursor.getInt(cursor.getColumnIndex(FW_COUNT));
+            String FW_Unit = cursor.getString(cursor.getColumnIndex(FW_UNIT));
+            float FW_Summa = cursor.getLong(cursor.getColumnIndex(FW_SUMMA));
+
+            //создаём экземпляр класса DataWork в конструкторе
+            dataFW = new DataFW(FW_File_ID,FW_File_Name,FW_Work_ID, FW_Work_Name,
+                    FW_Type_ID, FW_Type_Name,  FW_Category_ID, FW_Category_Name, FW_Cost,
+                    FW_Count, FW_Unit, FW_Summa );
+        }
+        cursor.close();
+        return dataFW;
+    }
 }
+
+
+

@@ -27,7 +27,5 @@ public class SmetasFrag_Tab1Rab extends SmetasFrag {
         Log.d(TAG, "SmetasFrag_Tab1Rab onViewCreated tableControllerSmeta =" +
                 "  lvSmetas = " + lvSmetas + "  file_id = " + file_id);
 
-        //объявляем о регистрации контекстного меню
-        registerForContextMenu(recyclerView);
     }
 }
