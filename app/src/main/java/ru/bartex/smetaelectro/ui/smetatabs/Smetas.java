@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetatabs;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +24,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ListOfSmetasStructured;
+import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.SmetasFrag;
+import ru.bartex.smetaelectro.SmetasFrag_Tab1Rab;
+import ru.bartex.smetaelectro.SmetasFrag_Tab2Mat;
+import ru.bartex.smetaelectro.SmetasMat;
+import ru.bartex.smetaelectro.SmetasMatCost;
+import ru.bartex.smetaelectro.SmetasWork;
+import ru.bartex.smetaelectro.SmetasWorkCost;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
@@ -230,6 +239,7 @@ public class Smetas extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -237,7 +247,7 @@ public class Smetas extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

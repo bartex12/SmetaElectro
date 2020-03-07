@@ -38,6 +38,7 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameCat;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
+import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
 
 public class SmetasWork extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,

@@ -16,7 +16,7 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.Smetas;
+import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;

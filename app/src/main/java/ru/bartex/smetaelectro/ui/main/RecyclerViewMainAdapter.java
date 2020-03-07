@@ -26,11 +26,11 @@ public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMa
        Log.d(TAG, "RecyclerViewMainAdapter listOfMain.size() = " + listOfMain.size());
     }
 
+
     //интерфейс слушателя щелчков на списке
     public interface OnMainListClickListener {
         void onMainListClick(int position);
     }
-
     //метод установки слушателя щелчков на списке
     public void setOnMainListClickListener(OnMainListClickListener onMainListClickListener) {
         this.onMainListClickListener = onMainListClickListener;
