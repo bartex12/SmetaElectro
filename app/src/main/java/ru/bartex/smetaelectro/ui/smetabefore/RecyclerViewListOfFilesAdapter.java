@@ -26,7 +26,7 @@ public class RecyclerViewListOfFilesAdapter extends
 
     private static final String TAG = "33333";
 
-    Context context;
+    private Context context;
     private SQLiteDatabase database;
     private ArrayList<DataFile> data;
     private OnFileListClickListener onFileListClickListener;
@@ -44,7 +44,7 @@ public class RecyclerViewListOfFilesAdapter extends
         void onFileListClick(String fileName);
     }
 
-    public void setOnFileListClickListener(OnFileListClickListener onFileListClickListener) {
+    void setOnFileListClickListener(OnFileListClickListener onFileListClickListener) {
         this.onFileListClickListener = onFileListClickListener;
     }
 

@@ -18,14 +18,7 @@ public class SmetaSpecification extends AppCompatActivity {
 
     static String TAG = "33333";
 
-    private TextView tvSmetaName;
-    private TextView tvSmetaDescription;
-    private TextView tvObjectAdress;
-    private TextView tvDateTime;
-    private Button btnOk;
-    private long file_id;
     private  DataFile dataFile;
-
     private SQLiteDatabase database;
 
     @Override
@@ -36,7 +29,7 @@ public class SmetaSpecification extends AppCompatActivity {
         initDB();
 
         //получаем id выбранного файла из интента
-        file_id = getIntent().getExtras().getLong(P.ID_FILE);
+        long file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, "SmetaSpecification onCreate file_id = " + file_id);
         dataFile = FileWork.getFileData(database, file_id);
 
@@ -55,24 +48,24 @@ public class SmetaSpecification extends AppCompatActivity {
     }
 
     private void initViews() {
-        tvSmetaName = findViewById(R.id.tvName);
+        TextView tvSmetaName = findViewById(R.id.tvName);
         tvSmetaName.setText(dataFile.getFileName());
         Log.d(TAG, "SmetaSpecification onCreate tvSmetaName = " + dataFile.getFileName());
 
-        tvSmetaDescription = findViewById(R.id.tvDescription);
+        TextView tvSmetaDescription = findViewById(R.id.tvDescription);
         tvSmetaDescription.setText(dataFile.getDescription());
         Log.d(TAG, "SmetaSpecification onCreate tvSmetaDescription = " + dataFile.getDescription());
 
-        tvObjectAdress = findViewById(R.id.tvAdress);
+        TextView tvObjectAdress = findViewById(R.id.tvAdress);
         tvObjectAdress.setText(dataFile.getAdress());
         Log.d(TAG, "SmetaSpecification onCreate tvObjectAdress = " + dataFile.getAdress());
 
-        tvDateTime = findViewById(R.id.tvDateTime);
-        tvDateTime.setText(dataFile.getFileNameDate() + "_" + dataFile.getFileNameTime());
+        TextView tvDateTime = findViewById(R.id.tvDateTime);
+        tvDateTime.setText(String.format("%s_%s", dataFile.getFileNameDate(), dataFile.getFileNameTime()));
         Log.d(TAG, "SmetaSpecification onCreate tvDateTime = " +
                 dataFile.getFileNameDate() + "_" + dataFile.getFileNameTime());
 
-        btnOk = findViewById(R.id.btnOk);
+        Button btnOk = findViewById(R.id.btnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
