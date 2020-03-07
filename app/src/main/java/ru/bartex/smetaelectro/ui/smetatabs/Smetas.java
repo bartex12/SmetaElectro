@@ -1,6 +1,5 @@
 package ru.bartex.smetaelectro.ui.smetatabs;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -10,10 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -21,14 +17,10 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.SmetasFrag;
-import ru.bartex.smetaelectro.SmetasFrag_Tab1Rab;
-import ru.bartex.smetaelectro.SmetasFrag_Tab2Mat;
 import ru.bartex.smetaelectro.SmetasMat;
 import ru.bartex.smetaelectro.SmetasMatCost;
 import ru.bartex.smetaelectro.SmetasWork;
@@ -37,23 +29,21 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 
 public class Smetas extends AppCompatActivity {
 
     public static final String TAG = "33333";
-
     long file_id;
     int pos;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    public ViewPager mViewPager;
+   // private SectionsPagerAdapter mSectionsPagerAdapter;
+   // public ViewPager mViewPager;
 
     private SQLiteDatabase database;
+    ViewPager viewPager;
+    WorkMatPagerAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,43 +51,59 @@ public class Smetas extends AppCompatActivity {
         setContentView(R.layout.activity_smetas);
 
         initDB();
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initBottomNavigation();
 
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
-
-        Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
-
         //Получаем имя файла с текущей  сметой
         String fileName = FileWork.getNameFromId(database, file_id);
         Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
 
+        initToolbar();
+        initFab();
+
+        Fragment fragment1 = SmetasFrag_Tab1Rab.newInstance(file_id, 0);
+        Fragment fragment2 = SmetasFrag_Tab2Mat.newInstance(file_id, 1);
+
+        //здесь используется вариант добавления фрагментов в адаптер из активити
+        //есть ещё вариант добавления фрагментов внутри адаптера
+        adapter = new WorkMatPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(fragment1, getResources().getString(R.string.tab_text_1));
+        adapter.addFragment(fragment2, getResources().getString(R.string.tab_text_2));
+
+        viewPager = findViewById(R.id.container_smetas_work_mat);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setTabTextColors(Color.WHITE, Color.GREEN);
+        tabs.setupWithViewPager(viewPager);
+    }
+
+    private void initDB() {
+        //
+        database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initBottomNavigation() {
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //показываем имя текущей сметы в заголовке экрана
         toolbar.setTitle(R.string.smetas_name_on_bar);
         toolbar.setTitleTextColor(Color.GREEN);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
 
-        TabLayout tabLayout = findViewById(R.id.tabsWork);
-        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
+    private void initFab() {
         FloatingActionButton fab = findViewById(R.id.fab);
-        //fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentItem = mViewPager.getCurrentItem();
+                int currentItem = viewPager.getCurrentItem();
                 switch (currentItem){
                     case 0:
                         Intent intent = new Intent(Smetas.this, SmetasWork.class);
@@ -115,11 +121,6 @@ public class Smetas extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void initDB() {
-        //
-        database = new SmetaOpenHelper(this).getWritableDatabase();
     }
 
     @Override
@@ -152,7 +153,7 @@ public class Smetas extends AppCompatActivity {
         }
 
         if (id == R.id.action_struct) {
-            int currentItem = mViewPager.getCurrentItem();
+            int currentItem = viewPager.getCurrentItem();
             Log.d(TAG, "Smetas - onOptionsItemSelected    currentItem = " + currentItem);
             Intent intent = new Intent(Smetas.this, ListOfSmetasStructured.class);
             intent.putExtra(P.TAB_POSITION, currentItem);
@@ -167,123 +168,99 @@ public class Smetas extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, P.DELETE_ITEM_SMETA, 0, "Удалить пункт");
-        menu.add(0, P.CANCEL, 0, "Отмена");
+        getMenuInflater().inflate(R.menu.context_menu_smetas_of_work_mat, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
-        final AdapterView.AdapterContextMenuInfo acmi =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        //если удалить из контекстного меню
-        if (item.getItemId() == P.DELETE_ITEM_SMETA) {
-
-            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA");
-            AlertDialog.Builder builder = new AlertDialog.Builder(Smetas.this);
-            builder.setTitle(R.string.Delete_Item);
-            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA acmi.position  =" +
-                            (acmi.position));
-
-                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
-                    String name = tv.getText().toString();
-                    switch (mViewPager.getCurrentItem()){
-                        //switch (positionItem){
-                        case 0:
-                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
-                            //находим id по имени работы
-                            long work_id = Work.getIdFromName(database, name);
-                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
-                                    file_id + " work_id =" + work_id+ " work_name =" + name);
-
-                            //удаляем пункт сметы из таблицы FW
-                            FW.deleteItemFrom_FW(database, file_id, work_id);
-                            //обновляем данные списка фрагмента активности
-                            updateAdapter(0);
-                            break;
-
-                        case 1:
-                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
-                            //находим id по имени работы
-                            long mat_id = Mat.getIdFromName(database, name);
-                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
-                                    file_id + " mat_id =" + mat_id + " mat_name =" + name);
-
-                            //mSmetaOpenHelper.displayFM();
-                            //удаляем пункт сметы из таблицы FM
-                            FM.deleteItemFrom_FM(database, file_id, mat_id);
-                            //mSmetaOpenHelper.displayFM();
-
-                            updateAdapter(1);
-                            break;
-                    }
-                }
-            });
-            builder.show();
-            return true;
-            //если изменить из контекстного меню
-        } else if (item.getItemId() == P.CANCEL) {
-            //getActivity().finish();
-            return true;
-        }
+        handleMenuItemClick(item);
         return super.onContextItemSelected(item);
     }
 
+    //обработка для контекстного меню
+        private void handleMenuItemClick(MenuItem item) {
+            int id = item.getItemId();
+            switch (id) {
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            pos = position;
-
-            switch (position){
-                case 0:
-                    //использован шаблон проектирования Стратегия
-                    //SmetasFrag_Tab1Rab extend SmetasFrag, а во SmetasFrag переменная
-                    // интерфейса BehaviorWorkOrMat выполняет метод performUpdateAdapter()
-                    //с методом интерфейса updateAdapter внутри)
-                    // причём в SmetasFrag_Tab1Rab эта переменная указывает на класс, который будет выполнять
-                    // метод updateAdapter - это класс BehaviorWorkOrMat_Work
-                SmetasFrag smetasTab0 = SmetasFrag_Tab1Rab.newInstance(file_id, pos);
-                return smetasTab0;
-                case 1:
-                    //использован шаблон проектирования Стратегия
-                    //SmetasFrag_Tab2Mat extend SmetasFrag, а во SmetasFrag переменная
-                    // интерфейса BehaviorWorkOrMat выполняет метод performUpdateAdapter()
-                    //с методом интерфейса updateAdapter внутри
-                    // причём в SmetasFrag_Tab2Mat эта переменная указывает на класс, который будет выполнять
-                    // метод updateAdapter - это класс BehaviorWorkOrMat_Mat
-                    SmetasFrag smetasTab1 = SmetasFrag_Tab2Mat.newInstance(file_id, pos);
-                    return smetasTab1;
-                default:
-                    return null;
+                case R.id.menu_delete_smetas_item: {
+                    // adapter.deleteSmetasItem();
+                    Toast.makeText(this, "asdfadgddg", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case R.id.menu_cancel_smetas_item: {
+                    break;
+                }
             }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
     }
+
+
+//
+//    private boolean handleMenuItemClick(MenuItem item) {
+//        final AdapterView.AdapterContextMenuInfo acmi =
+//                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//
+//        //если удалить из контекстного меню
+//        if (item.getItemId() == P.DELETE_ITEM_SMETA) {
+//
+//            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA");
+//            AlertDialog.Builder builder = new AlertDialog.Builder(Smetas.this);
+//            builder.setTitle(R.string.Delete_Item);
+//            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                }
+//            });
+//            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA acmi.position  =" +
+//                            (acmi.position));
+//
+//                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
+//                    String name = tv.getText().toString();
+//                    switch (viewPager.getCurrentItem()){
+//                        //switch (positionItem){
+//                        case 0:
+//                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
+//                            //находим id по имени работы
+//                            long work_id = Work.getIdFromName(database, name);
+//                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
+//                                    file_id + " work_id =" + work_id+ " work_name =" + name);
+//
+//                            //удаляем пункт сметы из таблицы FW
+//                            FW.deleteItemFrom_FW(database, file_id, work_id);
+//                            //обновляем данные списка фрагмента активности
+//                            updateAdapter(0);
+//                            break;
+//
+//                        case 1:
+//                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
+//                            //находим id по имени работы
+//                            long mat_id = Mat.getIdFromName(database, name);
+//                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
+//                                    file_id + " mat_id =" + mat_id + " mat_name =" + name);
+//
+//                            //mSmetaOpenHelper.displayFM();
+//                            //удаляем пункт сметы из таблицы FM
+//                            FM.deleteItemFrom_FM(database, file_id, mat_id);
+//                            //mSmetaOpenHelper.displayFM();
+//
+//                            updateAdapter(1);
+//                            break;
+//                    }
+//                }
+//            });
+//            builder.show();
+//            return true;
+//            //если изменить из контекстного меню
+//        } else if (item.getItemId() == P.CANCEL) {
+//            //getActivity().finish();
+//            return true;
+//        }
+//        return false;
+//    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -305,7 +282,7 @@ public class Smetas extends AppCompatActivity {
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs:
-                    int curItem = mViewPager.getCurrentItem();
+                    int curItem = viewPager.getCurrentItem();
                     switch (curItem){
                         case 0:
                             Intent intent_costs_work = new Intent(
@@ -327,10 +304,10 @@ public class Smetas extends AppCompatActivity {
 
     //можно так обновлять адаптер, если бы контекстное меню было сдесь
     private void updateAdapter(int currentItem){
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(currentItem);
-        mSectionsPagerAdapter.notifyDataSetChanged();
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        mViewPager.setCurrentItem(currentItem);
+//        mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
 }

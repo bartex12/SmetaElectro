@@ -1770,5 +1770,7 @@
     <string name="dataOfFles">Данные</string>
     <string name="new_smeta">Новая смета</string>
     <string name="deleted">Удалено</string>
+    <string name="delete_smetas_item">Удалить пункт</string>
+    <string name="otmena">Отмена</string>
 
 </resources>

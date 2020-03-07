@@ -122,6 +122,8 @@ public class ListOfSmetasNames extends AppCompatActivity {
     // и запоминаем её в переменной
     // holder.base_text_file_names.setOnLongClickListener(new View.OnLongClickListener() {...});
     //*********************************************************************************************
+
+    //создаём контекстное меню для списка
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu,
                                     @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
@@ -129,14 +131,13 @@ public class ListOfSmetasNames extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.context_menu_list_of_smetas, menu);
     }
 
-    //создаём контекстное меню для списка
+    //обработка для контекстного меню
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         handleMenuItemClick(item);
         return super.onContextItemSelected(item);
     }
 
-    //обработка для контекстного меню
     private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
         switch (id) {

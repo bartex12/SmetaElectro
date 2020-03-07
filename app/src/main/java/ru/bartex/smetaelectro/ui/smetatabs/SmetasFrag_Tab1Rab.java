@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetatabs;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -26,5 +26,8 @@ public class SmetasFrag_Tab1Rab extends SmetasFrag {
                  lvSmetas, file_id);
         Log.d(TAG, "SmetasFrag_Tab1Rab onViewCreated tableControllerSmeta =" +
                 "  lvSmetas = " + lvSmetas + "  file_id = " + file_id);
+
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
     }
 }

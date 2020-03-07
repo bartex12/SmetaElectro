@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetatabs;
 
 
 import android.content.Context;
@@ -20,6 +20,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.DetailSmetaLine;
+import ru.bartex.smetaelectro.DetailSmetaMatLine;
+import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
@@ -40,16 +43,16 @@ public class SmetasFrag extends Fragment {
 
     public static final String TAG = "33333";
 
-    ListView lvSmetas;
+    public ListView lvSmetas;
     ArrayList<Map<String, Object>> data;
     Map<String, Object> m;
     SimpleAdapter sara;
 
-    long file_id;
+    public long file_id;
     int positionItem;
 
     ViewPager viewPager;
-    BehaviorWorkOrMat behaviorWorkOrMat;
+    public BehaviorWorkOrMat behaviorWorkOrMat;
     private SQLiteDatabase database;
 
     public void performUpdateAdapter(Context context){
@@ -70,7 +73,7 @@ public class SmetasFrag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         //получаем  ViewPager viewPager
-        viewPager = getActivity().findViewById(R.id.container);
+        viewPager = getActivity().findViewById(R.id.container_smetas_work_mat);
         Log.d(TAG, "// SmetasFrag onAttach  viewPager = " + viewPager);
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }

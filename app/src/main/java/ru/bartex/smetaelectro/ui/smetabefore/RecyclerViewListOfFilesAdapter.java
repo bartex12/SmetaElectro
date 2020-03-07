@@ -96,6 +96,7 @@ public class RecyclerViewListOfFilesAdapter extends
         }
     }
 
+    //показать заголовки сметы
     void callSpecification(){
         Log.d(TAG, "RecyclerViewListOfFilesAdapter callSpecification");
         String file_name = data.get(posItem).getFileName();
@@ -108,6 +109,7 @@ public class RecyclerViewListOfFilesAdapter extends
         context.startActivity(intentSpecific);
     }
 
+    //изменение имени сметы
     void changeName() {
         Log.d(TAG, "RecyclerViewListOfFilesAdapter changeName");
         String file_name = data.get(posItem).getFileName();
