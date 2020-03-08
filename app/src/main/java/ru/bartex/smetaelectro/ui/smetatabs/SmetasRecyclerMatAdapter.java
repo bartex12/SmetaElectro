@@ -30,7 +30,7 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     private int size;
     private int positionTab;  //номер вкладки
     private int posItem;  //позиция в списке
-    private OnClickOnWorkListener workListener;
+    private OnClickOnMatListener matListener;
 
 
     private String[] name;
@@ -39,12 +39,12 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     private String[] units;
     private float[] summa; //массив стоимости
 
-    public interface OnClickOnWorkListener{
-        void onClickOnWorkListener(long file_id);
+    public interface OnClickOnMatListener{
+        void onClickOnMatListener(long file_id);
     }
 
-    public void setOnClickOnWorkListener(OnClickOnWorkListener onClickOnWorkListener){
-        this.workListener = onClickOnWorkListener;
+    public void setOnClickOnWorkListener(OnClickOnMatListener onClickOnMatListener){
+        this.matListener = onClickOnMatListener;
     };
 
 
@@ -101,7 +101,7 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
         holder.ll_complex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workListener.onClickOnWorkListener(file_id);
+                matListener.onClickOnMatListener(file_id);
             }
         });
 

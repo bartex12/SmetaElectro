@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro.ui.smetatabs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import ru.bartex.smetaelectro.DetailSmetaMatLine;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
 public class SmetasTabMat extends Fragment {
 
@@ -97,6 +100,24 @@ public class SmetasTabMat extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        SmetasRecyclerMatAdapter.OnClickOnMatListener matListener =
+                new SmetasRecyclerMatAdapter.OnClickOnMatListener() {
+                    @Override
+                    public void onClickOnMatListener(long file_id) {
+                        String smeta_item_name = Mat.getNameFromId(database, file_id);
+                        long mat_id = Mat.getIdFromName(database, smeta_item_name);
+                        long type_mat_id = FM.getTypeId_FM(database, file_id, mat_id);
+                        long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
+
+                        Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
+                        intent_mat.putExtra(P.ID_FILE, file_id);
+                        intent_mat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                        intent_mat.putExtra(P.ID_TYPE_MAT, type_mat_id);
+                        intent_mat.putExtra(P.ID_MAT, mat_id);
+                        intent_mat.putExtra(P.IS_MAT, true);  // такой материал есть
+                        startActivity(intent_mat);
+                    }
+                };
         adapter = new SmetasRecyclerMatAdapter(database, file_id);
         recyclerView.setAdapter(adapter);
     }
