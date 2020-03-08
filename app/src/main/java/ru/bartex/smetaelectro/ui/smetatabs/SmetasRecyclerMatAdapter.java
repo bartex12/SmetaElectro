@@ -22,6 +22,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
+//класс - адаптер для фрагмента материалов SmetasTabMat, в макете которого RecyclerView
 public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecyclerMatAdapter.ViewHolder> {
     public static final String TAG = "33333";
     private SQLiteDatabase database;
@@ -40,10 +41,10 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     private float[] summa; //массив стоимости
 
     public interface OnClickOnMatListener{
-        void onClickOnMatListener(long file_id);
+        void onClickOnMatListener(String namtItem);
     }
 
-    public void setOnClickOnWorkListener(OnClickOnMatListener onClickOnMatListener){
+    public void setOnClickOnMatListener(OnClickOnMatListener onClickOnMatListener){
         this.matListener = onClickOnMatListener;
     };
 
@@ -101,7 +102,7 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
         holder.ll_complex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                matListener.onClickOnMatListener(file_id);
+                matListener.onClickOnMatListener(name[position]);
             }
         });
 

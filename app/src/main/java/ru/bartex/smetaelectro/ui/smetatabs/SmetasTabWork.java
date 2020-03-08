@@ -26,6 +26,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
+//класс - фрагмент для вкладки Работа
 public class SmetasTabWork extends Fragment {
 
     public static final String TAG = "33333";
@@ -37,6 +38,7 @@ public class SmetasTabWork extends Fragment {
 
     RecyclerView recyclerView;
     SmetasRecyclerWorkAdapter adapter;
+    RecyclerAdapter_Test adapterTest;
 
 
     public static SmetasTabWork newInstance(long file_id, int position) {
@@ -107,11 +109,12 @@ public class SmetasTabWork extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        SmetasRecyclerMatAdapter.OnClickOnWorkListener clickOnWorkListener =
-                new SmetasRecyclerMatAdapter.OnClickOnWorkListener() {
+
+        SmetasRecyclerWorkAdapter.OnClickOnWorkListener workListener =
+                new SmetasRecyclerWorkAdapter.OnClickOnWorkListener() {
                     @Override
-                    public void onClickOnWorkListener(long file_id) {
-                        long work_id = Work.getIdFromName(database, smeta_item_name);
+                    public void onClickOnMatListener(String nameItem) {
+                        long work_id = Work.getIdFromName(database, nameItem);
                         long type_id = FW.getTypeId_FW(database, file_id, work_id);
                         long cat_id = FW.getCatId_FW(database, file_id, work_id);
 
@@ -124,8 +127,11 @@ public class SmetasTabWork extends Fragment {
                         startActivity(intent_work);
                     }
                 };
-        adapter = new SmetasRecyclerWorkAdapter(database, file_id);
-        recyclerView.setAdapter(adapter);
+        //adapter = new SmetasRecyclerWorkAdapter(database, file_id);
+        adapterTest = new RecyclerAdapter_Test();
+       // adapter.setOnClickOnWorkListener(workListener);
+        recyclerView.setAdapter(adapterTest);
+        //recyclerView.setAdapter(adapter);
     }
 
     public SmetasRecyclerWorkAdapter getAdapter(){

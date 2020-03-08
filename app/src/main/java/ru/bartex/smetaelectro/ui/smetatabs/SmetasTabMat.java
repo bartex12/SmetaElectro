@@ -25,6 +25,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
+//класс - фрагмент для вкладки Материалы
 public class SmetasTabMat extends Fragment {
 
     public static final String TAG = "33333";
@@ -103,9 +104,8 @@ public class SmetasTabMat extends Fragment {
         SmetasRecyclerMatAdapter.OnClickOnMatListener matListener =
                 new SmetasRecyclerMatAdapter.OnClickOnMatListener() {
                     @Override
-                    public void onClickOnMatListener(long file_id) {
-                        String smeta_item_name = Mat.getNameFromId(database, file_id);
-                        long mat_id = Mat.getIdFromName(database, smeta_item_name);
+                    public void onClickOnMatListener(String namtItem) {
+                        long mat_id = Mat.getIdFromName(database, namtItem);
                         long type_mat_id = FM.getTypeId_FM(database, file_id, mat_id);
                         long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
 
@@ -118,7 +118,9 @@ public class SmetasTabMat extends Fragment {
                         startActivity(intent_mat);
                     }
                 };
+
         adapter = new SmetasRecyclerMatAdapter(database, file_id);
+        adapter.setOnClickOnMatListener(matListener);
         recyclerView.setAdapter(adapter);
     }
 

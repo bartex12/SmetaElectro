@@ -22,6 +22,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
+//класс - адаптер для фрагмента работ SmetasTabWork,  в макете которого RecyclerView
 public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecyclerWorkAdapter.ViewHolder> {
 
     public static final String TAG = "33333";
@@ -29,8 +30,9 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
     private Context context;
     private long file_id;
     private int size;
-    int positionTab;  //номер вкладки
-    int posItem;  //позиция в списке
+    private int positionTab;  //номер вкладки
+    private int posItem;  //позиция в списке
+    private OnClickOnWorkListener workListener;
 
 
     private String[] name;
@@ -38,6 +40,14 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
     private float[] amount;
     private String[] units;
     private float[] summa; //массив стоимости
+
+    public interface OnClickOnWorkListener{
+        void onClickOnMatListener(String nameItem);
+    }
+
+    public void setOnClickOnWorkListener(OnClickOnWorkListener onClickOnWorkListener){
+        this.workListener = onClickOnWorkListener;
+    };
 
     public SmetasRecyclerWorkAdapter(SQLiteDatabase database, long file_id) {
         this.database = database;
@@ -88,6 +98,13 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
                 String.format(Locale.getDefault(),"%s", units[position]));
         holder.tvSumma.setText(
                 String.format(Locale.getDefault(),"%s", Float.toString(summa[position])));
+
+        holder.ll_complex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workListener.onClickOnMatListener(name[position]);
+            }
+        });
 
         // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
         //запоминаем позицию в списке - нужно при удалении, например
