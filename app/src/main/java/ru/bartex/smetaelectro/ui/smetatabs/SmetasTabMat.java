@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,16 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 
-public class SmetasMatTab extends Fragment {
+public class SmetasTabMat extends Fragment {
 
     public static final String TAG = "33333";
     private long file_id;
     private int positionItem;
     private SQLiteDatabase database;
+    float[] summa; //массив стоимости
+    float totalSumma; // общая стоимость
 
-    public static SmetasMatTab newInstance(long file_id, int position) {
-        SmetasMatTab fragment = new SmetasMatTab();
+    RecyclerView recyclerView;
+    SmetasRecyclerMatAdapter adapter;
+
+    public static SmetasTabMat newInstance(long file_id, int position) {
+        SmetasTabMat fragment = new SmetasTabMat();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -33,7 +43,7 @@ public class SmetasMatTab extends Fragment {
         return fragment;
     }
 
-    public SmetasMatTab() {
+    public SmetasTabMat() {
         // Required empty public constructor
     }
 
@@ -46,11 +56,11 @@ public class SmetasMatTab extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "// SmetasFrag onCreate // " );
+        Log.d(TAG, "// SmetasTabMat onCreate // " );
         //получаем id файла из аргументов
         file_id = getArguments().getLong(P.ID_FILE);
         positionItem = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "SmetasFrag onCreate  file_id = " + file_id + "  positionItem = " +  positionItem);
+        Log.d(TAG, "SmetasTabMat onCreate  file_id = " + file_id + "  positionItem = " +  positionItem);
     }
 
     @Override
@@ -64,15 +74,34 @@ public class SmetasMatTab extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews(view);
         initRecycler(view);
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
     }
 
+    private void initViews(View view) {
+        TextView header = view.findViewById(R.id.header_mat_tab);
+        String fileName = FileWork.getNameFromId(database, file_id);
+        header.setText(String.format(Locale.getDefault(),"Смета: %s", fileName));
+
+        TextView footer= view.findViewById(R.id.footer_mat_tab);
+        summa = FM.getArraySumma(database, file_id);
+        totalSumma = P.updateTotalSumma(summa);
+        footer.setText(String.format(Locale.getDefault(),"За материалы: %.0f руб", totalSumma ));
+    }
+
+
     private void initRecycler(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_mat_tab);
+        recyclerView = view.findViewById(R.id.recycler_mat_tab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        SmetasRecyclerAdapter adapter = new SmetasRecyclerAdapter(database, file_id);
+        adapter = new SmetasRecyclerMatAdapter(database, file_id);
         recyclerView.setAdapter(adapter);
+    }
+
+    public SmetasRecyclerMatAdapter getAdapter(){
+        return adapter;
     }
 }

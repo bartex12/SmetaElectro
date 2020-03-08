@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,17 +20,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 
-public class SmetasWorkTab extends Fragment {
+public class SmetasTabWork extends Fragment {
 
     public static final String TAG = "33333";
     private long file_id;
     private int positionItem;
     private SQLiteDatabase database;
+    float[] summa; //массив стоимости
+    float totalSumma; // общая стоимость
+
+    RecyclerView recyclerView;
+    SmetasRecyclerWorkAdapter adapter;
 
 
-    public static SmetasWorkTab newInstance(long file_id, int position) {
-        SmetasWorkTab fragment = new SmetasWorkTab();
+    public static SmetasTabWork newInstance(long file_id, int position) {
+        SmetasTabWork fragment = new SmetasTabWork();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -34,7 +45,7 @@ public class SmetasWorkTab extends Fragment {
         return fragment;
     }
 
-    public SmetasWorkTab() {
+    public SmetasTabWork() {
         // Required empty public constructor
     }
 
@@ -47,11 +58,11 @@ public class SmetasWorkTab extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "// SmetasFrag onCreate // " );
+        Log.d(TAG, "// SmetasTabWork onCreate // " );
         //получаем id файла из аргументов
         file_id = getArguments().getLong(P.ID_FILE);
         positionItem = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "SmetasFrag onCreate  file_id = " + file_id + "  positionItem = " +  positionItem);
+        Log.d(TAG, "SmetasTabWork onCreate  file_id = " + file_id + "  positionItem = " +  positionItem);
     }
 
     @Override
@@ -65,7 +76,10 @@ public class SmetasWorkTab extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews(view);
         initRecycler(view);
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
     }
 
     @Override
@@ -74,13 +88,35 @@ public class SmetasWorkTab extends Fragment {
         database.close();
     }
 
+    private void initViews(View view) {
+        TextView header = view.findViewById(R.id.header_work_tab);
+        String fileName = FileWork.getNameFromId(database, file_id);
+        header.setText(String.format(Locale.getDefault(),"Смета: %s", fileName));
+
+        TextView footer= view.findViewById(R.id.footer_work_tab);
+        summa = FW.getArraySumma(database, file_id);
+        totalSumma = P.updateTotalSumma(summa);
+        footer.setText(String.format(Locale.getDefault(),"За работу: %.0f руб", totalSumma ));
+    }
+
     private void initRecycler(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_work_tab);
+        recyclerView = view.findViewById(R.id.recycler_work_tab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        SmetasRecyclerAdapter adapter = new SmetasRecyclerAdapter(database, file_id);
+        SmetasRecyclerMatAdapter.OnClickOnWorkListener clickOnWorkListener =
+                new SmetasRecyclerMatAdapter.OnClickOnWorkListener() {
+                    @Override
+                    public void onClickOnWorkListener(long file_id) {
+
+                    }
+                };
+        adapter = new SmetasRecyclerWorkAdapter(database, file_id);
         recyclerView.setAdapter(adapter);
+    }
+
+    public SmetasRecyclerWorkAdapter getAdapter(){
+        return adapter;
     }
 
 }

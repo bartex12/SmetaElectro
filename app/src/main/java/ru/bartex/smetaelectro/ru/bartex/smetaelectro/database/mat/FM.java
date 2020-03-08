@@ -322,7 +322,6 @@ public class FM {
         while (cursor.moveToNext()) {
             int position = cursor.getPosition();
             units[position] = cursor.getString(cursor.getColumnIndex(FM_MAT_UNIT));
-            Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
         }
         cursor.close();
         return units;

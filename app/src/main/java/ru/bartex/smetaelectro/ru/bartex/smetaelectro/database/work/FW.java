@@ -325,7 +325,6 @@ public class FW {
         while (cursor.moveToNext()) {
             int position = cursor.getPosition();
             units[position] = cursor.getString(cursor.getColumnIndex(FW_UNIT));
-            Log.i(TAG, "TableControllerSmeta.getArrayUnit units[position] = " + units[position]);
         }
         cursor.close();
         return units;
@@ -575,6 +574,20 @@ public class FW {
         String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + FW_WORK_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
+
+        int count = cursor.getCount();
+        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        cursor.close();
+        return count;
+    }
+
+    //получаем количество строк  с типом FW_WORK_ID
+    public static int getCountLineInFileWork(SQLiteDatabase db, long file_id){
+        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+
+        String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
+                " where " + FW_FILE_ID + " =? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id)});
 
         int count = cursor.getCount();
         Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);

@@ -17,6 +17,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
@@ -37,13 +38,11 @@ public class Smetas extends AppCompatActivity {
     public static final String TAG = "33333";
     long file_id;
     int pos;
-   // private SectionsPagerAdapter mSectionsPagerAdapter;
-   // public ViewPager mViewPager;
 
     private SQLiteDatabase database;
     private ViewPager viewPager;
     private WorkMatPagerAdapter adapter;
-
+    private Fragment workFrag, matFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +61,14 @@ public class Smetas extends AppCompatActivity {
         initToolbar();
         initFab();
 
-        //здесь используется вариант  добавления фрагментов внутри адаптера
-        adapter = new WorkMatPagerAdapter(getSupportFragmentManager(), file_id);
+        //создаём фрагменты
+        workFrag = SmetasTabWork.newInstance(file_id, 0);
+        matFrag = SmetasTabMat.newInstance(file_id, 1);
+
+        //здесь используется вариант  добавления фрагментов из активити
+        adapter = new WorkMatPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(workFrag, "Работа" );
+        adapter.addFragment(matFrag, "Материалы" );
 
         viewPager = findViewById(R.id.container_smetas_work_mat);
         viewPager.setAdapter(adapter);
@@ -158,7 +163,7 @@ public class Smetas extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //создаём контекстное меню для списка  -  сделано в SmetasFrag
+    //создаём контекстное меню для списка
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -175,10 +180,13 @@ public class Smetas extends AppCompatActivity {
         private void handleMenuItemClick(MenuItem item) {
             int id = item.getItemId();
             switch (id) {
-
                 case R.id.menu_delete_smetas_item: {
-                    // adapter.deleteSmetasItem();
-                    Toast.makeText(this, "asdfadgddg", Toast.LENGTH_SHORT).show();
+                    int currentTab = viewPager.getCurrentItem();
+                    if (currentTab == 0){
+                        ((SmetasTabWork) workFrag).getAdapter().removeElement();
+                    }else if(currentTab == 1){
+                        ((SmetasTabMat) matFrag).getAdapter().removeElement();
+                    }
                     break;
                 }
                 case R.id.menu_cancel_smetas_item: {
@@ -296,12 +304,12 @@ public class Smetas extends AppCompatActivity {
         }
     };
 
-    //можно так обновлять адаптер, если бы контекстное меню было сдесь
-    private void updateAdapter(int currentItem){
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
-//        mViewPager.setCurrentItem(currentItem);
-//        mSectionsPagerAdapter.notifyDataSetChanged();
-    }
+//    //можно так обновлять адаптер, если бы контекстное меню было сдесь
+//    private void updateAdapter(int currentItem){
+////        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+////        mViewPager.setAdapter(mSectionsPagerAdapter);
+////        mViewPager.setCurrentItem(currentItem);
+////        mSectionsPagerAdapter.notifyDataSetChanged();
+//    }
 
 }
