@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro.ui.smetatabs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,11 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ru.bartex.smetaelectro.DetailSmetaLine;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class SmetasTabWork extends Fragment {
 
@@ -108,7 +111,17 @@ public class SmetasTabWork extends Fragment {
                 new SmetasRecyclerMatAdapter.OnClickOnWorkListener() {
                     @Override
                     public void onClickOnWorkListener(long file_id) {
+                        long work_id = Work.getIdFromName(database, smeta_item_name);
+                        long type_id = FW.getTypeId_FW(database, file_id, work_id);
+                        long cat_id = FW.getCatId_FW(database, file_id, work_id);
 
+                        Intent intent_work = new Intent(getActivity(), DetailSmetaLine.class);
+                        intent_work.putExtra(P.ID_FILE_DEFAULT, file_id);
+                        intent_work.putExtra(P.ID_CATEGORY, cat_id);
+                        intent_work.putExtra(P.ID_TYPE, type_id);
+                        intent_work.putExtra(P.ID_WORK, work_id);
+                        intent_work.putExtra(P.IS_WORK, true);  // такая работа есть
+                        startActivity(intent_work);
                     }
                 };
         adapter = new SmetasRecyclerWorkAdapter(database, file_id);
