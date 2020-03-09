@@ -78,22 +78,22 @@ public class SmetasTabMat extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViews(view);
+//        initViews(view);
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
     }
 
-    private void initViews(View view) {
-        TextView header = view.findViewById(R.id.header_mat_tab);
-        String fileName = FileWork.getNameFromId(database, file_id);
-        header.setText(String.format(Locale.getDefault(),"Смета: %s", fileName));
-
-        TextView footer= view.findViewById(R.id.footer_mat_tab);
-        summa = FM.getArraySumma(database, file_id);
-        totalSumma = P.updateTotalSumma(summa);
-        footer.setText(String.format(Locale.getDefault(),"За материалы: %.0f руб", totalSumma ));
-    }
+//    private void initViews(View view) {
+//        TextView header = view.findViewById(R.id.header_mat_tab);
+//        String fileName = FileWork.getNameFromId(database, file_id);
+//        header.setText(String.format(Locale.getDefault(),"Смета: %s", fileName));
+//
+//        TextView footer= view.findViewById(R.id.footer_mat_tab);
+//        summa = FM.getArraySumma(database, file_id);
+//        totalSumma = P.updateTotalSumma(summa);
+//        footer.setText(String.format(Locale.getDefault(),"За материалы: %.0f руб", totalSumma ));
+//    }
 
 
     private void initRecycler(View view) {

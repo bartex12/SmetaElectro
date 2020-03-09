@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
@@ -33,7 +35,6 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
     private int positionTab;  //номер вкладки
     private int posItem;  //позиция в списке
     private OnClickOnWorkListener workListener;
-
 
     private String[] name;
     private float[] cost;
@@ -78,48 +79,86 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.list_item_complex, parent, false);
-        return new ViewHolder(view);
+        View rowView;
+
+        switch (viewType) {
+            case VIEW_TYPES.Normal:
+                rowView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_complex, parent, false);
+                break;
+            case VIEW_TYPES.Header:
+                rowView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.header, parent, false);
+                break;
+            case VIEW_TYPES.Footer:
+                rowView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.footer, parent, false);
+                break;
+            default:
+                rowView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_complex, parent, false);
+                break;
+        }
+        return new ViewHolder(rowView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        holder.tvNumberOfLine.setText(
-                String.format(Locale.getDefault(),"%s", Integer.toString (position + 1)));
-        holder.base_text.setText(
-                String.format(Locale.getDefault(),"%s", name[position]));
-        holder.tvCost.setText(
-                String.format(Locale.getDefault(),"%s", Float.toString(cost[position])));
-        holder.tvAmount.setText(
-                String.format(Locale.getDefault(),"%s", Float.toString(amount[position])));
-        holder.tvUnits.setText(
-                String.format(Locale.getDefault(),"%s", units[position]));
-        holder.tvSumma.setText(
-                String.format(Locale.getDefault(),"%s", Float.toString(summa[position])));
+        int viewType = getItemViewType(position);
+        switch(viewType) {
+            case VIEW_TYPES.Header:
+                // handle row header
+                String fileName = FileWork.getNameFromId(database, file_id);
+                holder.base_text_header.setText(
+                        String.format(Locale.getDefault(),"Смета: %s", fileName));
+                break;
 
-        holder.ll_complex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workListener.onClickOnMatListener(name[position]);
-            }
-        });
+            case VIEW_TYPES.Footer:
+                // handle row footer
+                //summa = FW.getArraySumma(database, file_id);
+                float totalSumma = P.updateTotalSumma(summa);
+                holder.base_text_footer.setText(
+                        String.format(Locale.getDefault(),"За работу: %.0f руб", totalSumma ));
+                break;
 
-        // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
-        //запоминаем позицию в списке - нужно при удалении, например
-        holder.ll_complex.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                posItem = position;
-                return false;
-            }
-        });
+            case VIEW_TYPES.Normal:
+                holder.tvNumberOfLine.setText(String.format(Locale.getDefault(),
+                        "%s", Integer.toString (position)));
+                holder.base_text.setText(String.format(Locale.getDefault(),
+                        "%s", name[position-1]));
+                holder.tvCost.setText(String.format(Locale.getDefault(),
+                        "%s", Float.toString(cost[position-1])));
+                holder.tvAmount.setText(String.format(Locale.getDefault(),
+                        "%s", Float.toString(amount[position-1])));
+                holder.tvUnits.setText(String.format(Locale.getDefault(),
+                        "%s", units[position-1]));
+                holder.tvSumma.setText( String.format(Locale.getDefault(),
+                        "%s", Float.toString(summa[position-1])));
+
+                holder.ll_complex.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        workListener.onClickOnMatListener(name[position-1]);
+                    }
+                });
+
+                // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
+                //запоминаем позицию в списке - нужно при удалении, например
+                holder.ll_complex.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        posItem = position-1;
+                        return false;
+                    }
+                });
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return size;
+        return size + 2;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -132,6 +171,9 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
         TextView tvUnits;
         TextView tvSumma;
 
+        TextView base_text_header;
+        TextView base_text_footer;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ll_complex = itemView.findViewById(R.id.ll_complex);
@@ -141,6 +183,9 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
             tvAmount = itemView.findViewById(R.id.tvAmount);
             tvUnits = itemView.findViewById(R.id.tvUnits);
             tvSumma = itemView.findViewById(R.id.tvSumma);
+
+            base_text_header = itemView.findViewById(R.id.base_text_header);
+            base_text_footer = itemView.findViewById(R.id.base_text_footer);
         }
     }
 
@@ -172,5 +217,23 @@ public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecycl
                         Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
                     }
                 }).show();
+    }
+
+    private class VIEW_TYPES {
+         static final int Header = 1;
+         static final int Normal = 2;
+         static final int Footer = 3;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (position == 0) {
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Header;
+        }else if (position == (size+1)) {
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Footer;
+        }else{
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Normal;
+        }
     }
 }
