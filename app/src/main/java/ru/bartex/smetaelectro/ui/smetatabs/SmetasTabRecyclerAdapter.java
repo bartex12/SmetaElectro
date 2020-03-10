@@ -59,10 +59,10 @@ public class SmetasTabRecyclerAdapter extends
         getParams(database, file_id, positionTab);
     }
 
+    // если делать функции getDataFW и getDataFM, кода в этом методе будет меньше, но
+    //в целом станет только хуже - я проверил
     private void getParams(SQLiteDatabase database, long file_id, int positionTab) {
-
         switch (positionTab){
-
             case 0:
                 //Массив работ в файле с file_id
                 name = FW.getArrayNames(database, file_id);
@@ -180,6 +180,7 @@ public class SmetasTabRecyclerAdapter extends
 
     @Override
     public int getItemCount() {
+        //потому что добавились футер и хедер
         return size + 2;
     }
 
@@ -231,7 +232,6 @@ public class SmetasTabRecyclerAdapter extends
                     long work_id = Work.getIdFromName(database, name[posItem]);
                     Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
                             "file_id = " + file_id + " work_id = " + work_id);
-
                     //удаляем пункт сметы из таблицы FW
                     FW.deleteItemFrom_FW(database, file_id, work_id);
                 }else {
@@ -251,12 +251,14 @@ public class SmetasTabRecyclerAdapter extends
         }).show();
     }
 
+    //специальный класс для разделения на Footer, Header и Normal
     private class VIEW_TYPES {
         static final int Header = 1;
         static final int Normal = 2;
         static final int Footer = 3;
     }
 
+    //мктод с логикой разделения на  Footer, Header и Normal в соответствии с position
     @Override
     public int getItemViewType(int position) {
 
