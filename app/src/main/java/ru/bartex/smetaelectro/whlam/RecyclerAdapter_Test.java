@@ -1,6 +1,5 @@
-package ru.bartex.smetaelectro.ui.smetatabs;
+package ru.bartex.smetaelectro.whlam;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

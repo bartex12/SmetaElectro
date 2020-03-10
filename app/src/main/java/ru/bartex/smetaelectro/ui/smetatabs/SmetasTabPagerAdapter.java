@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-//PagerAdapter для класса Smetas
+//PagerAdapter для класса SmetasTab
 //в макете которого TabLayout и ViewPager
-public class WorkMatPagerAdapter extends FragmentPagerAdapter {
+public class SmetasTabPagerAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> tabTitles = new ArrayList<>();
 
-    public WorkMatPagerAdapter(@NonNull FragmentManager fm) {
+    public SmetasTabPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 

@@ -8,9 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +18,6 @@ import ru.bartex.smetaelectro.DetailSmetaMatLine;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
@@ -32,11 +28,9 @@ public class SmetasTabMat extends Fragment {
     private long file_id;
     private int positionItem;
     private SQLiteDatabase database;
-    float[] summa; //массив стоимости
-    float totalSumma; // общая стоимость
 
     RecyclerView recyclerView;
-    SmetasRecyclerMatAdapter adapter;
+    SmetasTabRecyclerAdapter adapter;
 
     public static SmetasTabMat newInstance(long file_id, int position) {
         SmetasTabMat fragment = new SmetasTabMat();
@@ -77,34 +71,33 @@ public class SmetasTabMat extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        initViews(view);
+        Log.d(TAG, "// SmetasTabMat onViewCreated // " );
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
     }
 
-//    private void initViews(View view) {
-//        TextView header = view.findViewById(R.id.header_mat_tab);
-//        String fileName = FileWork.getNameFromId(database, file_id);
-//        header.setText(String.format(Locale.getDefault(),"Смета: %s", fileName));
-//
-//        TextView footer= view.findViewById(R.id.footer_mat_tab);
-//        summa = FM.getArraySumma(database, file_id);
-//        totalSumma = P.updateTotalSumma(summa);
-//        footer.setText(String.format(Locale.getDefault(),"За материалы: %.0f руб", totalSumma ));
-//    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "// SmetasTabMat onStop // " );
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
 
     private void initRecycler(View view) {
         recyclerView = view.findViewById(R.id.recycler_mat_tab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        SmetasRecyclerMatAdapter.OnClickOnMatListener matListener =
-                new SmetasRecyclerMatAdapter.OnClickOnMatListener() {
+        SmetasTabRecyclerAdapter.OnClickOnLineListener matListener =
+                new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
                     @Override
-                    public void onClickOnMatListener(String namtItem) {
+                    public void onClickOnLineListener(String namtItem) {
                         long mat_id = Mat.getIdFromName(database, namtItem);
                         long type_mat_id = FM.getTypeId_FM(database, file_id, mat_id);
                         long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
@@ -119,12 +112,12 @@ public class SmetasTabMat extends Fragment {
                     }
                 };
 
-        adapter = new SmetasRecyclerMatAdapter(database, file_id);
-        adapter.setOnClickOnMatListener(matListener);
+        adapter = new SmetasTabRecyclerAdapter(database, file_id, 1);
+        adapter.setOnClickOnLineListener(matListener);
         recyclerView.setAdapter(adapter);
     }
 
-    public SmetasRecyclerMatAdapter getAdapter(){
+    public SmetasTabRecyclerAdapter getAdapter(){
         return adapter;
     }
 }

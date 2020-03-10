@@ -105,7 +105,7 @@
             android:label="@string/title_activity_CostDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetatabs.Smetas"
+            android:name=".ui.smetatabs.SmetasTab"
             android:label="@string/title_activity_smetas1"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />

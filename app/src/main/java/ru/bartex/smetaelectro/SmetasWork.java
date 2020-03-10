@@ -38,7 +38,7 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameCat;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
-import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
+import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
 
 public class SmetasWork extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
@@ -585,7 +585,7 @@ public class SmetasWork extends AppCompatActivity implements
                     return true;
                 case R.id.navigation_smetas_smetas_mat:
                     // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
-                    Intent intent = new Intent(SmetasWork.this, Smetas.class);
+                    Intent intent = new Intent(SmetasWork.this, SmetasTab.class);
                     intent.putExtra(P.ID_FILE, file_id);
                     startActivity(intent);
                     return true;

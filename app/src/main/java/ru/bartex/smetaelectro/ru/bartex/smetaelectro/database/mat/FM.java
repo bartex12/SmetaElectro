@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import ru.bartex.smetaelectro.data.DataFM;
+import ru.bartex.smetaelectro.data.DataFW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+
 
 public class FM {
     public static final String TAG = "33333";
@@ -613,4 +613,44 @@ public class FM {
         }
         cursor.close();
         return false;
-    }}
+    }
+
+    //получаем данные по таблице FW  по  id файла
+    public static DataFM[] getDataFM(SQLiteDatabase db, long file_id) {
+        Log.i(TAG, "TableControllerSmeta.getDataFM ... ");
+
+        String select = " SELECT  * FROM " + TABLE_NAME +
+                " WHERE " + FM_FILE_ID + " = ? ";
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id)});
+
+        DataFM[] dataFM = new DataFM[cursor.getCount()];
+
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            // Узнаем индекс каждого столбца и Используем индекс для получения строки
+            long FM_file_ID = cursor.getLong(cursor.getColumnIndex(FM_FILE_ID));
+            String FM_file_NAME = cursor.getString(cursor.getColumnIndex(FM_FILE_NAME));
+
+            long FM_Mat_ID = cursor.getLong(cursor.getColumnIndex(FM_MAT_ID));
+            String FM_Mat_NAME = cursor.getString(cursor.getColumnIndex(FM_MAT_NAME));
+
+            long FM_Mat_Type_ID = cursor.getLong(cursor.getColumnIndex(FM_MAT_TYPE_ID));
+            String FM_Mat_Type_Name = cursor.getString(cursor.getColumnIndex(FM_MAT_TYPE_NAME));
+
+            long FM_Mat_Category_ID = cursor.getLong(cursor.getColumnIndex(FM_MAT_CATEGORY_ID));
+            String FM_Mat_Category_Name = cursor.getString(cursor.getColumnIndex(FM_MAT_CATEGORY_NAME));
+
+            float FM_Mat_Cost = cursor.getLong(cursor.getColumnIndex(FM_MAT_COST));
+            int FM_Mat_Count = cursor.getInt(cursor.getColumnIndex(FM_MAT_COUNT));
+            String FM_Mat_Unit = cursor.getString(cursor.getColumnIndex(FM_MAT_UNIT));
+            float FM_Mat_Summa = cursor.getLong(cursor.getColumnIndex(FM_MAT_SUMMA));
+
+            //создаём экземпляр класса DataWork в конструкторе
+            dataFM[position] = new DataFM(FM_file_ID,FM_file_NAME,FM_Mat_ID, FM_Mat_NAME,
+                    FM_Mat_Type_ID, FM_Mat_Type_Name,  FM_Mat_Category_ID, FM_Mat_Category_Name,
+                    FM_Mat_Cost, FM_Mat_Count, FM_Mat_Unit, FM_Mat_Summa );
+        }
+        cursor.close();
+        return dataFM;
+    }
+}

@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
+import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
@@ -94,8 +94,8 @@ public class SmetaNewName extends AppCompatActivity {
                                  Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Сохранено имя файла  = " + nameFile + "  id = " + file_id);
 
-                    Intent intent = new Intent(SmetaNewName.this, Smetas.class);
-                    //если  вызываем Smetas, тогда передаем file_id
+                    Intent intent = new Intent(SmetaNewName.this, SmetasTab.class);
+                    //если  вызываем SmetasTab, тогда передаем file_id
                     intent.putExtra(P.ID_FILE, file_id);
                     startActivity(intent);
                     finish();  //чтобы не возвращаться в эту активность по кнопке Назад

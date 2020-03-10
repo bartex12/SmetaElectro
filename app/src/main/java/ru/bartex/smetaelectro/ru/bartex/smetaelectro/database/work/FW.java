@@ -634,15 +634,17 @@ public class FW {
     }
 
     //получаем данные по таблице FW  по  id файла
-    public static DataFW getDataFW(SQLiteDatabase db, long file_id) {
+    public static DataFW[] getDataFW(SQLiteDatabase db, long file_id) {
         Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
-        DataFW dataFW = new DataFW();
 
         String select = " SELECT  * FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = ? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id)});
 
-        if (cursor.moveToFirst()) {
+        DataFW[] dataFW = new DataFW[cursor.getCount()];
+
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             long FW_File_ID = cursor.getLong(cursor.getColumnIndex(FW_FILE_ID));
             String FW_File_Name = cursor.getString(cursor.getColumnIndex(FW_FILE_NAME));
@@ -662,13 +664,14 @@ public class FW {
             float FW_Summa = cursor.getLong(cursor.getColumnIndex(FW_SUMMA));
 
             //создаём экземпляр класса DataWork в конструкторе
-            dataFW = new DataFW(FW_File_ID,FW_File_Name,FW_Work_ID, FW_Work_Name,
+            dataFW[position] = new DataFW(FW_File_ID,FW_File_Name,FW_Work_ID, FW_Work_Name,
                     FW_Type_ID, FW_Type_Name,  FW_Category_ID, FW_Category_Name, FW_Cost,
                     FW_Count, FW_Unit, FW_Summa );
         }
         cursor.close();
         return dataFW;
     }
+
 }
 
 

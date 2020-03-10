@@ -16,7 +16,7 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
+import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
@@ -173,7 +173,7 @@ public class ListOfSmetasNames extends AppCompatActivity {
                         long file_id = FileWork.getIdFromName(database, fileName);
                         Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id);
 
-                        Intent intent = new Intent(ListOfSmetasNames.this, Smetas.class);
+                        Intent intent = new Intent(ListOfSmetasNames.this, SmetasTab.class);
                         intent.putExtra(P.ID_FILE, file_id);
                         startActivity(intent);
                     }

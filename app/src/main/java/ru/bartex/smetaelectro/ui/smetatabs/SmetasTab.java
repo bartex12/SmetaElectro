@@ -17,8 +17,6 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
@@ -33,15 +31,15 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 
-public class Smetas extends AppCompatActivity {
+public class SmetasTab extends AppCompatActivity {
 
     public static final String TAG = "33333";
     long file_id;
-    int pos;
+    int currentTabItem;
 
     private SQLiteDatabase database;
     private ViewPager viewPager;
-    private WorkMatPagerAdapter adapter;
+    private SmetasTabPagerAdapter adapter;
     private Fragment workFrag, matFrag;
 
     @Override
@@ -56,23 +54,49 @@ public class Smetas extends AppCompatActivity {
         file_id = intent.getExtras().getLong(P.ID_FILE);
         //Получаем имя файла с текущей  сметой
         String fileName = FileWork.getNameFromId(database, file_id);
-        Log.d(TAG, "Smetas - onCreate  fileName = " + fileName);
+        Log.d(TAG, "SmetasTab - onCreate  fileName = " + fileName);
 
         initToolbar();
         initFab();
+        // фрагменты, адаптер, ViewPager инициализируются в onResume,
+        // чтобы при возврате на SmetasTab происходило обновление пунктов списка
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        createTabFrags();
+        initPageAdapter();
+        initViewPager();
+        Log.d(TAG, "// SmetasTab - onResume //currentTabItem = " + viewPager.getCurrentItem());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "// SmetasTab onStop //");
+        //сохраняем currentTabItem - если не было дестрой, onRestoreInstanceState не вызывается
+        currentTabItem = viewPager.getCurrentItem();
+    }
+
+    private void createTabFrags() {
         //создаём фрагменты
         workFrag = SmetasTabWork.newInstance(file_id, 0);
         matFrag = SmetasTabMat.newInstance(file_id, 1);
+    }
 
+    private void initPageAdapter() {
         //здесь используется вариант  добавления фрагментов из активити
-        adapter = new WorkMatPagerAdapter(getSupportFragmentManager());
+        adapter = new SmetasTabPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(workFrag, "Работа" );
         adapter.addFragment(matFrag, "Материалы" );
+    }
 
+    private void initViewPager() {
         viewPager = findViewById(R.id.container_smetas_work_mat);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(currentTabItem);
 
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
@@ -105,19 +129,18 @@ public class Smetas extends AppCompatActivity {
                 int currentItem = viewPager.getCurrentItem();
                 switch (currentItem){
                     case 0:
-                        Intent intent = new Intent(Smetas.this, SmetasWork.class);
+                        Intent intent = new Intent(SmetasTab.this, SmetasWork.class);
                         intent.putExtra(P.ID_FILE, file_id);
                         startActivity(intent);
                         break;
 
                     case 1:
-                        Intent intent2 = new Intent(Smetas.this, SmetasMat.class);
+                        Intent intent2 = new Intent(SmetasTab.this, SmetasMat.class);
                         intent2.putExtra(P.ID_FILE, file_id);
-                        Log.d(TAG, "(((((Smetas - onCreate ))))))   file_id = " + file_id);
+                        Log.d(TAG, "(((((SmetasTab - onCreate ))))))   file_id = " + file_id);
                         startActivity(intent2);
                         break;
                 }
-
             }
         });
     }
@@ -125,16 +148,17 @@ public class Smetas extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "//  Smetas onSaveInstanceState // " );
         outState.putLong("file_id", file_id);
-        outState.putInt("pos", pos);
+        outState.putInt("pos", viewPager.getCurrentItem());
+        Log.d(TAG, "//  SmetasTab onSaveInstanceState // pos =  " + viewPager.getCurrentItem());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         file_id = savedInstanceState.getLong("file_id");
-        pos = savedInstanceState.getInt("pos");
+        currentTabItem = savedInstanceState.getInt("pos");
+        Log.d(TAG, "//  SmetasTab onRestoreInstanceState // pos =  " + currentTabItem);
     }
 
     @Override
@@ -153,8 +177,8 @@ public class Smetas extends AppCompatActivity {
 
         if (id == R.id.action_struct) {
             int currentItem = viewPager.getCurrentItem();
-            Log.d(TAG, "Smetas - onOptionsItemSelected    currentItem = " + currentItem);
-            Intent intent = new Intent(Smetas.this, ListOfSmetasStructured.class);
+            Log.d(TAG, "SmetasTab - onOptionsItemSelected    currentItem = " + currentItem);
+            Intent intent = new Intent(SmetasTab.this, ListOfSmetasStructured.class);
             intent.putExtra(P.TAB_POSITION, currentItem);
             intent.putExtra(P.ID_FILE, file_id);
             startActivity(intent);
@@ -195,75 +219,6 @@ public class Smetas extends AppCompatActivity {
             }
     }
 
-
-//
-//    private boolean handleMenuItemClick(MenuItem item) {
-//        final AdapterView.AdapterContextMenuInfo acmi =
-//                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//
-//        //если удалить из контекстного меню
-//        if (item.getItemId() == P.DELETE_ITEM_SMETA) {
-//
-//            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA");
-//            AlertDialog.Builder builder = new AlertDialog.Builder(Smetas.this);
-//            builder.setTitle(R.string.Delete_Item);
-//            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            });
-//            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA acmi.position  =" +
-//                            (acmi.position));
-//
-//                    TextView tv = acmi.targetView.findViewById(R.id.base_text);
-//                    String name = tv.getText().toString();
-//                    switch (viewPager.getCurrentItem()){
-//                        //switch (positionItem){
-//                        case 0:
-//                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 0");
-//                            //находим id по имени работы
-//                            long work_id = Work.getIdFromName(database, name);
-//                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
-//                                    file_id + " work_id =" + work_id+ " work_name =" + name);
-//
-//                            //удаляем пункт сметы из таблицы FW
-//                            FW.deleteItemFrom_FW(database, file_id, work_id);
-//                            //обновляем данные списка фрагмента активности
-//                            updateAdapter(0);
-//                            break;
-//
-//                        case 1:
-//                            Log.d(TAG, "Smetas P.DELETE_ITEM_SMETA case 1");
-//                            //находим id по имени работы
-//                            long mat_id = Mat.getIdFromName(database, name);
-//                            Log.d(TAG, "Smetas onContextItemSelected file_id = " +
-//                                    file_id + " mat_id =" + mat_id + " mat_name =" + name);
-//
-//                            //mSmetaOpenHelper.displayFM();
-//                            //удаляем пункт сметы из таблицы FM
-//                            FM.deleteItemFrom_FM(database, file_id, mat_id);
-//                            //mSmetaOpenHelper.displayFM();
-//
-//                            updateAdapter(1);
-//                            break;
-//                    }
-//                }
-//            });
-//            builder.show();
-//            return true;
-//            //если изменить из контекстного меню
-//        } else if (item.getItemId() == P.CANCEL) {
-//            //getActivity().finish();
-//            return true;
-//        }
-//        return false;
-//    }
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -271,7 +226,7 @@ public class Smetas extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     // Для данного варианта в манифесте указан режим singlTask для активности MainActivity
-                    Intent intentHome = new Intent(Smetas.this, MainActivity.class);
+                    Intent intentHome = new Intent(SmetasTab.this, MainActivity.class);
                     // установка флагов- создаём новую задачу и убиваем старую вместе
                     // со всеми предыдущими переходами - работает дёргано по сравнению с манифестом
                     //intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -280,7 +235,7 @@ public class Smetas extends AppCompatActivity {
                     return true;
                 case R.id.navigation_smetas:
                     // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
-                    Intent intent_smetas = new Intent(Smetas.this, ListOfSmetasNames.class);
+                    Intent intent_smetas = new Intent(SmetasTab.this, ListOfSmetasNames.class);
                     startActivity(intent_smetas);
                     return true;
                 case R.id.navigation_costs:
@@ -288,13 +243,13 @@ public class Smetas extends AppCompatActivity {
                     switch (curItem){
                         case 0:
                             Intent intent_costs_work = new Intent(
-                                    Smetas.this, SmetasWorkCost.class);
+                                    SmetasTab.this, SmetasWorkCost.class);
                             intent_costs_work.putExtra(P.ID_FILE, file_id);
                             startActivity(intent_costs_work);
                             return true;
 
                         case 1:
-                            Intent intent_costs_mat = new Intent(Smetas.this, SmetasMatCost.class);
+                            Intent intent_costs_mat = new Intent(SmetasTab.this, SmetasMatCost.class);
                             intent_costs_mat.putExtra(P.ID_FILE, file_id);
                             startActivity(intent_costs_mat);
                             return true;
@@ -303,13 +258,4 @@ public class Smetas extends AppCompatActivity {
             return false;
         }
     };
-
-//    //можно так обновлять адаптер, если бы контекстное меню было сдесь
-//    private void updateAdapter(int currentItem){
-////        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-////        mViewPager.setAdapter(mSectionsPagerAdapter);
-////        mViewPager.setCurrentItem(currentItem);
-////        mSectionsPagerAdapter.notifyDataSetChanged();
-//    }
-
 }

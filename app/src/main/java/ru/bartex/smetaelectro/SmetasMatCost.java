@@ -50,7 +50,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostMat;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
-import ru.bartex.smetaelectro.ui.smetatabs.Smetas;
+import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
 
 public class SmetasMatCost extends AppCompatActivity implements
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,
@@ -487,7 +487,7 @@ public class SmetasMatCost extends AppCompatActivity implements
                         Log.d(TAG, "1 SmetasMatCost onNavigationItemSelected file_id =" + file_id);
                     }else {
                         // Для данного варианта в манифесте указан режим singlTask для активности ListOfSmetasNames
-                        Intent intent = new Intent(SmetasMatCost.this, Smetas.class);
+                        Intent intent = new Intent(SmetasMatCost.this, SmetasTab.class);
                         intent.putExtra(P.ID_FILE, file_id);
                         startActivity(intent);
                         Log.d(TAG, "2 SmetasMatCost onNavigationItemSelected file_id =" + file_id);
