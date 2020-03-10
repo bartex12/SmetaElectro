@@ -50,6 +50,8 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
+import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
 
 public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCostWork.OnCatTypeMatCostNameListener,
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{
@@ -153,10 +155,10 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasWorkCost onCreate file_id =" + file_id);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Toolbar toolbar = findViewById(R.id.toolbarWork);
+        Toolbar toolbar = findViewById(R.id.toolbar_smetas_work);
         setSupportActionBar(toolbar);
         //показываем заголовок в заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasWorkCost);
@@ -165,13 +167,13 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         //Создаём адаптер для фрагментов
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Привязываем ViewPager к адаптеру
-        mViewPager = findViewById(R.id.containerWork);
+        mViewPager = findViewById(R.id.container_smetas_work);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
         // mViewPager.setOffscreenPageLimit(0);
 
-        TabLayout tabLayout = findViewById(R.id.tabsWork);
+        TabLayout tabLayout = findViewById(R.id.tabs_smetas_work);
         tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
         //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -195,7 +197,7 @@ public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCost
         });
 
         //в макете стоит GONE
-        FloatingActionButton fab = findViewById(R.id.fabWork);
+        FloatingActionButton fab = findViewById(R.id.fab_smetas_work);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

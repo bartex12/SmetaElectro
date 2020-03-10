@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetawork;
 
 
 import android.database.Cursor;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
@@ -25,8 +26,8 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
         // Required empty public constructor
     }
 
-    public static Tab1WorkCat NewInstance(long file_id, int position){
-        Log.d(TAG, "//  Tab1WorkCat NewInstance // " );
+    public static Tab1WorkCat newInstance(long file_id, int position){
+        Log.d(TAG, "//  Tab1WorkCat newInstance // " );
         Tab1WorkCat fragment = new Tab1WorkCat();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

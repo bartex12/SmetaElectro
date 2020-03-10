@@ -41,6 +41,8 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
+import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
 
 public class SmetasMat extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
@@ -136,7 +138,7 @@ public class SmetasMat extends AppCompatActivity implements
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Toolbar toolbar = findViewById(R.id.toolbarMat);
@@ -175,7 +177,7 @@ public class SmetasMat extends AppCompatActivity implements
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_smetas_tab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

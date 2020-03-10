@@ -16,6 +16,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ui.smetawork.Tab3SmetasWorkMatAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +30,7 @@ public class Tab3MatCost extends Tab3SmetasWorkMatAbstrFrag {
 
     public static Tab3MatCost NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id) {
-        Log.d(TAG, "//  Tab3MatCost NewInstance // " );
+        Log.d(TAG, "//  Tab3MatCost newInstance // " );
         Tab3MatCost fragment = new Tab3MatCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

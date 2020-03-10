@@ -14,6 +14,7 @@ import java.util.Map;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +27,7 @@ public class Tab1MatCat extends Tab1SmetasCatAbstrFrag {
     }
 
     public static Tab1MatCat NewInstance(long file_id, int position){
-        Log.d(TAG, "//  Tab1MatCat NewInstance // " );
+        Log.d(TAG, "//  Tab1MatCat newInstance // " );
         Tab1MatCat fragment = new Tab1MatCat();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

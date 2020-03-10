@@ -51,6 +51,8 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostMat;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
+import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
 
 public class SmetasMatCost extends AppCompatActivity implements
         Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener,
@@ -156,7 +158,7 @@ public class SmetasMatCost extends AppCompatActivity implements
         file_id = getIntent().getLongExtra(P.ID_FILE,-1);
         Log.d(TAG, "SmetasMatCost onCreate file_id =" + file_id);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navigation.setSelectedItemId(R.id.navigation_smetas_smetas_mat_cost);
 
@@ -170,7 +172,7 @@ public class SmetasMatCost extends AppCompatActivity implements
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container_smetas_work_mat);
+        mViewPager = findViewById(R.id.container_smetas_tab);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         //средняя вкладка открыта
         mViewPager.setCurrentItem(1);
@@ -193,7 +195,7 @@ public class SmetasMatCost extends AppCompatActivity implements
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_smetas_tab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

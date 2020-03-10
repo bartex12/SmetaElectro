@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetawork;
 
 
 import android.database.Cursor;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
@@ -21,9 +22,9 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
 
 
-    public static Tab2WorkType NewInstance(
+    public static Tab2WorkType newInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  Tab2WorkType NewInstance // " );
+        Log.d(TAG, "//  Tab2WorkType newInstance // " );
         Tab2WorkType fragment = new Tab2WorkType();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

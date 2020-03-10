@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -34,11 +32,6 @@ import ru.bartex.smetaelectro.SmetasWorkCost;
 import ru.bartex.smetaelectro.SpecificCategory;
 import ru.bartex.smetaelectro.SpecificType;
 import ru.bartex.smetaelectro.SpesificWork;
-import ru.bartex.smetaelectro.Tab1SmetasCatAbstrFrag;
-import ru.bartex.smetaelectro.Tab1WorkCat;
-import ru.bartex.smetaelectro.Tab2SmetasTypeAbstrFrag;
-import ru.bartex.smetaelectro.Tab2WorkType;
-import ru.bartex.smetaelectro.Tab3Work;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
@@ -52,21 +45,23 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
+import ru.bartex.smetaelectro.ui.smetatabs.SmetasTabPagerAdapter;
 
 public class SmetasWork extends AppCompatActivity implements
         Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener {
 
-    public static final String TAG = "33333";
-    long file_id;
-    boolean isSelectedType = false;
-    boolean isSelectedCat =  false;
-    long type_id;
-    long cat_id;
+    private static final String TAG = "33333";
+    private long file_id;
+    private boolean isSelectedType = false;
+    private boolean isSelectedCat =  false;
+    private long type_id;
+    private long cat_id;
 
-    private SmetasWork.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private SQLiteDatabase database;
+    private SmetasWorkPagerAdapter adapter;
+    private Fragment tab1WorkCat, tab2WorkType, tab3WorkWork ;
 
     @Override
     public void catAndClickTransmit(long cat_id, boolean isSelected) {
@@ -77,7 +72,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку
         //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
-        updateAdapter(1);
+        //updateAdapter(1);
     }
 
     @Override
@@ -90,7 +85,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
         // обновляем соседнюю вкладку типов материалов и показываем её
-        updateAdapter(2);
+        //updateAdapter(2);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class SmetasWork extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(0);
+               // updateAdapter(0);
                 break;
 
             case 1:
@@ -117,7 +112,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(1);
+                //updateAdapter(1);
                 break;
 
             case 2:
@@ -129,7 +124,7 @@ public class SmetasWork extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(2);
+               // updateAdapter(2);
                 break;
         }
     }
@@ -145,55 +140,75 @@ public class SmetasWork extends AppCompatActivity implements
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
 
         initBottomNavigation();
+        initToolbar();
+        // фрагменты, адаптер, ViewPager инициализируются в onResume,
+        // чтобы при возврате на SmetasTab происходило обновление пунктов списка
 
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Toolbar toolbar = findViewById(R.id.toolbarWork);
-        setSupportActionBar(toolbar);
-        //показываем заголовокмв заголовке экрана
-        toolbar.setTitle(R.string.title_activity_SmetasWork);
-        toolbar.setTitleTextColor(Color.GREEN);
+//        //Создаём адаптер для фрагментов
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+//        // Привязываем ViewPager к адаптеру
+//        mViewPager = findViewById(R.id.container_smetas_work);
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        //средняя вкладка открыта
+//        mViewPager.setCurrentItem(1);
+//        // mViewPager.setOffscreenPageLimit(0);
+//
+//        TabLayout tabLayout = findViewById(R.id.tabs_smetas_work);
+//        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
+//        //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
+//        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        //добавляем слушатель нажатий на заголовки вкладок
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+//        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
+//        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
+//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            }
+//            @Override
+//            public void onPageSelected(int position) {
+//                invalidateOptionsMenu();
+//            }
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//            }
+//        });
+    }
 
-        //Создаём адаптер для фрагментов
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Привязываем ViewPager к адаптеру
-        mViewPager = findViewById(R.id.containerWork);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        //средняя вкладка открыта
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        createTabFrags();
+        initPageAdapter();
+        initViewPager();
+        Log.d(TAG, "//SmetasWork-onResume currentTabItem = " + mViewPager.getCurrentItem());
+    }
+
+    private void createTabFrags() {
+        //создаём фрагменты
+        tab1WorkCat = Tab1WorkCat.newInstance(file_id, 0);
+        tab2WorkType = Tab2WorkType.newInstance(file_id, 1, false, 0);
+        tab3WorkWork = Tab3WorkWork.newInstance(file_id, 1, false, 0);
+    }
+
+    private void initPageAdapter() {
+        //здесь используется вариант  добавления фрагментов из активити
+        adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(tab1WorkCat, "Категория" );
+        adapter.addFragment(tab2WorkType, "Тип" );
+        adapter.addFragment(tab3WorkWork, "Название" );
+    }
+
+    private void initViewPager() {
+        mViewPager = findViewById(R.id.container_smetas_work);
+        mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
-        // mViewPager.setOffscreenPageLimit(0);
 
-        TabLayout tabLayout = findViewById(R.id.tabsWork);
-        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
-        //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        //добавляем слушатель нажатий на заголовки вкладок
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
-        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-                invalidateOptionsMenu();
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        FloatingActionButton fab = findViewById(R.id.fabWork);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  **************************");
+        TabLayout tabs = findViewById(R.id.tabs_smetas_work);
+        tabs.setTabTextColors(Color.WHITE, Color.GREEN);
+        tabs.setupWithViewPager(mViewPager);
     }
 
     private void initDB() {
@@ -202,21 +217,29 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     private void initBottomNavigation() {
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, " ))))))))SmetasWork  onResume((((((((");
-        //добираемся до списка фрагмента ___________пока нет в onPrepareOptionsMenu тоже вызывает ошибку_____________
-        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
-        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-        Log.d(TAG, " SmetasWork  onResume mViewPager.getCurrentItem() = " +
-                mViewPager.getCurrentItem() + "  view = " + view );
-
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_smetas_work);
+        setSupportActionBar(toolbar);
+        //показываем заголовок в toolbar экрана
+        toolbar.setTitle(R.string.title_activity_SmetasWork);
+        toolbar.setTitleTextColor(Color.GREEN);
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.d(TAG, " ))))))))SmetasWork  onResume((((((((");
+//        //добираемся до списка фрагмента ___________пока нет в onPrepareOptionsMenu тоже вызывает ошибку_____________
+//        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
+//        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
+//        Log.d(TAG, " SmetasWork  onResume mViewPager.getCurrentItem() = " +
+//                mViewPager.getCurrentItem() + "  view = " + view );
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -492,7 +515,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 //Удаляем файл из таблицы CategoryWork когда в категории нет типов
                                 CategoryWork.deleteObject(database, cat_id);
                                 // обновляем соседнюю вкладку категорий работы и показываем её
-                                updateAdapter(0);
+                                //updateAdapter(0);
                                 break;
 
                             case 1:
@@ -509,7 +532,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 //после удаления в типе работ не даём появиться + в тулбаре
                                 isSelectedCat = false;
                                 // обновляем соседнюю вкладку типов работы и показываем её
-                                updateAdapter(0);
+                                //updateAdapter(0);
                                 break;
 
                             case 2:
@@ -529,7 +552,7 @@ public class SmetasWork extends AppCompatActivity implements
                                 //после удаления в работах не даём появиться + в тулбаре
                                 isSelectedType = false;
                                 // обновляем соседнюю вкладку работы и показываем её
-                                updateAdapter(1);
+                                //updateAdapter(1);
                                 break;
                         }
                     }
@@ -542,52 +565,52 @@ public class SmetasWork extends AppCompatActivity implements
         }
         return super.onContextItemSelected(item);
     }
-
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
-            switch (position){
-                case 0:
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
-                    Tab1WorkCat tab1Category = Tab1WorkCat.NewInstance(
-                            file_id,position);
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
-                            file_id + "  position = " +  position);
-                    return tab1Category;
-                case 1:
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
-                    Tab2WorkType tab2Type = Tab2WorkType.NewInstance(
-                            file_id, position, isSelectedCat, cat_id);
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
-                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
-                            "  position = " +  position);
-                    return tab2Type;
-                case 2:
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
-                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    Tab3Work tab3Mat = Tab3Work.NewInstance(
-                            file_id, position, isSelectedType, type_id);
-                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
-                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
-                            "  position = " +  position);
-                    return tab3Mat;
-                default:
-                    return null;
-            }
-        }
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-    }
+//
+//    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+//
+//        public SectionsPagerAdapter(FragmentManager fm) {
+//            super(fm);
+//        }
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//
+//            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
+//            switch (position){
+//                case 0:
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
+//                    Tab1WorkCat tab1Category = Tab1WorkCat.newInstance(
+//                            file_id,position);
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
+//                            file_id + "  position = " +  position);
+//                    return tab1Category;
+//                case 1:
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
+//                    Tab2WorkType tab2Type = Tab2WorkType.newInstance(
+//                            file_id, position, isSelectedCat, cat_id);
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
+//                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
+//                            "  position = " +  position);
+//                    return tab2Type;
+//                case 2:
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
+//                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
+//                    Tab3WorkWork tab3Mat = Tab3WorkWork.newInstance(
+//                            file_id, position, isSelectedType, type_id);
+//                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
+//                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
+//                            "  position = " +  position);
+//                    return tab3Mat;
+//                default:
+//                    return null;
+//            }
+//        }
+//        @Override
+//        public int getCount() {
+//            // Show 3 total pages.
+//            return 3;
+//        }
+//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -619,12 +642,12 @@ public class SmetasWork extends AppCompatActivity implements
         }
     };
 
-    private void updateAdapter(int currentItem){
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(currentItem);
-        mSectionsPagerAdapter.notifyDataSetChanged();
-    }
+//    private void updateAdapter(int currentItem){
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        mViewPager.setCurrentItem(currentItem);
+//        mSectionsPagerAdapter.notifyDataSetChanged();
+//    }
 
 }
 

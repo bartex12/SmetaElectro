@@ -13,6 +13,7 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +26,7 @@ public class Tab1WorkCatCost extends Tab1SmetasCatAbstrFrag {
     }
 
     public static Tab1WorkCatCost NewInstance(long file_id, int position){
-        Log.d(TAG, "//  Tab1WorkCatCost NewInstance // " );
+        Log.d(TAG, "//  Tab1WorkCatCost newInstance // " );
         Tab1WorkCatCost fragment = new Tab1WorkCatCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

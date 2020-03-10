@@ -48,7 +48,6 @@ public class SmetasTab extends AppCompatActivity {
         setContentView(R.layout.activity_smetas_tab);
 
         initDB();
-        initBottomNavigation();
 
         Intent intent = getIntent();
         file_id = intent.getExtras().getLong(P.ID_FILE);
@@ -56,6 +55,7 @@ public class SmetasTab extends AppCompatActivity {
         String fileName = FileWork.getNameFromId(database, file_id);
         Log.d(TAG, "SmetasTab - onCreate  fileName = " + fileName);
 
+        initBottomNavigation();
         initToolbar();
         initFab();
         // фрагменты, адаптер, ViewPager инициализируются в onResume,
@@ -94,11 +94,11 @@ public class SmetasTab extends AppCompatActivity {
     }
 
     private void initViewPager() {
-        viewPager = findViewById(R.id.container_smetas_work_mat);
+        viewPager = findViewById(R.id.container_smetas_tab);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentTabItem);
 
-        TabLayout tabs = findViewById(R.id.tabs);
+        TabLayout tabs = findViewById(R.id.tabs_smetas_tab);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
         tabs.setupWithViewPager(viewPager);
     }
@@ -109,12 +109,12 @@ public class SmetasTab extends AppCompatActivity {
     }
 
     private void initBottomNavigation() {
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_tab);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_smetas_tab);
         setSupportActionBar(toolbar);
         //показываем имя текущей сметы в заголовке экрана
         toolbar.setTitle(R.string.smetas_name_on_bar);
@@ -122,7 +122,7 @@ public class SmetasTab extends AppCompatActivity {
     }
 
     private void initFab() {
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_smetas_tab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

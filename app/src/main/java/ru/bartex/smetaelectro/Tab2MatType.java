@@ -14,6 +14,7 @@ import java.util.Map;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +22,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 public class Tab2MatType extends Tab2SmetasTypeAbstrFrag {
 
     public static Tab2MatType NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  Tab2MatType NewInstance // " );
+        Log.d(TAG, "//  Tab2MatType newInstance // " );
         Tab2MatType fragment = new Tab2MatType();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

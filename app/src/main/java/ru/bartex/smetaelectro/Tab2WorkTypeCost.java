@@ -14,6 +14,7 @@ import java.util.Map;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +23,7 @@ public class Tab2WorkTypeCost extends Tab2SmetasTypeAbstrFrag {
 
     public static Tab2WorkTypeCost NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  Tab2WorkTypeCost NewInstance // " );
+        Log.d(TAG, "//  Tab2WorkTypeCost newInstance // " );
         Tab2WorkTypeCost fragment = new Tab2WorkTypeCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

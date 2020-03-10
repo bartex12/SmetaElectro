@@ -15,6 +15,7 @@ import java.util.Map;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.ui.smetawork.Tab3SmetasWorkMatAbstrFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +29,7 @@ public class Tab3WorkCost extends Tab3SmetasWorkMatAbstrFrag {
 
     public static Tab3WorkCost NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id){
-        Log.d(TAG, "//  Tab3WorkCost NewInstance // " );
+        Log.d(TAG, "//  Tab3WorkCost newInstance // " );
         Tab3WorkCost fragment = new Tab3WorkCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);

@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetawork;
 
 
 import android.content.Context;
@@ -18,60 +18,57 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
+public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
 
     public static final String TAG = "33333";
-    ListView listView;
-    long file_id;
-    int position;
-    SimpleAdapter sara;
-    ArrayList<Map<String, Object>> data;
-    Map<String, Object> m;
+    public ListView listView;
+    public long file_id;
+    public int position;
+    public SimpleAdapter sara;
+    public ArrayList<Map<String, Object>> data;
+    public Map<String, Object> m;
+
     public SQLiteDatabase database;
-    boolean isSelectedCat;
-    long cat_id;
+    public boolean isSelectedType;
+    public long type_id;
 
-    public abstract  void updateAdapter();
-    public abstract  long getTypeId(String typeName);
-    public abstract  long getCatId(long type_id);
-
-    public interface OnClickTypekListener{
-        void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
-    }
-    OnClickTypekListener onClickTypeListener;
-
-    public Tab2SmetasTypeAbstrFrag() {
+    public Tab3SmetasWorkMatAbstrFrag() {
         // Required empty public constructor
     }
+
+    public abstract  void updateAdapter();
+    public abstract  void sendIntent(String name);
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onAttach // " );
-        onClickTypeListener = (OnClickTypekListener)context;
+        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onAttach // " );
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onCreate // " );
+        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
-        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
-        cat_id = getArguments().getLong(P.ID_CATEGORY);
+        isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
+        type_id = getArguments().getLong(P.ID_TYPE);
+        Log.d(TAG, "Tab3SmetasWorkMatAbstrFrag onCreate isSelectedType = " + isSelectedType +
+                " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onCreateView // " );
+        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onCreateView // " );
         View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         listView = rootView.findViewById(R.id.listViewFragmentTabs);
 
@@ -84,15 +81,12 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onItemClick // " );
-                TextView tv_smeta_item = view.findViewById(R.id.base_text);
-                String smeta_item_name = tv_smeta_item.getText().toString();
+                parent.setSelection(position);
+                //находим имя работы в адаптере
+                TextView tv = view.findViewById(R.id.base_text);
+                String work_name = tv.getText().toString();
 
-                long type_id = getTypeId(smeta_item_name);
-                long cat_id = getCatId(type_id);
-                Log.d(TAG, "Tab2SmetasTypeAbstrFrag onItemClick  cat_id = " + cat_id + "  type_id = " + type_id);
-
-                onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
+                sendIntent(work_name);
             }
         });
         return rootView;
@@ -101,10 +95,8 @@ public abstract class Tab2SmetasTypeAbstrFrag extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "//  Tab2SmetasTypeAbstrFrag onResume // " );
-
+        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onResume // " );
         updateAdapter();
-
         //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
         registerForContextMenu(listView);
     }
