@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro;
+package ru.bartex.smetaelectro.ui.smetawork;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +26,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ChangeDataCategory;
+import ru.bartex.smetaelectro.ChangeDataType;
+import ru.bartex.smetaelectro.ChangeDataWork;
+import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.SmetasWorkCost;
+import ru.bartex.smetaelectro.SpecificCategory;
+import ru.bartex.smetaelectro.SpecificType;
+import ru.bartex.smetaelectro.SpesificWork;
+import ru.bartex.smetaelectro.Tab1SmetasCatAbstrFrag;
+import ru.bartex.smetaelectro.Tab1WorkCat;
+import ru.bartex.smetaelectro.Tab2SmetasTypeAbstrFrag;
+import ru.bartex.smetaelectro.Tab2WorkType;
+import ru.bartex.smetaelectro.Tab3Work;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
@@ -131,6 +144,8 @@ public class SmetasWork extends AppCompatActivity implements
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
 
+        initBottomNavigation();
+
         BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -184,6 +199,11 @@ public class SmetasWork extends AppCompatActivity implements
     private void initDB() {
         //
         database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initBottomNavigation() {
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override

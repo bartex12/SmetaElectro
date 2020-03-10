@@ -22,7 +22,7 @@ import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.SmetasMat;
 import ru.bartex.smetaelectro.SmetasMatCost;
-import ru.bartex.smetaelectro.SmetasWork;
+import ru.bartex.smetaelectro.ui.smetawork.SmetasWork;
 import ru.bartex.smetaelectro.SmetasWorkCost;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
@@ -45,7 +45,7 @@ public class SmetasTab extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smetas);
+        setContentView(R.layout.activity_smetas_tab);
 
         initDB();
         initBottomNavigation();

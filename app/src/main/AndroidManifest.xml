@@ -18,7 +18,7 @@
             android:label="@string/title_activity_smetas_work_cost"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SmetasWork"
+            android:name=".ui.smetawork.SmetasWork"
             android:label="@string/title_activity_SmetasWork"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
