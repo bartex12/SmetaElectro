@@ -80,6 +80,12 @@ public class SmetasTab extends AppCompatActivity {
         currentTabItem = viewPager.getCurrentItem();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
+
     private void createTabFrags() {
         //создаём фрагменты
         workFrag = SmetasTabWork.newInstance(file_id, 0);
