@@ -41,6 +41,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
+import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
 
 public class ListOfSmetasStructured extends AppCompatActivity {
 

@@ -47,7 +47,6 @@
     <string name="adress">Адрес объекта</string>
     <string name="adress_no">Без адреса</string>
     <string name="description">Опиcание</string>
-    <string name="name">Название</string>
     <string name="description_no">Без описания</string>
     <string name="ok">OK</string>
     <string name="action_create_add_name">Добавить</string>
@@ -1776,5 +1775,23 @@
     <string name="footer_work">сумма</string>
     <string name="Someongtexts">Some long texts having a long size so that it takes multiple lines in the view to replicate the real-life app use case. This is important to have 3-4 lines this textview so that we can see if the views are being populated correctly. Hope this sentence is long enough to replicate the real-life scenario of this TextView content. Thank you.</string>
     <string name="in_each_item">This is a text to be displayed in each item in the RecyclerView</string>
+    <string name="ru">Руб</string>
+    <string name="name_work">Название работы</string>
+    <string name="kolvo">Кол-во</string>
+    <string name="cost_of_unit">Цена за ед</string>
+    <string name="sht">шт</string>
+    <string name="zero">0</string>
+
+    <string name="name">Название</string>
+    <string name="save">Сохранить</string>
+    <string name="summa">Сумма</string>
+    <string name="_0_00">0,00</string>
+    <string name="cancel">Отмена</string>
+    <string name="_200">200</string>
+    <string name="units">Единицы измерения</string>
+    <string name="input_name">Введите название</string>
+    <string name="cost">Цена</string>
+    <string name="units_short">Ед. измер.</string>
+
 
 </resources>
