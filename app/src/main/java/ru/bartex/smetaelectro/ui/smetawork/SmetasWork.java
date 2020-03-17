@@ -70,7 +70,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку
         //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
-        //updateAdapter(1);
+        updateAdapter(1);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
         // обновляем соседнюю вкладку типов материалов и показываем её
-        //updateAdapter(2);
+        updateAdapter(2);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SmetasWork extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-               // updateAdapter(0);
+                updateAdapter(0);
                 break;
 
             case 1:
@@ -110,7 +110,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                //updateAdapter(1);
+                updateAdapter(1);
                 break;
 
             case 2:
@@ -122,7 +122,7 @@ public class SmetasWork extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-               // updateAdapter(2);
+                updateAdapter(2);
                 break;
         }
     }
@@ -141,37 +141,6 @@ public class SmetasWork extends AppCompatActivity implements
         initToolbar();
         // фрагменты, адаптер, ViewPager инициализируются в onResume,
         // чтобы при возврате на SmetasTab происходило обновление пунктов списка
-
-
-//        //Создаём адаптер для фрагментов
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-//        // Привязываем ViewPager к адаптеру
-//        mViewPager = findViewById(R.id.container_smetas_work);
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
-//        //средняя вкладка открыта
-//        mViewPager.setCurrentItem(1);
-//        // mViewPager.setOffscreenPageLimit(0);
-//
-//        TabLayout tabLayout = findViewById(R.id.tabs_smetas_work);
-//        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
-//        //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
-//        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-//        //добавляем слушатель нажатий на заголовки вкладок
-//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-//        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
-//        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
-//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            }
-//            @Override
-//            public void onPageSelected(int position) {
-//                invalidateOptionsMenu();
-//            }
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//            }
-//        });
     }
 
     @Override
@@ -646,12 +615,12 @@ public class SmetasWork extends AppCompatActivity implements
         }
     };
 
-//    private void updateAdapter(int currentItem){
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
-//        mViewPager.setCurrentItem(currentItem);
-//        mSectionsPagerAdapter.notifyDataSetChanged();
-//    }
+    private void updateAdapter(int currentItem){
+    adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
+    mViewPager.setAdapter(adapter);
+    mViewPager.setCurrentItem(currentItem);
+    adapter.notifyDataSetChanged();
+    }
 
 }
 
