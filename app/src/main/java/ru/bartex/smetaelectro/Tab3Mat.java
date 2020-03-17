@@ -16,12 +16,12 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ui.smetawork.Tab3SmetasWorkMatAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasWorkMatFrag;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab3Mat extends Tab3SmetasWorkMatAbstrFrag {
+public class Tab3Mat extends AbstrSmetasWorkMatFrag {
 
 
     public Tab3Mat() {

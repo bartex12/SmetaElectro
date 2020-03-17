@@ -25,7 +25,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
+public abstract class AbstrSmetasWorkMatFrag extends Fragment {
 
     public static final String TAG = "33333";
     public ListView listView;
@@ -39,7 +39,7 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
     public boolean isSelectedType;
     public long type_id;
 
-    public Tab3SmetasWorkMatAbstrFrag() {
+    public AbstrSmetasWorkMatFrag() {
         // Required empty public constructor
     }
 
@@ -49,26 +49,26 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onAttach // " );
+        Log.d(TAG, "//  AbstrSmetasWorkMatFrag onAttach // " );
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onCreate // " );
+        Log.d(TAG, "//  AbstrSmetasWorkMatFrag onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
         isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
         type_id = getArguments().getLong(P.ID_TYPE);
-        Log.d(TAG, "Tab3SmetasWorkMatAbstrFrag onCreate isSelectedType = " + isSelectedType +
+        Log.d(TAG, "AbstrSmetasWorkMatFrag onCreate isSelectedType = " + isSelectedType +
                 " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onCreateView // " );
+        Log.d(TAG, "//  AbstrSmetasWorkMatFrag onCreateView // " );
         View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
         listView = rootView.findViewById(R.id.listViewFragmentTabs);
 
@@ -95,7 +95,7 @@ public abstract class Tab3SmetasWorkMatAbstrFrag extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "//  Tab3SmetasWorkMatAbstrFrag onResume // " );
+        Log.d(TAG, "//  AbstrSmetasWorkMatFrag onResume // " );
         updateAdapter();
         //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
         registerForContextMenu(listView);

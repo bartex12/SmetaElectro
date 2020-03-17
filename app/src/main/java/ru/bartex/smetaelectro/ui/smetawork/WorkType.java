@@ -19,13 +19,13 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
+public class WorkType extends AbstrSmetasTypeFrag {
 
 
-    public static Tab2WorkType newInstance(
+    public static WorkType newInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  Tab2WorkType newInstance // " );
-        Tab2WorkType fragment = new Tab2WorkType();
+        Log.d(TAG, "//  WorkType newInstance // " );
+        WorkType fragment = new WorkType();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -37,15 +37,15 @@ public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  Tab2WorkType updateAdapter // " );
+        Log.d(TAG, "//  WorkType updateAdapter // " );
 
         Cursor cursor;
         if (isSelectedCat){
-            Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = true " );
+            Log.d(TAG, "WorkType updateAdapter isSelectedCat = true " );
             //курсор с именами типов работы для категорий с cat_id
             cursor = TypeWork.getNamesFromCatId(database, cat_id);
         }else {
-            Log.d(TAG, "Tab2WorkType updateAdapter isSelectedCat = false " );
+            Log.d(TAG, "WorkType updateAdapter isSelectedCat = false " );
             //получаем курсор с названиями типов работ по всем категориям
             cursor = TypeWork.getCursorNames(database);
         }
@@ -53,7 +53,7 @@ public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
         String[] typetNamesFW = FW.getTypeNames(database, file_id);
 
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " Tab2WorkType updateAdapter Всего типов материалов = "+ cursor.getCount() );
+        Log.d(TAG, " WorkType updateAdapter Всего типов материалов = "+ cursor.getCount() );
 
         while (cursor.moveToNext()){
             String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
@@ -65,14 +65,14 @@ public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
                     break;
                 }
             }
-            Log.d(TAG, " Tab2WorkType updateAdapter tipe_mat_name  = " +
+            Log.d(TAG, " WorkType updateAdapter tipe_mat_name  = " +
                     (cursor.getPosition()+1) + "  " + tipe_mat_name + "  check_mark = " + check_mark);
             m =new HashMap<>();
             m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
             m.put(P.ATTR_TYPE_MAT_MARK, check_mark);
             data.add(m);
         }
-        Log.d(TAG, " Tab2WorkType updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " WorkType updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_TYPE_MAT_NAME, P.ATTR_TYPE_MAT_MARK};
         int [] to = new int[]{R.id.base_text, R.id.checkBoxTwoMat};
 
@@ -92,7 +92,7 @@ public class Tab2WorkType extends Tab2SmetasTypeAbstrFrag {
         return cat_id;
     }
 
-    public Tab2WorkType() {
+    public WorkType() {
         // Required empty public constructor
     }
 

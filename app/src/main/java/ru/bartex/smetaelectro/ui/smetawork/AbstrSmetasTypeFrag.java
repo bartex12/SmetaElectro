@@ -1,5 +1,6 @@
 package ru.bartex.smetaelectro.ui.smetawork;
 
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,7 +22,10 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
-public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public abstract class AbstrSmetasTypeFrag extends Fragment {
 
     public static final String TAG = "33333";
     public ListView listView;
@@ -30,45 +34,50 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
     public SimpleAdapter sara;
     public ArrayList<Map<String, Object>> data;
     public Map<String, Object> m;
-
     public SQLiteDatabase database;
+    public boolean isSelectedCat;
+    public long cat_id;
 
     public abstract  void updateAdapter();
-    public abstract  long getCatId(String catName);
+    public abstract  long getTypeId(String typeName);
+    public abstract  long getCatId(long type_id);
 
-    public interface OnClickCatListener{
-        void catAndClickTransmit(long cat_id, boolean isSelectedCat);
+    public interface OnClickTypekListener{
+        void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
     }
-    OnClickCatListener onClickCatListener;
+    OnClickTypekListener onClickTypeListener;
+
+    public AbstrSmetasTypeFrag() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onAttach // " );
-        onClickCatListener = (OnClickCatListener)context;
+        Log.d(TAG, "//  AbstrSmetasTypeFrag onAttach // " );
+        onClickTypeListener = (OnClickTypekListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onCreate // " );
+        Log.d(TAG, "//  AbstrSmetasTypeFrag onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "Tab1SmetasCatAbstrFrag onCreate file_id = " + file_id );
+        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
+        cat_id = getArguments().getLong(P.ID_CATEGORY);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onCreateView // " );
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(
-                R.layout.fragment_tabs_for_works_and_materials, container, false);
-        listView = view.findViewById(R.id.listViewFragmentTabs);
+        Log.d(TAG, "//  AbstrSmetasTypeFrag onCreateView // " );
+        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
+        listView = rootView.findViewById(R.id.listViewFragmentTabs);
 
         //находим View, которое выводит текст Список пуст
-        View empty = view.findViewById(android.R.id.empty);
+        View empty = rootView.findViewById(android.R.id.empty);
         TextView tvEmpty = (TextView)empty;
         tvEmpty.setText(R.string.list_empty_tab);
         listView.setEmptyView(empty);
@@ -76,32 +85,29 @@ public abstract class Tab1SmetasCatAbstrFrag extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onItemClick // " );
+                Log.d(TAG, "//  AbstrSmetasTypeFrag onItemClick // " );
                 TextView tv_smeta_item = view.findViewById(R.id.base_text);
                 String smeta_item_name = tv_smeta_item.getText().toString();
 
-                long cat_id = getCatId(smeta_item_name);
-                Log.d(TAG, "Tab1SmetasCatAbstrFrag onItemClick  cat_id = " + cat_id);
+                long type_id = getTypeId(smeta_item_name);
+                long cat_id = getCatId(type_id);
+                Log.d(TAG, "AbstrSmetasTypeFrag onItemClick  cat_id = " + cat_id + "  type_id = " + type_id);
 
-                onClickCatListener.catAndClickTransmit(cat_id, true);
+                onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
             }
         });
-        return view;
+        return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "//  Tab1SmetasCatAbstrFrag onResume // " );
+        Log.d(TAG, "//  AbstrSmetasTypeFrag onResume // " );
+
         updateAdapter();
 
         //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
         registerForContextMenu(listView);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "--------  Tab1SmetasCatAbstrFrag onDestroy -------" );
-    }
 }

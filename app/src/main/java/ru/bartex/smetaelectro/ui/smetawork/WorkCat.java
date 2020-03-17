@@ -19,16 +19,16 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
+public class WorkCat extends AbstrSmetasCatFrag {
 
 
-    public Tab1WorkCat() {
+    public WorkCat() {
         // Required empty public constructor
     }
 
-    public static Tab1WorkCat newInstance(long file_id, int position){
-        Log.d(TAG, "//  Tab1WorkCat newInstance // " );
-        Tab1WorkCat fragment = new Tab1WorkCat();
+    public static WorkCat newInstance(long file_id, int position){
+        Log.d(TAG, "//  WorkCat newInstance // " );
+        WorkCat fragment = new WorkCat();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -38,7 +38,7 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
 
     @Override
     public void updateAdapter() {
-        Log.d(TAG, "//  Tab1WorkCat updateAdapter // " );
+        Log.d(TAG, "//  WorkCat updateAdapter // " );
         //Курсор с именами категорий из таблицы категорий CategoryMat
         Cursor cursor = CategoryWork.getCursorNames(database);
         //Строковый массив с именами категорий из таблицы FM для файла с file_id
@@ -46,7 +46,7 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
 
         //Список с данными для адаптера
         data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " Tab1WorkCat updateAdapter Всего категорий материалов = "+ cursor.getCount() );
+        Log.d(TAG, " WorkCat updateAdapter Всего категорий материалов = "+ cursor.getCount() );
         while (cursor.moveToNext()) {
             //смотрим значение текущей строки курсора
             String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
@@ -59,14 +59,14 @@ public class Tab1WorkCat extends Tab1SmetasCatAbstrFrag {
                     break;
                 }
             }
-            Log.d(TAG, " Tab1WorkCat updateAdapter tipe_mat_name  = " +
+            Log.d(TAG, " WorkCat updateAdapter tipe_mat_name  = " +
                     (cursor.getPosition()+1) + " name_cat " + name_cat + "  check_mark = " + check_mark);
             m = new HashMap<>();
             m.put(P.ATTR_CATEGORY_MARK,check_mark);
             m.put(P.ATTR_CATEGORY_NAME,name_cat);
             data.add(m);
         }
-        Log.d(TAG, " Tab1WorkCat updateAdapter data.size()  = "+ data.size() );
+        Log.d(TAG, " WorkCat updateAdapter data.size()  = "+ data.size() );
         String[] from = new String[]{P.ATTR_CATEGORY_MARK,P.ATTR_CATEGORY_NAME};
         int[] to = new int[]{R.id.checkBoxTwoMat, R.id.base_text};
 

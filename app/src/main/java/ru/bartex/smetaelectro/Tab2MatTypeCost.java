@@ -13,12 +13,12 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasTypeFrag;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab2MatTypeCost extends Tab2SmetasTypeAbstrFrag {
+public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
 
     public static Tab2MatTypeCost NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
         Log.d(TAG, "//  Tab2MatTypeCost newInstance // " );

@@ -41,11 +41,11 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
-import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
-import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasCatFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasTypeFrag;
 
 public class SmetasMat extends AppCompatActivity implements
-        Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
+        AbstrSmetasTypeFrag.OnClickTypekListener, AbstrSmetasCatFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";

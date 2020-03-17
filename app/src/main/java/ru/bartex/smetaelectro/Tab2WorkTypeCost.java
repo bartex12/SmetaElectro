@@ -14,12 +14,12 @@ import java.util.Map;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasTypeFrag;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab2WorkTypeCost extends Tab2SmetasTypeAbstrFrag {
+public class Tab2WorkTypeCost extends AbstrSmetasTypeFrag {
 
     public static Tab2WorkTypeCost NewInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){

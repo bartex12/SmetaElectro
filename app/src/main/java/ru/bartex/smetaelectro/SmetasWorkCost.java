@@ -50,11 +50,11 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
-import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
-import ru.bartex.smetaelectro.ui.smetawork.Tab2SmetasTypeAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasCatFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasTypeFrag;
 
 public class SmetasWorkCost extends AppCompatActivity implements  DialogSaveCostWork.OnCatTypeMatCostNameListener,
-        Tab1SmetasCatAbstrFrag.OnClickCatListener, Tab2SmetasTypeAbstrFrag.OnClickTypekListener{
+        AbstrSmetasCatFrag.OnClickCatListener, AbstrSmetasTypeFrag.OnClickTypekListener{
 
     public static final String TAG = "33333";
     long file_id;

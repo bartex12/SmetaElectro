@@ -13,12 +13,12 @@ import java.util.Map;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ui.smetawork.Tab1SmetasCatAbstrFrag;
+import ru.bartex.smetaelectro.ui.smetawork.AbstrSmetasCatFrag;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab1MatCatCost extends Tab1SmetasCatAbstrFrag {
+public class Tab1MatCatCost extends AbstrSmetasCatFrag {
 
 
     public Tab1MatCatCost() {

@@ -8,8 +8,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +50,7 @@ import ru.bartex.smetaelectro.ui.smetatabs.SmetasTab;
 
 
 public class SmetasWork extends AppCompatActivity implements
-        Tab2SmetasTypeAbstrFrag.OnClickTypekListener, Tab1SmetasCatAbstrFrag.OnClickCatListener,
+        AbstrSmetasTypeFrag.OnClickTypekListener, AbstrSmetasCatFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener {
 
     private static final String TAG = "33333";
@@ -161,17 +165,17 @@ public class SmetasWork extends AppCompatActivity implements
 
     private void createTabFrags() {
         //создаём фрагменты
-        tab1WorkCat = Tab1WorkCat.newInstance(file_id, 0);
-        tab2WorkType = Tab2WorkType.newInstance(file_id, 1, false, 0);
-        tab3WorkWork = Tab3WorkWork.newInstance(file_id, 1, false, 0);
+        tab1WorkCat = WorkCat.newInstance(file_id, 0);
+        tab2WorkType = WorkType.newInstance(file_id, 1, false, 0);
+        tab3WorkWork = WorkName.newInstance(file_id, 1, false, 0);
     }
 
     private void initPageAdapter() {
         //здесь используется вариант  добавления фрагментов из активити
         adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(tab1WorkCat, "Категория" );
-        adapter.addFragment(tab2WorkType, "Тип" );
-        adapter.addFragment(tab3WorkWork, "Название" );
+//        adapter.addFragment(tab1WorkCat, "Категория" );
+//        adapter.addFragment(tab2WorkType, "Тип" );
+//        adapter.addFragment(tab3WorkWork, "Название" );
     }
 
     private void initViewPager() {
@@ -552,14 +556,14 @@ public class SmetasWork extends AppCompatActivity implements
 //            switch (position){
 //                case 0:
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
-//                    Tab1WorkCat tab1Category = Tab1WorkCat.newInstance(
+//                    WorkCat tab1Category = WorkCat.newInstance(
 //                            file_id,position);
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
 //                            file_id + "  position = " +  position);
 //                    return tab1Category;
 //                case 1:
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
-//                    Tab2WorkType tab2Type = Tab2WorkType.newInstance(
+//                    WorkType tab2Type = WorkType.newInstance(
 //                            file_id, position, isSelectedCat, cat_id);
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
 //                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
@@ -568,7 +572,7 @@ public class SmetasWork extends AppCompatActivity implements
 //                case 2:
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
 //                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-//                    Tab3WorkWork tab3Mat = Tab3WorkWork.newInstance(
+//                    WorkName tab3Mat = WorkName.newInstance(
 //                            file_id, position, isSelectedType, type_id);
 //                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
 //                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
@@ -614,6 +618,49 @@ public class SmetasWork extends AppCompatActivity implements
             return false;
         }
     };
+
+    //********************************** PagerAdapter *******************************
+    //PagerAdapter расположен здесь , а не в отдельном классе, чтобы было проще передавать параметры
+    public class SmetasWorkPagerAdapter extends FragmentStatePagerAdapter {
+        public SmetasWorkPagerAdapter(@NonNull FragmentManager fm) {
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
+            Fragment fragment = null;
+            switch (position){
+                case 0:
+                    return WorkCat.newInstance(file_id,position);
+                case 1:
+                    return WorkType.newInstance(file_id, position, isSelectedCat, cat_id);
+                case 2:
+                    return WorkName.newInstance(file_id, position, isSelectedType, type_id);
+                default:
+                    return fragment;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0: return "Категория" ;
+                case 1: return "Тип";
+                case 2: return "Название";
+                default: return "Ошибка";
+            }
+        }
+    }
+    //********************************** end PagerAdapter *******************************
+
 
     private void updateAdapter(int currentItem){
     adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
