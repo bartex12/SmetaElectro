@@ -98,31 +98,33 @@ public class SmetasTabWork extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        SmetasTabRecyclerAdapter.OnClickOnLineListener workListener =
-                new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
-                    @Override
-                    public void onClickOnLineListener(String nameItem) {
-                        long work_id = Work.getIdFromName(database, nameItem);
-                        long type_id = FW.getTypeId_FW(database, file_id, work_id);
-                        long cat_id = FW.getCatId_FW(database, file_id, work_id);
-
-                        Intent intent_work = new Intent(getActivity(), DetailSmetaLine.class);
-                        intent_work.putExtra(P.ID_FILE_DEFAULT, file_id);
-                        intent_work.putExtra(P.ID_CATEGORY, cat_id);
-                        intent_work.putExtra(P.ID_TYPE, type_id);
-                        intent_work.putExtra(P.ID_WORK, work_id);
-                        intent_work.putExtra(P.IS_WORK, true);  // такая работа есть
-                        startActivity(intent_work);
-                    }
-                };
         adapter = new SmetasTabRecyclerAdapter(database, file_id, 0);
-        //adapterTest = new RecyclerAdapter_Test();
+        // получаем слушатель щелчков на списке смете работ
+        SmetasTabRecyclerAdapter.OnClickOnLineListener workListener =
+                getOnClickOnLineListener();
         adapter.setOnClickOnLineListener(workListener);
-        //recyclerView.setAdapter(adapterTest);
         recyclerView.setAdapter(adapter);
     }
 
+    // метод чтобы получить слушатель щелчков на списке сметы работ
+    private SmetasTabRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener(){
+        return  new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
+            @Override
+            public void onClickOnLineListener(String nameItem) {
+                long work_id = Work.getIdFromName(database, nameItem);
+                long type_id = FW.getTypeId_FW(database, file_id, work_id);
+                long cat_id = FW.getCatId_FW(database, file_id, work_id);
+
+                Intent intent_work = new Intent(getActivity(), DetailSmetaLine.class);
+                intent_work.putExtra(P.ID_FILE_DEFAULT, file_id);
+                intent_work.putExtra(P.ID_CATEGORY, cat_id);
+                intent_work.putExtra(P.ID_TYPE, type_id);
+                intent_work.putExtra(P.ID_WORK, work_id);
+                intent_work.putExtra(P.IS_WORK, true);  // такая работа есть
+                startActivity(intent_work);
+            }
+        };
+    }
     public SmetasTabRecyclerAdapter getAdapter(){
         return adapter;
     }
