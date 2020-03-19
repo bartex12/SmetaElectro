@@ -94,13 +94,19 @@ public class SmetasTabMat extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new SmetasTabRecyclerAdapter(database, file_id, 1);
+        //получаем адаптер
+        adapter = getSmetasTabRecyclerAdapter();
         // получаем слушатель щелчков на списке сметs материалов
         SmetasTabRecyclerAdapter.OnClickOnLineListener matListener = getOnClickOnLineListener();
         //устанавливаем слушатель в адаптере
         adapter.setOnClickOnLineListener(matListener);
         //передам адаптер с данными recyclerView
         recyclerView.setAdapter(adapter);
+    }
+
+    //метод получения адаптера
+    private SmetasTabRecyclerAdapter getSmetasTabRecyclerAdapter(){
+        return new SmetasTabRecyclerAdapter(database, file_id, 1);
     }
 
     // метод чтобы получить слушатель щелчков на списке сметы материалов

@@ -98,12 +98,18 @@ public class SmetasTabWork extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new SmetasTabRecyclerAdapter(database, file_id, 0);
+        //получаем адаптер
+        adapter = getSmetasTabRecyclerAdapter();
         // получаем слушатель щелчков на списке смете работ
         SmetasTabRecyclerAdapter.OnClickOnLineListener workListener =
                 getOnClickOnLineListener();
         adapter.setOnClickOnLineListener(workListener);
         recyclerView.setAdapter(adapter);
+    }
+
+    //метод получения адаптера
+    private SmetasTabRecyclerAdapter getSmetasTabRecyclerAdapter(){
+        return new SmetasTabRecyclerAdapter(database, file_id, 0);
     }
 
     // метод чтобы получить слушатель щелчков на списке сметы работ
