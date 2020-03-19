@@ -81,28 +81,32 @@ public class MainActivity extends AppCompatActivity {
         List<String> listOfMain = new ArrayList<>(Arrays.asList(stringListMain));
         //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        // инициализируем слушатель щелчков на списке действий главного экрана
-        RecyclerViewMainAdapter.OnMainListClickListener onMainListClickListener =
-                new RecyclerViewMainAdapter.OnMainListClickListener() {
-                    @Override
-                    public void onMainListClick(int position) {
-                      if (position == 2){
-                            dialogNewOrCurrentFragment();
-                        }else if (position == 3){
-                            dialogNewOrCurrentFragment();
-                        }else{
-                            //todo сделать для 0 и 1
-                          dialogNewOrCurrentFragment();
-                        }
-                    }
-                };
-
         // вызываем конструктор адаптера, передаём список
         RecyclerViewMainAdapter mainAdapter = new RecyclerViewMainAdapter(listOfMain);
+        // получаем слушатель щелчков на списке действий главного экрана
+        RecyclerViewMainAdapter.OnMainListClickListener onMainListClickListener =
+                getOnMainListClickListener();
         //устанавливаем onMainListClickListener в качестве слушателя на щелчках списка
         mainAdapter.setOnMainListClickListener(onMainListClickListener);
         recyclerViewMain.setLayoutManager(layoutManager);
         recyclerViewMain.setAdapter(mainAdapter);
+    }
+
+    // метод чтобы получить слушатель щелчков на списке действий главного экрана
+    private RecyclerViewMainAdapter.OnMainListClickListener getOnMainListClickListener(){
+        return new RecyclerViewMainAdapter.OnMainListClickListener() {
+            @Override
+            public void onMainListClick(int position) {
+                if (position == 2){
+                    dialogNewOrCurrentFragment();
+                }else if (position == 3){
+                    dialogNewOrCurrentFragment();
+                }else{
+                    //todo сделать для 0 и 1
+                    dialogNewOrCurrentFragment();
+                }
+            }
+        };
     }
 
     //диалог сохранения, оформленный как класс с указанием имени файла

@@ -164,25 +164,30 @@ public class ListOfSmetasNames extends AppCompatActivity {
         Log.d(TAG, "ListOfSmetasNames initRecycledView");
         //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        // инициализируем слушатель щелчков на списке смет
-        RecyclerViewListOfFilesAdapter.OnFileListClickListener onFileListClickListener =
-                new RecyclerViewListOfFilesAdapter.OnFileListClickListener() {
-                    @Override
-                    public void onFileListClick(String fileName) {
-                        //находим id по имени файла
-                        long file_id = FileWork.getIdFromName(database, fileName);
-                        Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id);
-
-                        Intent intent = new Intent(ListOfSmetasNames.this, SmetasTab.class);
-                        intent.putExtra(P.ID_FILE, file_id);
-                        startActivity(intent);
-                    }
-                };
         // вызываем конструктор адаптера, передаём список
         filesNameAdapter = new RecyclerViewListOfFilesAdapter(database);
+        // получаем слушатель щелчков на списке смет
+        RecyclerViewListOfFilesAdapter.OnFileListClickListener onFileListClickListener =
+                getOnFileListClickListener();
         //устанавливаем onFileListClickListener в качестве слушателя на щелчке списка
         filesNameAdapter.setOnFileListClickListener(onFileListClickListener);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(filesNameAdapter);
+    }
+
+    // метод чтобы получить слушатель щелчков на списке смет
+    private  RecyclerViewListOfFilesAdapter.OnFileListClickListener getOnFileListClickListener(){
+        return  new RecyclerViewListOfFilesAdapter.OnFileListClickListener() {
+            @Override
+            public void onFileListClick(String fileName) {
+                //находим id по имени файла
+                long file_id = FileWork.getIdFromName(database, fileName);
+                Log.d(TAG, "ListOfSmetasNames - onItemClick  file_id = " + file_id);
+
+                Intent intent = new Intent(ListOfSmetasNames.this, SmetasTab.class);
+                intent.putExtra(P.ID_FILE, file_id);
+                startActivity(intent);
+            }
+        };
     }
 }

@@ -94,27 +94,33 @@ public class SmetasTabMat extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        SmetasTabRecyclerAdapter.OnClickOnLineListener matListener =
-                new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
-                    @Override
-                    public void onClickOnLineListener(String namtItem) {
-                        long mat_id = Mat.getIdFromName(database, namtItem);
-                        long type_mat_id = FM.getTypeId_FM(database, file_id, mat_id);
-                        long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
-
-                        Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
-                        intent_mat.putExtra(P.ID_FILE, file_id);
-                        intent_mat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
-                        intent_mat.putExtra(P.ID_TYPE_MAT, type_mat_id);
-                        intent_mat.putExtra(P.ID_MAT, mat_id);
-                        intent_mat.putExtra(P.IS_MAT, true);  // такой материал есть
-                        startActivity(intent_mat);
-                    }
-                };
-
         adapter = new SmetasTabRecyclerAdapter(database, file_id, 1);
+        // получаем слушатель щелчков на списке сметs материалов
+        SmetasTabRecyclerAdapter.OnClickOnLineListener matListener = getOnClickOnLineListener();
+        //устанавливаем слушатель в адаптере
         adapter.setOnClickOnLineListener(matListener);
+        //передам адаптер с данными recyclerView
         recyclerView.setAdapter(adapter);
+    }
+
+    // метод чтобы получить слушатель щелчков на списке сметы материалов
+    private SmetasTabRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener(){
+        return  new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
+            @Override
+            public void onClickOnLineListener(String namtItem) {
+                long mat_id = Mat.getIdFromName(database, namtItem);
+                long type_mat_id = FM.getTypeId_FM(database, file_id, mat_id);
+                long cat_mat_id = FM.getCatId_FM(database, file_id, mat_id);
+
+                Intent intent_mat = new Intent(getActivity(), DetailSmetaMatLine.class);
+                intent_mat.putExtra(P.ID_FILE, file_id);
+                intent_mat.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                intent_mat.putExtra(P.ID_TYPE_MAT, type_mat_id);
+                intent_mat.putExtra(P.ID_MAT, mat_id);
+                intent_mat.putExtra(P.IS_MAT, true);  // такой материал есть
+                startActivity(intent_mat);
+            }
+        };
     }
 
     public SmetasTabRecyclerAdapter getAdapter(){
