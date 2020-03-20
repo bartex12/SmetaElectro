@@ -33,7 +33,7 @@ public class CategoryMat {
                 + CATEGORY_MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы категорий работ
         db.execSQL(SQL_CREATE_TAB_CATEGORY_MAT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CategoryMat");
+        Log.d(TAG, "CategoryMat - onCreate- создание таблицы CategoryMat");
         // Если файлов в базе нет, вносим записи названий категорий материалов (добавление из программы)
         createDefaultCategoryMat(db, fContext);
     }
@@ -59,12 +59,12 @@ public class CategoryMat {
             // Добавляем записи в таблицу
             db.insert(TABLE_NAME, null, values);
         }
-        Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name_mat.length);
+        Log.d(TAG, "CategoryMat createDefaultCategory cat_name.length = " + cat_name_mat.length);
     }
 
     //получаем данные по категории материалов по её id
     public static DataCategoryMat getDataCategoryMat(SQLiteDatabase db, long cat_mat_id) {
-        Log.i(TAG, "TableControllerSmeta.getDataCategoryMat ... ");
+        Log.i(TAG, "CategoryMat.getDataCategoryMat ... ");
         DataCategoryMat dataCategory = new DataCategoryMat();
 
         String catData = " SELECT  * FROM " + TABLE_NAME +
@@ -75,7 +75,7 @@ public class CategoryMat {
             // Узнаем индекс каждого столбца и Используем индекс для получения строки
             String currentCatName = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_NAME));
             String currentCatDescription = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataCategoryMat currentCatName = " + currentCatName);
+            Log.d(TAG, "CategoryMat.getDataCategoryMat currentCatName = " + currentCatName);
             //создаём экземпляр класса DataFile в конструкторе
             dataCategory = new DataCategoryMat(currentCatName, currentCatDescription);
         }
@@ -85,7 +85,7 @@ public class CategoryMat {
 
     //получаем id категории материалов по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "CategoryMat.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -106,7 +106,7 @@ public class CategoryMat {
 
     //получаем имя категории  по  id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "CategoryMat getNameFromId... ");
 
         String currentName = "";
 
@@ -126,13 +126,13 @@ public class CategoryMat {
 
     //удаляем категорию материала из таблицы CategoryMat по id категории материала
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject  case CategoryMat ");
+        Log.i(TAG, "CategoryMat.deleteObject  case CategoryMat ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //Обновляем данные по категории материалов
     public static void updateData(SQLiteDatabase db, long id, String name, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        Log.i(TAG, "CategoryMat.updateData ...");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -140,24 +140,24 @@ public class CategoryMat {
         cv.put(CATEGORY_MAT_DESCRIPTION, description);
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        Log.i(TAG, "CategoryMat.updateData - name =" + name + "  id = " + id);
     }
 
     //получаем курсор с названиями категорий
     public static Cursor getCursorNames(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+        Log.i(TAG, "CategoryMat.getCursorNames ... ");
 
         String select =  " SELECT " + _ID + " , " +
                 CATEGORY_MAT_NAME + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(select, null);
 
-        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "CategoryMat.getCursorNames cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
     //Добавляем категорию материала
     public static long  insertCategory(SQLiteDatabase db, String catName){
-        Log.i(TAG, "TableControllerSmeta.insertCategory ... ");
+        Log.i(TAG, "CategoryMat.insertCategory ... ");
         long _id =-1;
 
         ContentValues cv = new ContentValues();
@@ -166,7 +166,7 @@ public class CategoryMat {
         // вставляем строку
         _id = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertCategory  _id = " + _id);
+        Log.d(TAG, "CategoryMat.insertCategory  _id = " + _id);
         return _id;
     }
 

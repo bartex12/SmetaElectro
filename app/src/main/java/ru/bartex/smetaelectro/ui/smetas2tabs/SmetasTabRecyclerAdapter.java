@@ -214,7 +214,7 @@ public class SmetasTabRecyclerAdapter extends
 
     //удаление элемента списка с подтверждением через диалоговое окно
     //работает для любого списка, с которым работает данный адаптер
-     void removeElement() {
+     void removeElement(final int posTab) {
 
         new AlertDialog.Builder(context)
                 .setTitle("Удалить?")
@@ -226,14 +226,17 @@ public class SmetasTabRecyclerAdapter extends
                 }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //вызываем обновлённые параметры чтобы обновление прошло
+                getParams(database, file_id, posTab);
 
-                if (positionTab == 0){
+                if (posTab == 0){
                     //находим id по имени работы
                     long work_id = Work.getIdFromName(database, name[posItem]);
                     Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
                             "file_id = " + file_id + " work_id = " + work_id);
                     //удаляем пункт сметы из таблицы FW
                     FW.deleteItemFrom_FW(database, file_id, work_id);
+
                 }else {
                     //находим id по имени материала
                     long mat_id = Mat.getIdFromName(database, name[posItem]);
@@ -243,7 +246,7 @@ public class SmetasTabRecyclerAdapter extends
                     FM.deleteItemFrom_FM(database, file_id, mat_id);
                 }
                 //вызываем обновлённые параметры чтобы обновление прошло
-                getParams(database, file_id, positionTab);
+               getParams(database, file_id, posTab);
                 //обновляем данные списка фрагмента работ
                 notifyDataSetChanged();
                 Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();

@@ -22,15 +22,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 
 //класс - фрагмент для вкладки Материалы
-public class SmetasTabMat extends Fragment {
-
-    public static final String TAG = "33333";
-    private long file_id;
-    private int positionItem;
-    private SQLiteDatabase database;
-
-    private RecyclerView recyclerView;
-    private SmetasTabRecyclerAdapter adapter;
+public class SmetasTabMat extends AbstrSmetasTab {
 
     public static SmetasTabMat newInstance(long file_id, int position) {
         SmetasTabMat fragment = new SmetasTabMat();
@@ -41,76 +33,15 @@ public class SmetasTabMat extends Fragment {
         return fragment;
     }
 
-    public SmetasTabMat() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        database = new SmetaOpenHelper(context).getWritableDatabase();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "// SmetasTabMat onCreate // " );
-        //получаем id файла из аргументов
-        file_id = getArguments().getLong(P.ID_FILE);
-        positionItem = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "SmetasTabMat onCreate  file_id = " + file_id + "  positionItem = " +  positionItem);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mat_tab, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// SmetasTabMat onViewCreated // " );
-        initRecycler(view);
-        //объявляем о регистрации контекстного меню
-        registerForContextMenu(recyclerView);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "// SmetasTabMat onStop // " );
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        database.close();
-    }
-
-    private void initRecycler(View view) {
-        recyclerView = view.findViewById(R.id.recycler_mat_tab);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        //получаем адаптер
-        adapter = getSmetasTabRecyclerAdapter();
-        // получаем слушатель щелчков на списке сметs материалов
-        SmetasTabRecyclerAdapter.OnClickOnLineListener matListener = getOnClickOnLineListener();
-        //устанавливаем слушатель в адаптере
-        adapter.setOnClickOnLineListener(matListener);
-        //передам адаптер с данными recyclerView
-        recyclerView.setAdapter(adapter);
-    }
-
     //метод получения адаптера
-    private SmetasTabRecyclerAdapter getSmetasTabRecyclerAdapter(){
+    @Override
+    public SmetasTabRecyclerAdapter getSmetasTabRecyclerAdapter(){
         return new SmetasTabRecyclerAdapter(database, file_id, 1);
     }
 
     // метод чтобы получить слушатель щелчков на списке сметы материалов
-    private SmetasTabRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener(){
+    @Override
+    public SmetasTabRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener(){
         return  new SmetasTabRecyclerAdapter.OnClickOnLineListener() {
             @Override
             public void onClickOnLineListener(String namtItem) {
@@ -129,7 +60,4 @@ public class SmetasTabMat extends Fragment {
         };
     }
 
-    public SmetasTabRecyclerAdapter getAdapter(){
-        return adapter;
-    }
 }

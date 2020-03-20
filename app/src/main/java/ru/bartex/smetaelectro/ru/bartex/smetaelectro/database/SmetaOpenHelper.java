@@ -93,14 +93,14 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         }else {
             file1_id = this.getIdFromFileName(P.FILENAME_DEFAULT);
         }
-        Log.d(TAG, "MyDatabaseHelper.createDefaultFileIfNeed ... count = " +
+        Log.d(TAG, "SmetaOpenHelper.createDefaultFileIfNeed ... count = " +
                 this.getFilesCount() + " file1_id = " + file1_id);
         return file1_id;
     }
 
     //получаем количество файлов  в базе
     private int getFilesCount() {
-        Log.i(TAG, "TempDBHelper.getFilesCount ... ");
+        Log.i(TAG, "SmetaOpenHelper.getFilesCount ... ");
         String countQuery = "SELECT  * FROM " + FileWork.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -111,7 +111,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
 
     //Метод для добавления нового файла в таблицу файлов
     private long addFile(DataFile file) {
-        Log.d(TAG, "TempDBHelper.addFile ... " + file.getFileName());
+        Log.d(TAG, "SmetaOpenHelper.addFile ... " + file.getFileName());
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -152,7 +152,7 @@ public class SmetaOpenHelper extends SQLiteOpenHelper {
         } else {
             currentID = -1;
         }
-        Log.d(TAG, "getIdFromFileName currentID = " + currentID);
+        Log.d(TAG, "SmetaOpenHelper getIdFromFileName currentID = " + currentID);
         cursor.close();
         db.close();
         return currentID;

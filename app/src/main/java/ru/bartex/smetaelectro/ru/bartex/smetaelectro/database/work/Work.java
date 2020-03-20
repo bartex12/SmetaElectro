@@ -38,14 +38,14 @@ public class Work {
                 + WORK_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_WORK);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Work");
+        Log.d(TAG, "Work - onCreate- создание таблицы Work");
         // Если файлов в базе нет, вносим записи названия  работ (добавление из программы)
         createDefaultWork(db, fContext);
     }
 
     //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
     private static void createDefaultWork(SQLiteDatabase db, Context fContext) {
-        Log.i(TAG, "SmetaOpenHelper.createDefaultWork...");
+        Log.i(TAG, "Work.createDefaultWork...");
         // Добавляем записи в таблицу
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
@@ -135,10 +135,10 @@ public class Work {
 
     //получаем курсор с Work_Type_id  и делаем массив id
     private static int[] getArrayTypeId(SQLiteDatabase db) {
-        Log.i(TAG, "SmetaOpenHelper.getArrayTypeId ... ");
+        Log.i(TAG, "Work.getArrayTypeId ... ");
         String typeId = " SELECT " + TypeWork._ID  + " FROM " + TypeWork.TABLE_NAME;
         Cursor cursor = db.rawQuery(typeId, null);
-        Log.i(TAG, "SmetaOpenHelper.getArrayTypeId cursor.getCount() = " + cursor.getCount());
+        Log.i(TAG, "Work.getArrayTypeId cursor.getCount() = " + cursor.getCount());
         int[] type_id = new int[cursor.getCount()];
         // Проходим через все строки в курсоре
         while (cursor.moveToNext()){
@@ -160,7 +160,7 @@ public class Work {
 
     //получаем данные по работе по её id
     public static DataWork getDataWork(SQLiteDatabase db, long work_id) {
-        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+        Log.i(TAG, "Work.getDataWork ... ");
         DataWork dataWork = new DataWork();
 
         String workData = " SELECT  * FROM " + TABLE_NAME +
@@ -172,7 +172,7 @@ public class Work {
             long currentWorkTypeId = cursor.getLong(cursor.getColumnIndex(WORK_TYPE_ID));
             String currentWorkName = cursor.getString(cursor.getColumnIndex(WORK_NAME));
             String currentWorkDescription = cursor.getString(cursor.getColumnIndex(WORK_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataWork currentWorkName = " + currentWorkName);
+            Log.d(TAG, "Work.getDataWork currentWorkName = " + currentWorkName);
             //создаём экземпляр класса DataWork в конструкторе
             dataWork = new DataWork(currentWorkTypeId, currentWorkName, currentWorkDescription);
         }
@@ -182,7 +182,7 @@ public class Work {
 
     //получаем id работы по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "Work.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -203,7 +203,7 @@ public class Work {
 
     //получаем имя работы по её id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "Work getNameFromId... ");
 
         String currentName = "";
 
@@ -222,13 +222,13 @@ public class Work {
 
     //удаляем  работу из таблицы Work по id работы
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject  case Work ");
+        Log.i(TAG, "Work.deleteObject  case Work ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //Обновляем данные по  работам
     public static void updateData(SQLiteDatabase db, long id, String name, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        Log.i(TAG, "Work.updateData ...");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -236,34 +236,34 @@ public class Work {
         cv.put(WORK_DESCRIPTION, description);
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        Log.i(TAG, "Work.updateData - name =" + name + "  id = " + id);
     }
 
     //получаем курсор с названиями  работ
     public static Cursor getNamesAllTypes(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
+        Log.i(TAG, "Work.getNamesAllTypes ... ");
         String  names = " SELECT " + _ID + " , " +
                 WORK_NAME + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(names, null);
-        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "Work.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
     //получаем курсор с названиями типов работ
     public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        Log.i(TAG, "Work.getNamesFromCatId ... ");
         String  select = " SELECT " + _ID + " , " + WORK_TYPE_ID + " , " +
                 WORK_NAME + " FROM " + TABLE_NAME +
                 " WHERE " + WORK_TYPE_ID  + " = ?" ;
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+        Log.i(TAG, "Work.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
                 "  id = " + id);
         return cursor;
     }
 
     //Добавляем работу
     public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
-        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        Log.i(TAG, "Work.insertTypeCatName ... ");
         long _id =-1;
 
         ContentValues cv = new ContentValues();
@@ -271,20 +271,20 @@ public class Work {
         cv.put(WORK_TYPE_ID, id);
         // вставляем строку
         _id = db.insert(TABLE_NAME, null, cv);
-        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        Log.d(TAG, "Work.insertTypeCatName  _id = " + _id);
         return _id;
     }
 
     //получаем количество видов работ с типом WORK_TYPE_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "Work.getCountLine ... ");
 
         String  select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                         " where " + WORK_TYPE_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "Work.getCountLine count = " + count);
         cursor.close();
         return count;
     }

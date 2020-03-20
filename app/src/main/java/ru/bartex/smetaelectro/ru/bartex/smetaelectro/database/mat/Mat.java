@@ -35,7 +35,7 @@ public class Mat {
                 + MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_MAT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Mat");
+        Log.d(TAG, "Mat - onCreate- создание таблицы Mat");
         // Если файлов в базе нет, вносим записи названия  материалов (добавление из программы)
         createDefaultMat(db, fContext);
     }
@@ -43,7 +43,7 @@ public class Mat {
     //создаём работы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
     private static void createDefaultMat(SQLiteDatabase db, Context fContext) {
 
-        Log.i(TAG, "SmetaOpenHelper.createDefaultMat...");
+        Log.i(TAG, "Mat.createDefaultMat...");
         // Добавляем записи в таблицу
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
@@ -122,17 +122,17 @@ public class Mat {
         for (String s : mat_name_type_obschestroy) {
             InsertMat(db, values, type_id[ii], s);
         }
-        Log.d(TAG, "createDefaultMat type_id.length = " +
+        Log.d(TAG, "Mat.createDefaultMat type_id.length = " +
                 type_id.length + " mat_name_type_kabeli.length = " + mat_name_type_kabeli.length);
     }
 
     //получаем курсор с Mat_Type_id  и делаем массив id
     private static int[] getArrayTypeIdMat(SQLiteDatabase db) {
 
-        Log.i(TAG, "SmetaOpenHelper.getArrayTypeIdMat ... ");
+        Log.i(TAG, "Mat.getArrayTypeIdMat ... ");
         String typeIdMat = " SELECT " + TypeMat._ID  + " FROM " + TypeMat.TABLE_NAME;
         Cursor cursor = db.rawQuery(typeIdMat, null);
-        Log.i(TAG, "SmetaOpenHelper.getArrayTypeIdMat cursor.getCount() = " + cursor.getCount());
+        Log.i(TAG, "Mat.getArrayTypeIdMat cursor.getCount() = " + cursor.getCount());
         int[] type_id_mat = new int[cursor.getCount()];
         // Проходим через все строки в курсоре
         while (cursor.moveToNext()){
@@ -152,7 +152,7 @@ public class Mat {
 
     //получаем данные по материалу  по  id
     public static DataMat getDataMat(SQLiteDatabase db, long mat_id) {
-        Log.i(TAG, "SmetaOpenHelper.getMatData ... ");
+        Log.i(TAG, "Mat.getMatData ... ");
         DataMat dataMat = new DataMat();
 
         String matData = " SELECT  * FROM " + Mat.TABLE_NAME +
@@ -164,7 +164,7 @@ public class Mat {
             long currentMatTypeId = cursor.getLong(cursor.getColumnIndex(Mat.MAT_TYPE_ID));
             String currentMatName = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
             String currentMatDescription = cursor.getString(cursor.getColumnIndex(Mat.MAT_DESCRIPTION));
-            Log.d(TAG, "getMatData currentMatName = " + currentMatName);
+            Log.d(TAG, "Mat.getMatData currentMatName = " + currentMatName);
             //создаём экземпляр класса DataWork в конструкторе
             dataMat = new DataMat(currentMatTypeId, currentMatName, currentMatDescription);
         }
@@ -174,7 +174,7 @@ public class Mat {
 
     //получаем id по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "Mat.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -195,7 +195,7 @@ public class Mat {
 
     //получаем имя материала по  id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "Mat getNameFromId... ");
 
         String currentName = "";
 
@@ -213,13 +213,13 @@ public class Mat {
 
     //удаляем категорию материала из таблицы CategoryMat по id категории материала
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject  case Mat ");
+        Log.i(TAG, "Mat.deleteObject  case Mat ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //Обновляем данные по  материалам
     public static void updateData(SQLiteDatabase db, long id, String name, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        Log.i(TAG, "Mat.updateData ...");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -227,34 +227,34 @@ public class Mat {
         cv.put(MAT_DESCRIPTION, description);
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        Log.i(TAG, "Mat.updateData - name =" + name + "  id = " + id);
     }
 
     //получаем курсор с названиями  материалов
     public static Cursor getNamesAllTypes(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes ... ");
+        Log.i(TAG, "Mat.getNamesAllTypes ... ");
         String  names = " SELECT " + _ID + " , " +
                         MAT_NAME + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(names, null);
-        Log.i(TAG, "TableControllerSmeta.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "Mat.getNamesAllTypes cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
     //получаем курсор с названиями типов материалов
     public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        Log.i(TAG, "Mat.getNamesFromCatId ... ");
         String  select = " SELECT " + _ID + " , " +
                 MAT_NAME + " FROM " + TABLE_NAME +
                 " WHERE " + MAT_TYPE_ID  + " = ? " ;
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+        Log.i(TAG, "Mat.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
                 "  id = " + id);
         return cursor;
     }
 
     //Добавляем  материал
     public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
-        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        Log.i(TAG, "Mat.insertTypeCatName ... ");
         long _id =-1;
 
         ContentValues cv = new ContentValues();
@@ -262,20 +262,20 @@ public class Mat {
         cv.put(MAT_TYPE_ID, id);
         // вставляем строку
         _id = db.insert(TABLE_NAME, null, cv);
-        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        Log.d(TAG, "Mat.insertTypeCatName  _id = " + _id);
         return _id;
     }
 
     //получаем количество видов материалов с типом MAT_TYPE_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "Mat.getCountLine ... ");
 
         String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + MAT_TYPE_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "Mat.getCountLine count = " + count);
         cursor.close();
         return count;
     }

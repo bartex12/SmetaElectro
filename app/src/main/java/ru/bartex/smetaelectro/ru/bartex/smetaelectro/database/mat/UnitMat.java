@@ -29,13 +29,13 @@ public class UnitMat {
                 + UNIT_MAT_NAME + " TEXT NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_UNIT_MAT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы UnitMat");
+        Log.d(TAG, "UnitMat - onCreate- создание таблицы UnitMat");
         // Если файлов в базе нет, вносим записи единиц измерения
         createDefaultUnitMat(db, fContext);
     }
 
     private static void createDefaultUnitMat(SQLiteDatabase db, Context fContext){
-        Log.i(TAG, "SmetaOpenHelper.createDefaultUnitMat...");
+        Log.i(TAG, "UnitMat.createDefaultUnitMat...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
@@ -46,12 +46,12 @@ public class UnitMat {
             // Добавляем записи в таблицу
             db.insert(TABLE_NAME, null, values);
         }
-        Log.d(TAG, "createDefaultUnitMat unit_name.length = " + unit_name.length );
+        Log.d(TAG, "UnitMat createDefaultUnitMat unit_name.length = " + unit_name.length );
     }
 
     //получаем id по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "UnitMat.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -72,7 +72,7 @@ public class UnitMat {
 
     //получаем массив единиц измерения
     public static String[] getArrayUnits(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getArrayUnits ... ");
+        Log.i(TAG, "UnitMat.getArrayUnits ... ");
 
         String  select  = " SELECT " + UNIT_MAT_NAME  + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(select, null);
@@ -89,7 +89,7 @@ public class UnitMat {
 
     //получаем единицы измерения материала с помощью вложенного запроса
     public static String getUnitMat(SQLiteDatabase db, long mat_id){
-        Log.i(TAG, "TableControllerSmeta.getUnitMat ... ");
+        Log.i(TAG, "UnitMat.getUnitMat ... ");
         String unitMatName = "";
         String unit = " SELECT " +  UNIT_MAT_NAME +
                 " FROM " + TABLE_NAME  +
@@ -100,12 +100,12 @@ public class UnitMat {
 
         Cursor cursor = db.rawQuery(unit, null);
 
-        Log.d(TAG, "TableControllerSmeta getUnitMat cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "UnitMat getUnitMat cursor.getCount() = " + cursor.getCount());
 
         if (cursor.moveToFirst()) {
             // Используем индекс для получения строки или числа
             unitMatName = cursor.getString(cursor.getColumnIndex(UNIT_MAT_NAME));
-            Log.d(TAG, "TableControllerSmeta getUnitMat unitName = " + unitMatName);
+            Log.d(TAG, "UnitMat getUnitMat unitName = " + unitMatName);
         }
         cursor.close();
         return unitMatName;

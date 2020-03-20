@@ -15,13 +15,27 @@ public class SmetasTabPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> tabTitles = new ArrayList<>();
 
-    SmetasTabPagerAdapter(@NonNull FragmentManager fm) {
+    public SmetasTabPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
-    void addFragment(Fragment fragment, String tabTitle){
+    public void addFragment(Fragment fragment, String tabTitle){
         this.fragments.add(fragment);
         this.tabTitles.add(tabTitle);
+    }
+
+    public void remove(int position){
+       //
+       Fragment fragment = fragments.get(position);
+       switch (position){
+           case 0:
+               ((SmetasTabWork) fragment).getAdapter().removeElement(position);
+
+               break;
+           case 1:
+               ((SmetasTabMat) fragment).getAdapter().removeElement(position);
+               break;
+       }
     }
 
     @NonNull

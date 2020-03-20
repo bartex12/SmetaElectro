@@ -35,7 +35,7 @@ public class TypeMat {
                 + TYPE_MAT_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы разделов (типов) работ TypeWork
         db.execSQL(SQL_CREATE_TAB_TYPE_MAT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы TypeMat");
+        Log.d(TAG, "TypeMat - onCreate- создание таблицы TypeMat");
         // Если файлов в базе нет, вносим записи названия типов работ (добавление из программы)
         createDefaultTypeMat(db, fContext);
     }
@@ -43,7 +43,7 @@ public class TypeMat {
     //создаём типы из ресурсов и получаем COLUMN_TYPE_CATEGORY_ID из  this.getArrayCategoryId()
     private static void createDefaultTypeMat(SQLiteDatabase db, Context fContext) {
 
-        Log.i(TAG, "SmetaOpenHelper.createDefaultTypeMat...");
+        Log.i(TAG, "TypeMat.createDefaultTypeMat...");
         // Добавляем записи в таблицу
         ContentValues values = new ContentValues();
 
@@ -63,14 +63,14 @@ public class TypeMat {
         for (String s : type_mat_name_drugoe) {
             InsertTypeMat(db, values, category_id_mat[ii], s);
         }
-        Log.d(TAG, "createDefaultTypeMat type_mat_name_electro.length = " +
+        Log.d(TAG, "TypeMat createDefaultTypeMat type_mat_name_electro.length = " +
                 type_mat_name_electro.length + " type_mat_name_drugoe.length = " +type_mat_name_drugoe.length);
     }
 
     //получаем курсор с Category._id  и делаем массив id
     private static  int[] getArrayCategoryIdMat(SQLiteDatabase db) {
 
-        Log.i(TAG, "SmetaOpenHelper.getArrayCategoryIdMat ... ");
+        Log.i(TAG, "TypeMat.getArrayCategoryIdMat ... ");
         String categoryIdMat = " SELECT " + CategoryMat._ID  + " FROM " + CategoryMat.TABLE_NAME;
         Cursor cursor = db.rawQuery(categoryIdMat, null);
         int[] category_id_mat = new int[cursor.getCount()];
@@ -78,7 +78,7 @@ public class TypeMat {
         while (cursor.moveToNext()){
             int position = cursor.getPosition();
             category_id_mat[position] = cursor.getInt(cursor.getColumnIndex(CategoryMat._ID));
-            Log.i(TAG, "SmetaOpenHelper.getArrayCategoryId position = " + position);
+            Log.i(TAG, "TypeMat.getArrayCategoryId position = " + position);
         }
         cursor.close();
         return category_id_mat;
@@ -94,7 +94,7 @@ public class TypeMat {
 
     //получаем данные по типу материалов  по  id
     public static DataTypeMat getDataTypeMat(SQLiteDatabase db, long type_mat_id) {
-        Log.i(TAG, "TableControllerSmeta.getDataTypeMat ... ");
+        Log.i(TAG, "TypeMat.getDataTypeMat ... ");
         DataTypeMat dataTypeMat = new DataTypeMat();
 
         String typeMatData = " SELECT  * FROM " + TABLE_NAME +
@@ -106,7 +106,7 @@ public class TypeMat {
             long currentTypeMatCategoryId = cursor.getLong(cursor.getColumnIndex(TYPE_MAT_CATEGORY_ID));
             String currentTypeMatName = cursor.getString(cursor.getColumnIndex(TYPE_MAT_NAME));
             String currentTypeMatDescription = cursor.getString(cursor.getColumnIndex(TYPE_MAT_DESCRIPTION));
-            Log.d(TAG, "TableControllerSmeta.getDataTypeMat currentTypeName = " + currentTypeMatName);
+            Log.d(TAG, "TypeMat.getDataTypeMat currentTypeName = " + currentTypeMatName);
             //создаём экземпляр класса DataFile в конструкторе
             dataTypeMat = new DataTypeMat(currentTypeMatCategoryId, currentTypeMatName, currentTypeMatDescription);
         }
@@ -116,7 +116,7 @@ public class TypeMat {
 
     //получаем id типа материалов по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "TypeMat.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -137,7 +137,7 @@ public class TypeMat {
 
     //получаем ID категории материалов по имени типа материалов
     public static long getCatIdFromTypeId(SQLiteDatabase db, long type_id) {
-        Log.d(TAG, "TableControllerSmeta getCatIdFromTypeId ...");
+        Log.d(TAG, "TypeMat getCatIdFromTypeId ...");
 
         long currentID = -1;
 
@@ -160,7 +160,7 @@ public class TypeMat {
 
     //получаем имя типа материала  по  id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "TypeMat getNameFromId... ");
 
         String currentName = "";
 
@@ -180,13 +180,13 @@ public class TypeMat {
 
     //удаляем тип материала из таблицы CategoryMat по id типа материала
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject case TypeMat ");
+        Log.i(TAG, "TypeMat.deleteObject case TypeMat ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //Обновляем данные по типам материалов
     public static void updateData(SQLiteDatabase db, long id, String name, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        Log.i(TAG, "TypeMat.updateData ...");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -194,36 +194,36 @@ public class TypeMat {
         cv.put(TYPE_MAT_DESCRIPTION, description);
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        Log.i(TAG, "TypeMat.updateData - name =" + name + "  id = " + id);
     }
 
     //получаем курсор с названиями категорий
     public static Cursor getCursorNames(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+        Log.i(TAG, "TypeMat.getCursorNames ... ");
 
         String select =  " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
                 " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME ;
         Cursor  cursor = db.rawQuery(select, null);
 
-        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "TypeMat.getCursorNames cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
     //получаем курсор с названиями типов материалов
     public static Cursor getNamesFromCatId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId ... ");
+        Log.i(TAG, "TypeMat.getNamesFromCatId ... ");
         String  select =  " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
                 " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME +
                 " WHERE " + TYPE_MAT_CATEGORY_ID  + " = ?" ;
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
-        Log.i(TAG, "TableControllerSmeta.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
+        Log.i(TAG, "TypeMat.getNamesFromCatId cursor.getCount() =  " + cursor.getCount()+
                 "  id = " + id);
         return cursor;
     }
 
     //Добавляем тип материалов
     public static long  insertTypeCatName(SQLiteDatabase db, String name, long id){
-        Log.i(TAG, "TableControllerSmeta.insertTypeCatName ... ");
+        Log.i(TAG, "TypeMat.insertTypeCatName ... ");
         long _id =-1;
 
         ContentValues cv = new ContentValues();
@@ -231,20 +231,20 @@ public class TypeMat {
         cv.put(TYPE_MAT_CATEGORY_ID,id);
         // вставляем строку
         _id = db.insert(TABLE_NAME, null, cv);
-        Log.d(TAG, "TableControllerSmeta.insertTypeCatName  _id = " + _id);
+        Log.d(TAG, "TypeMat.insertTypeCatName  _id = " + _id);
         return _id;
     }
 
     //получаем количество  с типом TYPE_MAT_CATEGORY_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "TypeMat.getCountLine ... ");
 
         String    select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + TYPE_MAT_CATEGORY_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "TypeMat.getCountLine count = " + count);
         cursor.close();
         return count;
     }

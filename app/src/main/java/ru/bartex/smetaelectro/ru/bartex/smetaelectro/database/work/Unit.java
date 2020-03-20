@@ -30,13 +30,13 @@ public class Unit {
                 + UNIT_NAME + " TEXT NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_UNIT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы Unit");
+        Log.d(TAG, "Unit - onCreate- создание таблицы Unit");
         // Если файлов в базе нет, вносим записи единиц измерения
         createDefaultUnit(db,fContext );
     }
 
     private static void createDefaultUnit(SQLiteDatabase db, Context fContext){
-        Log.i(TAG, "SmetaOpenHelper.createDefaultUnit...");
+        Log.i(TAG, "Unit.createDefaultUnit...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
@@ -47,12 +47,12 @@ public class Unit {
             // Добавляем записи в таблицу
             db.insert(TABLE_NAME, null, values);
         }
-        Log.d(TAG, "createDefaultUnit unit_name.length = " + unit_name.length );
+        Log.d(TAG, "Unit createDefaultUnit unit_name.length = " + unit_name.length );
     }
 
     //получаем id по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "Unit.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -73,7 +73,7 @@ public class Unit {
 
     //получаем массив единиц измерения
     public static String[] getArrayUnits(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getArrayUnits ... ");
+        Log.i(TAG, "Unit.getArrayUnits ... ");
 
         String  select  = " SELECT " + UNIT_NAME  + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(select, null);

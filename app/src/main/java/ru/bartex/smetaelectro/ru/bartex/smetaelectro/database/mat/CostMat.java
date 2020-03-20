@@ -36,13 +36,13 @@ public class CostMat {
                 + COST_MAT_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_COST_MAT);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostMat");
+        Log.d(TAG, "CostMat - onCreate- создание таблицы CostMat");
         // Если файлов в базе нет, вносим записи расценок
         createDefaultCostMat(db, fContext);
     }
 
     private static void createDefaultCostMat(SQLiteDatabase db, Context fContext){
-        Log.i(TAG, "SmetaOpenHelper.createDefaultCostMat...");
+        Log.i(TAG, "CostMat.createDefaultCostMat...");
         ContentValues values = new ContentValues();
 
         // Получим ресурс
@@ -68,14 +68,14 @@ public class CostMat {
             // Добавляем записи в таблицу
             InsertCostMat(db, values, mat_id[i], unit_id[i], cost_of_mat[i]);
         }
-        Log.d(TAG, "createDefaultCost unit_id.length = " +
+        Log.d(TAG, "CostMat createDefaultCost unit_id.length = " +
                 unit_id.length + "  cost_of_mat.length" + cost_of_mat.length);
     }
 
     //получаем  все ID таблицы Mat ***
     private static int[] getIdFromMats(SQLiteDatabase db) {
 
-        Log.d(TAG, "getIdFromMats...");
+        Log.d(TAG, "CostMat getIdFromMats...");
         Cursor cursor = db.query(
                 Mat.TABLE_NAME,   // таблица
                 new String[]{Mat._ID},            // столбцы
@@ -96,7 +96,7 @@ public class CostMat {
         }
         cursor.close();
         if (currentID != null) {
-            Log.d(TAG, "getIdFromMats currentID.length = " + currentID.length);
+            Log.d(TAG, "CostMat getIdFromMats currentID.length = " + currentID.length);
         }
         return currentID;
     }
@@ -111,25 +111,25 @@ public class CostMat {
 
     //удаляем цену на материал из таблицы CostMat по id цены на материал
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject ... ");
+        Log.i(TAG, "CostMat.deleteObject ... ");
         db.delete(TABLE_NAME, COST_MAT_ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //обновляем цену материалов
     public static void updateCost(SQLiteDatabase db, long id, float cost, long unit_Id) {
-        Log.i(TAG, "TableControllerSmeta.updateCost ...");
+        Log.i(TAG, "CostMat.updateCost ...");
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
         cv.put(COST_MAT_COST, cost);
         cv.put(COST_MAT_UNIT_ID, unit_Id);
         cv.put(COST_MAT_NUMBER, 1);
         db.update(TABLE_NAME, cv, COST_MAT_ID + "=" + id, null);
-        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost);
+        Log.i(TAG, "CostMat.updateWorkCost - cost =" + cost);
     }
 
     //вывод в лог всех строк CostMat
     public void displayTable(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        Log.i(TAG, "CostMat.displayTable ...");
         // Создадим и откроем для чтения базу данных
         Cursor cursor = null;
         // Зададим условие для выборки - список столбцов
@@ -173,14 +173,14 @@ public class CostMat {
 
     //получаем стоимость материалов по  id
     public static float getCostById(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.getCostById ... ");
+        Log.i(TAG, "CostMat.getCostById ... ");
         float cost = -1;
 
         String select = " SELECT " + COST_MAT_COST +
                 " FROM " + TABLE_NAME +
                 " WHERE " + COST_MAT_ID + " = ?";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
-        Log.d(TAG, "getCostById cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "CostMat getCostById cursor.getCount() = " + cursor.getCount());
 
         if (cursor.moveToFirst()) {
             // Используем индекс для получения строки или числа
@@ -192,7 +192,7 @@ public class CostMat {
 
     //Добавляем вид материала с левыми параметрами, чобы удалить при отказе пользователя
     public static long  insertZero(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.insertZero ... ");
+        Log.i(TAG, "CostMat.insertZero ... ");
 
         ContentValues cv = new ContentValues();
                 cv.put(COST_MAT_ID, id);
@@ -202,13 +202,13 @@ public class CostMat {
                 // вставляем строку
         long currentId = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertZero  currentId = " + currentId);
+        Log.d(TAG, "CostMat.insertZero  currentId = " + currentId);
         return currentId;
     }
 
     //Добавляем цену материала
     public static long  insertCost(SQLiteDatabase db, long Id, float cost, long unit_id){
-        Log.i(TAG, "TableControllerSmeta.insertCost ... ");
+        Log.i(TAG, "CostMat.insertCost ... ");
         long costId =-1;
 
         ContentValues cv = new ContentValues();
@@ -218,20 +218,20 @@ public class CostMat {
         // вставляем строку
         costId = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertCost costId = " + costId);
+        Log.d(TAG, "CostMat.insertCost costId = " + costId);
         return costId;
     }
 
     //получаем количество  с типом TYPE_MAT_CATEGORY_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "CostMat.getCountLine ... ");
 
         String   select =   " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + COST_MAT_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "CostMat.getCountLine count = " + count);
         cursor.close();
         return count;
     }

@@ -6,7 +6,7 @@
     android:title="@string/delete_smetas_item"/>
 
 <item android:id="@+id/menu_cancel_smetas_item"
-    android:orderInCategory="20"
+    android:orderInCategory="30"
     android:title="@string/otmena"/>
 
 </menu>

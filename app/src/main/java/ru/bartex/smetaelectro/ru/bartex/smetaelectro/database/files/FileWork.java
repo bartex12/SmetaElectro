@@ -47,7 +47,7 @@ public class FileWork {
                 + DESCRIPTION_OF_FILE + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FileWork");
+        Log.d(TAG, "FileWork - onCreate- создание таблицы FileWork");
 
         // Если файлов в базе нет, вносим запись с именем файла по умолчанию P.FILENAME_DEFAULT
         createDefaultFile(db);
@@ -60,7 +60,7 @@ public class FileWork {
 
     // Когда файлов в базе нет, вносим запись с именем файла по умолчанию (Используем здесь)
     private static void createDefaultFile(SQLiteDatabase db) {
-        Log.d(TAG, "MyDatabaseHelper.createDefaultFile..." );
+        Log.d(TAG, "FileWork.createDefaultFile..." );
         //получаем дату и время в нужном для базы данных формате
         String dateFormat = getDateString();
         String timeFormat = getTimeString();
@@ -75,12 +75,12 @@ public class FileWork {
         // вставляем строку
         long ID = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
+        Log.d(TAG, "FileWork.createDefaultFile...  file1_id = " + ID);
     }
 
     //получаем список объектов DataFile
     public static List<DataFile> readFilesData(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.readFilesData ... ");
+        Log.i(TAG, "FileWork.readFilesData ... ");
         List<DataFile> recordsList = new ArrayList<DataFile>();
 
         String dataQuery = "SELECT  * FROM " + TABLE_NAME;
@@ -94,14 +94,14 @@ public class FileWork {
 
             } while (cursor.moveToNext());
         }
-        Log.d(TAG, "TableControllerSmeta readFilesData cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "FileWork readFilesData cursor.getCount() = " + cursor.getCount());
         cursor.close();
         return recordsList;
     }
 
     //получаем объект DataFile для файла с file_id
     public static DataFile getFileData(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getFileData ... ");
+        Log.i(TAG, "FileWork.getFileData ... ");
         DataFile dataFile = new DataFile();
 
         String fileName = " SELECT  * FROM " + FileWork.TABLE_NAME +
@@ -111,7 +111,7 @@ public class FileWork {
         if (cursor.moveToFirst()) {
             dataFile = getFileDataFromCurcor(cursor);
         }
-        Log.d(TAG, "TableControllerSmeta.getFileData cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "FileWork.getFileData cursor.getCount() = " + cursor.getCount());
         cursor.close();
         return dataFile;
     }
@@ -133,7 +133,7 @@ public class FileWork {
 
     //получаем id по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "FileWork.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -154,7 +154,7 @@ public class FileWork {
 
     //получаем имя файла  по  id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "FileWork getNameFromId... ");
 
         String currentName = "";
 
@@ -173,7 +173,7 @@ public class FileWork {
 
     //удаляем название сметы из таблицы FileWork и все строки из FW по id сметы fileId
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject case FileWork ");
+        Log.i(TAG, "FileWork.deleteObject case FileWork ");
         db.delete(FW.TABLE_NAME, FW.FW_FILE_ID + " =? ",
                 new String[]{String.valueOf(id)});
         db.delete(TABLE_NAME, _ID + " =? ",
@@ -182,7 +182,7 @@ public class FileWork {
 
     // Добавляем имя и другие параметры сметы в таблицу FileWork (из активности SmetaNewName)
     public static long addFile(SQLiteDatabase db, String fileName, String adress, String description) {
-        Log.i(TAG, "TableControllerSmeta.addFile ... ");
+        Log.i(TAG, "FileWork.addFile ... ");
 
         //получаем дату и время в нужном для базы данных формате
         String dateFormat = P.getDateString();
@@ -198,13 +198,13 @@ public class FileWork {
         // вставляем строку
         long ID = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "MyDatabaseHelper.createDefaultFile...  file1_id = " + ID);
+        Log.d(TAG, "FileWork.createDefaultFile...  file1_id = " + ID);
         return ID;
     }
 
     //обновляем данные файла сметы имя, адрес, описание, дата и время - на всякий случай
     public void updateFileData(SQLiteDatabase db, long file_id, String name, String adress, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateFileData ... ");
+        Log.i(TAG, "FileWork.updateFileData ... ");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -226,7 +226,7 @@ public class FileWork {
 
         db.update(TABLE_NAME, values,
                 _ID + "=" + file_id, null);
-        Log.i(TAG, "TableControllerSmeta.updateDataFile - name =" + name + "  file_id = " + file_id);
+        Log.i(TAG, "FileWork.updateDataFile - name =" + name + "  file_id = " + file_id);
     }
 
 }

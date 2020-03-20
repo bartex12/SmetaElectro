@@ -17,6 +17,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
@@ -34,11 +35,11 @@ import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 public class SmetasTab extends AppCompatActivity {
 
     public static final String TAG = "33333";
-    long file_id;
-    int currentTabItem;
+    private long file_id;
+    private int currentTabItem;
 
     private SQLiteDatabase database;
-    private ViewPager viewPager;
+    public ViewPager viewPager;
     private SmetasTabPagerAdapter adapter;
     private Fragment workFrag, matFrag;
 
@@ -203,27 +204,38 @@ public class SmetasTab extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         handleMenuItemClick(item);
-        return super.onContextItemSelected(item);
+        //return super.onContextItemSelected(item);
+        return true;
     }
 
+    //TODO не раюботает удаление правильно - на материалах крэш
     //обработка для контекстного меню
-        private void handleMenuItemClick(MenuItem item) {
-            int id = item.getItemId();
-            switch (id) {
-                case R.id.menu_delete_smetas_item: {
-                    int currentTab = viewPager.getCurrentItem();
-                    if (currentTab == 0){
-                        ((SmetasTabWork) workFrag).getAdapter().removeElement();
-                    }else if(currentTab == 1){
-                        ((SmetasTabMat) matFrag).getAdapter().removeElement();
-                    }
-                    break;
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_delete_smetas_item: {
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        Toast.makeText(this, " таб 0 ", Toast.LENGTH_SHORT).show();
+                        adapter.remove(0);
+                        updateAdapter(0);
+                        break;
+                    case 1:
+                        Toast.makeText(this, " таб 1 ", Toast.LENGTH_SHORT).show();
+                        adapter.remove(1);
+                        updateAdapter(1);
+                        break;
                 }
-                case R.id.menu_cancel_smetas_item: {
-                    break;
-                }
+                Log.d(TAG, "ХХ SmetasTab handleMenuItemClick pos = " +
+                        viewPager.getCurrentItem());
+                break;
             }
+            case R.id.menu_cancel_smetas_item: {
+                break;
+            }
+        }
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -264,4 +276,12 @@ public class SmetasTab extends AppCompatActivity {
             return false;
         }
     };
+
+    private void updateAdapter(int currentItem){
+        //adapter =new  SmetasTabPagerAdapter(getSupportFragmentManager());
+       // viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(currentItem);
+        adapter.notifyDataSetChanged();
+    }
+
 }

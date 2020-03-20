@@ -38,6 +38,6 @@ public class TotalTab {
                 + TOTAL_SUMMA + " REAL NOT NULL DEFAULT 0);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_TOTAL);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы TotalTab");
+        Log.d(TAG, "TotalTab - onCreate- создание таблицы TotalTab");
     }
 }

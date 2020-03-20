@@ -34,7 +34,7 @@ public class CategoryWork {
                 + CATEGORY_DESCRIPTION + " TEXT NOT NULL DEFAULT 'Без описания');";
         // Запускаем создание таблицы категорий работ
         db.execSQL(SQL_CREATE_TAB_CATEGORY);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CategoryWork");
+        Log.d(TAG, "CategoryWork - onCreate- создание таблицы CategoryWork");
         // Если файлов в базе нет, вносим записи названий категорий работ (добавление из программы)
         createDefaultCategory(db, fContext);
     }
@@ -60,7 +60,7 @@ public class CategoryWork {
             // Добавляем записи в таблицу
             db.insert(TABLE_NAME, null, values);
         }
-        Log.d(TAG, "createDefaultCategory cat_name.length = " + cat_name.length);
+        Log.d(TAG, "CategoryWork createDefaultCategory cat_name.length = " + cat_name.length);
     }
 
     //получаем данные по категории работы по её id
@@ -86,7 +86,7 @@ public class CategoryWork {
 
     //получаем id категории по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
-        Log.i(TAG, "TableControllerSmeta.getIdFromName ... ");
+        Log.i(TAG, "CategoryWork.getIdFromName ... ");
         long currentID = -1;
         Cursor cursor = db.query(
                 TABLE_NAME,                     // таблица
@@ -107,7 +107,7 @@ public class CategoryWork {
 
     //получаем имя категории  по  id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "CategoryWork getNameFromId... ");
 
         String currentName = "";
 
@@ -127,13 +127,13 @@ public class CategoryWork {
 
     //удаляем категорию работы из таблицы CategoryWork по id категории
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject case CategoryWork ");
+        Log.i(TAG, "CategoryWork.deleteObject case CategoryWork ");
         db.delete(TABLE_NAME, _ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //Обновляем данные по категории работ
     public static void updateData(SQLiteDatabase db, long id, String name, String description) {
-        Log.i(TAG, "TableControllerSmeta.updateData ...");
+        Log.i(TAG, "CategoryWork.updateData ...");
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
@@ -141,23 +141,23 @@ public class CategoryWork {
         cv.put(CATEGORY_DESCRIPTION, description);
         db.update(TABLE_NAME, cv, _ID + "=" + id, null);
 
-        Log.i(TAG, "TableControllerSmeta.updateData - name =" + name + "  id = " + id);
+        Log.i(TAG, "CategoryWork.updateData - name =" + name + "  id = " + id);
     }
 
     //получаем курсор с названиями категорий
     public static Cursor getCursorNames(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.getCursorNames ... ");
+        Log.i(TAG, "CategoryWork.getCursorNames ... ");
 
         String select = " SELECT " + _ID + " , " + CATEGORY_NAME + " FROM " + TABLE_NAME;
         Cursor  cursor = db.rawQuery(select, null);
 
-        Log.i(TAG, "TableControllerSmeta.getCursorNames cursor.getCount() =  " + cursor.getCount());
+        Log.i(TAG, "CategoryWork.getCursorNames cursor.getCount() =  " + cursor.getCount());
         return cursor;
     }
 
     //Добавляем категорию работ
     public static long  insertCategory(SQLiteDatabase db, String catName){
-        Log.i(TAG, "TableControllerSmeta.insertCategory ... ");
+        Log.i(TAG, "CategoryWork.insertCategory ... ");
         long _id =-1;
 
         ContentValues cv = new ContentValues();
@@ -165,7 +165,7 @@ public class CategoryWork {
         // вставляем строку
         _id = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertCategory  _id = " + _id);
+        Log.d(TAG, "CategoryWork.insertCategory  _id = " + _id);
         return _id;
     }
 }

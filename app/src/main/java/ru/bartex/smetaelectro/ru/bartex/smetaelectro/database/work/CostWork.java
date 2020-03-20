@@ -36,13 +36,13 @@ public class CostWork {
                 + COST_NUMBER + " INTEGER NOT NULL DEFAULT 1);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_COST);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы CostWork");
+        Log.d(TAG, "CostWork - onCreate- создание таблицы CostWork");
         // Если файлов в базе нет, вносим записи расценок
         createDefaultCost(db, fContext);
     }
 
     private static void createDefaultCost(SQLiteDatabase db, Context fContext){
-        Log.i(TAG, "SmetaOpenHelper.createDefaultCost...");
+        Log.i(TAG, "CostWork.createDefaultCost...");
         ContentValues values = new ContentValues();
         // Получим массив строк из ресурсов
         Resources res = fContext.getResources();
@@ -65,12 +65,12 @@ public class CostWork {
             // Добавляем записи в таблицу
             InsertCost(db, values, work_id[i], unit_id[i], cost_of_work[i]);
         }
-        Log.d(TAG, "createDefaultCost unit_id.length = " + unit_id.length );
+        Log.d(TAG, "CostWork createDefaultCost unit_id.length = " + unit_id.length );
     }
 
     //получаем  все ID таблицы Work ***
     private static int[] getIdFromWorks(SQLiteDatabase db) {
-        Log.d(TAG, "getIdFromWorks...");
+        Log.d(TAG, "CostWork getIdFromWorks...");
         Cursor cursor = db.query(
                 Work.TABLE_NAME,   // таблица
                 new String[]{Work._ID},            // столбцы
@@ -91,7 +91,7 @@ public class CostWork {
         }
         cursor.close();
         if (currentID != null) {
-            Log.d(TAG, "getIdFromWorks currentID.length = " +currentID.length);
+            Log.d(TAG, "CostWork getIdFromWorks currentID.length = " +currentID.length);
         }
         return currentID;
     }
@@ -106,7 +106,7 @@ public class CostWork {
 
     //получаем имя  по её id
     public static String getNameFromId(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta getNameFromId... ");
+        Log.i(TAG, "CostWork getNameFromId... ");
 
         String currentName = "";
 
@@ -128,25 +128,25 @@ public class CostWork {
 
     //удаляем цену на работу из таблицы CostWork по id цены на работу
     public static void deleteObject(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteObject case CostWork ");
+        Log.i(TAG, "CostWork.deleteObject case CostWork ");
         db.delete(TABLE_NAME, COST_WORK_ID + " =? ", new String[]{String.valueOf(id)});
     }
 
     //обновляем цену работы
     public static void updateCost(SQLiteDatabase db, long id, float cost, long unit_Id) {
-        Log.i(TAG, "TableControllerSmeta.updateCost ...");
+        Log.i(TAG, "CostWork.updateCost ...");
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();
         cv.put(COST_COST, cost);
         cv.put(COST_UNIT_ID, unit_Id);
         cv.put(COST_NUMBER, 1);
         db.update(TABLE_NAME, cv, COST_WORK_ID + "=" + id, null);
-        Log.i(TAG, "SmetaOpenHelper.updateWorkCost - cost =" + cost);
+        Log.i(TAG, "CostWork.updateWorkCost - cost =" + cost);
     }
 
     //вывод в лог всех строк CostWork
     public static void displayTable(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        Log.i(TAG, "CostWork.displayTable ...");
         // Создадим и откроем для чтения базу данных
         Cursor cursor = null;
         // Зададим условие для выборки - список столбцов
@@ -182,7 +182,7 @@ public class CostWork {
 
     //получаем стоимость работы по  id
     public static float getCostById(SQLiteDatabase db, long id) {
-        Log.i(TAG, "TableControllerSmeta.getCostById ... ");
+        Log.i(TAG, "CostWork.getCostById ... ");
         float cost = -1;
 
         String select = " SELECT " + COST_COST +
@@ -190,7 +190,7 @@ public class CostWork {
                 " WHERE " + COST_WORK_ID + " = ?";
 
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
-        Log.d(TAG, "getCostById cursor.getCount() = " + cursor.getCount());
+        Log.d(TAG, "CostWork getCostById cursor.getCount() = " + cursor.getCount());
 
         if (cursor.moveToFirst()) {
             // Используем индекс для получения строки или числа
@@ -202,7 +202,7 @@ public class CostWork {
 
     //Добавляем вид работы с левыми параметрами, чобы удалить при отказе пользователя
     public static long  insertZero(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.insertZero ... ");
+        Log.i(TAG, "CostWork.insertZero ... ");
 
         ContentValues cv = new ContentValues();
         cv.put(COST_WORK_ID,id);
@@ -212,13 +212,13 @@ public class CostWork {
         // вставляем строку
         long currentId = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertZero  currentId = " + currentId);
+        Log.d(TAG, "CostWork.insertZero  currentId = " + currentId);
         return currentId;
     }
 
     //Добавляем цену работы
     public static long  insertCost(SQLiteDatabase db, long Id, float cost, long unit_id){
-        Log.i(TAG, "TableControllerSmeta.insertCost ... ");
+        Log.i(TAG, "CostWork.insertCost ... ");
         long costId =-1;
 
         ContentValues cv = new ContentValues();
@@ -228,20 +228,20 @@ public class CostWork {
         // вставляем строку
         costId = db.insert(TABLE_NAME, null, cv);
 
-        Log.d(TAG, "TableControllerSmeta.insertCost costId = " + costId);
+        Log.d(TAG, "CostWork.insertCost costId = " + costId);
         return costId;
     }
 
     //получаем количество  с типом TYPE_MAT_CATEGORY_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "CostWork.getCountLine ... ");
 
         String    select =   " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + COST_WORK_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "CostWork.getCountLine count = " + count);
         cursor.close();
         return count;
     }

@@ -55,7 +55,7 @@ public class FW {
                 + FW_SUMMA + " REAL NOT NULL);";
         // Запускаем создание таблицы
         db.execSQL(SQL_CREATE_TAB_FILE_AND_WORK);
-        Log.d(TAG, "SmetaOpenHelper - onCreate- создание таблицы FW");
+        Log.d(TAG, "FW - onCreate- создание таблицы FW");
     }
 
     //обновление таблицы
@@ -65,7 +65,7 @@ public class FW {
 
     //получаем id категории  работы из FW
     public static long getCatId_FW(SQLiteDatabase db, long file_id, long id) {
-        Log.i(TAG, "TableControllerSmeta.getCateIdFWFM ... ");
+        Log.i(TAG, "FW.getCateIdFWFM ... ");
 
         long cat_id = -1;
 
@@ -83,7 +83,7 @@ public class FW {
 
     //получаем id типа  работы из FW
     public static long getTypeId_FW(SQLiteDatabase db, long file_id, long id) {
-        Log.i(TAG, "TableControllerSmeta.getTypeIdFWFM ... ");
+        Log.i(TAG, "FW.getTypeIdFWFM ... ");
 
         long type_id = -1;
 
@@ -101,21 +101,21 @@ public class FW {
 
     //удаляем работу из сметы FW по file_id и work_id
     public static void deleteItemFrom_FW(SQLiteDatabase db, long file_id, long id) {
-        Log.i(TAG, "TableControllerSmeta.deleteItemFrom_FW ... ");
+        Log.i(TAG, "FW.deleteItemFrom_FW ... ");
         db.delete(TABLE_NAME, FW_FILE_ID + " =? " + " AND " + FW_WORK_ID + " =? ",
                 new String[]{String.valueOf(file_id), String.valueOf(id)});
     }
 
     //получаем имена   по смете с id файла file_id
     public static String[] getArrayNames(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayNames ... ");
+        Log.i(TAG, "FW.getArrayNames ... ");
 
         String select = " SELECT " + FW_WORK_NAME +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id;
 
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayNames cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayNames cursor.getCount()  " + cursor.getCount());
 
         String[] name = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -129,7 +129,7 @@ public class FW {
 
     //получаем имена   по смете с id файла file_id и id типа type_id
     public static String[] getArrayNamesSelectedType(SQLiteDatabase db, long file_id, long type_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType ... ");
+        Log.i(TAG, "FW.getArrayNamesSelectedType ... ");
 
         String select = " SELECT " + FW_WORK_NAME +
                 " FROM " + TABLE_NAME +
@@ -137,7 +137,7 @@ public class FW {
                 " AND " + FW_TYPE_ID + " = " + type_id;
 
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayNamesSelectedType cursor.getCount()  " + cursor.getCount());
 
         String[] name = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -151,7 +151,7 @@ public class FW {
 
     //вывод в лог всех строк FW
     public void displayTable(SQLiteDatabase db) {
-        Log.i(TAG, "TableControllerSmeta.displayTable ...");
+        Log.i(TAG, "FW.displayTable ...");
         // Создадим и откроем для чтения базу данных
         Cursor cursor = null;
         // Зададим условие для выборки - список столбцов
@@ -227,13 +227,13 @@ public class FW {
 
     //получаем расценки  по смете с id файла file_id
     public static float[] getArrayCost(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayCost ... ");
+        Log.i(TAG, "FW.getArrayCost ... ");
 
         String select = " SELECT " + FW_COST +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayCost cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayCost cursor.getCount()  " + cursor.getCount());
 
         float[] cost = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -247,17 +247,17 @@ public class FW {
 
     //получаем расценки  по смете с id файла file_id и id типа type_id
     public static float[] getArrayCostSelectedType(SQLiteDatabase db, long file_id, long type_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType ... ");
+        Log.i(TAG, "FW.getArrayCostSelectedType ... ");
 
 
-        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType case FW ");
+        Log.i(TAG, "FW.getArrayCostSelectedType case FW ");
         String select = " SELECT " + FW_COST +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id +
                 " AND " + FW_TYPE_ID + " = " + type_id;
 
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayCostSelectedType cursor.getCount()  " + cursor.getCount());
 
         float[] cost = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -271,13 +271,13 @@ public class FW {
 
     //получаем количество работ по смете с id файла file_id
     public static float[] getArrayAmount(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+        Log.i(TAG, "FW.getArrayAmount ... ");
 
         String select = " SELECT " + FW_COUNT +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayAmount cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayAmount cursor.getCount()  " + cursor.getCount());
 
         float[] amount = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -291,14 +291,14 @@ public class FW {
 
     //получаем количество работ  по смете с id файла file_id и id типа type_id
     public static float[] getArrayAmountSelectedType(SQLiteDatabase db, long file_id, long type_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayAmount ... ");
+        Log.i(TAG, "FW.getArrayAmount ... ");
 
         String select = " SELECT " + FW_COUNT +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id +
                 " AND " + FW_TYPE_ID + " = " + type_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayAmountSelectedType cursor.getCount()  " + cursor.getCount());
 
         float[] amount = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -312,13 +312,13 @@ public class FW {
 
     //получаем единицы измерения для  работ  по смете с id файла file_id
     public static String[] getArrayUnit(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayUnit ... ");
+        Log.i(TAG, "FW.getArrayUnit ... ");
 
         String select = " SELECT " + FW_UNIT +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayUnit cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayUnit cursor.getCount()  " + cursor.getCount());
 
         String[] units = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -332,14 +332,14 @@ public class FW {
 
     //получаем единицы измерения для  работ  по смете с id файла file_id
     public static String[] getArrayUnitSelectedType(SQLiteDatabase db, long file_id, long type_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType ... ");
+        Log.i(TAG, "FW.getArrayUnitSelectedType ... ");
 
         String select = " SELECT " + FW_UNIT +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id +
                 " AND " + FW_TYPE_ID + " = " + type_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayUnitSelectedType cursor.getCount()  " + cursor.getCount());
 
         String[] units = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -353,12 +353,12 @@ public class FW {
 
     //получаем список работ по id файла из таблиц FW
     public static String[] getNames_FW(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getMatNamesFM ... ");
+        Log.i(TAG, "FW.getMatNamesFM ... ");
 
         String select = " select DISTINCT " + FW_WORK_NAME +
                 " from " + TABLE_NAME + " where " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getMatNamesFM cursor.getCount()  " + cursor.getCount());
 
         String[] names = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -372,7 +372,7 @@ public class FW {
 
     //получаем список типов по id файла из таблицы FW
     public static String[] getTypeNamesSort(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort ... ");
+        Log.i(TAG, "FW.getTypeNamesSort ... ");
         Cursor cursor = db.query(
                 true,
                 TABLE_NAME,                                 // таблица
@@ -383,7 +383,7 @@ public class FW {
                 null,                  // Don't filter by row groups
                 FW_TYPE_ID,                 // порядок сортировки
                 null);
-        Log.i(TAG, "TableControllerSmeta.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getTypeNamesSort cursor.getCount()  " + cursor.getCount());
         String[] names = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
         while (cursor.moveToNext()) {
@@ -396,13 +396,13 @@ public class FW {
 
     //получаем количество работ  по смете с id файла file_id
     public static float[] getArraySumma(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+        Log.i(TAG, "FW.getArraySumma ... ");
 
         String select = " SELECT " + FW_SUMMA +
                 " FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArraySumma cursor.getCount()  " + cursor.getCount());
 
         float[] summa = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -416,14 +416,14 @@ public class FW {
 
     //получаем количество работ  по смете с id файла file_id
     public static float[] getArraySummaSelectedType(SQLiteDatabase db, long file_id, long type_id) {
-        Log.i(TAG, "TableControllerSmeta.getArraySumma ... ");
+        Log.i(TAG, "FW.getArraySumma ... ");
 
         String select = " SELECT " + FW.FW_SUMMA +
                 " FROM " + FW.TABLE_NAME +
                 " WHERE " + FW.FW_FILE_ID + " = " + file_id +
                 " AND " + FW.FW_TYPE_ID + " = " + type_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArraySumma cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArraySumma cursor.getCount()  " + cursor.getCount());
         float[] summa = new float[cursor.getCount()];
         // Проходим через все строки в курсоре
         while (cursor.moveToNext()) {
@@ -436,7 +436,7 @@ public class FW {
 
     //получаем значение количества работы для сметы с file_id   work_id
     public static float getCount(SQLiteDatabase db, long file_id, long id) {
-        Log.i(TAG, "TableControllerSmeta.getCount ... ");
+        Log.i(TAG, "FW.getCount ... ");
         float count = -1;
 
         String select = " SELECT " + FW_COUNT + " FROM " + TABLE_NAME +
@@ -447,19 +447,19 @@ public class FW {
             // Узнаем индекс столбца и Используем индекс для получения количества работы
             count = cursor.getFloat(cursor.getColumnIndex(FW_COUNT));
         }
-        Log.d(TAG, "TableControllerSmeta getCostById count = " + count);
+        Log.d(TAG, "FW getCostById count = " + count);
         cursor.close();
         return count;
     }
 
     //получаем список категорий по id файла из таблицы FW
     public static String[] getArrayCategory(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getArrayCategory ... ");
+        Log.i(TAG, "FW.getArrayCategory ... ");
 
         String  select = " select DISTINCT " + FW_CATEGORY_NAME +
                 " from " + TABLE_NAME + " where " + FW_FILE_ID + " = " + file_id;
         Cursor  cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getArrayCategory cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getArrayCategory cursor.getCount()  " + cursor.getCount());
 
         String[] categoryNames = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -473,12 +473,12 @@ public class FW {
 
     //получаем список типов по id файла из таблицы FW
     public static String[] getTypeNames(SQLiteDatabase db, long file_id){
-        Log.i(TAG, "TableControllerSmeta.getTypeNames ... ");
+        Log.i(TAG, "FW.getTypeNames ... ");
 
         String select =  " select DISTINCT " + FW_TYPE_NAME +
                         " from " +  TABLE_NAME + " where " +  FW_FILE_ID + " = " + file_id;
         Cursor  cursor = db.rawQuery(select, null);
-        Log.i(TAG, "TableControllerSmeta.getTypeNames cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getTypeNames cursor.getCount()  " + cursor.getCount());
 
         String[] typeNames = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре
@@ -492,7 +492,7 @@ public class FW {
 
     //получаем курсор с именами типов работ
     public static Cursor getTypeNamesStructured(SQLiteDatabase db, long file_id){
-        Log.i(TAG, "TableControllerSmeta.getTypeNamesStructured ... ");
+        Log.i(TAG, "FW.getTypeNamesStructured ... ");
 
         Cursor   cursor = db.query(
                         true,
@@ -504,13 +504,13 @@ public class FW {
                         null,                  // Don't filter by row groups
                         FW_TYPE_ID,                 // порядок сортировки
                         null);
-        Log.i(TAG, "TableControllerSmeta  getTypeNamesStructured.getCount() = " +  cursor.getCount());
+        Log.i(TAG, "FW  getTypeNamesStructured.getCount() = " +  cursor.getCount());
         return cursor;
     }
 
     //получаем курсор с данными сметы с file_id для типа работ с type_id
     public static Cursor getDataSortStructured(SQLiteDatabase db, long file_id, long type_id){
-        Log.i(TAG, "TableControllerSmeta.getDataSortStructured ... ");
+        Log.i(TAG, "FW.getDataSortStructured ... ");
 
         Cursor cursor = db.query(
                         TABLE_NAME,   // таблица
@@ -521,7 +521,7 @@ public class FW {
                         null,                  // Don't filter by row groups
                         FW_WORK_ID);                   // порядок сортировки
 
-        Log.i(TAG, "TableControllerSmeta getDataSortStructured  cursor.getCount() = " + cursor.getCount());
+        Log.i(TAG, "FW getDataSortStructured  cursor.getCount() = " + cursor.getCount());
         return cursor;
     }
 
@@ -531,21 +531,21 @@ public class FW {
     public static long  insertRowInFW(SQLiteDatabase db, long file_id, long work_mat_id,
                                         long type_id, long category_id,  float cost,
                                         float  count, String unit, float summa){
-        Log.i(TAG, "TableControllerSmeta.insertRowInFWFM ... ");
+        Log.i(TAG, "FW.insertRowInFWFM ... ");
         long ID = -1;
 
         //получаем имя файла по его id
         String fileName = FileWork.getNameFromId(db, file_id);
-        Log.i(TAG, "TableControllerSmeta.insertRowInFW fileName =  " + fileName);
+        Log.i(TAG, "FW.insertRowInFW fileName =  " + fileName);
         //получаем имя работы по id работы
         String workName = Work.getNameFromId(db, work_mat_id);
-        Log.i(TAG, "TableControllerSmeta.insertRowInFW workName =  " + workName);
+        Log.i(TAG, "FW.insertRowInFW workName =  " + workName);
         //получаем имя типа работы по id типа работы
         String typeName = TypeWork.getNameFromId(db, type_id);
-        Log.i(TAG, "TableControllerSmeta.insertRowInFW typeName =  " + typeName);
+        Log.i(TAG, "FW.insertRowInFW typeName =  " + typeName);
         //получаем имя категории работы по id категории работы
         String catName = CategoryWork.getNameFromId(db, category_id);
-        Log.i(TAG, "TableControllerSmeta.insertRowInFW catName =  " + catName);
+        Log.i(TAG, "FW.insertRowInFW catName =  " + catName);
 
         ContentValues cv = new ContentValues();
         cv.put(FW_FILE_ID,file_id);
@@ -563,34 +563,34 @@ public class FW {
 
         // вставляем строку
         ID = db.insert(TABLE_NAME, null, cv);
-        Log.d(TAG, "TableControllerSmeta.insertRowInFW  FW._ID = " + ID);
+        Log.d(TAG, "FW.insertRowInFW  FW._ID = " + ID);
         return ID;
     }
 
     //получаем количество строк  с типом FW_WORK_ID
     public static int getCountLine(SQLiteDatabase db, long id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "FW.getCountLine ... ");
 
         String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + FW_WORK_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "FW.getCountLine count = " + count);
         cursor.close();
         return count;
     }
 
     //получаем количество строк  с типом FW_WORK_ID
     public static int getCountLineInFileWork(SQLiteDatabase db, long file_id){
-        Log.i(TAG, "TableControllerSmeta.getCountLine ... ");
+        Log.i(TAG, "FW.getCountLine ... ");
 
         String   select = " SELECT " + _ID + " FROM " + TABLE_NAME +
                 " where " + FW_FILE_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id)});
 
         int count = cursor.getCount();
-        Log.i(TAG, "TableControllerSmeta.getCountLine count = " + count);
+        Log.i(TAG, "FW.getCountLine count = " + count);
         cursor.close();
         return count;
     }
@@ -601,7 +601,7 @@ public class FW {
     public static void updateRowInFW(SQLiteDatabase db, long file_id,
                                      long id, float cost, String unit,
                                      float count, float summa){
-        Log.i(TAG, "TableControllerSmeta.updateRowInFW ... ");
+        Log.i(TAG, "FW.updateRowInFW ... ");
 
         ContentValues cv = new ContentValues();
         cv.put(FW_COST, cost);
@@ -613,17 +613,17 @@ public class FW {
                 FW_FILE_ID + " =? " +" AND " + FW_WORK_ID + " =? ",
                 new String[]{String.valueOf(file_id), String.valueOf(id)});
 
-        Log.i(TAG, "TableControllerSmeta.updateRowInFW - cost =" +
+        Log.i(TAG, "FW.updateRowInFW - cost =" +
                 cost + "  summa = " + summa);
     }
 
     public static boolean isWorkInFW(SQLiteDatabase db, long file_id, long mat_id){
-        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM ... ");
+        Log.i(TAG, "FW.isWorkMatInFWFM ... ");
 
         String select = " SELECT " + FW_WORK_NAME + " FROM " + TABLE_NAME +
                         " where " + FW_FILE_ID + " =? " + " and " + FW_WORK_ID + " =? ";
         Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(file_id),String.valueOf(mat_id)});
-        Log.i(TAG, "TableControllerSmeta.isWorkMatInFWFM cursor.getCount() = " + cursor.getCount());
+        Log.i(TAG, "FW.isWorkMatInFWFM cursor.getCount() = " + cursor.getCount());
 
         if (cursor.getCount() != 0) {
             return true;
@@ -635,7 +635,7 @@ public class FW {
 
     //получаем данные по таблице FW  по  id файла
     public static DataFW[] getDataFW(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "TableControllerSmeta.getDataWork ... ");
+        Log.i(TAG, "FW.getDataWork ... ");
 
         String select = " SELECT  * FROM " + TABLE_NAME +
                 " WHERE " + FW_FILE_ID + " = ? ";
