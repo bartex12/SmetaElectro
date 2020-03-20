@@ -158,6 +158,7 @@ public class SmetasTabRecyclerAdapter extends
                 holder.tvSumma.setText( String.format(Locale.getDefault(),
                         "%s", Float.toString(summa[position-1])));
 
+                // устанавливаем слушатель  нажатий на списке
                 holder.ll_complex.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -1,27 +1,12 @@
 package ru.bartex.smetaelectro.ui.smetas2tabs;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.DetailSmetaLine;
-import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
-import ru.bartex.smetaelectro.whlam.RecyclerAdapter_Test;
+
 
 //класс - фрагмент для вкладки Работа
 public class SmetasTabWork extends AbstrSmetasTab {

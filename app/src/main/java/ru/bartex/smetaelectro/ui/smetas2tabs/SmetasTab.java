@@ -17,7 +17,6 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
