@@ -226,25 +226,27 @@ public class SmetasTabRecyclerAdapter extends
                 }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //вызываем обновлённые параметры чтобы обновление прошло
-                getParams(database, file_id, posTab);
-
-                if (posTab == 0){
-                    //находим id по имени работы
-                    long work_id = Work.getIdFromName(database, name[posItem]);
-                    Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
-                            "file_id = " + file_id + " work_id = " + work_id);
-                    //удаляем пункт сметы из таблицы FW
-                    FW.deleteItemFrom_FW(database, file_id, work_id);
-
-                }else {
-                    //находим id по имени материала
-                    long mat_id = Mat.getIdFromName(database, name[posItem]);
-                    Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
-                            "file_id = " + file_id + " mat_id = " + mat_id);
-                    //удаляем пункт сметы из таблицы FM
-                    FM.deleteItemFrom_FM(database, file_id, mat_id);
+                //вызываем  параметры для открытой вкладки
+                //getParams(database, file_id, posTab);
+                switch (posTab){
+                    case 0:
+                        //находим id по имени работы
+                        long work_id = Work.getIdFromName(database, name[posItem]);
+                        Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
+                                "file_id = " + file_id + " work_id = " + work_id);
+                        //удаляем пункт сметы из таблицы FW
+                        FW.deleteItemFrom_FW(database, file_id, work_id);
+                        break;
+                    case 1:
+                        //находим id по имени материала
+                        long mat_id = Mat.getIdFromName(database, name[posItem]);
+                        Log.d(TAG, "## ## SmetasTabRecyclerAdapter onClick" +
+                                "file_id = " + file_id + " mat_id = " + mat_id);
+                        //удаляем пункт сметы из таблицы FM
+                        FM.deleteItemFrom_FM(database, file_id, mat_id);
+                        break;
                 }
+
                 //вызываем обновлённые параметры чтобы обновление прошло
                getParams(database, file_id, posTab);
                 //обновляем данные списка фрагмента работ

@@ -25,12 +25,11 @@ public class SmetasTabPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void remove(int position){
-       //
+       //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
        Fragment fragment = fragments.get(position);
        switch (position){
            case 0:
                ((SmetasTabWork) fragment).getAdapter().removeElement(position);
-
                break;
            case 1:
                ((SmetasTabMat) fragment).getAdapter().removeElement(position);

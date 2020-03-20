@@ -208,7 +208,6 @@ public class SmetasTab extends AppCompatActivity {
         return true;
     }
 
-    //TODO не раюботает удаление правильно - на материалах крэш
     //обработка для контекстного меню
     private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
@@ -216,12 +215,14 @@ public class SmetasTab extends AppCompatActivity {
             case R.id.menu_delete_smetas_item: {
                 switch (viewPager.getCurrentItem()){
                     case 0:
-                        Toast.makeText(this, " таб 0 ", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, " таб 0 ", Toast.LENGTH_SHORT).show();
+                        //передаём позицию вкладки
                         adapter.remove(0);
                         updateAdapter(0);
                         break;
                     case 1:
-                        Toast.makeText(this, " таб 1 ", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, " таб 1 ", Toast.LENGTH_SHORT).show();
+                        //передаём позицию вкладки
                         adapter.remove(1);
                         updateAdapter(1);
                         break;
