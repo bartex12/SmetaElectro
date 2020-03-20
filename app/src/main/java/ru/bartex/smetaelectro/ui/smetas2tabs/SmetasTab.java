@@ -283,5 +283,4 @@ public class SmetasTab extends AppCompatActivity {
         viewPager.setCurrentItem(currentItem);
         adapter.notifyDataSetChanged();
     }
-
 }
