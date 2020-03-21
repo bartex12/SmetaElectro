@@ -217,13 +217,13 @@ public class SmetasTab extends AppCompatActivity {
                         //Toast.makeText(this, " таб 0 ", Toast.LENGTH_SHORT).show();
                         //передаём позицию вкладки
                         adapter.remove(0);
-                        updateAdapter(0);
+                        updatePageAdapter(0);
                         break;
                     case 1:
                         //Toast.makeText(this, " таб 1 ", Toast.LENGTH_SHORT).show();
                         //передаём позицию вкладки
                         adapter.remove(1);
-                        updateAdapter(1);
+                        updatePageAdapter(1);
                         break;
                 }
                 Log.d(TAG, "ХХ SmetasTab handleMenuItemClick pos = " +
@@ -277,7 +277,7 @@ public class SmetasTab extends AppCompatActivity {
         }
     };
 
-    private void updateAdapter(int currentItem){
+    private void updatePageAdapter(int currentItem){
         //adapter =new  SmetasTabPagerAdapter(getSupportFragmentManager());
        // viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentItem);
