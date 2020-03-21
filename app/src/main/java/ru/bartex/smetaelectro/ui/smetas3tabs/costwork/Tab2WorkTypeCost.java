@@ -16,6 +16,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasTypeFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,48 +36,58 @@ public class Tab2WorkTypeCost extends AbstrSmetasTypeFrag {
         return fragment;
     }
 
+//       @Override
+//    public void updateAdapter() {
+//        Log.d(TAG, "//  Tab2WorkTypeCost updateAdapter // " );
+//
+//        Cursor cursor;
+//        if (isSelectedCat){
+//            Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = true " );
+//            //курсор с именами типов работы для категорий с cat_id
+//            cursor = TypeWork.getNamesFromCatId(database, cat_id);
+//        }else {
+//            Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = false " );
+//            //получаем курсор с названиями типов работ по всем категориям
+//            cursor =TypeWork.getCursorNames(database );
+//        }
+//        //Строковый массив с именами типов из таблицы FW для файла с file_id
+//        String[] typetNamesFW = FW.getTypeNames(database, file_id);
+//
+//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
+//        Log.d(TAG, " Tab2WorkTypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );
+//
+//        while (cursor.moveToNext()){
+//            String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
+//            m =new HashMap<>();
+//            m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
+//            data.add(m);
+//        }
+//        Log.d(TAG, " Tab2WorkTypeCost updateAdapter data.size()  = "+ data.size() );
+//        String[] from = new String[]{P.ATTR_TYPE_MAT_NAME};
+//        int [] to = new int[]{R.id.base_text};
+//
+//        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
+//        listView.setAdapter(sara);
+//    }
+//
+//    @Override
+//    public long getTypeId(String typeName) {
+//        return TypeWork.getIdFromName(database, typeName);
+//    }
+//
+//    @Override
+//    public long getCatId(long type_id) {
+//        return TypeWork.getCatIdFromTypeId(database, type_id);
+//    }
+
     @Override
-    public void updateAdapter() {
-        Log.d(TAG, "//  Tab2WorkTypeCost updateAdapter // " );
-
-        Cursor cursor;
-        if (isSelectedCat){
-            Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = true " );
-            //курсор с именами типов работы для категорий с cat_id
-            cursor = TypeWork.getNamesFromCatId(database, cat_id);
-        }else {
-            Log.d(TAG, "Tab2WorkTypeCost updateAdapter isSelectedCat = false " );
-            //получаем курсор с названиями типов работ по всем категориям
-            cursor =TypeWork.getCursorNames(database );
-        }
-        //Строковый массив с именами типов из таблицы FW для файла с file_id
-        String[] typetNamesFW = FW.getTypeNames(database, file_id);
-
-        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " Tab2WorkTypeCost updateAdapter Всего типов материалов = "+ cursor.getCount() );
-
-        while (cursor.moveToNext()){
-            String tipe_mat_name = cursor.getString(cursor.getColumnIndex(TypeWork.TYPE_NAME));
-            m =new HashMap<>();
-            m.put(P.ATTR_TYPE_MAT_NAME,tipe_mat_name);
-            data.add(m);
-        }
-        Log.d(TAG, " Tab2WorkTypeCost updateAdapter data.size()  = "+ data.size() );
-        String[] from = new String[]{P.ATTR_TYPE_MAT_NAME};
-        int [] to = new int[]{R.id.base_text};
-
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
-        listView.setAdapter(sara);
+    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+        return null;
     }
 
     @Override
-    public long getTypeId(String typeName) {
-        return TypeWork.getIdFromName(database, typeName);
-    }
-
-    @Override
-    public long getCatId(long type_id) {
-        return TypeWork.getCatIdFromTypeId(database, type_id);
+    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return null;
     }
 
     public Tab2WorkTypeCost() {

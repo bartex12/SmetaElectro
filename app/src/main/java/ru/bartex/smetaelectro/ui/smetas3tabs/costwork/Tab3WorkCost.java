@@ -17,16 +17,27 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkMatFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasNameFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab3WorkCost extends AbstrSmetasWorkMatFrag {
+public class Tab3WorkCost extends AbstrSmetasNameFrag {
 
 
     public Tab3WorkCost() {
         // Required empty public constructor
+    }
+
+    @Override
+    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+        return null;
+    }
+
+    @Override
+    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return null;
     }
 
     public static Tab3WorkCost NewInstance(
@@ -42,49 +53,49 @@ public class Tab3WorkCost extends AbstrSmetasWorkMatFrag {
         return fragment;
     }
 
-    @Override
-    public void updateAdapter() {
-        Log.d(TAG, "//  Tab3WorkCost updateAdapter // " );
-        Cursor cursor;
-        if (isSelectedType){
-            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = true " );
-            //Курсор с именами работ с типом type_id
-            cursor =Work.getNamesFromCatId(database, type_id);
-        }else {
-            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
-            //Курсор с именами  всех работ из таблицы Work
-            cursor = Work.getNamesAllTypes(database);
-        }
-        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " Tab3WorkCost updateAdapter Всего материалов = "+ cursor.getCount() );
-
-        while (cursor.moveToNext()){
-            String mat_name = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
-            m =new HashMap<>();
-            m.put(P.ATTR_MAT_NAME, mat_name);
-            data.add(m);
-        }
-        Log.d(TAG, " Tab3WorkCost updateAdapter data.size()  = "+ data.size() );
-        String[] from = new String[]{P.ATTR_MAT_NAME};
-        int [] to = new int[]{R.id.base_text};
-
-        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
-        listView.setAdapter(sara);
-    }
-
-    @Override
-    public void sendIntent(String name) {
-        //находим id по имени работы
-        long work_id = Work.getIdFromName(database, name);
-        //ищем id категории работы, зная id типа
-        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
-
-        Intent intent = new Intent(getActivity(), DetailCost.class);
-        intent.putExtra(P.ID_CATEGORY, cat_id);
-        intent.putExtra(P.ID_TYPE, type_id);
-        intent.putExtra(P.ID_WORK, work_id);
-        startActivity(intent);
-    }
+//    @Override
+//    public void updateAdapter() {
+//        Log.d(TAG, "//  Tab3WorkCost updateAdapter // " );
+//        Cursor cursor;
+//        if (isSelectedType){
+//            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = true " );
+//            //Курсор с именами работ с типом type_id
+//            cursor =Work.getNamesFromCatId(database, type_id);
+//        }else {
+//            Log.d(TAG, "Tab3WorkCost updateAdapter isSelectedType = false " );
+//            //Курсор с именами  всех работ из таблицы Work
+//            cursor = Work.getNamesAllTypes(database);
+//        }
+//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
+//        Log.d(TAG, " Tab3WorkCost updateAdapter Всего материалов = "+ cursor.getCount() );
+//
+//        while (cursor.moveToNext()){
+//            String mat_name = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
+//            m =new HashMap<>();
+//            m.put(P.ATTR_MAT_NAME, mat_name);
+//            data.add(m);
+//        }
+//        Log.d(TAG, " Tab3WorkCost updateAdapter data.size()  = "+ data.size() );
+//        String[] from = new String[]{P.ATTR_MAT_NAME};
+//        int [] to = new int[]{R.id.base_text};
+//
+//        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
+//        listView.setAdapter(sara);
+//    }
+//
+//    @Override
+//    public void sendIntent(String name) {
+//        //находим id по имени работы
+//        long work_id = Work.getIdFromName(database, name);
+//        //ищем id категории работы, зная id типа
+//        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
+//
+//        Intent intent = new Intent(getActivity(), DetailCost.class);
+//        intent.putExtra(P.ID_CATEGORY, cat_id);
+//        intent.putExtra(P.ID_TYPE, type_id);
+//        intent.putExtra(P.ID_WORK, work_id);
+//        startActivity(intent);
+//    }
 
 
 }

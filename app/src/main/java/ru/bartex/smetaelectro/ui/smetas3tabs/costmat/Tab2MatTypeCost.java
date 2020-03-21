@@ -15,6 +15,7 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasTypeFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,43 +34,53 @@ public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
         return fragment;
     }
 
+//    @Override
+//    public void updateAdapter() {
+//        Log.d(TAG, "//  Tab2MatTypeCost updateAdapter // " );
+//        Cursor cursor;
+//        if (isSelectedCat){
+//            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = true " );
+//            //Курсор  с названиями типов материалов для cat_id
+//            cursor = TypeMat.getNamesFromCatId(database, cat_id);
+//        }else{
+//            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = false " );
+//            //получаем курсор с названиями типов материалов по всем категориям
+//            cursor =TypeMat.getCursorNames(database);
+//        }
+//        //Список с данными для адаптера
+//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
+//        while (cursor.moveToNext()) {
+//            //смотрим значение текущей строки курсора
+//            String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
+//            Log.d(TAG, "Tab2MatTypeCost - updateAdapter  name_type = " + name_type);
+//            m = new HashMap<>();
+//            m.put(P.ATTR_TYPE_NAME,name_type);
+//            data.add(m);
+//        }
+//        String[] from = new String[]{P.ATTR_TYPE_NAME};
+//        int[] to = new int[]{R.id.base_text};
+//        sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
+//        listView.setAdapter(sara);
+//    }
+//
+//    @Override
+//    public long getTypeId(String typeName) {
+//        return TypeMat.getIdFromName(database, typeName);
+//    }
+//
+//    @Override
+//    public long getCatId(long type_id) {
+//        return TypeMat.getCatIdFromTypeId(database, type_id);
+//    }
+
     @Override
-    public void updateAdapter() {
-        Log.d(TAG, "//  Tab2MatTypeCost updateAdapter // " );
-        Cursor cursor;
-        if (isSelectedCat){
-            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = true " );
-            //Курсор  с названиями типов материалов для cat_id
-            cursor = TypeMat.getNamesFromCatId(database, cat_id);
-        }else{
-            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = false " );
-            //получаем курсор с названиями типов материалов по всем категориям
-            cursor =TypeMat.getCursorNames(database);
-        }
-        //Список с данными для адаптера
-        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        while (cursor.moveToNext()) {
-            //смотрим значение текущей строки курсора
-            String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-            Log.d(TAG, "Tab2MatTypeCost - updateAdapter  name_type = " + name_type);
-            m = new HashMap<>();
-            m.put(P.ATTR_TYPE_NAME,name_type);
-            data.add(m);
-        }
-        String[] from = new String[]{P.ATTR_TYPE_NAME};
-        int[] to = new int[]{R.id.base_text};
-        sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
-        listView.setAdapter(sara);
+    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+        return null;
     }
 
     @Override
-    public long getTypeId(String typeName) {
-        return TypeMat.getIdFromName(database, typeName);
-    }
-
-    @Override
-    public long getCatId(long type_id) {
-        return TypeMat.getCatIdFromTypeId(database, type_id);
+    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return null;
     }
 
     public Tab2MatTypeCost() {

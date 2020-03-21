@@ -168,4 +168,41 @@ public class CategoryWork {
         Log.d(TAG, "CategoryWork.insertCategory  _id = " + _id);
         return _id;
     }
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayCategoryWorkNames(SQLiteDatabase db) {
+        Log.i(TAG, " ==++== CategoryWork.getArrayCategoryWorkNames ... ");
+
+        String select = " SELECT " + _ID + " , " + CATEGORY_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] categoryNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            categoryNames[position] = cursor.getString(cursor.getColumnIndex(CATEGORY_NAME));
+        }
+        Log.i(TAG, " ==++== CategoryWork... Count = " + cursor.getCount());
+        cursor.close();
+        return categoryNames;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayCategoryWorkChecked(
+            SQLiteDatabase db, long file_id, String[] categoryNames) {
+        Log.i(TAG, " ==++== CategoryWork.getArrayCategoryWorkChecked ... ");
+        String[] catMatNamesFW = FW.getArrayCategory(db, file_id);
+        boolean[] categoryChacked = new boolean[categoryNames.length];
+
+        for (int i = 0; i<categoryNames.length; i++)
+            for (String s : catMatNamesFW) {
+                if (categoryNames[i].equals(s)) {
+                    categoryChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        Log.i(TAG, " ==++== CategoryWork categoryChacked.length  = "+ categoryChacked.length);
+        return categoryChacked;
+    }
 }

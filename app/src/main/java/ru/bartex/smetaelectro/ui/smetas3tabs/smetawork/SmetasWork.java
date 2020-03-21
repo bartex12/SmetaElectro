@@ -67,10 +67,10 @@ public class SmetasWork extends AppCompatActivity implements
 
     @Override
     public void catAndClickTransmit(long cat_id, boolean isSelected) {
-        Log.d(TAG, "//  SmetasWork  catAndClickTransmit  // " );
+        Log.d(TAG, "/***/  SmetasWork  catAndClickTransmit  // " );
         this.isSelectedCat = isSelected;
         this.cat_id = cat_id;
-        Log.d(TAG, "SmetasWork  catAndClickTransmit cat_id =" +
+        Log.d(TAG, "/***/ SmetasWork  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
         //гениально простой способ заставить обновляться соседнюю вкладку
         //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
@@ -78,11 +78,11 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     @Override
-    public void typeAndClickTransmit(long cat_mat_id, long type_mat_id, boolean isSelectedTypeMat) {
+    public void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedTypeMat) {
         Log.d(TAG, "//  SmetasWork  typeAndCatTransmit  // " );
         this.isSelectedType = isSelectedTypeMat;
-        this.type_id = type_mat_id;
-        this.cat_id = cat_mat_id;
+        this.type_id = type_id;
+        this.cat_id = cat_id;
         Log.d(TAG, "SmetasWork  typeAndCatTransmit cat_id ="  +
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
@@ -167,7 +167,7 @@ public class SmetasWork extends AppCompatActivity implements
         //создаём фрагменты
         tab1WorkCat = WorkCat.newInstance(file_id, 0);
         tab2WorkType = WorkType.newInstance(file_id, 1, false, 0);
-        tab3WorkWork = WorkName.newInstance(file_id, 1, false, 0);
+        tab3WorkWork = WorkName.newInstance(file_id, 2, false, 0);
     }
 
     private void initPageAdapter() {
@@ -181,7 +181,7 @@ public class SmetasWork extends AppCompatActivity implements
     private void initViewPager() {
         mViewPager = findViewById(R.id.container_smetas_work);
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
 
         TabLayout tabs = findViewById(R.id.tabs_smetas_work);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
@@ -205,18 +205,6 @@ public class SmetasWork extends AppCompatActivity implements
         toolbar.setTitle(R.string.title_activity_SmetasWork);
         toolbar.setTitleTextColor(Color.GREEN);
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Log.d(TAG, " ))))))))SmetasWork  onResume((((((((");
-//        //добираемся до списка фрагмента ___________пока нет в onPrepareOptionsMenu тоже вызывает ошибку_____________
-//        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
-//        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-//        Log.d(TAG, " SmetasWork  onResume mViewPager.getCurrentItem() = " +
-//                mViewPager.getCurrentItem() + "  view = " + view );
-//
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -617,8 +605,8 @@ public class SmetasWork extends AppCompatActivity implements
 
 
     private void updateAdapter(int currentItem){
-    adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
-    mViewPager.setAdapter(adapter);
+    //adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
+    //mViewPager.setAdapter(adapter);
     mViewPager.setCurrentItem(currentItem);
     adapter.notifyDataSetChanged();
     }

@@ -15,6 +15,7 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCatFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,32 +37,41 @@ public class Tab1WorkCatCost extends AbstrSmetasCatFrag {
         return fragment;
     }
 
-    @Override
-    public void updateAdapter() {
-        Log.d(TAG, "//  Tab1WorkCatCost updateAdapter // " );
-        //Курсор с именами категорий из таблицы категорий CategoryMat
-        Cursor cursor = CategoryWork.getCursorNames(database);
-        //Список с данными для адаптера
-        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-        Log.d(TAG, " Tab1WorkCatCost updateAdapter Всего категорий  = "+ cursor.getCount() );
-        while (cursor.moveToNext()) {
-            //смотрим значение текущей строки курсора
-            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
-            m = new HashMap<>();
-            m.put(P.ATTR_CATEGORY_NAME,name_cat);
-            data.add(m);
-        }
-        Log.d(TAG, " Tab1WorkCatCost updateAdapter data.size()  = "+ data.size() );
-        String[] from = new String[]{P.ATTR_CATEGORY_NAME};
-        int[] to = new int[]{R.id.base_text};
+//    @Override
+//    public void updateAdapter() {
+//        Log.d(TAG, "//  Tab1WorkCatCost updateAdapter // " );
+//        //Курсор с именами категорий из таблицы категорий CategoryMat
+//        Cursor cursor = CategoryWork.getCursorNames(database);
+//        //Список с данными для адаптера
+//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
+//        Log.d(TAG, " Tab1WorkCatCost updateAdapter Всего категорий  = "+ cursor.getCount() );
+//        while (cursor.moveToNext()) {
+//            //смотрим значение текущей строки курсора
+//            String name_cat = cursor.getString(cursor.getColumnIndex(CategoryWork.CATEGORY_NAME));
+//            m = new HashMap<>();
+//            m.put(P.ATTR_CATEGORY_NAME,name_cat);
+//            data.add(m);
+//        }
+//        Log.d(TAG, " Tab1WorkCatCost updateAdapter data.size()  = "+ data.size() );
+//        String[] from = new String[]{P.ATTR_CATEGORY_NAME};
+//        int[] to = new int[]{R.id.base_text};
+//
+//        sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
+//        listView.setAdapter(sara);
+//    }
 
-        sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
-        listView.setAdapter(sara);
+//    @Override
+//    public long getCatId(String catName) {
+//        return CategoryWork.getIdFromName(database, catName);
+//    }
+
+    @Override
+    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+        return null;
     }
 
     @Override
-    public long getCatId(String catName) {
-        return CategoryWork.getIdFromName(database, catName);
+    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return null;
     }
-
 }

@@ -3,7 +3,6 @@ package ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,20 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 public abstract class AbstrSmetasCatFrag extends Fragment {
@@ -33,30 +24,26 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
     public ListView listView;
     public long file_id;
     public int position;
-    public SimpleAdapter sara;
-    public ArrayList<Map<String, Object>> data;
-    public Map<String, Object> m;
+
 
     public SQLiteDatabase database;
     public RecyclerView  recyclerView;
     public SmetasCatRecyclerAdapter adapter;
-    private OnClickCatListener onClickCatListener;
-
-    //public abstract  void updateAdapter();
-    //public abstract  long getCatId(String catName);
+    public OnClickCatListener onClickCatListener;
 
     public interface OnClickCatListener{
         void catAndClickTransmit(long cat_id, boolean isSelectedCat);
     }
 
     public abstract SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter();
-    public abstract SmetasCatRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener();
+    public abstract SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.d(TAG, "//  AbstrSmetasCatFrag onAttach // " );
+        //передаём ссылку на активити, котрая реализует этот интерфейс
         onClickCatListener = (OnClickCatListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
@@ -74,35 +61,8 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "//  AbstrSmetasCatFrag onCreateView // " );
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_work_cat, container, false);
-
-//        // Inflate the layout for this fragment
-//        View view = inflater.inflate(
-//                R.layout.fragment_tabs_for_works_and_materials, container, false);
-//        listView = view.findViewById(R.id.listViewFragmentTabs);
-//
-//        //находим View, которое выводит текст Список пуст
-//        View empty = view.findViewById(android.R.id.empty);
-//        TextView tvEmpty = (TextView)empty;
-//        tvEmpty.setText(R.string.list_empty_tab);
-//        listView.setEmptyView(empty);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d(TAG, "//  AbstrSmetasCatFrag onItemClick // " );
-//                TextView tv_smeta_item = view.findViewById(R.id.base_text);
-//                String smeta_item_name = tv_smeta_item.getText().toString();
-//
-//                long cat_id = getCatId(smeta_item_name);
-//                Log.d(TAG, "AbstrSmetasCatFrag onItemClick  cat_id = " + cat_id);
-//
-//                onClickCatListener.catAndClickTransmit(cat_id, true);
-//            }
-//        });
-//        return view;
     }
 
     @Override
@@ -112,16 +72,6 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "//  AbstrSmetasCatFrag onResume // " );
-        //updateAdapter();
-
-//        //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
-//        registerForContextMenu(listView);
     }
 
     @Override
@@ -138,9 +88,9 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
         //абстр метод - реализация в каждом фрагменте
         adapter = getSmetasCatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasCatRecyclerAdapter.OnClickOnLineListener listener =
-                getOnClickOnLineListener();
-        adapter.setClickOnLineListener(listener);
+        SmetasCatRecyclerAdapter.OnClickOnNamekListener listener =
+                getOnClickOnNamekListener();
+        adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
 

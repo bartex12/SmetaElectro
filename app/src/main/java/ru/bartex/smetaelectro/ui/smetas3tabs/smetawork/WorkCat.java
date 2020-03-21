@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCatFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
@@ -40,12 +42,30 @@ public class WorkCat extends AbstrSmetasCatFrag {
 
     @Override
     public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
-        return null;
+        Log.d(TAG, "//  WorkCat getSmetasCatRecyclerAdapter file_id =  "  + file_id );
+        return new SmetasCatRecyclerAdapter(
+                database, file_id, 0, false,0, false, 0);
     }
 
     @Override
-    public SmetasCatRecyclerAdapter.OnClickOnLineListener getOnClickOnLineListener() {
-        return null;
+    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return new SmetasCatRecyclerAdapter.OnClickOnNamekListener() {
+            @Override
+            public void nameTransmit(String name) {
+                Log.d(TAG, "//  WorkCat nameTransmit name =  "  + name );
+                Toast.makeText(getActivity(), " щелчок на списке категорий ",
+                        Toast.LENGTH_SHORT).show();
+                long cat_id = CategoryWork.getIdFromName(database, name);
+                Log.d(TAG, "//  WorkCat nameTransmit cat_id =  "  + cat_id );
+
+                adapter.updateRecyclerAdapter(database, file_id,1,true,
+                        cat_id, false, 0 );
+                adapter.notifyDataSetChanged();
+
+                onClickCatListener.catAndClickTransmit(cat_id, true);
+
+            }
+        };
     }
 
 

@@ -289,4 +289,81 @@ public class Work {
         return count;
     }
 
+    //получаем массив строк  с названиями  работ по WORK_TYPE_ID
+    public static String[] getArrayWorkNamesFromtypeId(SQLiteDatabase db, long type_id) {
+        Log.i(TAG, "Work.getArrayWorkNamesFromtypeId ... ");
+
+        String  select = " SELECT " + _ID + " , " + WORK_TYPE_ID + " , " +
+                WORK_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + WORK_TYPE_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(type_id)});
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(WORK_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем массив строк  с названиями  работ по WORK_TYPE_ID
+    public static String[] getArrayWorkNamesFromCatId(SQLiteDatabase db, long cat_id) {
+        Log.i(TAG, "Work.getArrayWorkNamesFromCatId ... ");
+
+        String  select = " SELECT " + _ID + " , " + WORK_TYPE_ID + " , " +
+                WORK_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + WORK_TYPE_ID  + " IN " +
+                "(" + " SELECT " + TypeWork._ID +
+                " FROM " + TypeWork.TABLE_NAME +
+                " WHERE " + TypeWork.TYPE_CATEGORY_ID + " = ?" + ")";
+
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(cat_id)});
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(WORK_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayWorkNames(SQLiteDatabase db) {
+        Log.i(TAG, "Work.getArrayWorkNames ... ");
+
+        String select =  " SELECT " + _ID + " , " +
+                WORK_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(WORK_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayWorkChacked(
+            SQLiteDatabase db, long file_id, String[] names) {
+        Log.i(TAG, "Work.getArrayWorkChacked ... ");
+        String[] workNamesFW = FW.getNames_FW(db, file_id);
+        boolean[] workChacked = new boolean[names.length];
+
+        for (int i = 0; i<names.length; i++)
+            for (String s : workNamesFW) {
+                if (names[i].equals(s)) {
+                    workChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        return workChacked;
+    }
 }

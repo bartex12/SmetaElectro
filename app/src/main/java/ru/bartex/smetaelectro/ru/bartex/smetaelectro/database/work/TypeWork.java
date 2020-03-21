@@ -246,4 +246,61 @@ public class TypeWork {
         cursor.close();
         return count;
     }
+
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayTypeWorkNamesFromCatId(SQLiteDatabase db, long cat_id) {
+        Log.i(TAG, "==++== TypeWork.getArrayTypeWorkNamesFromCatId ... ");
+
+        String  select = " SELECT " + _ID + " , " + TYPE_CATEGORY_ID +
+                " , " + TYPE_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + TYPE_CATEGORY_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(cat_id)});
+
+        String[] typeNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(TYPE_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем массив строк  с названиями типов
+    public static String[] getArrayTypeWorkNames(SQLiteDatabase db) {
+        Log.i(TAG, " ==++== TypeWork.getArrayTypeWorkNames ... ");
+
+        String select =  " SELECT " + _ID + " , " + TYPE_CATEGORY_ID +
+                " , " + TYPE_NAME + " FROM " + TABLE_NAME ;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] typeNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(TYPE_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayTypeWorkChacked(
+            SQLiteDatabase db, long file_id, String[] typeNames) {
+        Log.i(TAG, " ==++== TypeWork.getArrayTypeWorkChacked ... ");
+        String[] typeWorkNamesFW = FW.getTypeNames(db, file_id);
+        boolean[] typeChacked = new boolean[typeNames.length];
+
+        for (int i = 0; i<typeNames.length; i++)
+            for (String s : typeWorkNamesFW) {
+                if (typeNames[i].equals(s)) {
+                    typeChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        Log.i(TAG, " ==++== TypeWork typeChacked.length  = "+ typeChacked.length);
+        return typeChacked;
+    }
 }
