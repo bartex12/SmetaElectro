@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.pageadapter;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter;
 
 import java.util.ArrayList;
 

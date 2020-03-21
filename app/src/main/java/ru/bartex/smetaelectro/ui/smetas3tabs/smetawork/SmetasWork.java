@@ -9,11 +9,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +28,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDat
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataWork;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.pageadapter.SmetasWorkPagerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificWork;
