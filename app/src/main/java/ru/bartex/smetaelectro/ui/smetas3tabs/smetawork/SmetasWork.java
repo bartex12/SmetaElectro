@@ -31,6 +31,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDat
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataWork;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.pageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificWork;
@@ -175,9 +176,9 @@ public class SmetasWork extends AppCompatActivity implements
     private void initPageAdapter() {
         //здесь используется вариант  добавления фрагментов из активити
         adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(tab1WorkCat, "Категория" );
-//        adapter.addFragment(tab2WorkType, "Тип" );
-//        adapter.addFragment(tab3WorkWork, "Название" );
+        adapter.addFragment(tab1WorkCat, "Категория" );
+        adapter.addFragment(tab2WorkType, "Тип" );
+        adapter.addFragment(tab3WorkWork, "Название" );
     }
 
     private void initViewPager() {
@@ -544,52 +545,6 @@ public class SmetasWork extends AppCompatActivity implements
         }
         return super.onContextItemSelected(item);
     }
-//
-//    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-//
-//        public SectionsPagerAdapter(FragmentManager fm) {
-//            super(fm);
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//
-//            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
-//            switch (position){
-//                case 0:
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: " );
-//                    WorkCat tab1Category = WorkCat.newInstance(
-//                            file_id,position);
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 0: file_id = " +
-//                            file_id + "  position = " +  position);
-//                    return tab1Category;
-//                case 1:
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/1: " );
-//                    WorkType tab2Type = WorkType.newInstance(
-//                            file_id, position, isSelectedCat, cat_id);
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 1/2: isSelectedCat = " +
-//                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
-//                            "  position = " +  position);
-//                    return tab2Type;
-//                case 2:
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/1: " );
-//                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-//                    WorkName tab3Mat = WorkName.newInstance(
-//                            file_id, position, isSelectedType, type_id);
-//                    Log.d(TAG, "SmetasWork  Fragment getItem case 2/2: isSelectedType = " +
-//                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
-//                            "  position = " +  position);
-//                    return tab3Mat;
-//                default:
-//                    return null;
-//            }
-//        }
-//        @Override
-//        public int getCount() {
-//            // Show 3 total pages.
-//            return 3;
-//        }
-//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -620,48 +575,48 @@ public class SmetasWork extends AppCompatActivity implements
             return false;
         }
     };
-
-    //********************************** PagerAdapter *******************************
-    //PagerAdapter расположен здесь , а не в отдельном классе, чтобы было проще передавать параметры
-    public class SmetasWorkPagerAdapter extends FragmentStatePagerAdapter {
-        SmetasWorkPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
-            Fragment fragment = null;
-            switch (position){
-                case 0:
-                    return WorkCat.newInstance(file_id,position);
-                case 1:
-                    return WorkType.newInstance(file_id, position, isSelectedCat, cat_id);
-                case 2:
-                    return WorkName.newInstance(file_id, position, isSelectedType, type_id);
-                default:
-                    return fragment;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0: return "Категория" ;
-                case 1: return "Тип";
-                case 2: return "Название";
-                default: return "Ошибка";
-            }
-        }
-    }
-    //********************************** end PagerAdapter *******************************
+//
+//    //********************************** PagerAdapter *******************************
+//    //PagerAdapter расположен здесь , а не в отдельном классе, чтобы было проще передавать параметры
+//    public class SmetasWorkPagerAdapter extends FragmentStatePagerAdapter {
+//        SmetasWorkPagerAdapter(@NonNull FragmentManager fm) {
+//            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+//        }
+//
+//        @NonNull
+//        @Override
+//        public Fragment getItem(int position) {
+//            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
+//            Fragment fragment = null;
+//            switch (position){
+//                case 0:
+//                    return WorkCat.newInstance(file_id,position);
+//                case 1:
+//                    return WorkType.newInstance(file_id, position, isSelectedCat, cat_id);
+//                case 2:
+//                    return WorkName.newInstance(file_id, position, isSelectedType, type_id);
+//                default:
+//                    return fragment;
+//            }
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return 3;
+//        }
+//
+//        @Nullable
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            switch (position){
+//                case 0: return "Категория" ;
+//                case 1: return "Тип";
+//                case 2: return "Название";
+//                default: return "Ошибка";
+//            }
+//        }
+//    }
+//    //********************************** end PagerAdapter *******************************
 
 
     private void updateAdapter(int currentItem){
