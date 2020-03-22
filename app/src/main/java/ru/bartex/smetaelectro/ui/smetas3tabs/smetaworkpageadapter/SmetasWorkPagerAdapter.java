@@ -7,8 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabMat;
+import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
@@ -68,6 +71,42 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = getItem(2);
         SmetasMatRecyclerAdapter adapter = ((MatName) fragment).getAdapter();
         adapter.updateName(cat_id, type_id);
+    }
+
+    public void  showDetails(int position){
+        //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
+        Fragment fragment = getItem(position);
+        switch (position){
+            case 0:
+                ((WorkCat) fragment).getAdapter().showDetails(position);
+                break;
+
+            case 1:
+                ((WorkType) fragment).getAdapter().showDetails(position);
+                break;
+
+            case 2:
+                ((WorkName) fragment).getAdapter().showDetails(position);
+                break;
+        }
+    }
+
+    public void  changeName(int position){
+        //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
+        Fragment fragment = getItem(position);
+        switch (position){
+            case 0:
+                ((WorkCat) fragment).getAdapter().changeName(position);
+                break;
+
+            case 1:
+                ((WorkType) fragment).getAdapter().changeName(position);
+                break;
+
+            case 2:
+                ((WorkName) fragment).getAdapter().changeName(position);
+                break;
+        }
     }
 
 }

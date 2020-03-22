@@ -64,7 +64,7 @@ public class SmetasMat extends AppCompatActivity implements
     private Fragment tab1MatCat, tab2MatType, tab3MatWork ;
 
     Menu menu;
-    
+
     private ViewPager mViewPager;
 
     @Override
