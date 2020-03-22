@@ -58,7 +58,9 @@ public class SmetasTab extends AppCompatActivity {
         initBottomNavigation();
         initToolbar();
         initFab();
-        // фрагменты, адаптер, ViewPager инициализируются в onResume,
+        // фрагменты инициализируются здесь, чтобы не менять их при возврате из смет
+        createTabFrags();
+        // адаптер, ViewPager инициализируются в onResume,
         // чтобы при возврате на SmetasTab происходило обновление пунктов списка
     }
 
@@ -66,7 +68,7 @@ public class SmetasTab extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        createTabFrags();
+
         initPageAdapter();
         initViewPager();
         Log.d(TAG, "// SmetasTab - onResume //currentTabItem = " + viewPager.getCurrentItem());
