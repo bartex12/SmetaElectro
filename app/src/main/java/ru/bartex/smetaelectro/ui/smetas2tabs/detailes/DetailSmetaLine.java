@@ -75,7 +75,7 @@ public class DetailSmetaLine extends AppCompatActivity {
 
         Log.d(TAG, "DetailSmetaLine - onCreate  file_id = " + file_id +
                 "  cat_id = " + cat_id + "  type_id = " + type_id + "  work_id = " + work_id +
-                "isWork" + isWork);
+                " isWork = " + isWork);
 
         //выводим название работы
         mTextViewWorkName = findViewById(R.id.tv_cost_workName);

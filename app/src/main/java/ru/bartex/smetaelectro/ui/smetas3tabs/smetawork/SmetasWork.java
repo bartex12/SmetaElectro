@@ -138,15 +138,17 @@ public class SmetasWork extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas_work);
-
+        Log.d(TAG, "//SmetasWork-onCreate");
         initDB();
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
-        Log.d(TAG, " ))))))))SmetasWork  onCreate((((((((  file_id = " +  file_id);
+        Log.d(TAG, "//SmetasWork  onCreate file_id = " +  file_id);
 
         initBottomNavigation();
         initToolbar();
-        // фрагменты, адаптер, ViewPager инициализируются в onResume,
+        // фрагменты инициализируются здесь, чтобы не менять их при возврате из деталей
+        createTabFrags();
+        // адаптер, ViewPager инициализируются в onResume,
         // чтобы при возврате на SmetasWork из деталей происходило обновление пунктов списка
     }
 
@@ -154,7 +156,6 @@ public class SmetasWork extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "//SmetasWork-onResume");
-        createTabFrags();
         initPageAdapter();
         initViewPager();
         Log.d(TAG, "//SmetasWork-onResume currentTabItem = " + mViewPager.getCurrentItem());
@@ -167,6 +168,7 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     private void createTabFrags() {
+        //Log.d(TAG, "//SmetasWork-createTabFrags");
         //создаём фрагменты
         tab1WorkCat = WorkCat.newInstance(file_id, 0);
         tab2WorkType = WorkType.newInstance(file_id, 1, false, 0);
@@ -174,6 +176,7 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     private void initPageAdapter() {
+        //Log.d(TAG, "//SmetasWork-initPageAdapter");
         //здесь используется вариант  добавления фрагментов из активити
         adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(tab1WorkCat, "Категория" );
@@ -182,6 +185,7 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     private void initViewPager() {
+       // Log.d(TAG, "//SmetasWork-initViewPager");
         mViewPager = findViewById(R.id.container_smetas_work);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);

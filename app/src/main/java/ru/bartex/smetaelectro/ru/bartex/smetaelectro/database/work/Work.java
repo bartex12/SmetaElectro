@@ -201,6 +201,28 @@ public class Work {
         return currentID;
     }
 
+    //получаем id работы по имени
+    public static long getTypeIdFromName(SQLiteDatabase db, String name) {
+        Log.i(TAG, "Work.getTypeIdFromName ... ");
+        long type_id = -1;
+        Cursor cursor = db.query(
+                TABLE_NAME,                     // таблица
+                new String[]{WORK_TYPE_ID},            // столбцы
+                WORK_NAME + "=?",    // столбцы для условия WHERE
+                new String[]{name},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if (cursor.moveToFirst()) {
+            // получаем id по индексу
+            type_id = cursor.getLong(cursor.getColumnIndex(WORK_TYPE_ID));
+        }
+        cursor.close();
+        return type_id;
+    }
+
+
     //получаем имя работы по её id
     public static String getNameFromId(SQLiteDatabase db, long id) {
         Log.i(TAG, "Work getNameFromId... ");

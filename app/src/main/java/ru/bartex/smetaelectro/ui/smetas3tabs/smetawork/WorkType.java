@@ -77,9 +77,6 @@ public class WorkType extends AbstrSmetasTypeFrag {
                 long type_id = TypeWork.getIdFromName(database, name);
                 long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
                 Log.d(TAG, "WorkType nameTransmit  cat_id = " +cat_id + "  type_id = " + type_id);
-//                adapter.updateRecyclerAdapter(database, file_id,2,true,
-//                        cat_id, true, type_id );
-//                adapter.notifyDataSetChanged();
 
                 onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
             }

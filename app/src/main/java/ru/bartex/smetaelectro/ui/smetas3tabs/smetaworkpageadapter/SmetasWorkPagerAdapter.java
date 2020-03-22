@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
 public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
 
@@ -45,12 +46,14 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
 
     public void updateType(long cat_id){
         Fragment fragment = getItem(1);
-        ((WorkType) fragment).getAdapter().updateType(cat_id);
+        SmetasCatRecyclerAdapter adapter = ((WorkType) fragment).getAdapter();
+        adapter.updateType(cat_id);
     }
 
     public void updateName(long cat_id, long type_id){
         Fragment fragment = getItem(2);
-        ((WorkName) fragment).getAdapter().updateName(cat_id, type_id);
+        SmetasCatRecyclerAdapter adapter = ((WorkName) fragment).getAdapter();
+        adapter.updateName(cat_id, type_id);
     }
 
 }

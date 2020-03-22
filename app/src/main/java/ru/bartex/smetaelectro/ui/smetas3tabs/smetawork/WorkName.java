@@ -79,14 +79,16 @@ public class WorkName extends AbstrSmetasNameFrag {
     private void sendIntent(String name) {
         //находим id работы по имени работы
         final long work_id = Work.getIdFromName(database, name);
-        Log.d(TAG, "WorkName - onItemClick  work_id = " + work_id +
-                "  work_name = " + name);
+        Log.d(TAG, "WorkName - onItemClick  work_id = " + work_id + " work_name = " + name);
+        //находим id типа работы по имени работы
+        long type_id = Work.getTypeIdFromName(database, name);
+        Log.d(TAG, "WorkName - onItemClick  type_id = " + type_id);
+        //ищем id категории работы, зная id типа
+        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
+        Log.d(TAG, "WorkName - onItemClick  cat_id = " + cat_id);
         // проверяем есть ли такая  работа в FW для файла с file_id
         final boolean isWork = FW.isWorkInFW(database, file_id, work_id);
         Log.d(TAG, "WorkName - onItemClick  isWork = " + isWork);
-
-        //ищем id категории работы, зная id типа
-        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), DetailSmetaLine.class);
         intent.putExtra(P.ID_FILE_DEFAULT, file_id);
