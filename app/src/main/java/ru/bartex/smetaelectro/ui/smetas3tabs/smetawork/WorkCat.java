@@ -26,7 +26,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatR
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkCat extends AbstrSmetasCatFrag {
+public class WorkCat extends AbstrSmetasFrag {
 
 
     public WorkCat() {
@@ -43,14 +43,14 @@ public class WorkCat extends AbstrSmetasCatFrag {
         return fragment;
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG, "//  AbstrSmetasCatFrag onCreate // " );
-//        file_id = getArguments().getLong(P.ID_FILE);
-//        position = getArguments().getInt(P.TAB_POSITION);
-//        Log.d(TAG, "AbstrSmetasCatFrag onCreate file_id = " + file_id );
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "//  AbstrSmetasCatFrag onCreate // " );
+        file_id = getArguments().getLong(P.ID_FILE);
+        position = getArguments().getInt(P.TAB_POSITION);
+        Log.d(TAG, "AbstrSmetasCatFrag onCreate file_id = " + file_id );
+    }
 
     @Override
     public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {

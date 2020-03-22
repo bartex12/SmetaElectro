@@ -26,10 +26,10 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatR
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkType extends AbstrSmetasTypeFrag {
+public class WorkType extends AbstrSmetasFrag {
 
-//    public boolean isSelectedCat;
-//    public long cat_id;
+    public boolean isSelectedCat;
+    public long cat_id;
 
     public static WorkType newInstance(
             long file_id, int position, boolean isSelectedCat, long cat_id){
@@ -48,15 +48,15 @@ public class WorkType extends AbstrSmetasTypeFrag {
         // Required empty public constructor
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG, "//  AbstrSmetasTypeFrag onCreate // " );
-//        file_id = getArguments().getLong(P.ID_FILE);
-//        position = getArguments().getInt(P.TAB_POSITION);
-//        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
-//        cat_id = getArguments().getLong(P.ID_CATEGORY);
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "//  AbstrSmetasTypeFrag onCreate // " );
+        file_id = getArguments().getLong(P.ID_FILE);
+        position = getArguments().getInt(P.TAB_POSITION);
+        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
+        cat_id = getArguments().getLong(P.ID_CATEGORY);
+    }
 
     @Override
     public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {

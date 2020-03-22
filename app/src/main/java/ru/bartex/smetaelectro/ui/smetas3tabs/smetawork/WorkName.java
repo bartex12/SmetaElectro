@@ -21,10 +21,10 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatR
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkName extends AbstrSmetasNameFrag {
+public class WorkName extends AbstrSmetasFrag {
 
-//    public boolean isSelectedType;
-//    public long type_id;
+    public boolean isSelectedType;
+    public long type_id;
 
     public WorkName() {
         // Required empty public constructor
@@ -43,17 +43,17 @@ public class WorkName extends AbstrSmetasNameFrag {
         return fragment;
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG, "//  AbstrSmetasNameFrag onCreate // " );
-//        file_id = getArguments().getLong(P.ID_FILE);
-//        position = getArguments().getInt(P.TAB_POSITION);
-//        isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
-//        type_id = getArguments().getLong(P.ID_TYPE);
-//        Log.d(TAG, "AbstrSmetasNameFrag onCreate isSelectedType = " + isSelectedType +
-//                " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "//  AbstrSmetasNameFrag onCreate // " );
+        file_id = getArguments().getLong(P.ID_FILE);
+        position = getArguments().getInt(P.TAB_POSITION);
+        isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
+        type_id = getArguments().getLong(P.ID_TYPE);
+        Log.d(TAG, "AbstrSmetasNameFrag onCreate isSelectedType = " + isSelectedType +
+                " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
+    }
 
     @Override
     public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
