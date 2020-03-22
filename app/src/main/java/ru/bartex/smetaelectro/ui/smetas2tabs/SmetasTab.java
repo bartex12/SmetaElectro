@@ -216,16 +216,17 @@ public class SmetasTab extends AppCompatActivity {
             case R.id.menu_delete_smetas_item: {
                 switch (viewPager.getCurrentItem()){
                     case 0:
-                        //Toast.makeText(this, " таб 0 ", Toast.LENGTH_SHORT).show();
                         //передаём позицию вкладки
                         adapter.remove(0);
-                        updatePageAdapter(0);
+                        viewPager.setCurrentItem(0);
+                        adapter.notifyDataSetChanged();
                         break;
+
                     case 1:
-                        //Toast.makeText(this, " таб 1 ", Toast.LENGTH_SHORT).show();
                         //передаём позицию вкладки
                         adapter.remove(1);
-                        updatePageAdapter(1);
+                        viewPager.setCurrentItem(1);
+                        adapter.notifyDataSetChanged();
                         break;
                 }
                 Log.d(TAG, "ХХ SmetasTab handleMenuItemClick pos = " +

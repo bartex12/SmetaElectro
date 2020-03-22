@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,19 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
 
-public abstract class AbstrSmetasFrag extends Fragment {
+public abstract class AbstrSmetasMatFrag extends Fragment {
 
     public static final String TAG = "33333";
-    public ListView listView;
     public long file_id;
     public int position;
 
 
     public SQLiteDatabase database;
-    public RecyclerView  recyclerView;
-    public SmetasWorkRecyclerAdapter adapter;
+    public RecyclerView recyclerView;
+    public SmetasMatRecyclerAdapter adapter;
     public OnClickCatListener onClickCatListener;
     public OnClickTypekListener onClickTypeListener;
 
@@ -40,14 +38,13 @@ public abstract class AbstrSmetasFrag extends Fragment {
         void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
     }
 
-    public abstract SmetasWorkRecyclerAdapter getSmetasCatRecyclerAdapter();
-    public abstract SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
-
+    public abstract SmetasMatRecyclerAdapter getSmetasMatRecyclerAdapter();
+    public abstract SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  AbstrSmetasFrag onAttach // " );
+        Log.d(TAG, "//  AbstrSmetasMatFrag onAttach // " );
         //передаём ссылку на активити, котрая реализует этот интерфейс
         onClickCatListener = (OnClickCatListener)context;
         onClickTypeListener = (OnClickTypekListener)context;
@@ -65,7 +62,7 @@ public abstract class AbstrSmetasFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrSmetasFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasMatFrag onViewCreated // " );
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
@@ -75,7 +72,7 @@ public abstract class AbstrSmetasFrag extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        Log.d(TAG, "--------  AbstrSmetasFrag onDestroy -------" );
+        Log.d(TAG, "--------  AbstrSmetasMatFrag onDestroy -------" );
     }
 
     private void initRecycler(View view) {
@@ -83,15 +80,15 @@ public abstract class AbstrSmetasFrag extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         //абстр метод - реализация в каждом фрагменте
-        adapter = getSmetasCatRecyclerAdapter();
+        adapter = getSmetasMatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasWorkRecyclerAdapter.OnClickOnNamekListener listener =
+        SmetasMatRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
 
-    public SmetasWorkRecyclerAdapter getAdapter() {
+    public SmetasMatRecyclerAdapter getAdapter() {
         return adapter;
     }
 }

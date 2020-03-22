@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag;
+package ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit;
 
 
 import android.content.Context;

@@ -7,13 +7,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -27,14 +23,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataCategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataTypeMat;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificMat;
@@ -53,11 +47,9 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasTypeFrag;
 
 public class SmetasMat extends AppCompatActivity implements
-        AbstrSmetasTypeFrag.OnClickTypekListener, AbstrSmetasCatFrag.OnClickCatListener,
+        AbstrSmetasMatFrag.OnClickTypekListener, AbstrSmetasMatFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";
@@ -72,8 +64,7 @@ public class SmetasMat extends AppCompatActivity implements
     private Fragment tab1MatCat, tab2MatType, tab3MatWork ;
 
     Menu menu;
-
-    //private SectionsPagerAdapter mSectionsPagerAdapter;
+    
     private ViewPager mViewPager;
 
     @Override
