@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter;
+package ru.bartex.smetaelectro.w_hlam;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -15,9 +15,6 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class SmetasMatRecyclerAdapter extends
         RecyclerView.Adapter<SmetasMatRecyclerAdapter.ViewHolder> {
@@ -26,8 +23,8 @@ public class SmetasMatRecyclerAdapter extends
     public static final String TAG = "33333";
     private OnClickOnNamekListener nameListener;
     private SQLiteDatabase database;
-    long file_id;
-    int positionTab;
+    private long file_id;
+    private int positionTab;
 
     private String[] names;
     private boolean[] checked;

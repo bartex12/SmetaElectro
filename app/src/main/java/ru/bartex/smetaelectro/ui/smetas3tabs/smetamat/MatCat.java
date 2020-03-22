@@ -10,7 +10,8 @@ import android.util.Log;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,16 +43,16 @@ public class MatCat extends AbstrSmetasMatFrag {
     }
 
     @Override
-    public SmetasMatRecyclerAdapter getSmetasMatRecyclerAdapter() {
+    public SmetasWorkRecyclerAdapter getSmetasMatRecyclerAdapter() {
 
         Log.d(TAG, "//  MatCat getSmetasCatRecyclerAdapter file_id =  "  + file_id );
-        return new SmetasMatRecyclerAdapter(
-                database, file_id, position, false,0, false, 0);
+        return new SmetasWorkRecyclerAdapter(
+                database, Kind.MAT, file_id, position, false,0, false, 0);
     }
 
     @Override
-    public SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return new SmetasMatRecyclerAdapter.OnClickOnNamekListener() {
+    public SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return new SmetasWorkRecyclerAdapter.OnClickOnNamekListener() {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  MatCat nameTransmit name =  "  + name );

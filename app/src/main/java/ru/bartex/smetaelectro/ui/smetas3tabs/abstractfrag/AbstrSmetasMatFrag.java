@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 public abstract class AbstrSmetasMatFrag extends Fragment {
 
@@ -26,7 +26,7 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
 
     public SQLiteDatabase database;
     public RecyclerView recyclerView;
-    public SmetasMatRecyclerAdapter adapter;
+    public SmetasWorkRecyclerAdapter adapter;
     public OnClickCatListener onClickCatListener;
     public OnClickTypekListener onClickTypeListener;
 
@@ -38,8 +38,8 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
         void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
     }
 
-    public abstract SmetasMatRecyclerAdapter getSmetasMatRecyclerAdapter();
-    public abstract SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
+    public abstract SmetasWorkRecyclerAdapter getSmetasMatRecyclerAdapter();
+    public abstract SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
     @Override
     public void onAttach(Context context) {
@@ -82,13 +82,13 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
         //абстр метод - реализация в каждом фрагменте
         adapter = getSmetasMatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasMatRecyclerAdapter.OnClickOnNamekListener listener =
+        SmetasWorkRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
 
-    public SmetasMatRecyclerAdapter getAdapter() {
+    public SmetasWorkRecyclerAdapter getAdapter() {
         return adapter;
     }
 }

@@ -30,6 +30,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDat
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificWork;
@@ -352,63 +353,7 @@ public class SmetasWork extends AppCompatActivity implements
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         handleMenuItemClick(item);
-//        // получаем инфу о пункте списка
-//        final AdapterView.AdapterContextMenuInfo acmi =
-//                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//
-//        int id = item.getItemId();
-//        Log.d(TAG, "SmetasWork onContextItemSelected id = " + id +
-//                " acmi.position = " + acmi.position + " acmi.id = " +acmi.id);
-//
-//        switch (id){
-//            case P.CHANGE_NAME_ID:
-//                Log.d(TAG, "SmetasWork onContextItemSelected case P.CHANGE_NAME_ID");
-//                switch (mViewPager.getCurrentItem()){
-//
-//                    case 0:
-//                        Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 0");
-//                        TextView tvChangCat = acmi.targetView.findViewById(R.id.base_text);
-//                        String cat_name_chang = tvChangCat.getText().toString();
-//                        //находим id категории по имени категории
-//                        long cat_id_Change = CategoryWork.getIdFromName(database, cat_name_chang);
-//                        Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID   case 0" +
-//                                "cat_name_chang = " + cat_name_chang + " cat_id_Change =" + cat_id_Change);
-//                        //отправляем интент с id категории
-//                        Intent intent = new Intent(SmetasWork.this, ChangeDataCategory.class);
-//                        intent.putExtra(P.ID_CATEGORY, cat_id_Change);
-//                        startActivity(intent);
-//                        break;
-//
-//                    case 1:
-//                        Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 1");
-//                        //получаем имя типа из строки списка типов работ
-//                        TextView tvChangType = acmi.targetView.findViewById(R.id.base_text);
-//                        String type_name_chang = tvChangType.getText().toString();
-//                        //находим id по имени типа
-//                        long type_id_Change = TypeWork.getIdFromName(database, type_name_chang);
-//                        Log.d(TAG, "SmetasWork onContextItemSelected  P.CHANGE_NAME_ID case 1" +
-//                                "type_name_chang = " + type_name_chang + " type_id_Change =" + type_id_Change);
-//                        //отправляем интент с id типа
-//                        Intent intentType = new Intent(SmetasWork.this, ChangeDataType.class);
-//                        intentType.putExtra(P.ID_TYPE, type_id_Change);
-//                        startActivity(intentType);
-//                        break;
-//                    case 2:
-//                        Log.d(TAG, "SmetasWork onContextItemSelected P.CHANGE_NAME_ID case 2");
-//                        //получаем имя типа из строки списка типов работ
-//                        TextView tvChangWork = acmi.targetView.findViewById(R.id.base_text);
-//                        String work_name_chang = tvChangWork.getText().toString();
-//                        //находим id по имени работы
-//                        long work_id_Change = Work.getIdFromName(database, work_name_chang);
-//                        Log.d(TAG, "SmetasWork onContextItemSelected P.CHANGE_NAME_ID case 2" +
-//                                "work_name_chang = " + work_name_chang + " work_id_Change =" + work_id_Change);
-//                        //отправляем интент с id работы
-//                        Intent intentWork = new Intent(SmetasWork.this, ChangeDataWork.class);
-//                        intentWork.putExtra(P.ID_WORK, work_id_Change);
-//                        startActivity(intentWork);
-//                        break;
-////                }
-//                return true;
+
 //
 //            case P.DELETE_ID:
 //                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID");
@@ -490,11 +435,11 @@ public class SmetasWork extends AppCompatActivity implements
         int id = item.getItemId();
         switch (id){
             case R.id.menu_detail:
-                adapter.showDetails(mViewPager.getCurrentItem());
+                adapter.showDetails(mViewPager.getCurrentItem(), Kind.WORK);
                 break;
 
             case R.id.menu_change_name:
-                adapter.changeName(mViewPager.getCurrentItem());
+                adapter.changeName(mViewPager.getCurrentItem(), Kind.WORK);
                 break;
 
             case R.id.menu_delete:
@@ -536,49 +481,6 @@ public class SmetasWork extends AppCompatActivity implements
             return false;
         }
     };
-//
-//    //********************************** PagerAdapter *******************************
-//    //PagerAdapter расположен здесь , а не в отдельном классе, чтобы было проще передавать параметры
-//    public class SmetasWorkPagerAdapter extends FragmentStatePagerAdapter {
-//        SmetasWorkPagerAdapter(@NonNull FragmentManager fm) {
-//            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-//        }
-//
-//        @NonNull
-//        @Override
-//        public Fragment getItem(int position) {
-//            Log.d(TAG, " ))))))))SmetasWork Fragment getItem ((((((((");
-//            Fragment fragment = null;
-//            switch (position){
-//                case 0:
-//                    return WorkCat.newInstance(file_id,position);
-//                case 1:
-//                    return WorkType.newInstance(file_id, position, isSelectedCat, cat_id);
-//                case 2:
-//                    return WorkName.newInstance(file_id, position, isSelectedType, type_id);
-//                default:
-//                    return fragment;
-//            }
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return 3;
-//        }
-//
-//        @Nullable
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            switch (position){
-//                case 0: return "Категория" ;
-//                case 1: return "Тип";
-//                case 2: return "Название";
-//                default: return "Ошибка";
-//            }
-//        }
-//    }
-//    //********************************** end PagerAdapter *******************************
-
 
     private void updateAdapter(int currentItem){
     //adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());

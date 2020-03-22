@@ -15,6 +15,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
@@ -58,7 +59,7 @@ public class WorkName extends AbstrSmetasWorkFrag {
     public SmetasWorkRecyclerAdapter getSmetasCatRecyclerAdapter() {
         Log.d(TAG, "//  WorkName getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(
-                database, file_id, position, false,0, isSelectedType, type_id);
+                database, Kind.WORK, file_id, position, false,0, isSelectedType, type_id);
     }
 
     @Override

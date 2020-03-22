@@ -14,7 +14,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.DetailSmetaMatLine;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,21 +58,20 @@ public class MatName extends AbstrSmetasMatFrag {
     }
 
     @Override
-    public SmetasMatRecyclerAdapter getSmetasMatRecyclerAdapter() {
+    public SmetasWorkRecyclerAdapter getSmetasMatRecyclerAdapter() {
         Log.d(TAG, "//  MatName getSmetasCatRecyclerAdapter file_id =  "  + file_id );
-        return new SmetasMatRecyclerAdapter(
-                database, file_id, position, false,0, isSelectedType, type_id);
+        return new SmetasWorkRecyclerAdapter(
+                database, Kind.MAT, file_id, position, false,0, isSelectedType, type_id);
     }
 
     @Override
-    public SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return new SmetasMatRecyclerAdapter.OnClickOnNamekListener() {
+    public SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return new SmetasWorkRecyclerAdapter.OnClickOnNamekListener() {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  MatName nameTransmit name =  "  + name );
 //                Toast.makeText(getActivity(), " щелчок на списке наименований ",
 //                        Toast.LENGTH_SHORT).show();
-
                 sendIntent(name);
             }
         };

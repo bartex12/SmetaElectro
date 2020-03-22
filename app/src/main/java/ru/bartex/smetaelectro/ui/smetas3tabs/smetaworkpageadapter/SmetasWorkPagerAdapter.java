@@ -7,14 +7,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabMat;
-import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabWork;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
@@ -52,59 +51,101 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
     public void updateWorkType(long cat_id){
         Fragment fragment = getItem(1);
         SmetasWorkRecyclerAdapter adapter = ((WorkType) fragment).getAdapter();
-        adapter.updateType(cat_id);
+        adapter.updateWorkType(cat_id);
     }
 
     public void updateWorkName(long cat_id, long type_id){
         Fragment fragment = getItem(2);
         SmetasWorkRecyclerAdapter adapter = ((WorkName) fragment).getAdapter();
-        adapter.updateName(cat_id, type_id);
+        adapter.updateWorkName(cat_id, type_id);
     }
 
     public void updateMatType(long cat_id){
         Fragment fragment = getItem(1);
-        SmetasMatRecyclerAdapter adapter = ((MatType) fragment).getAdapter();
-        adapter.updateType(cat_id);
+        SmetasWorkRecyclerAdapter adapter = ((MatType) fragment).getAdapter();
+        adapter.updateMatType(cat_id);
     }
 
     public void  updateMatName(long cat_id, long type_id){
         Fragment fragment = getItem(2);
-        SmetasMatRecyclerAdapter adapter = ((MatName) fragment).getAdapter();
-        adapter.updateName(cat_id, type_id);
+        SmetasWorkRecyclerAdapter adapter = ((MatName) fragment).getAdapter();
+        adapter.updateMatName(cat_id, type_id);
     }
 
-    public void  showDetails(int position){
+    public void  showDetails(int position, Kind kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
         Fragment fragment = getItem(position);
         switch (position){
             case 0:
-                ((WorkCat) fragment).getAdapter().showDetails(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkCat) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatCat) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        break;
+                }
                 break;
 
             case 1:
-                ((WorkType) fragment).getAdapter().showDetails(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkType) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatType) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        break;
+                }
                 break;
 
             case 2:
-                ((WorkName) fragment).getAdapter().showDetails(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkName) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatName) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        break;
+                }
                 break;
         }
     }
 
-    public void  changeName(int position){
+    public void  changeName(int position, Kind kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
         Fragment fragment = getItem(position);
         switch (position){
             case 0:
-                ((WorkCat) fragment).getAdapter().changeName(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkCat) fragment).getAdapter().changeName(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatCat) fragment).getAdapter().changeName(position, Kind.MAT);
+                        break;
+                }
                 break;
 
             case 1:
-                ((WorkType) fragment).getAdapter().changeName(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkType) fragment).getAdapter().changeName(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatType) fragment).getAdapter().changeName(position, Kind.MAT);
+                        break;
+                }
                 break;
 
             case 2:
-                ((WorkName) fragment).getAdapter().changeName(position);
+                switch (kind){
+                    case WORK:
+                        ((WorkName) fragment).getAdapter().changeName(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatName) fragment).getAdapter().changeName(position, Kind.MAT);
+                        break;
+                }
                 break;
         }
     }
