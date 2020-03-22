@@ -12,10 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,7 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,15 +44,15 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
     public long type_id;
 
     public RecyclerView recyclerView;
-    public SmetasCatRecyclerAdapter adapter;
+    public SmetasMatRecyclerAdapter adapter;
 
 
     public AbstrSmetasNameFrag() {
         // Required empty public constructor
     }
 
-    public abstract SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter();
-    public abstract SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
+    public abstract SmetasMatRecyclerAdapter getSmetasCatRecyclerAdapter();
+    public abstract SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
     @Override
     public void onAttach(Context context) {
@@ -104,12 +103,12 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
         //абстр метод - реализация в каждом фрагменте
         adapter = getSmetasCatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasCatRecyclerAdapter.OnClickOnNamekListener listener =
+        SmetasMatRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
-    public SmetasCatRecyclerAdapter getAdapter() {
+    public SmetasMatRecyclerAdapter getAdapter() {
         return adapter;
     }
 }

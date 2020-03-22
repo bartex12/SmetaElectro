@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 public abstract class AbstrSmetasCatFrag extends Fragment {
 
@@ -28,15 +29,15 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
 
     public SQLiteDatabase database;
     public RecyclerView  recyclerView;
-    public SmetasCatRecyclerAdapter adapter;
+    public SmetasMatRecyclerAdapter adapter;
     public OnClickCatListener onClickCatListener;
 
     public interface OnClickCatListener{
         void catAndClickTransmit(long cat_id, boolean isSelectedCat);
     }
 
-    public abstract SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter();
-    public abstract SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
+    public abstract SmetasMatRecyclerAdapter getSmetasCatRecyclerAdapter();
+    public abstract SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
 
     @Override
@@ -88,13 +89,13 @@ public abstract class AbstrSmetasCatFrag extends Fragment {
         //абстр метод - реализация в каждом фрагменте
         adapter = getSmetasCatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasCatRecyclerAdapter.OnClickOnNamekListener listener =
+        SmetasMatRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
 
-    public SmetasCatRecyclerAdapter getAdapter() {
+    public SmetasMatRecyclerAdapter getAdapter() {
         return adapter;
     }
 }

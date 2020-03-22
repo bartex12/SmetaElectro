@@ -10,6 +10,8 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class Mat {
@@ -172,7 +174,7 @@ public class Mat {
         return dataMat;
     }
 
-    //получаем id по имени
+    //получаем id материала по имени
     public static long getIdFromName(SQLiteDatabase db, String name) {
         Log.i(TAG, "Mat.getIdFromName ... ");
         long currentID = -1;
@@ -188,6 +190,27 @@ public class Mat {
         if (cursor.moveToFirst()) {
             // получаем id по индексу
             currentID = cursor.getLong(cursor.getColumnIndex(_ID));
+        }
+        cursor.close();
+        return currentID;
+    }
+
+    //получаем id типа материала по имени
+    public static long getTypeIdFromName(SQLiteDatabase db, String name) {
+        Log.i(TAG, "Mat.getTypeIdFromName ... ");
+        long currentID = -1;
+        Cursor cursor = db.query(
+                TABLE_NAME,                     // таблица
+                new String[]{MAT_TYPE_ID},            // столбцы
+                MAT_NAME + "=?",    // столбцы для условия WHERE
+                new String[]{name},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if (cursor.moveToFirst()) {
+            // получаем id по индексу
+            currentID = cursor.getLong(cursor.getColumnIndex(MAT_TYPE_ID));
         }
         cursor.close();
         return currentID;
@@ -278,5 +301,83 @@ public class Mat {
         Log.i(TAG, "Mat.getCountLine count = " + count);
         cursor.close();
         return count;
+    }
+
+    //получаем массив строк  с названиями  работ по WORK_TYPE_ID
+    public static String[] getArrayMatNamesFromtypeId(SQLiteDatabase db, long type_id) {
+        Log.i(TAG, "Mat.getArrayMatNamesFromtypeId ... ");
+
+        String  select = " SELECT " + _ID + " , " + MAT_TYPE_ID + " , " +
+                MAT_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + MAT_TYPE_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(type_id)});
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(MAT_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем массив строк  с названиями  работ по WORK_TYPE_ID
+    public static String[] getArrayMatNamesFromCatId(SQLiteDatabase db, long cat_id) {
+        Log.i(TAG, "Mat.getArrayMatNamesFromCatId ... ");
+
+        String  select = " SELECT " + _ID + " , " + MAT_TYPE_ID + " , " +
+                MAT_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + MAT_TYPE_ID  + " IN " +
+                "(" + " SELECT " + TypeWork._ID +
+                " FROM " + TypeWork.TABLE_NAME +
+                " WHERE " + TypeWork.TYPE_CATEGORY_ID + " = ?" + ")";
+
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(cat_id)});
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(MAT_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayMatNames(SQLiteDatabase db) {
+        Log.i(TAG, "Mat.getArrayMatNames ... ");
+
+        String select =  " SELECT " + _ID + " , " +
+                MAT_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] names = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            names[position] = cursor.getString(cursor.getColumnIndex(MAT_NAME));
+        }
+        cursor.close();
+        return names;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayMatChacked(
+            SQLiteDatabase db, long file_id, String[] names) {
+        Log.i(TAG, "Mat.getArrayMatChacked ... ");
+        String[] workNamesFW = FM.getNames_FM(db, file_id);
+        boolean[] workChacked = new boolean[names.length];
+
+        for (int i = 0; i<names.length; i++)
+            for (String s : workNamesFW) {
+                if (names[i].equals(s)) {
+                    workChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        return workChacked;
     }
 }

@@ -32,6 +32,10 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeData
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataTypeMat;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificTypeMat;
@@ -64,9 +68,12 @@ public class SmetasMat extends AppCompatActivity implements
     long cat_id;
 
     private SQLiteDatabase database;
+    private SmetasWorkPagerAdapter adapter;
+    private Fragment tab1MatCat, tab2MatType, tab3MatWork ;
+
     Menu menu;
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    //private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -76,9 +83,10 @@ public class SmetasMat extends AppCompatActivity implements
         this.cat_id = cat_mat_id;
         Log.d(TAG, "SmetasMat  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
-        //гениально простой способ заставить обновляться соседнюю вкладку
-        //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
-        updateAdapter(1);
+
+        adapter. updateMatType(cat_id);
+        mViewPager.setCurrentItem(1);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -91,7 +99,11 @@ public class SmetasMat extends AppCompatActivity implements
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
         // обновляем соседнюю вкладку типов материалов и показываем её
-        updateAdapter(2);
+        //updateAdapter(2);
+
+        adapter. updateMatName(cat_id, type_id);
+        mViewPager.setCurrentItem(2);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -107,7 +119,7 @@ public class SmetasMat extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
                 // обновляем адаптер
-                updateAdapter(0);
+                //updateAdapter(0);
                 break;
 
             case 1:
@@ -119,7 +131,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
                 // обновляем адаптер
-                updateAdapter(1);
+               // updateAdapter(1);
                 break;
 
             case 2:
@@ -131,7 +143,7 @@ public class SmetasMat extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
 
                 // обновляем адаптер
-                updateAdapter(2);
+                //updateAdapter(2);
                 break;
         }
     }
@@ -140,75 +152,79 @@ public class SmetasMat extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas_mat);
+        Log.d(TAG, "//SmetasMat-onCreate");
 
         initDB();
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
-        Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  file_id = " +  file_id);
+        Log.d(TAG, "//SmetasMat  onCreate file_id = " +  file_id);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initBottomNavigation();
+        initToolbar();
+        // фрагменты инициализируются здесь, чтобы не менять их при возврате из деталей
+        createTabFrags();
+        // адаптер, ViewPager инициализируются в onResume,
+        // чтобы при возврате на SmetasWork из деталей происходило обновление пунктов списка
+    }
 
-        Toolbar toolbar = findViewById(R.id.toolbarMat);
-        setSupportActionBar(toolbar);
-        //показываем заголовокмв заголовке экрана
-        toolbar.setTitle(R.string.title_activity_SmetasMat);
-        toolbar.setTitleTextColor(Color.GREEN);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "//SmetasWork-onResume");
+        initPageAdapter();
+        initViewPager();
+        Log.d(TAG, "//SmetasWork-onResume currentTabItem = " + mViewPager.getCurrentItem());
+    }
 
-        //Создаём адаптер для фрагментов
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Привязываем ViewPager к адаптеру
-        mViewPager = findViewById(R.id.containerMat);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        //средняя вкладка открыта
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
+
+    private void initPageAdapter() {
+        //Log.d(TAG, "//SmetasWork-initPageAdapter");
+        //здесь используется вариант  добавления фрагментов из активити
+        adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(tab1MatCat, "Категория" );
+        adapter.addFragment(tab2MatType, "Тип" );
+        adapter.addFragment(tab3MatWork, "Название" );
+    }
+
+    private void initViewPager() {
+        // Log.d(TAG, "//SmetasWork-initViewPager");
+        mViewPager = findViewById(R.id.container_smetas_mat);
+        mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
-       // mViewPager.setOffscreenPageLimit(0);
 
-        TabLayout tabLayout = findViewById(R.id.tabsMat);
-        tabLayout.setTabTextColors(Color.WHITE, Color.GREEN);
-        //добавляем слушатель для tabLayout из трёх вкладок, который добавлен в макет
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-       //добавляем слушатель нажатий на заголовки вкладок
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
-        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-                invalidateOptionsMenu();
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        FloatingActionButton fab = findViewById(R.id.fab_smetas_tab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        //добираемся до списка фрагмента ___________пока нет_____________
-        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
-        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-        Log.d(TAG, " SmetasMat  onCreate mViewPager.getCurrentItem() = " +
-                mViewPager.getCurrentItem() + "  view = " + view );
-        //ListView mListView = view.findViewById(R.id.listViewFragmentTabs);
-        //ListView mListView = mViewPager.getRootView().findViewById(R.id.listViewFragmentTabs);
-        //объявляем о регистрации контекстного меню
-        //registerForContextMenu(mListView);
-        Log.d(TAG, " ))))))))SmetasMat  onCreate((((((((  **************************");
+        TabLayout tabs = findViewById(R.id.tabs_smetas_mat);
+        tabs.setTabTextColors(Color.WHITE, Color.GREEN);
+        tabs.setupWithViewPager(mViewPager);
     }
 
     private void initDB() {
-        //
         database = new SmetaOpenHelper(this).getWritableDatabase();
+    }
+
+    private void initBottomNavigation() {
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_mat);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_smetas_mat);
+        setSupportActionBar(toolbar);
+        //показываем заголовок в toolbar экрана
+        toolbar.setTitle(R.string.title_activity_SmetasMat);
+        toolbar.setTitleTextColor(Color.GREEN);
+    }
+
+    private void createTabFrags() {
+        //Log.d(TAG, "//SmetasWork-createTabFrags");
+        //создаём фрагменты
+        tab1MatCat = MatCat.newInstance(file_id, 0);
+        tab2MatType = MatType.newInstance(file_id, 1, false, 0);
+        tab3MatWork = MatName.newInstance(file_id, 2, false, 0);
     }
 
     @Override
@@ -479,7 +495,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 CategoryMat.deleteObject(database, cat_mat_id);
 
                                 // обновляем соседнюю вкладку типов материалов и показываем её
-                                updateAdapter(0);
+                                //updateAdapter(0);
                                 break;
 
                             case 1:
@@ -498,7 +514,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 isSelectedCat = false;
 
                                 // обновляем соседнюю вкладку типов материалов и показываем её
-                                updateAdapter(0);
+                               // updateAdapter(0);
                                 break;
 
                             case 2:
@@ -519,7 +535,7 @@ public class SmetasMat extends AppCompatActivity implements
                                 isSelectedType = false;
 
                                 // обновляем соседнюю вкладку типов материалов и показываем её
-                                updateAdapter(1);
+                                //updateAdapter(1);
                                 break;
                         }
                     }
@@ -534,51 +550,51 @@ public class SmetasMat extends AppCompatActivity implements
     }
 
 
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
-        SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            Log.d(TAG, " ))))))))SmetasMat Fragment getItem ((((((((");
-            switch (position){
-                case 0:
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
-                    Tab1MatCat tab1Category = Tab1MatCat.NewInstance(file_id,position);
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 0: file_id = " +
-                            file_id + "  position = " +  position);
-                    return tab1Category;
-                case 1:
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/1: " );
-                    Tab2MatType tab2Type = Tab2MatType.NewInstance(
-                            file_id, position, isSelectedCat, cat_id);
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/2: isSelectedCat = " +
-                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
-                            "  position = " +  position);
-                    return tab2Type;
-                case 2:
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
-                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    Tab3Mat tab3Mat = Tab3Mat.NewInstance(
-                            file_id, position, isSelectedType, type_id);
-                    Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
-                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
-                            "  position = " +  position);
-                    return tab3Mat;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-    }
+//    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+//
+//        SectionsPagerAdapter(FragmentManager fm) {
+//            super(fm);
+//        }
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//
+//            Log.d(TAG, " ))))))))SmetasMat Fragment getItem ((((((((");
+//            switch (position){
+//                case 0:
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 0: " );
+//                    MatCat tab1Category = MatCat.NewInstance(file_id,position);
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 0: file_id = " +
+//                            file_id + "  position = " +  position);
+//                    return tab1Category;
+//                case 1:
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/1: " );
+//                    MatType tab2Type = MatType.NewInstance(
+//                            file_id, position, isSelectedCat, cat_id);
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 1/2: isSelectedCat = " +
+//                            isSelectedCat + "  cat_id = " +  cat_id + "  file_id = " +  file_id +
+//                            "  position = " +  position);
+//                    return tab2Type;
+//                case 2:
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 2/1: " );
+//                    //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
+//                    MatName tab3Mat = MatName.NewInstance(
+//                            file_id, position, isSelectedType, type_id);
+//                    Log.d(TAG, "SmetasMat  Fragment getItem case 2/2: isSelectedType = " +
+//                            isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
+//                            "  position = " +  position);
+//                    return tab3Mat;
+//                default:
+//                    return null;
+//            }
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            // Show 3 total pages.
+//            return 3;
+//        }
+//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -610,10 +626,10 @@ public class SmetasMat extends AppCompatActivity implements
         }
     };
 
-    private void updateAdapter(int currentItem){
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(currentItem);
-        mSectionsPagerAdapter.notifyDataSetChanged();
-    }
+//    private void updateAdapter(int currentItem){
+//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+//        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        mViewPager.setCurrentItem(currentItem);
+//        mSectionsPagerAdapter.notifyDataSetChanged();
+//    }
 }

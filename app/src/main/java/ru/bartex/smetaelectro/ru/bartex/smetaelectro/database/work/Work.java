@@ -201,7 +201,7 @@ public class Work {
         return currentID;
     }
 
-    //получаем id работы по имени
+    //получаем id типа работы по имени
     public static long getTypeIdFromName(SQLiteDatabase db, String name) {
         Log.i(TAG, "Work.getTypeIdFromName ... ");
         long type_id = -1;

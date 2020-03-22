@@ -15,8 +15,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasNameFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,15 +55,15 @@ public class WorkName extends AbstrSmetasFrag {
     }
 
     @Override
-    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+    public SmetasWorkRecyclerAdapter getSmetasCatRecyclerAdapter() {
         Log.d(TAG, "//  WorkName getSmetasCatRecyclerAdapter file_id =  "  + file_id );
-        return new SmetasCatRecyclerAdapter(
+        return new SmetasWorkRecyclerAdapter(
                 database, file_id, position, false,0, isSelectedType, type_id);
     }
 
     @Override
-    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return new SmetasCatRecyclerAdapter.OnClickOnNamekListener() {
+    public SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return new SmetasWorkRecyclerAdapter.OnClickOnNamekListener() {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  WorkType nameTransmit name =  "  + name );

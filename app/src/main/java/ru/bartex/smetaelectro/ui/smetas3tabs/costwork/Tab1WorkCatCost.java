@@ -1,21 +1,14 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.costwork;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
-import android.widget.SimpleAdapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasMatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,12 +59,12 @@ public class Tab1WorkCatCost extends AbstrSmetasCatFrag {
 //    }
 
     @Override
-    public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
+    public SmetasMatRecyclerAdapter getSmetasCatRecyclerAdapter() {
         return null;
     }
 
     @Override
-    public SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+    public SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
         return null;
     }
 }

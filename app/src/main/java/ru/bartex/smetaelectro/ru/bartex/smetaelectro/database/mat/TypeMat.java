@@ -10,6 +10,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataTypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 
 public class TypeMat {
     public static final String TAG = "33333";
@@ -247,5 +248,61 @@ public class TypeMat {
         Log.i(TAG, "TypeMat.getCountLine count = " + count);
         cursor.close();
         return count;
+    }
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayTypeMatNamesFromCatId(SQLiteDatabase db, long cat_id) {
+        Log.i(TAG, "==++== TypeMat.getArrayTypeMatNamesFromCatId ... ");
+
+        String  select = " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
+                " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME +
+                " WHERE " + TYPE_MAT_CATEGORY_ID  + " = ?" ;
+        Cursor cursor = db.rawQuery(select, new String[]{String.valueOf(cat_id)});
+
+        String[] typeNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(TYPE_MAT_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем массив строк  с названиями типов
+    public static String[] getArrayTypeMatNames(SQLiteDatabase db) {
+        Log.i(TAG, " ==++== TypeMat.getArrayTypeMatNames ... ");
+
+        String select =  " SELECT " + _ID + " , " + TYPE_MAT_CATEGORY_ID +
+                " , " + TYPE_MAT_NAME + " FROM " + TABLE_NAME ;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] typeNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            typeNames[position] = cursor.getString(cursor.getColumnIndex(TYPE_MAT_NAME));
+        }
+        cursor.close();
+        return typeNames;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayTypeMatChacked(
+            SQLiteDatabase db, long file_id, String[] typeNames) {
+        Log.i(TAG, " ==++== TypeMat.getArrayTypeMatChacked ... ");
+        String[] typeWorkNamesFW = FM.getTypeNames(db, file_id);
+        boolean[] typeChacked = new boolean[typeNames.length];
+
+        for (int i = 0; i<typeNames.length; i++)
+            for (String s : typeWorkNamesFW) {
+                if (typeNames[i].equals(s)) {
+                    typeChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        Log.i(TAG, " ==++== TypeMat typeChacked.length  = "+ typeChacked.length);
+        return typeChacked;
     }
 }

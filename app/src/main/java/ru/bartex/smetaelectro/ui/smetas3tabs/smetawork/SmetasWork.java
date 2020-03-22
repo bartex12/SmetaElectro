@@ -74,7 +74,7 @@ public class SmetasWork extends AppCompatActivity implements
         Log.d(TAG, "/***/ SmetasWork  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
 
-        adapter. updateType(cat_id);
+        adapter. updateWorkType(cat_id);
         mViewPager.setCurrentItem(1);
         adapter.notifyDataSetChanged();
 
@@ -89,7 +89,7 @@ public class SmetasWork extends AppCompatActivity implements
         Log.d(TAG, "SmetasWork  typeAndCatTransmit cat_id ="  +
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
-        adapter. updateName(cat_id, type_id);
+        adapter. updateWorkName(cat_id, type_id);
         mViewPager.setCurrentItem(2);
         adapter.notifyDataSetChanged();
     }
@@ -140,6 +140,7 @@ public class SmetasWork extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smetas_work);
         Log.d(TAG, "//SmetasWork-onCreate");
+
         initDB();
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);

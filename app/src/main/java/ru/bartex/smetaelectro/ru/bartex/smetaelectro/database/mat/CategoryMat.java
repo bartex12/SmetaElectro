@@ -11,6 +11,7 @@ import android.util.Log;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 
 public class CategoryMat {
     public static final String TAG = "33333";
@@ -168,6 +169,46 @@ public class CategoryMat {
 
         Log.d(TAG, "CategoryMat.insertCategory  _id = " + _id);
         return _id;
+    }
+
+    //получаем массив строк  с названиями категорий
+    public static String[] getArrayCategoryMatNames(SQLiteDatabase db) {
+        Log.i(TAG, " ==++== CategoryMat.getArrayCategoryMatNames ... ");
+
+        String select = " SELECT " + _ID + " , " + CATEGORY_MAT_NAME + " FROM " + TABLE_NAME;
+        Cursor  cursor = db.rawQuery(select, null);
+
+        String[] categoryNames = new String[cursor.getCount()];
+        // Проходим через все строки в курсоре
+        while (cursor.moveToNext()) {
+            int position = cursor.getPosition();
+            categoryNames[position] = cursor.getString(cursor.getColumnIndex(CATEGORY_MAT_NAME));
+        }
+        Log.i(TAG, " ==++== CategoryMat... Count = " + cursor.getCount());
+        cursor.close();
+        return categoryNames;
+    }
+
+    //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
+    public static  boolean[] getArrayCategoryMatChecked(
+            SQLiteDatabase db, long file_id, String[] categoryNames) {
+        Log.i(TAG, " ==++== CategoryMat.getArrayCategoryMatChecked ...  categoryNames.length = " +
+                categoryNames.length);
+
+        String[] catMatNamesFW = FM.getArrayCategory(db, file_id);
+        boolean[] categoryChacked = new boolean[categoryNames.length];
+
+        for (int i = 0; i<categoryNames.length; i++)
+            for (String s : catMatNamesFW) {
+                Log.i(TAG, "categoryNames[i] = "+ categoryNames[i] + " catMatNamesFW = " + s);
+                if (categoryNames[i].equals(s)) {
+                    categoryChacked[i] = true;
+                    //если есть совпадение, прекращаем перебор
+                    break;
+                }
+            }
+        Log.i(TAG, " ==++== CategoryMat categoryChacked.length  = "+ categoryChacked.length);
+        return categoryChacked;
     }
 
 }

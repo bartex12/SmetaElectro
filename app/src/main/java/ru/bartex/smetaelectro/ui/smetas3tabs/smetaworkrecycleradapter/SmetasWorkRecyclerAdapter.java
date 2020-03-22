@@ -16,8 +16,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
-public class SmetasCatRecyclerAdapter extends
-        RecyclerView.Adapter<SmetasCatRecyclerAdapter.ViewHolder> {
+public class SmetasWorkRecyclerAdapter extends
+        RecyclerView.Adapter<SmetasWorkRecyclerAdapter.ViewHolder> {
 
     public static final String TAG = "33333";
     OnClickOnNamekListener nameListener;
@@ -32,12 +32,12 @@ public class SmetasCatRecyclerAdapter extends
     private boolean isSelectedType;
     private long type_id;
 
-    public SmetasCatRecyclerAdapter(
+    public SmetasWorkRecyclerAdapter(
             SQLiteDatabase database, long file_id, int positionTab,
             boolean isSelectedCat, long cat_id,
             boolean isSelectedType, long type_id) {
 
-        Log.d(TAG, "***** SmetasCatRecyclerAdapter конструктор ****** ");
+        Log.d(TAG, "***** SmetasWorkRecyclerAdapter конструктор ****** ");
 
         this.database = database;
         this.file_id = file_id;
@@ -64,7 +64,7 @@ public class SmetasCatRecyclerAdapter extends
                            boolean isSelectedType, long type_id) {
         switch (positionTab){
             case 0:
-                Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 0 ");
+                Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 0 ");
                 //массив с именами категорий из таблицы категорий CategoryMat
                 names = CategoryWork.getArrayCategoryWorkNames(database);
                 //булевый массив - есть ли такая категория работы в списке работ с file_id
@@ -73,16 +73,16 @@ public class SmetasCatRecyclerAdapter extends
                 break;
 
             case 1:
-                Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                         " isSelectedCat = " + isSelectedCat);
                 if(isSelectedCat){
                     names = TypeWork.getArrayTypeWorkNamesFromCatId(database, cat_id);
-                    Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                    Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                            " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
                 }else {
                     //массив с именами категорий из таблицы категорий CategoryMat
                     names = TypeWork.getArrayTypeWorkNames(database);
-                    Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                    Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                             " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
                 }
                 //булевый массив - есть ли такой тип работы в списке работ с file_id
@@ -91,7 +91,7 @@ public class SmetasCatRecyclerAdapter extends
                 break;
 
             case 2:
-                Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 2 ");
+                Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 2 ");
                 if(isSelectedCat){
                     if(isSelectedType){
                         names = Work.getArrayWorkNamesFromtypeId(database, type_id);
@@ -115,14 +115,14 @@ public class SmetasCatRecyclerAdapter extends
 
     @NonNull
     @Override
-    public SmetasCatRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SmetasWorkRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_two_mat, parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SmetasCatRecyclerAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull SmetasWorkRecyclerAdapter.ViewHolder holder, final int position) {
         holder.checkBoxTwoMat.setChecked(checked[position]);
         holder.base_text.setText(names[position]);
 
@@ -151,14 +151,6 @@ public class SmetasCatRecyclerAdapter extends
         }
     }
 
-    public void updateRecyclerAdapter(int positionTab,
-                                      boolean isSelectedCat, long cat_id,
-                                      boolean isSelectedType, long type_id){
-        Log.d(TAG, "***** SmetasCatRecyclerAdapter updateRecyclerAdapter() ");
-        //вычисляем названия и чекбокс выбора позиции
-        getParams(database,file_id,positionTab,isSelectedCat,cat_id,isSelectedType,type_id);
-        notifyDataSetChanged();
-    }
     public void updateType(long cat_id){
         getParams(database, file_id, 1,true,cat_id,false,0);
         notifyDataSetChanged();

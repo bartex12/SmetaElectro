@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 public abstract class AbstrSmetasFrag extends Fragment {
 
@@ -28,7 +28,7 @@ public abstract class AbstrSmetasFrag extends Fragment {
 
     public SQLiteDatabase database;
     public RecyclerView  recyclerView;
-    public SmetasCatRecyclerAdapter adapter;
+    public SmetasWorkRecyclerAdapter adapter;
     public OnClickCatListener onClickCatListener;
     public OnClickTypekListener onClickTypeListener;
 
@@ -40,8 +40,8 @@ public abstract class AbstrSmetasFrag extends Fragment {
         void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
     }
 
-    public abstract SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter();
-    public abstract SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
+    public abstract SmetasWorkRecyclerAdapter getSmetasCatRecyclerAdapter();
+    public abstract SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
 
     @Override
@@ -85,13 +85,13 @@ public abstract class AbstrSmetasFrag extends Fragment {
         //абстр метод - реализация в каждом фрагменте
         adapter = getSmetasCatRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
-        SmetasCatRecyclerAdapter.OnClickOnNamekListener listener =
+        SmetasWorkRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
 
-    public SmetasCatRecyclerAdapter getAdapter() {
+    public SmetasWorkRecyclerAdapter getAdapter() {
         return adapter;
     }
 }
