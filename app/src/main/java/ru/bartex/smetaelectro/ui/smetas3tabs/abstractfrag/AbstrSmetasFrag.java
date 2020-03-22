@@ -54,15 +54,6 @@ public abstract class AbstrSmetasFrag extends Fragment {
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG, "//  AbstrSmetasCatFrag onCreate // " );
-//        file_id = getArguments().getLong(P.ID_FILE);
-//        position = getArguments().getInt(P.TAB_POSITION);
-//        Log.d(TAG, "AbstrSmetasCatFrag onCreate file_id = " + file_id );
-//    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

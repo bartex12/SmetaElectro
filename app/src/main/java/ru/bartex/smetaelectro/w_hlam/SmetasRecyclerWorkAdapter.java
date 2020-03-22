@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.whlam;
+package ru.bartex.smetaelectro.w_hlam;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,11 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
-//класс - адаптер для фрагмента материалов SmetasTabMat, в макете которого RecyclerView
-public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecyclerMatAdapter.ViewHolder> {
+//класс - адаптер для фрагмента работ SmetasTabWork,  в макете которого RecyclerView
+public class SmetasRecyclerWorkAdapter extends RecyclerView.Adapter<SmetasRecyclerWorkAdapter.ViewHolder> {
+
     public static final String TAG = "33333";
     private SQLiteDatabase database;
     private Context context;
@@ -31,8 +32,7 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     private int size;
     private int positionTab;  //номер вкладки
     private int posItem;  //позиция в списке
-    private OnClickOnMatListener matListener;
-
+    private OnClickOnWorkListener workListener;
 
     private String[] name;
     private float[] cost;
@@ -40,46 +40,45 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     private String[] units;
     private float[] summa; //массив стоимости
 
-    public interface OnClickOnMatListener{
-        void onClickOnMatListener(String namtItem);
+    public interface OnClickOnWorkListener{
+        void onClickOnMatListener(String nameItem);
     }
 
-    public void setOnClickOnMatListener(OnClickOnMatListener onClickOnMatListener){
-        this.matListener = onClickOnMatListener;
+    public void setOnClickOnWorkListener(OnClickOnWorkListener onClickOnWorkListener){
+        this.workListener = onClickOnWorkListener;
     };
 
-
-    public SmetasRecyclerMatAdapter(SQLiteDatabase database, long file_id) {
+    public SmetasRecyclerWorkAdapter(SQLiteDatabase database, long file_id) {
         this.database = database;
         this.file_id = file_id;
         this.positionTab = positionTab;
-        Log.d(TAG, "***** SmetasRecyclerMatAdapter positionTab = " + positionTab);
+        Log.d(TAG, "***** SmetasRecyclerWorkAdapter positionTab = " + positionTab);
         getParams(database, file_id);
     }
 
     private void getParams(SQLiteDatabase database, long file_id) {
 
         //Массив работ в файле с file_id
-        name = FM.getArrayNames(database, file_id);
+        name = FW.getArrayNames(database, file_id);
         //Массив цен для работ в файле с file_id
-        cost = FM.getArrayCost(database, file_id);
+        cost = FW.getArrayCost(database, file_id);
         //Массив количества работ для работ в файле с file_id
-        amount = FM.getArrayAmount(database, file_id);
+        amount = FW.getArrayAmount(database, file_id);
         //Массив единиц измерения для работ в файле с file_id
-        units = FM.getArrayUnit(database, file_id);
+        units = FW.getArrayUnit(database, file_id);
         //Массив стоимости работ  для работ в файле с file_id
-        summa = FM.getArraySumma(database, file_id);
+        summa = FW.getArraySumma(database, file_id);
 
         size = name.length;
-        Log.d(TAG, "***** SmetasRecyclerMatAdapter size = " + size);
+        Log.d(TAG, "***** SmetasRecyclerWorkAdapter size = " + size);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-
         View rowView;
+
         switch (viewType) {
             case VIEW_TYPES.Normal:
                 rowView = LayoutInflater.from(parent.getContext())
@@ -118,7 +117,7 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
                 //summa = FW.getArraySumma(database, file_id);
                 float totalSumma = P.updateTotalSumma(summa);
                 holder.base_text_footer.setText(
-                        String.format(Locale.getDefault(),"За материалы: %.0f руб", totalSumma ));
+                        String.format(Locale.getDefault(),"За работу: %.0f руб", totalSumma ));
                 break;
 
             case VIEW_TYPES.Normal:
@@ -135,11 +134,10 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
                 holder.tvSumma.setText( String.format(Locale.getDefault(),
                         "%s", Float.toString(summa[position-1])));
 
-                //слушатель на строке списка
                 holder.ll_complex.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        matListener.onClickOnMatListener(name[position-1]);
+                        workListener.onClickOnMatListener(name[position-1]);
                     }
                 });
 
@@ -154,36 +152,6 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
                 });
                 break;
         }
-
-//        holder.tvNumberOfLine.setText(
-//                String.format(Locale.getDefault(),"%s", Integer.toString (position + 1)));
-//        holder.base_text.setText(
-//                String.format(Locale.getDefault(),"%s", name[position]));
-//        holder.tvCost.setText(
-//                String.format(Locale.getDefault(),"%s", Float.toString(cost[position])));
-//        holder.tvAmount.setText(
-//                String.format(Locale.getDefault(),"%s", Float.toString(amount[position])));
-//        holder.tvUnits.setText(
-//                String.format(Locale.getDefault(),"%s", units[position]));
-//        holder.tvSumma.setText(
-//                String.format(Locale.getDefault(),"%s", Float.toString(summa[position])));
-//
-//        holder.ll_complex.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                matListener.onClickOnMatListener(name[position]);
-//            }
-//        });
-//
-//        // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
-//        //запоминаем позицию в списке - нужно при удалении, например
-//        holder.ll_complex.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                posItem = position;
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -231,22 +199,22 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
                         //никаких действий
                     }
                 }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                //находим id по имени материала
-                long mat_id = Mat.getIdFromName(database, name[posItem]);
-                Log.d(TAG, "## ## SmetasRecyclerMatAdapter onClick" +
-                                "file_id = " + file_id + " mat_id = " + mat_id);
-                //удаляем пункт сметы из таблицы FM
-                FM.deleteItemFrom_FM(database, file_id, mat_id);
+                        //находим id по имени работы
+                        long work_id = Work.getIdFromName(database, name[posItem]);
+                        Log.d(TAG, "## ## SmetasRecyclerWorkAdapter onClick" +
+                                "file_id = " + file_id + " work_id = " + work_id);
 
-                getParams(database, file_id);
-                //обновляем данные списка фрагмента работ
-                notifyDataSetChanged();
-                Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
-            }
-        }).show();
+                        //удаляем пункт сметы из таблицы FW
+                        FW.deleteItemFrom_FW(database, file_id, work_id);
+                        getParams(database, file_id);
+                        //обновляем данные списка фрагмента работ
+                        notifyDataSetChanged();
+                        Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
     }
 
     private class VIEW_TYPES {
@@ -259,11 +227,11 @@ public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecycle
     public int getItemViewType(int position) {
 
         if (position == 0) {
-            return VIEW_TYPES.Header;
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Header;
         }else if (position == (size+1)) {
-            return VIEW_TYPES.Footer;
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Footer;
         }else{
-            return VIEW_TYPES.Normal;
+            return SmetasRecyclerWorkAdapter.VIEW_TYPES.Normal;
         }
     }
 }

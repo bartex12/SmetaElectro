@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.whlam;
+package ru.bartex.smetaelectro.w_hlam;
 
 import android.view.LayoutInflater;
 import android.view.View;

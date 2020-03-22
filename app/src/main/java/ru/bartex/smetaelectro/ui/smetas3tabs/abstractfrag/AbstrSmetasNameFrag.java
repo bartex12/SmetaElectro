@@ -55,9 +55,6 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
     public abstract SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter();
     public abstract SmetasCatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
-//    public abstract  void updateAdapter();
-//    public abstract  void sendIntent(String name);
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
