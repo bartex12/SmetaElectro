@@ -72,9 +72,11 @@ public class SmetasWork extends AppCompatActivity implements
         this.cat_id = cat_id;
         Log.d(TAG, "/***/ SmetasWork  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
-        //гениально простой способ заставить обновляться соседнюю вкладку
-        //http://qaru.site/questions/683149/my-fragments-in-viewpager-tab-dont-refresh
-        updateAdapter(1);
+
+        adapter. updateType(cat_id);
+        mViewPager.setCurrentItem(1);
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -86,8 +88,9 @@ public class SmetasWork extends AppCompatActivity implements
         Log.d(TAG, "SmetasWork  typeAndCatTransmit cat_id ="  +
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
-        // обновляем соседнюю вкладку типов материалов и показываем её
-        updateAdapter(2);
+        adapter. updateName(cat_id, type_id);
+        mViewPager.setCurrentItem(2);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -144,13 +147,13 @@ public class SmetasWork extends AppCompatActivity implements
         initBottomNavigation();
         initToolbar();
         // фрагменты, адаптер, ViewPager инициализируются в onResume,
-        // чтобы при возврате на SmetasTab происходило обновление пунктов списка
+        // чтобы при возврате на SmetasWork из деталей происходило обновление пунктов списка
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d(TAG, "//SmetasWork-onResume");
         createTabFrags();
         initPageAdapter();
         initViewPager();
@@ -181,7 +184,7 @@ public class SmetasWork extends AppCompatActivity implements
     private void initViewPager() {
         mViewPager = findViewById(R.id.container_smetas_work);
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(1);
 
         TabLayout tabs = findViewById(R.id.tabs_smetas_work);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);

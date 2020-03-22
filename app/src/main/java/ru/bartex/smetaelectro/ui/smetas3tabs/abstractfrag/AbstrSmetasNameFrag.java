@@ -80,7 +80,7 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  AbstrSmetasCatFrag onCreateView // " );
+        //Log.d(TAG, "//  AbstrSmetasNameFrag onCreateView // " );
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_work_cat, container, false);
     }
@@ -88,7 +88,7 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrSmetasCatFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasNameFrag onViewCreated // " );
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
@@ -98,7 +98,7 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        Log.d(TAG, "--------  AbstrSmetasCatFrag onDestroy -------" );
+        Log.d(TAG, "--------  AbstrSmetasNameFrag onDestroy -------" );
     }
     private void initRecycler(View view) {
         recyclerView = view.findViewById(R.id.recycler_work_cat);
@@ -112,45 +112,7 @@ public abstract class AbstrSmetasNameFrag extends Fragment {
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
-
-    public SmetasCatRecyclerAdapter getAdapter(){
+    public SmetasCatRecyclerAdapter getAdapter() {
         return adapter;
     }
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        Log.d(TAG, "//  AbstrSmetasNameFrag onCreateView // " );
-//        View rootView = inflater.inflate(R.layout.fragment_tabs_for_works_and_materials, container, false);
-//        listView = rootView.findViewById(R.id.listViewFragmentTabs);
-//
-//        //находим View, которое выводит текст Список пуст
-//        View empty = rootView.findViewById(android.R.id.empty);
-//        TextView tvEmpty = (TextView)empty;
-//        tvEmpty.setText(R.string.list_empty_tab);
-//        listView.setEmptyView(empty);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                parent.setSelection(position);
-//                //находим имя работы в адаптере
-//                TextView tv = view.findViewById(R.id.base_text);
-//                String work_name = tv.getText().toString();
-//
-//                sendIntent(work_name);
-//            }
-//        });
-//        return rootView;
-//    }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.d(TAG, "//  AbstrSmetasNameFrag onResume // " );
-//        updateAdapter();
-//        //объявляем о регистрации контекстного меню здесь, но как то это всё работает из SmetaMat?!
-//        registerForContextMenu(listView);
-//    }
-
 }

@@ -77,7 +77,7 @@ public abstract class AbstrSmetasTypeFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "//  AbstrSmetasCatFrag onCreateView // " );
+        //Log.d(TAG, "//  AbstrSmetasTypeFrag onCreateView // " );
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_work_cat, container, false);
     }
@@ -85,17 +85,22 @@ public abstract class AbstrSmetasTypeFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrSmetasCatFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasTypeFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasTypeFrag onViewCreated *  cat_id =" +
+                cat_id + "  isSelectedCat = " + isSelectedCat);
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
+
+        Log.d(TAG, "// AbstrSmetasTypeFrag onViewCreated ** cat_id =" +
+                cat_id + "  isSelectedCat = " + isSelectedCat);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        Log.d(TAG, "--------  AbstrSmetasCatFrag onDestroy -------" );
+        Log.d(TAG, "--------  AbstrSmetasTypeFrag onDestroy -------" );
     }
     private void initRecycler(View view) {
         recyclerView = view.findViewById(R.id.recycler_work_cat);
@@ -109,9 +114,7 @@ public abstract class AbstrSmetasTypeFrag extends Fragment {
         adapter.setOnClickOnNamekListener(listener);
         recyclerView.setAdapter(adapter);
     }
-
-    public SmetasCatRecyclerAdapter getAdapter(){
+    public SmetasCatRecyclerAdapter getAdapter() {
         return adapter;
     }
-
 }

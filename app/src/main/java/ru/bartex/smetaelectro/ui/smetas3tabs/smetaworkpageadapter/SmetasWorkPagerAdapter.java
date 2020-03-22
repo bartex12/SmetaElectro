@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTabWork;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
 
 public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
 
@@ -39,4 +42,15 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return tabTitles.get(position);
     }
+
+    public void updateType(long cat_id){
+        Fragment fragment = getItem(1);
+        ((WorkType) fragment).getAdapter().updateType(cat_id);
+    }
+
+    public void updateName(long cat_id, long type_id){
+        Fragment fragment = getItem(2);
+        ((WorkName) fragment).getAdapter().updateName(cat_id, type_id);
+    }
+
 }

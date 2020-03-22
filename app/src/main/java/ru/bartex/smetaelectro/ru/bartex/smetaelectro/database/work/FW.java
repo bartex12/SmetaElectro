@@ -353,12 +353,12 @@ public class FW {
 
     //получаем список работ по id файла из таблиц FW
     public static String[] getNames_FW(SQLiteDatabase db, long file_id) {
-        Log.i(TAG, "FW.getMatNamesFM ... ");
+        Log.i(TAG, "FW.getNames_FW ... ");
 
         String select = " select DISTINCT " + FW_WORK_NAME +
                 " from " + TABLE_NAME + " where " + FW_FILE_ID + " = " + file_id;
         Cursor cursor = db.rawQuery(select, null);
-        Log.i(TAG, "FW.getMatNamesFM cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getNames_FW cursor.getCount()  " + cursor.getCount());
 
         String[] names = new String[cursor.getCount()];
         // Проходим через все строки в курсоре
@@ -466,6 +466,7 @@ public class FW {
         while (cursor.moveToNext()) {
             int position = cursor.getPosition();
             categoryNames[position] = cursor.getString(cursor.getColumnIndex(FW_CATEGORY_NAME));
+            Log.i(TAG, "FW.getArrayCategory categoryNames  " + categoryNames[position]);
         }
         cursor.close();
         return categoryNames;
@@ -478,7 +479,7 @@ public class FW {
         String select =  " select DISTINCT " + FW_TYPE_NAME +
                         " from " +  TABLE_NAME + " where " +  FW_FILE_ID + " = " + file_id;
         Cursor  cursor = db.rawQuery(select, null);
-        Log.i(TAG, "FW.getTypeNames cursor.getCount()  " + cursor.getCount());
+        Log.i(TAG, "FW.getTypeNames cursor.getCount() = " + cursor.getCount());
 
         String[] typeNames = new String[cursor.getCount()];
                 // Проходим через все строки в курсоре

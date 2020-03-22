@@ -190,12 +190,14 @@ public class CategoryWork {
     //получаем boolean массив с отметкой - есть ли такая позиция категории в смете
     public static  boolean[] getArrayCategoryWorkChecked(
             SQLiteDatabase db, long file_id, String[] categoryNames) {
-        Log.i(TAG, " ==++== CategoryWork.getArrayCategoryWorkChecked ... ");
+        Log.i(TAG, " ==++== CategoryWork.getArrayCategoryWorkChecked ...  categoryNames.length = " +
+                categoryNames.length);
         String[] catMatNamesFW = FW.getArrayCategory(db, file_id);
         boolean[] categoryChacked = new boolean[categoryNames.length];
 
         for (int i = 0; i<categoryNames.length; i++)
             for (String s : catMatNamesFW) {
+                Log.i(TAG, "categoryNames[i] = "+ categoryNames[i] + " catMatNamesFW = " + s);
                 if (categoryNames[i].equals(s)) {
                     categoryChacked[i] = true;
                     //если есть совпадение, прекращаем перебор

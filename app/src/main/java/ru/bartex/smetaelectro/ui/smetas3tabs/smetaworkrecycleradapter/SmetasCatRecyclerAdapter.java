@@ -73,12 +73,17 @@ public class SmetasCatRecyclerAdapter extends
                 break;
 
             case 1:
-                Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 ");
+                Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                        " isSelectedCat = " + isSelectedCat);
                 if(isSelectedCat){
                     names = TypeWork.getArrayTypeWorkNamesFromCatId(database, cat_id);
+                    Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                           " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
                 }else {
                     //массив с именами категорий из таблицы категорий CategoryMat
                     names = TypeWork.getArrayTypeWorkNames(database);
+                    Log.d(TAG, "***** SmetasCatRecyclerAdapter getParams()  case 1 " +
+                            " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
                 }
                 //булевый массив - есть ли такой тип работы в списке работ с file_id
                 checked = TypeWork.getArrayTypeWorkChacked(
@@ -146,10 +151,22 @@ public class SmetasCatRecyclerAdapter extends
         }
     }
 
-    public void updateRecyclerAdapter(SQLiteDatabase database, long file_id, int positionTab,
+    public void updateRecyclerAdapter(int positionTab,
                                       boolean isSelectedCat, long cat_id,
                                       boolean isSelectedType, long type_id){
+        Log.d(TAG, "***** SmetasCatRecyclerAdapter updateRecyclerAdapter() ");
         //вычисляем названия и чекбокс выбора позиции
         getParams(database,file_id,positionTab,isSelectedCat,cat_id,isSelectedType,type_id);
+        notifyDataSetChanged();
     }
+    public void updateType(long cat_id){
+        getParams(database, file_id, 1,true,cat_id,false,0);
+        notifyDataSetChanged();
+    }
+
+    public void  updateName(long cat_id, long type_id){
+        getParams(database, file_id, 2,true, cat_id,true, type_id);
+        notifyDataSetChanged();
+    }
+
 }

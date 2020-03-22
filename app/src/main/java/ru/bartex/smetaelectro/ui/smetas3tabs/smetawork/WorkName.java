@@ -4,6 +4,8 @@ package ru.bartex.smetaelectro.ui.smetas3tabs.smetawork;
 import android.content.Intent;
 
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasNameFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatRecyclerAdapter;
 
@@ -20,6 +23,8 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCatR
  */
 public class WorkName extends AbstrSmetasNameFrag {
 
+//    public boolean isSelectedType;
+//    public long type_id;
 
     public WorkName() {
         // Required empty public constructor
@@ -38,11 +43,23 @@ public class WorkName extends AbstrSmetasNameFrag {
         return fragment;
     }
 
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        Log.d(TAG, "//  AbstrSmetasNameFrag onCreate // " );
+//        file_id = getArguments().getLong(P.ID_FILE);
+//        position = getArguments().getInt(P.TAB_POSITION);
+//        isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
+//        type_id = getArguments().getLong(P.ID_TYPE);
+//        Log.d(TAG, "AbstrSmetasNameFrag onCreate isSelectedType = " + isSelectedType +
+//                " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
+//    }
+
     @Override
     public SmetasCatRecyclerAdapter getSmetasCatRecyclerAdapter() {
         Log.d(TAG, "//  WorkName getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasCatRecyclerAdapter(
-                database, file_id, 2, false,0, false, 0);
+                database, file_id, position, false,0, isSelectedType, type_id);
     }
 
     @Override
@@ -55,64 +72,9 @@ public class WorkName extends AbstrSmetasNameFrag {
                         Toast.LENGTH_SHORT).show();
 
                 sendIntent(name);
-
-//                long type_id = TypeWork.getIdFromName(database, name);
-//                long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
-//                Log.d(TAG, "WorkType nameTransmit  cat_id = " +cat_id + "  type_id = " + type_id);
-//                adapter.updateRecyclerAdapter(database, file_id,2,true,
-//                        cat_id, true, type_id );
-//                adapter.notifyDataSetChanged();
-//
-//                onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
             }
         };
     }
-
-//    @Override
-//    public void updateAdapter() {
-//        Log.d(TAG, "//  WorkName updateAdapter // " );
-//        Cursor cursor;
-//        if (isSelectedType){
-//            Log.d(TAG, "WorkName updateAdapter isSelectedType = true " );
-//            //Курсор с именами работ с типом type_id
-//            cursor = Work.getNamesFromCatId(database, type_id);
-//        }else {
-//            Log.d(TAG, "WorkName updateAdapter isSelectedType = false " );
-//            //Курсор с именами  всех материалов из таблицы Mat
-//            cursor = Work.getNamesAllTypes(database);
-//        }
-//        //Строковый массив с именами работы из таблицы FW для файла с file_id
-//        String[] workNamesFW = FW.getNames_FW(database, file_id);
-//
-//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-//        Log.d(TAG, " WorkName updateAdapter Всего материалов = "+ cursor.getCount() );
-//
-//        while (cursor.moveToNext()){
-//            String mat_name = cursor.getString(cursor.getColumnIndex(Work.WORK_NAME));
-//
-//            boolean check_mark = false;
-//            for (String s : workNamesFW) {
-//                if (s.equals(mat_name)) {
-//                    check_mark = true;
-//                    //если есть совпадение, прекращаем перебор
-//                    break;
-//                }
-//            }
-//            Log.d(TAG, " WorkName updateAdapter mat_name  = " +
-//                    (cursor.getPosition()+1) + "  " + mat_name + "  check_mark = " + check_mark);
-//            m =new HashMap<>();
-//            m.put(P.ATTR_MAT_NAME, mat_name);
-//            m.put(P.ATTR_MAT_MARK, check_mark);
-//            data.add(m);
-//        }
-//        Log.d(TAG, " WorkName updateAdapter data.size()  = "+ data.size() );
-//        String[] from = new String[]{P.ATTR_MAT_NAME, P.ATTR_MAT_MARK};
-//        int [] to = new int[]{R.id.base_text, R.id.checkBoxTwoMat};
-//
-//        sara = new SimpleAdapter(getActivity(), data, R.layout.list_item_two_mat, from, to);
-//        listView.setAdapter(sara);
-//    }
-//
 
     private void sendIntent(String name) {
         //находим id работы по имени работы
