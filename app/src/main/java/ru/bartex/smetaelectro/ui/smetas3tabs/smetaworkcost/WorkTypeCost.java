@@ -11,11 +11,9 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasTypeFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
-import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +54,7 @@ public class WorkTypeCost extends AbstrSmetasWorkCostFrag {
     public SmetasCostRecyclerAdapter getSmetasCostRecyclerAdapter() {
         Log.d(TAG, "//  WorkTypeCost getSmetasCostRecyclerAdapter file_id =  "  + file_id );
         return new SmetasCostRecyclerAdapter(
-                database, Kind.COST_WORK, file_id,
+                database, KindCost.COST_WORK, file_id,
                 position, isSelectedCat, cat_id, false, 0);
     }
 

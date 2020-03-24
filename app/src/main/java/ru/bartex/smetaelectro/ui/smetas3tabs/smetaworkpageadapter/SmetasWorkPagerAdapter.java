@@ -15,7 +15,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkTypeCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
@@ -87,17 +87,17 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         adapter.updateMatName(cat_id, type_id);
     }
 
-    public void  showDetails(int position, Kind kind){
+    public void  showDetails(int position, KindWork kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
         Fragment fragment = getItem(position);
         switch (position){
             case 0:
                 switch (kind){
                     case WORK:
-                        ((WorkCat) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        ((WorkCat) fragment).getAdapter().showDetails(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatCat) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        ((MatCat) fragment).getAdapter().showDetails(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -105,10 +105,10 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 switch (kind){
                     case WORK:
-                        ((WorkType) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        ((WorkType) fragment).getAdapter().showDetails(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatType) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        ((MatType) fragment).getAdapter().showDetails(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -116,27 +116,27 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 switch (kind){
                     case WORK:
-                        ((WorkName) fragment).getAdapter().showDetails(position, Kind.WORK);
+                        ((WorkName) fragment).getAdapter().showDetails(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatName) fragment).getAdapter().showDetails(position, Kind.MAT);
+                        ((MatName) fragment).getAdapter().showDetails(position, KindWork.MAT);
                         break;
                 }
                 break;
         }
     }
 
-    public void  changeName(int position, Kind kind){
+    public void  changeName(int position, KindWork kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
         Fragment fragment = getItem(position);
         switch (position){
             case 0:
                 switch (kind){
                     case WORK:
-                        ((WorkCat) fragment).getAdapter().changeName(position, Kind.WORK);
+                        ((WorkCat) fragment).getAdapter().changeName(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatCat) fragment).getAdapter().changeName(position, Kind.MAT);
+                        ((MatCat) fragment).getAdapter().changeName(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -144,10 +144,10 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 switch (kind){
                     case WORK:
-                        ((WorkType) fragment).getAdapter().changeName(position, Kind.WORK);
+                        ((WorkType) fragment).getAdapter().changeName(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatType) fragment).getAdapter().changeName(position, Kind.MAT);
+                        ((MatType) fragment).getAdapter().changeName(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -155,27 +155,27 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 switch (kind){
                     case WORK:
-                        ((WorkName) fragment).getAdapter().changeName(position, Kind.WORK);
+                        ((WorkName) fragment).getAdapter().changeName(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatName) fragment).getAdapter().changeName(position, Kind.MAT);
+                        ((MatName) fragment).getAdapter().changeName(position, KindWork.MAT);
                         break;
                 }
                 break;
         }
     }
 
-    public void deleteItem(int position, Kind kind){
+    public void deleteItem(int position, KindWork kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
         Fragment fragment = getItem(position);
         switch (position){
             case 0:
                 switch (kind){
                     case WORK:
-                        ((WorkCat) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        ((WorkCat) fragment).getAdapter().deleteItem(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatCat) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        ((MatCat) fragment).getAdapter().deleteItem(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -183,10 +183,10 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 switch (kind){
                     case WORK:
-                        ((WorkType) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        ((WorkType) fragment).getAdapter().deleteItem(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatType) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        ((MatType) fragment).getAdapter().deleteItem(position, KindWork.MAT);
                         break;
                 }
                 break;
@@ -194,10 +194,10 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 switch (kind){
                     case WORK:
-                        ((WorkName) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        ((WorkName) fragment).getAdapter().deleteItem(position, KindWork.WORK);
                         break;
                     case MAT:
-                        ((MatName) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        ((MatName) fragment).getAdapter().deleteItem(position, KindWork.MAT);
                         break;
                 }
                 break;

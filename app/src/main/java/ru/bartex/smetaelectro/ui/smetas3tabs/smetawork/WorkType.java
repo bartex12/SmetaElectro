@@ -11,7 +11,7 @@ import android.widget.Toast;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
@@ -53,7 +53,7 @@ public class WorkType extends AbstrSmetasWorkFrag {
     public SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter() {
         Log.d(TAG, "//  WorkType getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(
-                database, Kind.WORK, file_id,
+                database, KindWork.WORK, file_id,
                 position, isSelectedCat, cat_id, false, 0);
     }
 

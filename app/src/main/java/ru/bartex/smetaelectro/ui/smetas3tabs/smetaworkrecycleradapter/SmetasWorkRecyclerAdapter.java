@@ -32,9 +32,6 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeData
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataWork;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkCatCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkTypeCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
@@ -59,10 +56,10 @@ public class SmetasWorkRecyclerAdapter extends
     private long cat_id;
     private boolean isSelectedType;
     private long type_id;
-    private Kind kind;
+    private KindWork kind;
 
     public SmetasWorkRecyclerAdapter(
-            SQLiteDatabase database, Kind kind, long file_id, int positionTab,
+            SQLiteDatabase database, KindWork kind, long file_id, int positionTab,
             boolean isSelectedCat, long cat_id,
             boolean isSelectedType, long type_id) {
 
@@ -138,7 +135,7 @@ public class SmetasWorkRecyclerAdapter extends
         }
     }
 
-    private void getParams(SQLiteDatabase database, Kind kind, long file_id, int positionTab,
+    private void getParams(SQLiteDatabase database, KindWork kind, long file_id, int positionTab,
                            boolean isSelectedCat, long cat_id,
                            boolean isSelectedType, long type_id) {
         switch (positionTab) {
@@ -150,12 +147,6 @@ public class SmetasWorkRecyclerAdapter extends
                     case MAT:
                         getParamsCategoryMat(database, file_id);
                         break;
-                    case COST_WORK:
-//                        getParamsCategoryWorkCost(database, file_id);
-                        break;
-                    case COST_MAT:
-
-                        break;
                 }
                 break;
 
@@ -166,12 +157,6 @@ public class SmetasWorkRecyclerAdapter extends
                         break;
                     case MAT:
                         getParamsTypeMat(database, file_id, isSelectedCat, cat_id);
-                        break;
-                    case COST_WORK:
-//                        getParamsTypeWorkCost(database, file_id, isSelectedCat, cat_id);
-                        break;
-                    case COST_MAT:
-
                         break;
                 }
                 break;
@@ -185,13 +170,6 @@ public class SmetasWorkRecyclerAdapter extends
                     case MAT:
                         getParamsNameMat(database,
                                 file_id, isSelectedCat, cat_id, isSelectedType, type_id);
-                        break;
-                    case COST_WORK:
-//                        getParamsNameWorkCost(database,
-//                                file_id, isSelectedCat, cat_id, isSelectedType, type_id);
-                        break;
-                    case COST_MAT:
-
                         break;
                 }
                 break;
@@ -294,26 +272,26 @@ public class SmetasWorkRecyclerAdapter extends
     }
 
     public void updateWorkType(long cat_id) {
-        getParams(database, Kind.WORK,  file_id, 1, true, cat_id, false, 0);
+        getParams(database, KindWork.WORK,  file_id, 1, true, cat_id, false, 0);
         notifyDataSetChanged();
     }
 
     public void updateWorkName(long cat_id, long type_id) {
-        getParams(database, Kind.WORK, file_id, 2, true, cat_id, true, type_id);
+        getParams(database, KindWork.WORK, file_id, 2, true, cat_id, true, type_id);
         notifyDataSetChanged();
     }
 
     public void updateMatType(long cat_id){
-        getParams(database, Kind.MAT,  file_id, 1,true,cat_id,false,0);
+        getParams(database, KindWork.MAT,  file_id, 1,true,cat_id,false,0);
         notifyDataSetChanged();
     }
 
     public void  updateMatName(long cat_id, long type_id){
-        getParams(database, Kind.MAT, file_id, 2,true, cat_id,true, type_id);
+        getParams(database, KindWork.MAT, file_id, 2,true, cat_id,true, type_id);
         notifyDataSetChanged();
     }
 
-    public void showDetails(int position, Kind kind) {
+    public void showDetails(int position, KindWork kind) {
         switch (position) {
             case 0:
                 switch (kind){
@@ -397,7 +375,7 @@ public class SmetasWorkRecyclerAdapter extends
         }
     }
 
-    public void changeName(int position, Kind kind) {
+    public void changeName(int position, KindWork kind) {
         switch (position) {
             case 0:
                 switch (kind){
@@ -478,7 +456,7 @@ public class SmetasWorkRecyclerAdapter extends
         }
     }
 
-    public void deleteItem(final int position, final Kind kind) {
+    public void deleteItem(final int position, final KindWork kind) {
         new AlertDialog.Builder(context)
                 .setTitle("Удалить?")
                 .setPositiveButton("Нет", new DialogInterface.OnClickListener() {

@@ -23,7 +23,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.SmetasWorkCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
@@ -303,15 +303,15 @@ public class SmetasWork extends AppCompatActivity implements
         int id = item.getItemId();
         switch (id){
             case R.id.menu_detail:
-                adapter.showDetails(mViewPager.getCurrentItem(), Kind.WORK);
+                adapter.showDetails(mViewPager.getCurrentItem(), KindWork.WORK);
                 break;
 
             case R.id.menu_change_name:
-                adapter.changeName(mViewPager.getCurrentItem(), Kind.WORK);
+                adapter.changeName(mViewPager.getCurrentItem(), KindWork.WORK);
                 break;
 
             case R.id.menu_delete:
-                adapter.deleteItem(mViewPager.getCurrentItem(), Kind.WORK);
+                adapter.deleteItem(mViewPager.getCurrentItem(), KindWork.WORK);
                 break;
 
             case R.id.menu_cancel:

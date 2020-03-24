@@ -10,7 +10,7 @@ import android.util.Log;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 /**
@@ -47,7 +47,7 @@ public class MatCat extends AbstrSmetasMatFrag {
 
         Log.d(TAG, "//  MatCat getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(
-                database, Kind.MAT, file_id, position, false,0, false, 0);
+                database, KindWork.MAT, file_id, position, false,0, false, 0);
     }
 
     @Override

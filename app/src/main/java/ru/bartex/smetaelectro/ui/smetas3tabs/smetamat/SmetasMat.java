@@ -22,7 +22,7 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
@@ -300,15 +300,15 @@ public class SmetasMat extends AppCompatActivity implements
         int id = item.getItemId();
         switch (id){
             case R.id.menu_detail:
-                adapter.showDetails(mViewPager.getCurrentItem(), Kind.MAT);
+                adapter.showDetails(mViewPager.getCurrentItem(), KindWork.MAT);
                 break;
 
             case R.id.menu_change_name:
-                adapter.changeName(mViewPager.getCurrentItem(), Kind.MAT);
+                adapter.changeName(mViewPager.getCurrentItem(), KindWork.MAT);
                 break;
 
             case R.id.menu_delete:
-                adapter.deleteItem(mViewPager.getCurrentItem(), Kind.MAT);
+                adapter.deleteItem(mViewPager.getCurrentItem(), KindWork.MAT);
                 break;
 
             case R.id.menu_cancel:

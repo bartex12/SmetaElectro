@@ -6,17 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
 
 public class SmetasCostRecyclerAdapter extends
         RecyclerView.Adapter<SmetasCostRecyclerAdapter.ViewHolder> {
@@ -35,9 +32,9 @@ public class SmetasCostRecyclerAdapter extends
     private long cat_id;
     private boolean isSelectedType;
     private long type_id;
-    private Kind kind;
+    private KindCost kind;
 
-    public SmetasCostRecyclerAdapter(SQLiteDatabase database, Kind kind,
+    public SmetasCostRecyclerAdapter(SQLiteDatabase database, KindCost kind,
                                      long file_id, int positionTab,
                                      boolean isSelectedCat, long cat_id,
                                      boolean isSelectedType, long type_id) {
@@ -99,7 +96,7 @@ public class SmetasCostRecyclerAdapter extends
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        
+
         TextView base_text_cost;
 
         public ViewHolder(@NonNull View itemView) {
@@ -109,7 +106,7 @@ public class SmetasCostRecyclerAdapter extends
     }
 
     private void getParams(SQLiteDatabase database,
-                           Kind kind, int positionTab,
+                           KindCost kind, int positionTab,
                            boolean isSelectedCat, long cat_id,
                            boolean isSelectedType, long type_id) {
         switch (positionTab) {
@@ -192,12 +189,12 @@ public class SmetasCostRecyclerAdapter extends
     }
 
     public void updateWorkCostType(long cat_id) {
-        getParams(database, Kind.COST_WORK, 1, true, cat_id, false, 0);
+        getParams(database, KindCost.COST_WORK, 1, true, cat_id, false, 0);
         notifyDataSetChanged();
     }
 
     public void updateWorkCostName(long cat_id, long type_id) {
-        getParams(database, Kind.COST_WORK, 2, true, cat_id, true, type_id);
+        getParams(database, KindCost.COST_WORK, 2, true, cat_id, true, type_id);
         notifyDataSetChanged();
     }
 
