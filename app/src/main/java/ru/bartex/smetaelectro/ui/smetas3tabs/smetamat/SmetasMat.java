@@ -1,6 +1,5 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.smetamat;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -11,8 +10,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -20,26 +17,16 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataCategoryMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataTypeMat;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategoryMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificTypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameAbstract;
@@ -74,8 +61,7 @@ public class SmetasMat extends AppCompatActivity implements
                 cat_id + "  isSelectedCat = " + isSelectedCat);
 
         adapter. updateMatType(cat_id);
-        mViewPager.setCurrentItem(1);
-        adapter.notifyDataSetChanged();
+        updatePageAdapter(1);
     }
 
     @Override
@@ -87,12 +73,8 @@ public class SmetasMat extends AppCompatActivity implements
         Log.d(TAG, "SmetasMat  typeAndCatTransmit cat_id ="  +
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
-        // обновляем соседнюю вкладку типов материалов и показываем её
-        //updateAdapter(2);
-
         adapter. updateMatName(cat_id, type_id);
-        mViewPager.setCurrentItem(2);
-        adapter.notifyDataSetChanged();
+        updatePageAdapter(2);
     }
 
     @Override
@@ -108,7 +90,7 @@ public class SmetasMat extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
                 // обновляем адаптер
-                //updateAdapter(0);
+                updatePageAdapter(0);
                 break;
 
             case 1:
@@ -120,7 +102,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
                 // обновляем адаптер
-               // updateAdapter(1);
+                updatePageAdapter(1);
                 break;
 
             case 2:
@@ -132,7 +114,7 @@ public class SmetasMat extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
 
                 // обновляем адаптер
-                //updateAdapter(2);
+                updatePageAdapter(2);
                 break;
         }
     }
@@ -306,139 +288,11 @@ public class SmetasMat extends AppCompatActivity implements
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.context_menu_list_of_smetas, menu);
-//
-//        // получаем инфу о пункте списка
-//        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//
-//        switch (mViewPager.getCurrentItem()){
-//            case 0:
-//                //получаем имя категории из строки списка категории
-//                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
-//                String name = tvName.getText().toString();
-//                //находим id категории по имени категории
-//                long cat_mat_id = CategoryMat.getIdFromName(database, name);
-//                //находим количество строк типов материала для cat_mat_id
-//                int countType_mat = TypeMat.getCountLine(database, cat_mat_id);
-//                Log.d(TAG, "onCreateContextMenu - countType = " + countType_mat);
-//                if(countType_mat > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false);
-//                }
-//                break;
-//            case 1:
-//                //получаем имя типа из строки списка типов материала
-//                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
-//                String typeMatName = tvType.getText().toString();
-//                //находим id типа по имени типа
-//                long type_mat_id = TypeMat.getIdFromName(database, typeMatName);
-//                //находим количество строк видов материала для type_mat_id
-//                int countLineMat = Mat.getCountLine(database, type_mat_id);
-//                Log.d(TAG, "onContextItemSelected - countLineMat = " + countLineMat);
-//                if(countLineMat > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false);
-//                }
-//                break;
-//            case 2:
-//                //получаем имя материала  из строки списка видов материала
-//                TextView tvMat = acmi.targetView.findViewById(R.id.base_text);
-//                String matName = tvMat.getText().toString();
-//                //находим id вида  по имени вида материала
-//                long mat_id = Mat.getIdFromName(database, matName);
-//                //находим количество строк видов материала в таблице FM для mat_id
-//                int countLineWorkFM = FM.getCountLine(database, mat_id);
-//                Log.d(TAG, "SmetasMat onContextItemSelected - countLineWorkFM = " + countLineWorkFM);
-//                //mSmetaOpenHelper.displayTableCost();
-//                if(countLineWorkFM > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false);
-//                }
-//                break;
-//        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
         handleMenuItemClick(item);
-
-//
-//            case P.DELETE_ID:
-//                Log.d(TAG, "SmetasMat onContextItemSelected case P.DELETE_ID");
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(R.string.Delete);
-//                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        switch (mViewPager.getCurrentItem()){
-//                            case 0:
-//                                //получаем имя категории из строки списка категории
-//                                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
-//                                final String name = tvName.getText().toString();
-//                                //находим id категории по имени категории
-//                                final long cat_mat_id = CategoryMat.getIdFromName(database, name);
-//                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 0" +
-//                                        " name = " + name +  " cat_mat_id =" + cat_mat_id);
-//                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
-//                                //это проверили в onCreateContextMenu
-//                                CategoryMat.deleteObject(database, cat_mat_id);
-//
-//                                // обновляем соседнюю вкладку типов материалов и показываем её
-//                                //updateAdapter(0);
-//                                break;
-//
-//                            case 1:
-//                                //получаем имя типа из строки списка типов
-//                                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
-//                                final String type = tvType.getText().toString();
-//                                //находим id типа по имени типа
-//                                final long type_mat_id = TypeMat.getIdFromName(database, type);
-//                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 1" +
-//                                        " type = " + type +  " type_mat_id =" + type_mat_id);
-//                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
-//                                //это проверили в onCreateContextMenu
-//                                TypeMat.deleteObject(database, type_mat_id);
-//
-//                                //после удаления в типемматериалов не даём появиться + в тулбаре
-//                                isSelectedCat = false;
-//
-//                                // обновляем соседнюю вкладку типов материалов и показываем её
-//                               // updateAdapter(0);
-//                                break;
-//
-//                            case 2:
-//                                //получаем имя материала из строки списка материала
-//                                TextView tvmat = acmi.targetView.findViewById(R.id.base_text);
-//                                final String mat = tvmat.getText().toString();
-//                                //находим id типа по имени типа
-//                                final long mat_id = Mat.getIdFromName(database, mat);
-//                                Log.d(TAG, "SmetasMat onContextItemSelected  P.DELETE_ID  case 1" +
-//                                        " mat = " + mat +  " mat_id =" + mat_id);
-//                                //Удаляем файл из таблицы CategoryMat когда в категории нет типов
-//                                //это проверили в onCreateContextMenu
-//                                Mat.deleteObject(database, mat_id);
-//                                //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
-//                                // проверка в onCreateContextMenu
-//                                CostMat.deleteObject(database, mat_id);
-//                                //после удаления в материалах не даём появиться + в тулбаре
-//                                isSelectedType = false;
-//
-//                                // обновляем соседнюю вкладку типов материалов и показываем её
-//                                //updateAdapter(1);
-//                                break;
-//                        }
-//                    }
-//                });
-//                builder.show();
-//                return true;
-//
-//            case P.CANCEL:
-//                return true;
-//        }
-//        return super.onContextItemSelected(item);
         return true;
     }
 
@@ -493,10 +347,8 @@ public class SmetasMat extends AppCompatActivity implements
         }
     };
 
-//    private void updateAdapter(int currentItem){
-//        //adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
-//        //mViewPager.setAdapter(adapter);
-//        mViewPager.setCurrentItem(currentItem);
-//        adapter.notifyDataSetChanged();
-//    }
+    private void updatePageAdapter(int currentItem){
+        mViewPager.setCurrentItem(currentItem);
+        adapter.notifyDataSetChanged();
+    }
 }

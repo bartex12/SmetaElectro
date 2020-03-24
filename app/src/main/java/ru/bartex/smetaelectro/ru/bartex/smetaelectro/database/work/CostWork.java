@@ -245,4 +245,5 @@ public class CostWork {
         cursor.close();
         return count;
     }
+
 }

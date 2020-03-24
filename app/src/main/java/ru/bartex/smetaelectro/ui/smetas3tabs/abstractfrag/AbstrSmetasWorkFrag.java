@@ -39,7 +39,7 @@ public abstract class AbstrSmetasWorkFrag extends Fragment {
         void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType);
     }
 
-    public abstract SmetasWorkRecyclerAdapter getSmetasCatRecyclerAdapter();
+    public abstract SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter();
     public abstract SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
 
@@ -82,7 +82,7 @@ public abstract class AbstrSmetasWorkFrag extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         //абстр метод - реализация в каждом фрагменте
-        adapter = getSmetasCatRecyclerAdapter();
+        adapter = getSmetasWorkRecyclerAdapter();
         //абстр метод - реализация в каждом фрагменте
         SmetasWorkRecyclerAdapter.OnClickOnNamekListener listener =
                 getOnClickOnNamekListener();

@@ -43,7 +43,7 @@ public class MatCat extends AbstrSmetasMatFrag {
     }
 
     @Override
-    public SmetasWorkRecyclerAdapter getSmetasMatRecyclerAdapter() {
+    public SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter() {
 
         Log.d(TAG, "//  MatCat getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(

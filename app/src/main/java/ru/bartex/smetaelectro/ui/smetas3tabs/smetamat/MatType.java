@@ -48,7 +48,7 @@ public class MatType extends AbstrSmetasMatFrag {
     }
 
     @Override
-    public SmetasWorkRecyclerAdapter getSmetasMatRecyclerAdapter() {
+    public SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter() {
         Log.d(TAG, "//  MatType getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(
                 database, Kind.MAT, file_id, position, isSelectedCat, cat_id, false, 0);

@@ -32,6 +32,9 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeData
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataWork;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkCatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkTypeCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategoryMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
@@ -75,7 +78,8 @@ public class SmetasWorkRecyclerAdapter extends
         this.kind = kind;
 
         //вычисляем названия и чекбокс выбора позиции
-        getParams(database, kind, file_id, positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
+        getParams(database, kind,
+                file_id, positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
     }
 
     public interface OnClickOnNamekListener {
@@ -84,6 +88,54 @@ public class SmetasWorkRecyclerAdapter extends
 
     public void setOnClickOnNamekListener(OnClickOnNamekListener nameListener) {
         this.nameListener = nameListener;
+    }
+
+    @NonNull
+    @Override
+    public SmetasWorkRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.context = parent.getContext();
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_two_mat, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SmetasWorkRecyclerAdapter.ViewHolder holder, final int position) {
+        holder.checkBoxTwoMat.setChecked(checked[position]);
+        holder.base_text.setText(names[position]);
+
+        holder.llTwoMat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameListener.nameTransmit(names[position]);
+            }
+        });
+
+        holder.llTwoMat.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                posItem = position;
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return names.length;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout llTwoMat;
+        CheckBox checkBoxTwoMat;
+        TextView base_text;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            llTwoMat = itemView.findViewById(R.id.llTwoMat);
+            checkBoxTwoMat = itemView.findViewById(R.id.checkBoxTwoMat);
+            base_text = itemView.findViewById(R.id.base_text);
+        }
     }
 
     private void getParams(SQLiteDatabase database, Kind kind, long file_id, int positionTab,
@@ -99,7 +151,7 @@ public class SmetasWorkRecyclerAdapter extends
                         getParamsCategoryMat(database, file_id);
                         break;
                     case COST_WORK:
-
+//                        getParamsCategoryWorkCost(database, file_id);
                         break;
                     case COST_MAT:
 
@@ -116,7 +168,7 @@ public class SmetasWorkRecyclerAdapter extends
                         getParamsTypeMat(database, file_id, isSelectedCat, cat_id);
                         break;
                     case COST_WORK:
-
+//                        getParamsTypeWorkCost(database, file_id, isSelectedCat, cat_id);
                         break;
                     case COST_MAT:
 
@@ -127,13 +179,16 @@ public class SmetasWorkRecyclerAdapter extends
             case 2:
                 switch (kind){
                     case WORK:
-                        getParamsNameWork(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
+                        getParamsNameWork(database,
+                                file_id, isSelectedCat, cat_id, isSelectedType, type_id);
                         break;
                     case MAT:
-                        getParamsNameMat(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
+                        getParamsNameMat(database,
+                                file_id, isSelectedCat, cat_id, isSelectedType, type_id);
                         break;
                     case COST_WORK:
-
+//                        getParamsNameWorkCost(database,
+//                                file_id, isSelectedCat, cat_id, isSelectedType, type_id);
                         break;
                     case COST_MAT:
 
@@ -214,11 +269,12 @@ public class SmetasWorkRecyclerAdapter extends
         Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                 " isSelectedCat = " + isSelectedCat);
         if (isSelectedCat) {
+            //массив с именами категорий из таблицы категорий TypeWork с cat_id
             names = TypeWork.getArrayTypeWorkNamesFromCatId(database, cat_id);
             Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                     " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
         } else {
-            //массив с именами категорий из таблицы категорий CategoryMat
+            //массив с именами категорий из таблицы категорий TypeWork
             names = TypeWork.getArrayTypeWorkNames(database);
             Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 1 " +
                     " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
@@ -230,60 +286,11 @@ public class SmetasWorkRecyclerAdapter extends
 
     private void getParamsCategoryWork(SQLiteDatabase database, long file_id) {
         Log.d(TAG, "***** SmetasWorkRecyclerAdapter getParams()  case 0 ");
-        //массив с именами категорий из таблицы категорий CategoryMat
+        //массив с именами категорий из таблицы категорий CategoryWork
         names = CategoryWork.getArrayCategoryWorkNames(database);
         //булевый массив - есть ли такая категория работы в списке работ с file_id
         checked = CategoryWork.getArrayCategoryWorkChecked(
                 database, file_id, names);
-    }
-
-
-    @NonNull
-    @Override
-    public SmetasWorkRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_two_mat, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull SmetasWorkRecyclerAdapter.ViewHolder holder, final int position) {
-        holder.checkBoxTwoMat.setChecked(checked[position]);
-        holder.base_text.setText(names[position]);
-
-        holder.llTwoMat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nameListener.nameTransmit(names[position]);
-            }
-        });
-
-        holder.llTwoMat.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                posItem = position;
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return names.length;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout llTwoMat;
-        CheckBox checkBoxTwoMat;
-        TextView base_text;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            llTwoMat = itemView.findViewById(R.id.llTwoMat);
-            checkBoxTwoMat = itemView.findViewById(R.id.checkBoxTwoMat);
-            base_text = itemView.findViewById(R.id.base_text);
-        }
     }
 
     public void updateWorkType(long cat_id) {

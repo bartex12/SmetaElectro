@@ -21,7 +21,7 @@ import android.view.View;
 
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.SmetasWorkCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
@@ -38,7 +38,8 @@ import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
 
 
 public class SmetasWork extends AppCompatActivity implements
-        AbstrSmetasWorkFrag.OnClickTypekListener, AbstrSmetasWorkFrag.OnClickCatListener,
+        AbstrSmetasWorkFrag.OnClickTypekListener,
+        AbstrSmetasWorkFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener {
 
     private static final String TAG = "33333";
@@ -62,8 +63,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  isSelectedCat = " + isSelectedCat);
 
         adapter. updateWorkType(cat_id);
-        mViewPager.setCurrentItem(1);
-        adapter.notifyDataSetChanged();
+        updatePageAdapter(1);
 
     }
 
@@ -77,8 +77,7 @@ public class SmetasWork extends AppCompatActivity implements
                 cat_id + "  type_id" + type_id + "  isSelectedType = " + isSelectedType);
 
         adapter. updateWorkName(cat_id, type_id);
-        mViewPager.setCurrentItem(2);
-        adapter.notifyDataSetChanged();
+        updatePageAdapter(2);
     }
 
     @Override
@@ -88,13 +87,12 @@ public class SmetasWork extends AppCompatActivity implements
         switch (position){
             case 0:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 0");
-
                 long newCatMatNameId = CategoryWork.insertCategory(database, catName);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(0);
+                updatePageAdapter(0);
                 break;
 
             case 1:
@@ -105,7 +103,7 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(1);
+                updatePageAdapter(1);
                 break;
 
             case 2:
@@ -117,7 +115,7 @@ public class SmetasWork extends AppCompatActivity implements
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 
                 // обновляем соседнюю вкладку типов материалов и показываем её
-                updateAdapter(2);
+                updatePageAdapter(2);
                 break;
         }
     }
@@ -352,7 +350,7 @@ public class SmetasWork extends AppCompatActivity implements
         }
     };
 
-    private void updateAdapter(int currentItem){
+    private void updatePageAdapter(int currentItem){
     //adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
     //mViewPager.setAdapter(adapter);
     mViewPager.setCurrentItem(currentItem);

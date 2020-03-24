@@ -13,7 +13,10 @@ import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatType;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkTypeCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
 public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
@@ -58,6 +61,18 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = getItem(2);
         SmetasWorkRecyclerAdapter adapter = ((WorkName) fragment).getAdapter();
         adapter.updateWorkName(cat_id, type_id);
+    }
+
+    public void updateWorkCostType(long cat_id){
+        Fragment fragment = getItem(1);
+        SmetasCostRecyclerAdapter adapter = ((WorkTypeCost) fragment).getAdapter();
+        adapter.updateWorkCostType(cat_id);
+    }
+
+    public void updateWorkCostName(long cat_id, long type_id){
+        Fragment fragment = getItem(2);
+        SmetasCostRecyclerAdapter adapter = ((WorkNameCost) fragment).getAdapter();
+        adapter.updateWorkCostName(cat_id, type_id);
     }
 
     public void updateMatType(long cat_id){

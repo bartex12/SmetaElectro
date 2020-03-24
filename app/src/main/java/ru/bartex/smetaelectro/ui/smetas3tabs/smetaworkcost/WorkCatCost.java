@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.smetawork;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost;
 
 
 import android.os.Bundle;
@@ -10,23 +10,26 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasCatFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
+import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkCat extends AbstrSmetasWorkFrag {
+public class WorkCatCost extends AbstrSmetasWorkCostFrag {
 
 
-    public WorkCat() {
+    public WorkCatCost() {
         // Required empty public constructor
     }
 
-    public static WorkCat newInstance(long file_id, int position){
-        Log.d(TAG, "//  WorkCat newInstance // " );
-        WorkCat fragment = new WorkCat();
+    public static WorkCatCost newInstance(long file_id, int position){
+        Log.d(TAG, "//  WorkCatCost newInstance // " );
+        WorkCatCost fragment = new WorkCatCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -37,30 +40,30 @@ public class WorkCat extends AbstrSmetasWorkFrag {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  AbstrSmetasCatFrag onCreate // " );
+        Log.d(TAG, "//  WorkCatCost onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "AbstrSmetasCatFrag onCreate file_id = " + file_id );
+        Log.d(TAG, "WorkCatCost onCreate file_id = " + file_id );
     }
 
     @Override
-    public SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter() {
-        Log.d(TAG, "//  WorkCat getSmetasCatRecyclerAdapter file_id =  "  + file_id );
-        return new SmetasWorkRecyclerAdapter(
-                database, Kind.WORK, file_id, position,
+    public SmetasCostRecyclerAdapter getSmetasCostRecyclerAdapter() {
+        Log.d(TAG, "//  WorkCatCost getSmetasCostRecyclerAdapter file_id =  "  + file_id );
+        return new SmetasCostRecyclerAdapter(
+                database,  Kind.COST_WORK, file_id, position,
                 false,0, false, 0);
     }
 
     @Override
-    public SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return new SmetasWorkRecyclerAdapter.OnClickOnNamekListener() {
+    public SmetasCostRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return new SmetasCostRecyclerAdapter.OnClickOnNamekListener() {
             @Override
             public void nameTransmit(String name) {
-                Log.d(TAG, "//  WorkCat nameTransmit name =  "  + name );
+                Log.d(TAG, "//  WorkCatCost nameTransmit name =  "  + name );
                 Toast.makeText(getActivity(), " щелчок на списке категорий ",
                         Toast.LENGTH_SHORT).show();
                 long cat_id = CategoryWork.getIdFromName(database, name);
-                Log.d(TAG, "//  WorkCat nameTransmit cat_id =  "  + cat_id );
+                Log.d(TAG, "//  WorkCatCost nameTransmit cat_id =  "  + cat_id );
 
                 onClickCatListener.catAndClickTransmit(cat_id, true);
             }

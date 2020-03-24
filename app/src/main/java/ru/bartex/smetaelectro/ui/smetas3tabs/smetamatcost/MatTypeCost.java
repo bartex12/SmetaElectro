@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.costmat;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost;
 
 
 import android.os.Bundle;
@@ -12,11 +12,11 @@ import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
+public class MatTypeCost extends AbstrSmetasTypeFrag {
 
-    public static Tab2MatTypeCost NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
-        Log.d(TAG, "//  Tab2MatTypeCost newInstance // " );
-        Tab2MatTypeCost fragment = new Tab2MatTypeCost();
+    public static MatTypeCost NewInstance(long file_id, int position, boolean isSelectedCat, long cat_id){
+        Log.d(TAG, "//  MatTypeCost newInstance // " );
+        MatTypeCost fragment = new MatTypeCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -28,14 +28,14 @@ public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
 
 //    @Override
 //    public void updateAdapter() {
-//        Log.d(TAG, "//  Tab2MatTypeCost updateAdapter // " );
+//        Log.d(TAG, "//  MatTypeCost updateAdapter // " );
 //        Cursor cursor;
 //        if (isSelectedCat){
-//            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = true " );
+//            Log.d(TAG, "MatTypeCost updateAdapter isSelectedCat = true " );
 //            //Курсор  с названиями типов материалов для cat_id
 //            cursor = TypeMat.getNamesFromCatId(database, cat_id);
 //        }else{
-//            Log.d(TAG, "Tab2MatTypeCost updateAdapter isSelectedCat = false " );
+//            Log.d(TAG, "MatTypeCost updateAdapter isSelectedCat = false " );
 //            //получаем курсор с названиями типов материалов по всем категориям
 //            cursor =TypeMat.getCursorNames(database);
 //        }
@@ -44,7 +44,7 @@ public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
 //        while (cursor.moveToNext()) {
 //            //смотрим значение текущей строки курсора
 //            String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-//            Log.d(TAG, "Tab2MatTypeCost - updateAdapter  name_type = " + name_type);
+//            Log.d(TAG, "MatTypeCost - updateAdapter  name_type = " + name_type);
 //            m = new HashMap<>();
 //            m.put(P.ATTR_TYPE_NAME,name_type);
 //            data.add(m);
@@ -75,7 +75,7 @@ public class Tab2MatTypeCost extends AbstrSmetasTypeFrag {
         return null;
     }
 
-    public Tab2MatTypeCost() {
+    public MatTypeCost() {
         // Required empty public constructor
     }
 

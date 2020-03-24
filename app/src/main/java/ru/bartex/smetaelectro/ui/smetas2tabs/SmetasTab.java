@@ -21,9 +21,9 @@ import android.view.View;
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.SmetasMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.SmetasWork;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.SmetasWorkCost;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 

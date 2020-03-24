@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.costmat;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -440,16 +440,16 @@ public class SmetasMatCost extends AppCompatActivity implements
             switch (position){
                 case 0:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 0: ####### " );
-                    return Tab1MatCatCost.NewInstance(file_id, position);
+                    return MatCatCost.NewInstance(file_id, position);
                 case 1:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 1: ####### " );
-                    return Tab2MatTypeCost.
+                    return MatTypeCost.
                             NewInstance(file_id, position,isSelectedCatCost, cat_id);
 
                 case 2:
                     Log.d(TAG, "####### SmetasMatCost  Fragment getItem case 2/1: #######" );
                     //передаём во фрагмент данные (и способ их обработки) в зависимости от isSelectedType
-                    Tab3MatCost smetasMatTab2Mat = Tab3MatCost.NewInstance(file_id, position, isSelectedType, type_id);
+                    MatNameCost smetasMatTab2Mat = MatNameCost.NewInstance(file_id, position, isSelectedType, type_id);
                     Log.d(TAG, " ####### SmetasMatCost  Fragment getItem case 2/2: isSelectedType = ####### " +
                             isSelectedType + "  type_id = " +  type_id + "  file_id = " +  file_id +
                             "  position = " +  position);

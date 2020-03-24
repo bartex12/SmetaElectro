@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.smetabefore.SmetaNewNameChange"></activity>
         <activity
-            android:name=".ui.smetas3tabs.costwork.SmetasWorkCost"
+            android:name=".ui.smetas3tabs.smetaworkcost.SmetasWorkCost"
             android:label="@string/title_activity_smetas_work_cost"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -47,7 +47,7 @@
             android:label="@string/title_activity_smetas_mat_cost"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.costmat.SmetasMatCost"
+            android:name=".ui.smetas3tabs.smetamatcost.SmetasMatCost"
             android:label="@string/title_activity_smetas_mat_cost"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />

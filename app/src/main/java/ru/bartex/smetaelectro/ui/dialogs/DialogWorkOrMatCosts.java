@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costmat.SmetasMatCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.SmetasWorkCost;
 
 import android.view.LayoutInflater;
 import android.view.View;

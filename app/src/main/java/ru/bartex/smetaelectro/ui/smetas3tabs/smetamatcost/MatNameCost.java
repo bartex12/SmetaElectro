@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas3tabs.costmat;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Tab3MatCost extends AbstrSmetasNameFrag {
+public class MatNameCost extends AbstrSmetasNameFrag {
 
 
-    public Tab3MatCost() {
+    public MatNameCost() {
         // Required empty public constructor
     }
 
@@ -29,10 +29,10 @@ public class Tab3MatCost extends AbstrSmetasNameFrag {
         return null;
     }
 
-    public static Tab3MatCost NewInstance(
+    public static MatNameCost NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id) {
-        Log.d(TAG, "//  Tab3MatCost newInstance // " );
-        Tab3MatCost fragment = new Tab3MatCost();
+        Log.d(TAG, "//  MatNameCost newInstance // " );
+        MatNameCost fragment = new MatNameCost();
         Bundle args = new Bundle();
         args.putLong(P.ID_FILE, file_id);
         args.putInt(P.TAB_POSITION, position);
@@ -44,14 +44,14 @@ public class Tab3MatCost extends AbstrSmetasNameFrag {
 
 //    @Override
 //    public void updateAdapter() {
-//        Log.d(TAG, "//  Tab3MatCost updateAdapter // " );
+//        Log.d(TAG, "//  MatNameCost updateAdapter // " );
 //        Cursor cursor;
 //        if (isSelectedType){
-//            Log.d(TAG, "Tab3MatCost updateAdapter isSelectedType = true " );
+//            Log.d(TAG, "MatNameCost updateAdapter isSelectedType = true " );
 //            //Курсор с именами   материалов из таблицы Mat для type_id
 //            cursor = Mat.getNamesFromCatId(database, type_id);
 //        }else {
-//            Log.d(TAG, "Tab3MatCost updateAdapter isSelectedType = false " );
+//            Log.d(TAG, "MatNameCost updateAdapter isSelectedType = false " );
 //            //Курсор с именами  всех материалов из таблицы Mat
 //            cursor = Mat.getNamesAllTypes(database);
 //        }
@@ -60,7 +60,7 @@ public class Tab3MatCost extends AbstrSmetasNameFrag {
 //        while (cursor.moveToNext()) {
 //            //смотрим значение текущей строки курсора
 //            String name_type = cursor.getString(cursor.getColumnIndex(Mat.MAT_NAME));
-//            Log.d(TAG, "Tab3MatCost - updateAdapter  name_type = " + name_type);
+//            Log.d(TAG, "MatNameCost - updateAdapter  name_type = " + name_type);
 //            m = new HashMap<>();
 //            m.put(P.ATTR_TYPE_NAME,name_type);
 //            data.add(m);
@@ -75,11 +75,11 @@ public class Tab3MatCost extends AbstrSmetasNameFrag {
 //    public void sendIntent(String name) {
 //        //находим id материала по имени материала
 //        final long mat_id = Mat.getIdFromName(database, name);
-//        Log.d(TAG, "Tab3MatCost - onItemClick  mat_id = " + mat_id +
+//        Log.d(TAG, "MatNameCost - onItemClick  mat_id = " + mat_id +
 //                "  name = " + name);
 //        // проверяем есть ли такой  материал в FM для файла с file_id
 //        final boolean isMat = FM.isMatInFM(database, file_id, mat_id);
-//        Log.d(TAG, "Tab3MatCost - onItemClick  isMat = " + isMat);
+//        Log.d(TAG, "MatNameCost - onItemClick  isMat = " + isMat);
 //
 //        //ищем id категории материалов, зная id типа
 //        long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
