@@ -35,21 +35,17 @@ public class DialogSaveCostWork extends DialogFragment {
 
 
     public static final String TAG = "33333";
+    OnCatTypeMatCostNameListener catTypeMatCostNameListener;
 
     float cost = 0; //цена работы
-    boolean isType;
-    boolean isCat;
-    long type_id;
-    long cat_id;
+    private boolean isType;
+    private boolean isCat;
+    private long type_id;
+    private long cat_id;
 
-    EditText etName;
-    TextView textView4;
-    EditText etCost;
-    TextView textView;
-    Spinner spinner;
-    Button buttonCostSave;
-    Button buttonCostCancel;
-    TextView textView18;
+    private EditText etName;
+    private EditText etCost;
+    private Spinner spinner;
 
     private SQLiteDatabase database;
 
@@ -73,8 +69,6 @@ public class DialogSaveCostWork extends DialogFragment {
         void catTypeMatCostNameTransmit(
                 String catName,String typeName,String matName, String costOfMat, String unit);
     }
-
-    OnCatTypeMatCostNameListener catTypeMatCostNameListener;
 
     @Override
     public void onAttach(Context context) {
@@ -110,14 +104,14 @@ public class DialogSaveCostWork extends DialogFragment {
 
         etName = view.findViewById(R.id.tv_cost_workName);
 
-        textView4 = view.findViewById(R.id.textView4);
+        TextView textView4 = view.findViewById(R.id.textView4);
         etCost  = view.findViewById(R.id.etCost);
-        textView = view.findViewById(R.id.textView);
-        textView18 = view.findViewById(R.id.textView18);
+        TextView textView = view.findViewById(R.id.textView);
+        TextView textView18 = view.findViewById(R.id.textView18);
         spinner = view.findViewById(R.id.spinnerUnits);
 
-        buttonCostSave = view.findViewById(R.id.button_cost_save);
-        buttonCostCancel = view.findViewById(R.id.button_cost_cancel);
+        Button buttonCostSave = view.findViewById(R.id.button_cost_save);
+        Button buttonCostCancel = view.findViewById(R.id.button_cost_cancel);
 
         etName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -165,14 +159,12 @@ public class DialogSaveCostWork extends DialogFragment {
                         Snackbar.make(v, "Введите непустое название", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
                         Log.d(TAG, "Введите непустое название ");
-                        return;
 
                         //если такое имя уже есть в базе
                     }else if (catId != -1) {
                         Snackbar.make(v, "Такое название уже существует. Введите другое.",
                                 Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         Log.d(TAG, "Такое название существует. Введите другое название. catId = " + catId);
-                        return;
 
                         //если имя не повторяется, оно не пустое то
                     }else {
@@ -211,14 +203,12 @@ public class DialogSaveCostWork extends DialogFragment {
                         Snackbar.make(v, "Введите непустое название", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
                         Log.d(TAG, "Введите непустое название ");
-                        return;
 
                         //если такое имя уже есть в базе
                     }else if (typeId != -1) {
                         Snackbar.make(v, "Такое название уже существует. Введите другое.",
                                 Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         Log.d(TAG, "Такое название существует. Введите другое название. typeId = " +typeId);
-                        return;
 
                         //если имя не повторяется, оно не пустое то
                     }else {
@@ -294,14 +284,12 @@ public class DialogSaveCostWork extends DialogFragment {
                         Snackbar.make(v, "Введите непустое название", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
                         Log.d(TAG, "Введите непустое название ");
-                        return;
 
                         //если такое имя уже есть в базе
                     } else if (matId != -1) {
                         Snackbar.make(v, "Такое название уже существует. Введите другое.",
                                 Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                         Log.d(TAG, "Такое название существует. Введите другое название. matId = " + matId);
-                        return;
 
                         //если имя не повторяется, оно не пустое то
                     } else {
@@ -348,7 +336,7 @@ public class DialogSaveCostWork extends DialogFragment {
     }
 
     //окончание диалога с убиранием клавиатуры
-    public void finishDialog(){
+    private void finishDialog(){
         //getActivity().finish(); //закрывает и диалог и активность
         getDialog().dismiss();  //закрывает только диалог
         takeOnAndOffSoftInput();

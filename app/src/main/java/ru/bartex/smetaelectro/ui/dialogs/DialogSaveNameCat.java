@@ -22,8 +22,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 
 public class DialogSaveNameCat extends DialogSaveNameAbstract {
 
-    static String TAG = "33333";
-    boolean isWorkDialog;
+    private  static String TAG = "33333";
+    private boolean isWorkDialog;
 
     public DialogSaveNameCat() {
     }
@@ -97,14 +97,12 @@ public class DialogSaveNameCat extends DialogSaveNameAbstract {
                     Snackbar.make(getView(), "Введите непустое название категории", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название категории ");
-                    return;
 
                     //если такое имя уже есть в базе
                 }else if (catId != -1) {
                     Snackbar.make(getView(), "Такое название уже существует. Введите другое.",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Такое имя название существует. Введите другое название. catId = " +catId);
-                    return;
 
                     //если имя не повторяется, оно не пустое то
                 }else {

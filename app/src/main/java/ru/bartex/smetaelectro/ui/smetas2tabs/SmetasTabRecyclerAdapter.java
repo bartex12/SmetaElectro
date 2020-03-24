@@ -56,6 +56,7 @@ public class SmetasTabRecyclerAdapter extends
         this.file_id = file_id;
         this.positionTab = positionTab;
         Log.d(TAG, "***** SmetasRecyclerWorkAdapter positionTab = " + positionTab);
+
         getParams(database, file_id, positionTab);
     }
 
@@ -64,6 +65,7 @@ public class SmetasTabRecyclerAdapter extends
     private void getParams(SQLiteDatabase database, long file_id, int positionTab) {
         switch (positionTab){
             case 0:
+                //getParamsForWork(database, file_id);
                 //Массив работ в файле с file_id
                 name = FW.getArrayNames(database, file_id);
                 //Массив цен для работ в файле с file_id
@@ -77,6 +79,7 @@ public class SmetasTabRecyclerAdapter extends
                 break;
 
             case 1:
+                //getParamsForMat(database, file_id);
                 //Массив работ в файле с file_id
                 name = FM.getArrayNames(database, file_id);
                 //Массив цен для работ в файле с file_id
@@ -92,6 +95,32 @@ public class SmetasTabRecyclerAdapter extends
         size = name.length;
         Log.d(TAG, "***** SmetasTabRecyclerAdapter size = " + size);
     }
+
+//    private void getParamsForMat(SQLiteDatabase database, long file_id) {
+//        //Массив работ в файле с file_id
+//        name = FM.getArrayNames(database, file_id);
+//        //Массив цен для работ в файле с file_id
+//        cost = FM.getArrayCost(database, file_id);
+//        //Массив количества работ для работ в файле с file_id
+//        amount = FM.getArrayAmount(database, file_id);
+//        //Массив единиц измерения для работ в файле с file_id
+//        units = FM.getArrayUnit(database, file_id);
+//        //Массив стоимости работ  для работ в файле с file_id
+//        summa = FM.getArraySumma(database, file_id);
+//    }
+//
+//    private void getParamsForWork(SQLiteDatabase database, long file_id) {
+//        //Массив работ в файле с file_id
+//        name = FW.getArrayNames(database, file_id);
+//        //Массив цен для работ в файле с file_id
+//        cost = FW.getArrayCost(database, file_id);
+//        //Массив количества работ для работ в файле с file_id
+//        amount = FW.getArrayAmount(database, file_id);
+//        //Массив единиц измерения для работ в файле с file_id
+//        units = FW.getArrayUnit(database, file_id);
+//        //Массив стоимости работ  для работ в файле с file_id
+//        summa = FW.getArraySumma(database, file_id);
+//    }
 
     @NonNull
     @Override
@@ -218,17 +247,15 @@ public class SmetasTabRecyclerAdapter extends
      void removeElement(final int posTab) {
 
         new AlertDialog.Builder(context)
-                .setTitle("Удалить?")
-                .setPositiveButton("Нет", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //никаких действий
-                    }
-                }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //вызываем  параметры для открытой вкладки
-                //getParams(database, file_id, posTab);
+                    .setTitle("Удалить?")
+                    .setPositiveButton("Нет", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //никаких действий
+                        }
+                    }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                 switch (posTab){
                     case 0:
                         //находим id по имени работы
@@ -237,6 +264,8 @@ public class SmetasTabRecyclerAdapter extends
                                 "file_id = " + file_id + " work_id = " + work_id);
                         //удаляем пункт сметы из таблицы FW
                         FW.deleteItemFrom_FW(database, file_id, work_id);
+                        //вызываем обновлённые параметры чтобы обновление прошло успешно
+                       // getParamsForWork(database, file_id);
                         break;
                     case 1:
                         //находим id по имени материала
@@ -245,11 +274,12 @@ public class SmetasTabRecyclerAdapter extends
                                 "file_id = " + file_id + " mat_id = " + mat_id);
                         //удаляем пункт сметы из таблицы FM
                         FM.deleteItemFrom_FM(database, file_id, mat_id);
+                        //вызываем обновлённые параметры чтобы обновление прошло успешно
+                        //getParamsForMat(database, file_id);
                         break;
                 }
-
                 //вызываем обновлённые параметры чтобы обновление прошло
-               getParams(database, file_id, posTab);
+                getParams(database, file_id, posTab);
                 //обновляем данные списка фрагмента работ
                 notifyDataSetChanged();
                 Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();

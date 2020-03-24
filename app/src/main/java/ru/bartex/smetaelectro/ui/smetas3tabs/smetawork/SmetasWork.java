@@ -1,6 +1,5 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.smetawork;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -20,25 +18,15 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataCategory;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataType;
-import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatawork.ChangeDataWork;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.costwork.SmetasWorkCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.Kind;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificCategory;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpecificType;
-import ru.bartex.smetaelectro.ui.smetas3tabs.specific.SpesificWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameAbstract;
@@ -66,9 +54,9 @@ public class SmetasWork extends AppCompatActivity implements
     private Fragment tab1WorkCat, tab2WorkType, tab3WorkWork ;
 
     @Override
-    public void catAndClickTransmit(long cat_id, boolean isSelected) {
+    public void catAndClickTransmit(long cat_id, boolean isSelectedCat) {
         Log.d(TAG, "/***/  SmetasWork  catAndClickTransmit  // " );
-        this.isSelectedCat = isSelected;
+        this.isSelectedCat = isSelectedCat;
         this.cat_id = cat_id;
         Log.d(TAG, "/***/ SmetasWork  catAndClickTransmit cat_id =" +
                 cat_id + "  isSelectedCat = " + isSelectedCat);
@@ -80,9 +68,9 @@ public class SmetasWork extends AppCompatActivity implements
     }
 
     @Override
-    public void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedTypeMat) {
+    public void typeAndClickTransmit(long cat_id, long type_id, boolean isSelectedType) {
         Log.d(TAG, "//  SmetasWork  typeAndCatTransmit  // " );
-        this.isSelectedType = isSelectedTypeMat;
+        this.isSelectedType = isSelectedType;
         this.type_id = type_id;
         this.cat_id = cat_id;
         Log.d(TAG, "SmetasWork  typeAndCatTransmit cat_id ="  +
@@ -191,6 +179,26 @@ public class SmetasWork extends AppCompatActivity implements
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
 
+        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
+        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
+        //видимо, вызывается метод onPrepareOptionsMenu при смене вкладки
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        //если это не сделать, то названия вкладок не будут отображаться,
+        // хотя слайер и будет работать
         TabLayout tabs = findViewById(R.id.tabs_smetas_work);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
         tabs.setupWithViewPager(mViewPager);
@@ -262,20 +270,15 @@ public class SmetasWork extends AppCompatActivity implements
                 case 0:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0");
                     DialogFragment saveCat = DialogSaveNameCat.newInstance(true);
-                    Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 13");
                     saveCat.show(getSupportFragmentManager(),"SaveCatName");
-                    Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 0 - 14");
                     break;
                 case 1:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 1");
-                    if (isSelectedCat){
-                        DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, true);
-                        saveType.show(getSupportFragmentManager(), "saveType");
-                    }
+                    DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, true);
+                    saveType.show(getSupportFragmentManager(), "saveType");
                     break;
                 case 2:
                     Log.d(TAG, " ))))))))SmetasWork  onOptionsItemSelected case 2");
-
                     DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, true);
                     saveMat.show(getSupportFragmentManager(), "SaveWorkName");
                     break;
@@ -290,144 +293,11 @@ public class SmetasWork extends AppCompatActivity implements
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.context_menu_list_of_smetas, menu);
-
-//
-//        // получаем инфу о пункте списка
-//        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//
-//        switch (mViewPager.getCurrentItem()){
-//            case 0:
-//                Log.d(TAG, "SmetasWork c  case 0:");
-//                //получаем имя категории из строки списка категории
-//                TextView tvName = acmi.targetView.findViewById(R.id.base_text);
-//                String name = tvName.getText().toString();
-//                //находим id категории по имени категории
-//                long cat_id = CategoryWork.getIdFromName(database, name);
-//                //находим количество строк типов работы для cat_id
-//                int countLineType = TypeWork.getCountLine(database, cat_id);
-//                Log.d(TAG, "SmetasWork onCreateContextMenu - countLineType = " + countLineType);
-//                if(countLineType > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false);
-//                }
-//                break;
-//            case 1:
-//                Log.d(TAG, "SmetasWork onCreateContextMenu  case 1:");
-//                //получаем имя типа из строки списка типов
-//                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
-//                String typeName = tvType.getText().toString();
-//                //находим id типа по имени типа
-//                long type_id = TypeWork.getIdFromName(database, typeName);
-//                //находим количество строк видов работы для type_id
-//                int countLineWork = Work.getCountLine(database, type_id);
-//                Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWork = " + countLineWork);
-//                if(countLineWork > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-//                    //menu.findItem(P.DELETE_ID).setVisible(false);
-//                }
-//                break;
-//
-//            case 2:
-//                Log.d(TAG, "SmetasWork onCreateContextMenu  case 2:");
-//                //получаем имя работы  из строки списка видов работ
-//                TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
-//                String workName = tvWork.getText().toString();
-//                //находим id вида  по имени вида работ
-//                long work_id = Work.getIdFromName(database, workName);
-//                //находим количество строк видов работы в таблице FW для work_id
-//                int countLineWorkFW = FW.getCountLine(database, work_id);
-//                //находим количество строк расценок работы в таблице CostWork для work_id
-//                int countCostLineWork = CostWork.getCountLine(database, work_id);
-//                Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
-//                        " countCostLineWork =" + countCostLineWork);
-//
-//                //mSmetaOpenHelper.displayTableCost();
-//
-//                if(countLineWorkFW > 0) {
-//                    menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-//                    //menu.findItem(P.DELETE_ID).setVisible(false);
-//                }
-//                break;
-//        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         handleMenuItemClick(item);
-
-//
-//            case P.DELETE_ID:
-//                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID");
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(R.string.Delete);
-//                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                });
-//                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        switch (mViewPager.getCurrentItem()){
-//                            case 0:
-//                                Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 0");
-//                                TextView tvCat = acmi.targetView.findViewById(R.id.base_text);
-//                                String cat_name = tvCat.getText().toString();
-//                                //находим id по имени файла
-//                                long cat_id = CategoryWork.getIdFromName(database, cat_name);
-//                                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
-//                                        " cat_name = " + cat_name + " cat_id =" + cat_id);
-//                                //Удаляем файл из таблицы CategoryWork когда в категории нет типов
-//                                CategoryWork.deleteObject(database, cat_id);
-//                                // обновляем соседнюю вкладку категорий работы и показываем её
-//                                //updateAdapter(0);
-//                                break;
-//
-//                            case 1:
-//                                Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 1");
-//                                TextView tvType = acmi.targetView.findViewById(R.id.base_text);
-//                                String type_name = tvType.getText().toString();
-//                                //находим id по имени файла
-//                                long type_id = TypeWork.getIdFromName(database, type_name);
-//                                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
-//                                        " type_name = " + type_name + " type_id =" + type_id);
-//                                //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
-//                                TypeWork.deleteObject(database, type_id);
-//
-//                                //после удаления в типе работ не даём появиться + в тулбаре
-//                                isSelectedCat = false;
-//                                // обновляем соседнюю вкладку типов работы и показываем её
-//                                //updateAdapter(0);
-//                                break;
-//
-//                            case 2:
-//                                Log.d(TAG, "SmetasWork onContextItemSelected  P.DELETE_ID case 2");
-//                                TextView tvWork = acmi.targetView.findViewById(R.id.base_text);
-//                                String work_Name = tvWork.getText().toString();
-//                                //находим id по имени файла
-//                                long work_id = Work.getIdFromName(database, work_Name);
-//                                //Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
-//                                 //       " work_Name = " + work_Name + " work_id =" + work_id);
-//                                //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
-//                                // проверка в onCreateContextMenu
-//                                Work.deleteObject(database, work_id);
-//                                //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
-//                                // проверка в onCreateContextMenu
-//                                CostWork.deleteObject(database, work_id);
-//                                //после удаления в работах не даём появиться + в тулбаре
-//                                isSelectedType = false;
-//                                // обновляем соседнюю вкладку работы и показываем её
-//                                //updateAdapter(1);
-//                                break;
-//                        }
-//                    }
-//                });
-//                builder.show();
-//                return true;
-//
-//            case P.CANCEL:
-//                return true;
-//        }
-//        return super.onContextItemSelected(item);
         return true;
     }
 
@@ -443,7 +313,7 @@ public class SmetasWork extends AppCompatActivity implements
                 break;
 
             case R.id.menu_delete:
-
+                adapter.deleteItem(mViewPager.getCurrentItem(), Kind.WORK);
                 break;
 
             case R.id.menu_cancel:

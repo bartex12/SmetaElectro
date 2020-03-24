@@ -25,10 +25,11 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 
 public class DialogSaveNameWork extends DialogSaveNameAbstract {
 
-    static String TAG = "33333";
-    long cat_id;
-    long type_id;
-    boolean isWorkDialog;
+    private  static String TAG = "33333";
+    private long cat_id;
+    private long type_id;
+    private boolean isWorkDialog;
+
     public DialogSaveNameWork(){
         //пустой конструктор
     }
@@ -122,14 +123,12 @@ public class DialogSaveNameWork extends DialogSaveNameAbstract {
                     Snackbar.make(v, "Введите непустое название работы", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название работы ");
-                    return;
 
                     //если такое имя уже есть в базе
                 }else if (workId != -1) {
                     Snackbar.make(v, "Такое название уже существует. Введите другое.",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Такое название существует. Введите другое название. workId = " + workId);
-                    return;
 
                     //если имя не повторяется, оно не пустое то
                 }else {

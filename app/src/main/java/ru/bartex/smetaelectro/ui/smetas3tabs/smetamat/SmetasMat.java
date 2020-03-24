@@ -63,9 +63,6 @@ public class SmetasMat extends AppCompatActivity implements
     private SQLiteDatabase database;
     private SmetasWorkPagerAdapter adapter;
     private Fragment tab1MatCat, tab2MatType, tab3MatWork ;
-
-    Menu menu;
-
     private ViewPager mViewPager;
 
     @Override
@@ -174,6 +171,14 @@ public class SmetasMat extends AppCompatActivity implements
         database.close();
     }
 
+    private void createTabFrags() {
+        //Log.d(TAG, "//SmetasWork-createTabFrags");
+        //создаём фрагменты
+        tab1MatCat = MatCat.newInstance(file_id, 0);
+        tab2MatType = MatType.newInstance(file_id, 1, false, 0);
+        tab3MatWork = MatName.newInstance(file_id, 2, false, 0);
+    }
+
     private void initPageAdapter() {
         //Log.d(TAG, "//SmetasWork-initPageAdapter");
         //здесь используется вариант  добавления фрагментов из активити
@@ -189,6 +194,26 @@ public class SmetasMat extends AppCompatActivity implements
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
 
+        //добавляем слушатель для mViewPager, отслеживающий смену вкладки в ViewPager,
+        // это нужно, чтобы организовать правильную работу меню тулбара в зависимости от действий с вкладками
+        //видимо, вызывается метод onPrepareOptionsMenu при смене вкладки
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        //если это не сделать, то названия вкладок не будут отображаться,
+        // хотя слайер и будет работать
         TabLayout tabs = findViewById(R.id.tabs_smetas_mat);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
         tabs.setupWithViewPager(mViewPager);
@@ -211,14 +236,6 @@ public class SmetasMat extends AppCompatActivity implements
         toolbar.setTitleTextColor(Color.GREEN);
     }
 
-    private void createTabFrags() {
-        //Log.d(TAG, "//SmetasWork-createTabFrags");
-        //создаём фрагменты
-        tab1MatCat = MatCat.newInstance(file_id, 0);
-        tab2MatType = MatType.newInstance(file_id, 1, false, 0);
-        tab3MatWork = MatName.newInstance(file_id, 2, false, 0);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, " ))))))))SmetasMat  onCreateOptionsMenu(((((((( ///");
@@ -229,9 +246,7 @@ public class SmetasMat extends AppCompatActivity implements
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        this.menu =menu;
         Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu(((((((( ///");
-        ActionBar acBar = getSupportActionBar();
         int position = mViewPager.getCurrentItem();
         Log.d(TAG, " ))))))))SmetasMat  onPrepareOptionsMenu(((((((( position = " + position +
                 "  isSelectedCat = " + isSelectedCat + "  isSelectedType = " + isSelectedType);
@@ -256,9 +271,11 @@ public class SmetasMat extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected(((((((( ///");
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+
         }else if (id == R.id.action_add){
             int position = mViewPager.getCurrentItem();
             Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected(((((((( position = " + position );
@@ -270,16 +287,11 @@ public class SmetasMat extends AppCompatActivity implements
                     break;
                 case 1:
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 1");
-                    if (isSelectedCat){
-                        DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, false);
-                        saveType.show(getSupportFragmentManager(), "saveTypeName");
-                    }
+                    DialogFragment saveType = DialogSaveNameType.newInstance(cat_id, false);
+                    saveType.show(getSupportFragmentManager(), "saveTypeName");
                     break;
                 case 2:
-                    //long cat_id = mSmetaOpenHelper.getCatIdFromTypeMat(type_id);
                     Log.d(TAG, " ))))))))SmetasMat  onOptionsItemSelected case 2");
-                    Log.d(TAG, " SmetasMat  onOptionsItemSelected case 2 cat_id = " + cat_id +
-                            "  type_id = " + type_id);
                     DialogFragment saveMat = DialogSaveNameWork.newInstance(cat_id, type_id, false);
                     saveMat.show(getSupportFragmentManager(), "SaveMatName");
                     break;
@@ -442,7 +454,7 @@ public class SmetasMat extends AppCompatActivity implements
                 break;
 
             case R.id.menu_delete:
-
+                adapter.deleteItem(mViewPager.getCurrentItem(), Kind.MAT);
                 break;
 
             case R.id.menu_cancel:

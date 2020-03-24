@@ -23,9 +23,9 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 
 public class DialogSaveNameType extends DialogSaveNameAbstract {
 
-    static String TAG = "33333";
-    long cat_id;
-    boolean isWorkDialog;
+    private static String TAG = "33333";
+    private long cat_id;
+    private boolean isWorkDialog;
 
     public DialogSaveNameType(){
         //пустой конструктор
@@ -116,14 +116,12 @@ public class DialogSaveNameType extends DialogSaveNameAbstract {
                     Snackbar.make(v, "Введите непустое название типа работ", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое название типа работ ");
-                    return;
 
                     //если такое имя уже есть в базе
                 }else if (typeId != -1) {
                     Snackbar.make(v, "Такое название уже существует. Введите другое.",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                     Log.d(TAG, "Такое название существует. Введите другое название. typeId = " +typeId);
-                    return;
 
                     //если имя не повторяется, оно не пустое то
                 }else {

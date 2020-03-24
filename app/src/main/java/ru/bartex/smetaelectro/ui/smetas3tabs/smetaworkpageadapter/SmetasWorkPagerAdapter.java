@@ -150,4 +150,43 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    public void deleteItem(int position, Kind kind){
+        //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки
+        Fragment fragment = getItem(position);
+        switch (position){
+            case 0:
+                switch (kind){
+                    case WORK:
+                        ((WorkCat) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatCat) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        break;
+                }
+                break;
+
+            case 1:
+                switch (kind){
+                    case WORK:
+                        ((WorkType) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatType) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        break;
+                }
+                break;
+
+            case 2:
+                switch (kind){
+                    case WORK:
+                        ((WorkName) fragment).getAdapter().deleteItem(position, Kind.WORK);
+                        break;
+                    case MAT:
+                        ((MatName) fragment).getAdapter().deleteItem(position, Kind.MAT);
+                        break;
+                }
+                break;
+        }
+    }
+
 }

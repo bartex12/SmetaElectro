@@ -1,6 +1,7 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -10,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
@@ -19,6 +22,8 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas3tabs.changedata.changedatamat.ChangeDataCategoryMat;
@@ -464,5 +469,119 @@ public class SmetasWorkRecyclerAdapter extends
                 }
                 break;
         }
+    }
+
+    public void deleteItem(final int position, final Kind kind) {
+        new AlertDialog.Builder(context)
+                .setTitle("Удалить?")
+                .setPositiveButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //никаких действий
+                    }
+                }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (position) {
+                    case 0:
+                        switch (kind){
+                            case WORK:
+                                //находим id по имени файла
+                                long work_id = CategoryWork.getIdFromName(database, names[posItem]);
+                                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
+                                        " work_id = " + work_id +
+                                        " names[posItem] =" + names[posItem]);
+                                //находим количество строк типов работы для cat_id
+                                int countLineType = TypeWork.getCountLine(database, work_id);
+                                Log.d(TAG, "SmetasWork onCreateContextMenu - countLineType = " + countLineType);
+                                if(countLineType > 0) {
+                                //menu.findItem(P.DELETE_ID).setEnabled(false);
+                                    Toast.makeText(context, " Удаление невозможно",
+                                            Toast.LENGTH_SHORT).show();
+                                }else {
+                                //Удаляем файл из таблицы CategoryWork когда в категории нет типов
+                                 CategoryWork.deleteObject(database, work_id);
+                                 //вызываем обновлённые параметры чтобы обновление прошло успешно
+                                getParamsCategoryWork(database, file_id);
+                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                                      }
+                                break;
+
+                            case MAT:
+
+                                break;
+                        }
+                        break;
+
+                    case 1:
+                        switch (kind){
+                            case WORK:
+                                //находим id по имени файла
+                                long type_id = TypeWork.getIdFromName(database, names[posItem]);
+                                Log.d(TAG, "SmetasWork onContextItemSelected case P.DELETE_ID" +
+                                        " type_id = " + type_id +
+                                        " names[posItem] =" + names[posItem]);
+                                //находим количество строк видов работы для type_id
+                                int countLineWork = Work.getCountLine(database, type_id);
+                                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWork = " +
+                                         countLineWork);
+                                if(countLineWork > 0) {
+                                //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                                //menu.findItem(P.DELETE_ID).setVisible(false);
+                                    Toast.makeText(context, " Удаление невозможно",
+                                            Toast.LENGTH_SHORT).show();
+                                }else {
+                                  //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
+                                 TypeWork.deleteObject(database, type_id);
+                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
+                                    getParamsTypeWork(database, file_id, isSelectedCat, cat_id);
+                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                                      }
+                                break;
+                            case MAT:
+
+                                break;
+                        }
+                        break;
+
+                    case 2:
+                        switch (kind){
+                            case WORK:
+                                //находим id по имени файла
+                                long work_id = Work.getIdFromName(database, names[posItem]);
+                                Log.d(TAG, "SmetaWorkElectro onContextItemSelected case P.DELETE_ID" +
+                                        " work_id = " + work_id +
+                                        " names[posItem] =" + names[posItem]);
+                                //находим количество строк видов работы в таблице FW для work_id
+                                 int countLineWorkFW = FW.getCountLine(database, work_id);
+                                 //находим количество строк расценок работы в таблице CostWork для work_id
+                                 int countCostLineWork = CostWork.getCountLine(database, work_id);
+                                 Log.d(TAG, "SmetasWork onCreateContextMenu - countLineWorkFW = " + countLineWorkFW +
+                                 " countCostLineWork =" + countCostLineWork);
+                                if(countLineWorkFW > 0) {
+                                 //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                                //menu.findItem(P.DELETE_ID).setVisible(false);
+                                    Toast.makeText(context, " Удаление невозможно",
+                                            Toast.LENGTH_SHORT).show();
+                                }else {
+                                    //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
+                                    Work.deleteObject(database, work_id);
+                                    //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                                    CostWork.deleteObject(database, work_id);
+                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
+                                    getParamsNameWork(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
+                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case MAT:
+
+                                break;
+                        }
+                        break;
+                }
+                //обновляем данные списка фрагмента работ
+                notifyDataSetChanged();
+            }
+        }).show();
     }
 }

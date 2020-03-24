@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import android.view.inputmethod.InputMethodManager;
 
@@ -13,6 +15,7 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
 
     static String TAG = "33333";
     public SQLiteDatabase database;
+    WorkCategoryTypeNameListener workCategoryTypeNameListener;
 
     public DialogSaveNameAbstract(){
         //пустой конструктор
@@ -21,16 +24,16 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
     public interface WorkCategoryTypeNameListener{
         void workCategoryTypeNameTransmit(String workName,String typeName, String catName);
     }
-    WorkCategoryTypeNameListener workCategoryTypeNameListener;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         workCategoryTypeNameListener = (WorkCategoryTypeNameListener)context;
         database = new SmetaOpenHelper(context).getWritableDatabase();
     }
 
     //абстрактный класс
+    @NonNull
     abstract public Dialog onCreateDialog(Bundle savedInstanceState);
 
 
@@ -42,7 +45,7 @@ abstract public class DialogSaveNameAbstract extends DialogFragment {
     }
 
     //окончание диалога с убиранием клавиатуры
-    public void fiishDialog(){
+    void fiishDialog(){
         //getActivity().finish(); //закрывает и диалог и активность
         getDialog().dismiss();  //закрывает только диалог
         takeOnAndOffSoftInput();
