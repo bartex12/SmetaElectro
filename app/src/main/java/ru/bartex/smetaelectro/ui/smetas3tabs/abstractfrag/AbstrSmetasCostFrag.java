@@ -56,7 +56,6 @@ public abstract class AbstrSmetasCostFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        //Log.d(TAG, "//  AbstrSmetasCatFrag onCreateView // " );
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_work_cat, container, false);
     }

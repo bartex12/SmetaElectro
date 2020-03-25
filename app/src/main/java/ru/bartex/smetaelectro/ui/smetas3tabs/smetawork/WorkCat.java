@@ -36,10 +36,10 @@ public class WorkCat extends AbstrSmetasFrag {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  AbstrSmetasCatFrag onCreate // " );
+        Log.d(TAG, "//  WorkCat onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
-        Log.d(TAG, "AbstrSmetasCatFrag onCreate file_id = " + file_id );
+        Log.d(TAG, "WorkCat onCreate file_id = " + file_id );
     }
 
     @Override

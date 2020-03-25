@@ -49,12 +49,12 @@ public class MatName extends AbstrSmetasFrag {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  AbstrSmetasNameFrag onCreate // " );
+        Log.d(TAG, "//  MatName onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
         isSelectedType = getArguments().getBoolean(P.IS_SELECTED_TYPE);
         type_id = getArguments().getLong(P.ID_TYPE);
-        Log.d(TAG, "AbstrSmetasNameFrag onCreate isSelectedType = " + isSelectedType +
+        Log.d(TAG, "MatName onCreate isSelectedType = " + isSelectedType +
                 " file_id = " + file_id +" position = " + position+ " type_id = " + type_id);
     }
 

@@ -41,7 +41,7 @@ public class WorkType extends AbstrSmetasFrag {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "//  AbstrSmetasTypeFrag onCreate // " );
+        Log.d(TAG, "//  WorkType onCreate // " );
         file_id = getArguments().getLong(P.ID_FILE);
         position = getArguments().getInt(P.TAB_POSITION);
         isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
