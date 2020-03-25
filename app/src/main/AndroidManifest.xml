@@ -43,7 +43,7 @@
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".ui.smetas2tabs.detailes.detailscost.CostMatDetail"
+            android:name=".ui.smetas3tabs.smetamat.detailsmat.CostMatDetail"
             android:label="@string/title_activity_smetas_mat_cost"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
@@ -52,7 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.smetas2tabs.detailes.DetailSmetaMatLine"
+            android:name=".ui.smetas3tabs.smetamat.detailsmat.DetailSmetaMatLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
@@ -97,11 +97,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.smetas2tabs.detailes.DetailSmetaLine"
+            android:name=".ui.smetas3tabs.smetawork.details.DetailSmetaLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas2tabs.detailes.detailscost.DetailCost"
+            android:name=".ui.smetas3tabs.smetawork.details.DetailCost"
             android:label="@string/title_activity_CostDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity

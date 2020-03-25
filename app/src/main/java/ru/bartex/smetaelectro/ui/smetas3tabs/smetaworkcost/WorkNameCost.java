@@ -11,7 +11,7 @@ import android.util.Log;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
-import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.detailscost.DetailCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.details.DetailCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;

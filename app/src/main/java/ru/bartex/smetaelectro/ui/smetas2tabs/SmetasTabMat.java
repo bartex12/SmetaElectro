@@ -2,7 +2,7 @@ package ru.bartex.smetaelectro.ui.smetas2tabs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.DetailSmetaMatLine;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.detailsmat.DetailSmetaMatLine;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;

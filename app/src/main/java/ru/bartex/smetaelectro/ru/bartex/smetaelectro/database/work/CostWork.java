@@ -183,7 +183,7 @@ public class CostWork {
     //получаем стоимость работы по  id
     public static float getCostById(SQLiteDatabase db, long id) {
         Log.i(TAG, "CostWork.getCostById ... ");
-        float cost = -1;
+        float cost = -1.0f;
 
         String select = " SELECT " + COST_COST +
                 " FROM " + TABLE_NAME +

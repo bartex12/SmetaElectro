@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ui.smetas2tabs.detailes;
+package ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.detailsmat;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,20 +20,19 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.detailscost.DetailCost;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
 
-public class DetailSmetaLine extends AppCompatActivity {
+public class DetailSmetaMatLine extends AppCompatActivity {
 
     public static final String TAG = "33333";
 
-    TextView mTextViewWorkName;
+    TextView mTextViewMatName;
     TextView mTextViewCost;
     TextView mTextViewUnit;
     EditText mEditTextCount;
@@ -42,75 +41,76 @@ public class DetailSmetaLine extends AppCompatActivity {
     Button mButtonCancel;
 
     long file_id;
-    static long cat_id;
-    static long type_id;
-    static long work_id;
-    boolean isWork;
+    static long cat_mat_id;
+    static long type_mat_id;
+    static long mat_id;
+    boolean isMat;
 
-    float count; //количество для работы
-    float cost; //цена работы
+    float countMat; //количество для работы
+    float costMat; //цена работы
     String unit; //единицы измерения
 
-    static final int request_code_add_cost = 111;
+    static final int request_code_add_cost_mat = 222;
     private SQLiteDatabase database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smeta_detail);
+        setContentView(R.layout.activity_smeta_mat_detail);
 
         initDB();
 
-        file_id = getIntent().getLongExtra(P.ID_FILE_DEFAULT, 1);
-        cat_id = getIntent().getLongExtra(P.ID_CATEGORY, 1);
-        type_id = getIntent().getLongExtra(P.ID_TYPE, 1);
-        work_id = getIntent().getLongExtra(P.ID_WORK, 1);
-        isWork = getIntent().getBooleanExtra(P.IS_WORK, false);
-        //Если такая работа есть в FW, то считываем из таблицы количество для file_id и work_id
-        if (isWork){
-            count = FW.getCount(database, file_id, work_id);
+        file_id = getIntent().getLongExtra(P.ID_FILE, 1);
+        cat_mat_id = getIntent().getLongExtra(P.ID_CATEGORY_MAT, 1);
+        type_mat_id = getIntent().getLongExtra(P.ID_TYPE_MAT, 1);
+        mat_id = getIntent().getLongExtra(P.ID_MAT, 1);
+        isMat = getIntent().getBooleanExtra(P.IS_MAT, false);
+
+        //Если такой материал есть в FM, то считываем из таблицы количество для file_id и mat_id
+        if (isMat){
+            countMat = FM.getCount(database, file_id, mat_id);
         }else {
-            count = 0;
+            countMat = 0;
         }
+        Log.d(TAG, "DetailSmetaMatLine - onCreate  file_id = " + file_id +
+                "  cat_mat_id = " + cat_mat_id + "  type_id = " + type_mat_id +
+                "  mat_id = " + mat_id + "  isMat = " + isMat);
 
-        Log.d(TAG, "DetailSmetaLine - onCreate  file_id = " + file_id +
-                "  cat_id = " + cat_id + "  type_id = " + type_id + "  work_id = " + work_id +
-                " isWork = " + isWork);
-
-        //выводим название работы
-        mTextViewWorkName = findViewById(R.id.tv_cost_workName);
-        String workName = Work.getNameFromId(database, work_id);
-        mTextViewWorkName.setText(workName);
+        //выводим название материала
+        mTextViewMatName = findViewById(R.id.tv_cost_workName);
+        String matName = Mat.getNameFromId(database, mat_id);
+        mTextViewMatName.setText(matName);
 
         //выводим таблицу CostWork
         //mSmetaOpenHelper.displayTableCost();
 
         //выводим цену работы
         mTextViewCost = findViewById(R.id.etCost);
-        cost = CostWork.getCostById(database, work_id);
-        mTextViewCost.setText(Float.toString(cost));
-        if ((mTextViewCost.getText().toString()).equals("0.0")){
-            Log.d(TAG, "DetailSmetaLine.(mTextViewCost.getText().toString()).equals");
-
-            //если для work_id в таблице расценок ничего нет (цена =0), то вызываем диалог
+        costMat = CostMat.getCostById(database, mat_id);
+        mTextViewCost.setText(Float.toString(costMat));
+        //из метода getCostById приходит -1.0f, если цена не найдена
+        if (costMat == -1.0f){
+            Log.d(TAG, "DetailSmetaMatLine costMat =" + costMat);
+            //если для mat_id в таблице расценок ничего нет (цена = -1.0f), то вызываем диалог
             FragmentManager fragmentManager = getSupportFragmentManager();
-            DialogFragment dialogFragment = new CostDialogFragment();
-            dialogFragment.show(fragmentManager,"Save_Cost");
+            DialogFragment dialogFragment = new CostMatDialogFragment();
+            dialogFragment.show(fragmentManager,"Save_Cost_mat");
         }
 
         //выводим единицы измерения
         mTextViewUnit = findViewById(R.id.textView_unit);
-        unit = CostWork.getNameFromId(database, work_id);
+        unit = UnitMat.getUnitMat(database, mat_id);
         mTextViewUnit.setText(unit);
 
         //находим поле Сумма
         mTextViewSumma = findViewById(R.id.textView_summa);
-        mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
+        mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
 
 
         //смотрим, что записано в поле Количество
         mEditTextCount = findViewById(R.id.editText_count);
-        mEditTextCount.setText(String.valueOf(count));
+        mEditTextCount.setText(String.valueOf(countMat));
         mEditTextCount.requestFocus();
         mEditTextCount.selectAll();
 
@@ -123,13 +123,13 @@ public class DetailSmetaLine extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-               String str =  mEditTextCount.getText().toString();
-               if ((str.equals(""))||(str.equals("."))){
+                String str =  mEditTextCount.getText().toString();
+                if ((str.equals(""))||(str.equals("."))){
                     str = "0";
                 }
-                count = Float.parseFloat(str);
-               //пишем в поле Сумма
-                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
+                countMat = Float.parseFloat(str);
+                //пишем в поле Сумма
+                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (countMat*costMat)));
             }
         });
 
@@ -141,32 +141,32 @@ public class DetailSmetaLine extends AppCompatActivity {
                 if ((mEditTextCount.getText().toString()).equals(".")||
                         (mEditTextCount.getText().toString()).equals("")||
                         Float.parseFloat(mEditTextCount.getText().toString())==0){
-
                     //Snackbar заслонён клавиатурой, поэтому в манифесте пишем
                     //android:windowSoftInputMode="stateVisible|adjustResize"
                     Snackbar.make(getCurrentFocus(), "Введите количество, не равное нулю",
                             Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }else {
-                    if (isWork){
-                        //Если такая работа уже есть в смете, то не вставлять, а обновлять строку
+                    if (isMat){
+                        //Если такой материал уже есть в смете, то не вставлять, а обновлять строку
                         //но сначала нужно посмотреть, не изменилась ли расценка и единица измерения,
                         // поэтому cost и unit входит
-                        FW.updateRowInFW(database,
-                                file_id, work_id, cost,unit, count, count*cost);
+                        FM.updateRowInFM(database,
+                                file_id, mat_id, costMat, unit, countMat,
+                                countMat*costMat);
                         finish();
-                        //если работы нет, то сначала посмотреть цену работы и если она равна 0.0,
-                        // вызвать диалог установки цены !ПЕРЕДЕЛАТЬ НА ЦЕНА <0
                     }else {
                         if ((mTextViewCost.getText().toString()).equals("0.0")){
-                            Log.d(TAG, "DetailSmetaLine.if ((mTextViewCost.getText().toString()).eq...");
+                            Log.d(TAG, "DetailSmetaMatLine.if ((mTextViewCost.getText().toString()).eq..\"0.0\".");
                             FragmentManager fragmentManager = getSupportFragmentManager();
-                            DialogFragment dialogFragment = new CostDialogFragment();
-                            dialogFragment.show(fragmentManager,"Save_Cost");
+                            DialogFragment dialogFragment = new CostMatDialogFragment();
+                            dialogFragment.show(fragmentManager,"Save_Cost_mat");
                         }else{
-                            long FW_ID = FW.insertRowInFW(database, file_id, work_id,
-                                    type_id, cat_id, cost, count, unit, count*cost);
-                            Log.d(TAG, "DetailSmetaLine-mButtonSave-onClick FW_ID = " + FW_ID);
-                            //выводим таблицу FW в лог для проверки
+                            long FM_ID = FM.insertRowInFM(database, file_id, mat_id,
+                                    type_mat_id, cat_mat_id, costMat, countMat,
+                                    unit, countMat*costMat);
+                            Log.d(TAG, "DetailSmetaMatLine-mButtonSave-onClick FM_ID = " + FM_ID +
+                                    " unit = " + unit);
+                            //выводим таблицу FM в лог для проверки
                             FM.displayTable(database);
                             finish();
                         }
@@ -175,7 +175,6 @@ public class DetailSmetaLine extends AppCompatActivity {
             }
         };
         mButtonSave.setOnClickListener(onButtonSave);
-
 
         mButtonCancel = findViewById(R.id.button_cost_cancel);
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
@@ -194,33 +193,37 @@ public class DetailSmetaLine extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "DetailSmetaLine.onActivityResult...  resultCode = " + (resultCode == RESULT_OK) +
-                "  requestCode = " +(requestCode==P.REQUEST_COST));
+
+        Log.d(TAG, "DetailSmetaMatLine.onActivityResult...  resultCode = "+ resultCode +
+                "  requestCode = " + requestCode);
         if (resultCode == RESULT_OK) {
-                Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
-            cost = CostWork.getCostById(database, work_id);
-                mTextViewCost.setText(Float.toString(cost));
-            unit = CostWork.getNameFromId(database, work_id);
-                mTextViewUnit.setText(unit);
-                mTextViewSumma.setText(String.format(Locale.ENGLISH,"%.2f", (count*cost)));
+            Log.d(TAG, "DetailSmetaLine.onActivityResult..RESULT_OK - requestCode == P.REQUEST_COST)");
+            //long matId = data.getExtras().getLong(P.ID_MAT);
+            costMat = CostMat.getCostById(database, mat_id);
+            mTextViewCost.setText(Float.toString(costMat));
+
+            mTextViewSumma.setText(String.format(Locale.getDefault(),"%.2f", (countMat*costMat)));
+
+            unit = UnitMat.getUnitMat(database, mat_id);
+            mTextViewUnit.setText(unit);
         }
     }
 
-    public static class CostDialogFragment extends DialogFragment {
+    public static class CostMatDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Log.d(TAG, "DetailSmetaLine.CostDialogFragment...");
+            Log.d(TAG, "DetailSmetaMatLine.CostMatDialogFragment...");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.CostZero);
             builder.setPositiveButton(R.string.CostOk, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(getActivity(), DetailCost.class);
-                    intent.putExtra(P.ID_CATEGORY, cat_id);
-                    intent.putExtra(P.ID_TYPE, type_id);
-                    intent.putExtra(P.ID_WORK, work_id);
-                    intent.putExtra(DetailCost.REQUEST_CODE, request_code_add_cost);
-                    startActivityForResult(intent, P.REQUEST_COST);
+                    Intent intent = new Intent(getActivity(), CostMatDetail.class);
+                    intent.putExtra(P.ID_CATEGORY_MAT, cat_mat_id);
+                    intent.putExtra(P.ID_TYPE_MAT, type_mat_id);
+                    intent.putExtra(P.ID_MAT, mat_id);
+                    intent.putExtra(CostMatDetail.REQUEST_CODE, request_code_add_cost_mat);
+                    startActivityForResult(intent, P.REQUEST_COST_MAT);
                 }
             });
             return builder.create();
