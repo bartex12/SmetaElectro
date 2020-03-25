@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -116,7 +119,7 @@ public class SmetasCostRecyclerAdapter extends
                         getParamsCategoryWorkCost(database);
                         break;
                     case COST_MAT:
-
+                        getParamsCategoryMatCost(database);
                         break;
                 }
                 break;
@@ -127,7 +130,7 @@ public class SmetasCostRecyclerAdapter extends
                         getParamsTypeWorkCost(database, isSelectedCat, cat_id);
                         break;
                     case COST_MAT:
-
+                        getParamsTypeMatCost(database,isSelectedCat,cat_id);
                         break;
                 }
                 break;
@@ -139,7 +142,8 @@ public class SmetasCostRecyclerAdapter extends
                                 isSelectedCat, cat_id, isSelectedType, type_id);
                         break;
                     case COST_MAT:
-
+                        getParamsNameMatCost(database,
+                                 isSelectedCat, cat_id,isSelectedType, type_id);
                         break;
                 }
                 break;
@@ -188,6 +192,48 @@ public class SmetasCostRecyclerAdapter extends
         names = CategoryWork.getArrayCategoryWorkNames(database);
     }
 
+    private void getParamsNameMatCost(SQLiteDatabase database,
+                                       boolean isSelectedCat, long cat_id,
+                                       boolean isSelectedType, long type_id) {
+        Log.d(TAG, "***** SmetasCostRecyclerAdapter getParams()  case 2 ");
+        if (isSelectedCat) {
+            if (isSelectedType) {
+                names = Mat.getArrayMatNamesFromtypeId(database, type_id);
+            } else {
+                names = Mat.getArrayMatNamesFromCatId(database, cat_id);
+            }
+        } else {
+            if (isSelectedType) {
+                names = Mat.getArrayMatNamesFromtypeId(database, type_id);
+            } else {
+                names = Mat.getArrayMatNames(database);
+            }
+        }
+    }
+
+    private void getParamsTypeMatCost(SQLiteDatabase database,
+                                       boolean isSelectedCat, long cat_id) {
+        Log.d(TAG, "***** SmetasCostRecyclerAdapter getParams()  case 1 " +
+                " isSelectedCat = " + isSelectedCat);
+        if (isSelectedCat) {
+            //массив с именами категорий из таблицы категорий TypeWork с cat_id
+            names = TypeMat.getArrayTypeMatNamesFromCatId(database, cat_id);
+            Log.d(TAG, "***** SmetasCostRecyclerAdapter getParams()  case 1 " +
+                    " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
+        } else {
+            //массив с именами категорий из таблицы категорий TypeWork
+            names = TypeMat.getArrayTypeMatNames(database);
+            Log.d(TAG, "***** SmetasCostRecyclerAdapter getParams()  case 1 " +
+                    " isSelectedCat = " + isSelectedCat + "  names.length = " + names.length);
+        }
+    }
+
+    private void getParamsCategoryMatCost(SQLiteDatabase database) {
+        Log.d(TAG, "***** SmetasCostRecyclerAdapter getParams()  case 0 ");
+        //массив с именами категорий из таблицы категорий CategoryWork
+        names = CategoryMat.getArrayCategoryMatNames(database);
+    }
+
     public void updateWorkCostType(long cat_id) {
         getParams(database, KindCost.COST_WORK, 1, true, cat_id, false, 0);
         notifyDataSetChanged();
@@ -198,4 +244,13 @@ public class SmetasCostRecyclerAdapter extends
         notifyDataSetChanged();
     }
 
+    public void updateMatCostType(long cat_id) {
+        getParams(database, KindCost.COST_MAT, 1, true, cat_id, false, 0);
+        notifyDataSetChanged();
+    }
+
+    public void updateMatCostName(long cat_id, long type_id) {
+        getParams(database, KindCost.COST_MAT, 2, true, cat_id, true, type_id);
+        notifyDataSetChanged();
+    }
 }

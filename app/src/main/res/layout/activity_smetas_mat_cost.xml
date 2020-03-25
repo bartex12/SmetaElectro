@@ -9,14 +9,14 @@
     tools:context=".ui.smetas3tabs.smetamatcost.SmetasMatCost">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_smetas_tab"
+        android:id="@+id/appbar_smetas_matcost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarMat"
+            android:id="@+id/toolbar_smetas_matcost"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
@@ -27,38 +27,21 @@
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabsMatCost"
+            android:id="@+id/tabs_smetas_matcost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItemMatCost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_1_mat" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem1MatCost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_2_mat" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem2MatCost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3_mat"/>
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/container_smetas_tab"
+        android:id="@+id/container_smetas_matcost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_smetas_tab"
+        android:id="@+id/fab_smetas_matcost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -67,7 +50,7 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation_smetas_work"
+        android:id="@+id/navigation_smetas_matcost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

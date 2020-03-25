@@ -6,28 +6,22 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasNameFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MatNameCost extends AbstrSmetasNameFrag {
+public class MatNameCost extends AbstrSmetasWorkCostFrag {
 
 
     public MatNameCost() {
         // Required empty public constructor
     }
 
-    @Override
-    public SmetasMatRecyclerAdapter getSmetasCatRecyclerAdapter() {
-        return null;
-    }
 
-    @Override
-    public SmetasMatRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return null;
-    }
 
     public static MatNameCost NewInstance(
             long file_id, int position, boolean isSelectedType, long type_id) {
@@ -92,5 +86,15 @@ public class MatNameCost extends AbstrSmetasNameFrag {
 //        intent.putExtra(P.IS_MAT, isMat);
 //        startActivity(intent);
 //    }
+
+    @Override
+    public SmetasCostRecyclerAdapter getSmetasCostRecyclerAdapter() {
+        return null;
+    }
+
+    @Override
+    public SmetasCostRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
+        return null;
+    }
 
 }

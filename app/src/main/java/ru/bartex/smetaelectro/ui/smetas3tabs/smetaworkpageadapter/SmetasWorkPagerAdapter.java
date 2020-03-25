@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.MatType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.MatNameCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.MatTypeCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
@@ -86,6 +88,19 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         SmetasWorkRecyclerAdapter adapter = ((MatName) fragment).getAdapter();
         adapter.updateMatName(cat_id, type_id);
     }
+
+    public void updateMatCostType(long cat_id){
+        Fragment fragment = getItem(1);
+        SmetasCostRecyclerAdapter adapter = ((MatTypeCost) fragment).getAdapter();
+        adapter.updateMatCostType(cat_id);
+    }
+
+    public void updateMatCostName(long cat_id, long type_id){
+        Fragment fragment = getItem(2);
+        SmetasCostRecyclerAdapter adapter = ((MatNameCost) fragment).getAdapter();
+        adapter.updateMatCostName(cat_id, type_id);
+    }
+
 
     public void  showDetails(int position, KindWork kind){
         //получаем фрагмент из списка фрагментов в зависимости от позиции вкладки

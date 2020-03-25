@@ -71,7 +71,7 @@ public class SmetasWorkCost extends AppCompatActivity implements
     private SQLiteDatabase database;
     private ViewPager mViewPager;
     private SmetasWorkPagerAdapter adapter;
-    private Fragment tab1WorkCatCost, tab2WorkTypeCost, tab3WorkWorkCost ;
+    private Fragment tab1WorkCatCost, tab2WorkTypeCost, tab3WorkNameCost ;
 
     // private SectionsPagerAdapter mSectionsPagerAdapter;
     File fileWork; //имя файла с данными по смете на работы
@@ -170,8 +170,6 @@ public class SmetasWorkCost extends AppCompatActivity implements
         // адаптер, ViewPager инициализируются в onResume,
         // чтобы при возврате на SmetasWork из деталей происходило обновление пунктов списка
 
-//
-//
 //        //в макете стоит GONE
 //        FloatingActionButton fab = findViewById(R.id.fab_smetas_work);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +179,6 @@ public class SmetasWorkCost extends AppCompatActivity implements
 //                        .setAction("Action", null).show();
 //            }
 //        });
-//
-//        //добираемся до списка фрагмента ___________пока нет_____________
-//        //http://qaru.site/questions/2399151/get-child-views-of-the-current-selected-items-in-viewpager
-//        View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-//        Log.d(TAG, " SmetasWorkCost  onCreate mViewPager.getCurrentItem() = " +
-//                mViewPager.getCurrentItem() + "  view = " + view );
 
     }
 
@@ -210,7 +202,7 @@ public class SmetasWorkCost extends AppCompatActivity implements
         //создаём фрагменты
         tab1WorkCatCost = WorkCatCost.newInstance(file_id, 0);
         tab2WorkTypeCost = WorkTypeCost.newInstance(file_id, 1, false, 0);
-        tab3WorkWorkCost = WorkNameCost.newInstance(file_id, 2, false, 0);
+        tab3WorkNameCost = WorkNameCost.newInstance(file_id, 2, false, 0);
     }
 
     private void initPageAdapter() {
@@ -219,12 +211,12 @@ public class SmetasWorkCost extends AppCompatActivity implements
         adapter = new SmetasWorkPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(tab1WorkCatCost, "Категория" );
         adapter.addFragment(tab2WorkTypeCost, "Тип" );
-        adapter.addFragment(tab3WorkWorkCost, "Название" );
+        adapter.addFragment(tab3WorkNameCost, "Название" );
     }
 
     private void initViewPager() {
         // Log.d(TAG, "//SmetasWork-initViewPager");
-        mViewPager = findViewById(R.id.container_smetas_work);
+        mViewPager = findViewById(R.id.container_smetas_workcost);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
 
@@ -246,7 +238,7 @@ public class SmetasWorkCost extends AppCompatActivity implements
 
         //если это не сделать, то названия вкладок не будут отображаться,
         // хотя слайер и будет работать
-        TabLayout tabs = findViewById(R.id.tabs_smetas_work);
+        TabLayout tabs = findViewById(R.id.tabs_smetas_workcost);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
         tabs.setupWithViewPager(mViewPager);
     }
@@ -257,12 +249,12 @@ public class SmetasWorkCost extends AppCompatActivity implements
     }
 
     private void initBottomNavigation() {
-        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_work);
+        BottomNavigationView navigation = findViewById(R.id.navigation_smetas_workcost);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar_smetas_work);
+        Toolbar toolbar = findViewById(R.id.toolbar_smetas_workcost);
         setSupportActionBar(toolbar);
         //показываем заголовок в заголовке экрана
         toolbar.setTitle(R.string.title_activity_SmetasWorkCost);
@@ -536,8 +528,6 @@ public class SmetasWorkCost extends AppCompatActivity implements
             return false;
         }
     };
-
-
 
     public class ExportDatabaseCSVTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog = new ProgressDialog(SmetasWorkCost.this);
