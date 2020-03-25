@@ -6,19 +6,17 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkCatCost extends AbstrSmetasWorkCostFrag {
+public class WorkCatCost extends AbstrSmetasCostFrag {
 
 
     public WorkCatCost() {

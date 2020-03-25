@@ -108,6 +108,7 @@ public class SmetasCostRecyclerAdapter extends
         }
     }
 
+    //***********************     методы вдвптера     ********************
     private void getParams(SQLiteDatabase database,
                            KindCost kind, int positionTab,
                            boolean isSelectedCat, long cat_id,

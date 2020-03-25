@@ -272,22 +272,34 @@ public class SmetasWorkRecyclerAdapter extends
     }
 
     public void updateWorkType(long cat_id) {
-        getParams(database, KindWork.WORK,  file_id, 1, true, cat_id, false, 0);
+        getParams(database, KindWork.WORK,  file_id,
+                1, true, cat_id, false, 0);
+//        getParams(database, kind,  file_id,
+//                positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
         notifyDataSetChanged();
     }
 
     public void updateWorkName(long cat_id, long type_id) {
-        getParams(database, KindWork.WORK, file_id, 2, true, cat_id, true, type_id);
+        getParams(database, KindWork.WORK, file_id,
+                2, true, cat_id, true, type_id);
+//        getParams(database, kind, file_id,
+//                positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
         notifyDataSetChanged();
     }
 
     public void updateMatType(long cat_id){
-        getParams(database, KindWork.MAT,  file_id, 1,true,cat_id,false,0);
+        getParams(database, KindWork.MAT,  file_id,
+                1,true,cat_id,false,0);
+//        getParams(database, kind,  file_id,
+//                positionTab,isSelectedCat,cat_id,isSelectedType,type_id);
         notifyDataSetChanged();
     }
 
     public void  updateMatName(long cat_id, long type_id){
-        getParams(database, KindWork.MAT, file_id, 2,true, cat_id,true, type_id);
+        getParams(database, KindWork.MAT, file_id,
+                2,true, cat_id,true, type_id);
+//        getParams(database, kind, file_id,
+//                positionTab,isSelectedCat, cat_id,isSelectedType, type_id);
         notifyDataSetChanged();
     }
 

@@ -53,6 +53,8 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
         return tabTitles.get(position);
     }
 
+
+    //**************************** методы адаптера*********************
     public void updateWorkType(long cat_id){
         Fragment fragment = getItem(1);
         SmetasWorkRecyclerAdapter adapter = ((WorkType) fragment).getAdapter();

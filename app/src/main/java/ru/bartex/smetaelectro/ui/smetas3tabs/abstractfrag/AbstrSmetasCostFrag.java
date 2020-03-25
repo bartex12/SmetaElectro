@@ -18,7 +18,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
-public abstract class AbstrSmetasWorkCostFrag extends Fragment {
+public abstract class AbstrSmetasCostFrag extends Fragment {
 
     public static final String TAG = "33333";
     public long file_id;
@@ -46,7 +46,7 @@ public abstract class AbstrSmetasWorkCostFrag extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  AbstrSmetasWorkFrag onAttach // " );
+        Log.d(TAG, "//  AbstrSmetasFrag onAttach // " );
         //передаём ссылку на активити, котрая реализует этот интерфейс
         onClickCatListener = (OnClickCatListener)context;
         onClickTypeListener = (OnClickTypekListener)context;
@@ -64,7 +64,7 @@ public abstract class AbstrSmetasWorkCostFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrSmetasWorkFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasFrag onViewCreated // " );
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
@@ -74,7 +74,7 @@ public abstract class AbstrSmetasWorkCostFrag extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        Log.d(TAG, "--------  AbstrSmetasWorkFrag onDestroy -------" );
+        Log.d(TAG, "--------  AbstrSmetasFrag onDestroy -------" );
     }
 
     private void initRecycler(View view) {

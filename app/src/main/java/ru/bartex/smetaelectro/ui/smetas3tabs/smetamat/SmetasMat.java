@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasMatFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasFrag;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
@@ -37,7 +37,7 @@ import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
 
 public class SmetasMat extends AppCompatActivity implements
-        AbstrSmetasMatFrag.OnClickTypekListener, AbstrSmetasMatFrag.OnClickCatListener,
+        AbstrSmetasFrag.OnClickTypekListener, AbstrSmetasFrag.OnClickCatListener,
         DialogSaveNameAbstract.WorkCategoryTypeNameListener{
 
     public static final String TAG = "33333";

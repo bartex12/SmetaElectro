@@ -1,7 +1,6 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,22 +13,15 @@ import android.os.Environment;
 import android.os.StrictMode;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -42,7 +34,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
@@ -50,16 +41,13 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkCat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkName;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.WorkType;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 
 public class SmetasWorkCost extends AppCompatActivity implements
         DialogSaveCostWork.OnCatTypeMatCostNameListener,
-        AbstrSmetasWorkCostFrag.OnClickCatListener,
-        AbstrSmetasWorkCostFrag.OnClickTypekListener{
+        AbstrSmetasCostFrag.OnClickCatListener,
+        AbstrSmetasCostFrag.OnClickTypekListener{
 
     public static final String TAG = "33333";
     long file_id;

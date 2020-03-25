@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,7 @@ import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 
-public abstract class AbstrSmetasMatFrag extends Fragment {
+public abstract class AbstrSmetasFrag extends Fragment {
 
     public static final String TAG = "33333";
     public long file_id;
@@ -25,7 +26,7 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
 
 
     public SQLiteDatabase database;
-    public RecyclerView recyclerView;
+    public RecyclerView  recyclerView;
     public SmetasWorkRecyclerAdapter adapter;
     public OnClickCatListener onClickCatListener;
     public OnClickTypekListener onClickTypeListener;
@@ -41,10 +42,11 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
     public abstract SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter();
     public abstract SmetasWorkRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener();
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(TAG, "//  AbstrSmetasMatFrag onAttach // " );
+        Log.d(TAG, "//  AbstrSmetasFrag onAttach // " );
         //передаём ссылку на активити, котрая реализует этот интерфейс
         onClickCatListener = (OnClickCatListener)context;
         onClickTypeListener = (OnClickTypekListener)context;
@@ -62,7 +64,7 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrSmetasMatFrag onViewCreated // " );
+        Log.d(TAG, "// AbstrSmetasFrag onViewCreated // " );
         initRecycler(view);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
@@ -72,7 +74,7 @@ public abstract class AbstrSmetasMatFrag extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        Log.d(TAG, "--------  AbstrSmetasMatFrag onDestroy -------" );
+        Log.d(TAG, "--------  AbstrSmetasFrag onDestroy -------" );
     }
 
     private void initRecycler(View view) {

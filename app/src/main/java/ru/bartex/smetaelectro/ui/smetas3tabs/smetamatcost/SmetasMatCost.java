@@ -1,7 +1,6 @@
 package ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,25 +13,15 @@ import android.os.Environment;
 import android.os.StrictMode;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -45,7 +34,6 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
@@ -53,16 +41,12 @@ import ru.bartex.smetaelectro.ui.dialogs.DialogSaveCostMat;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasCatFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasTypeFrag;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkCatCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkNameCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.WorkTypeCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkpageadapter.SmetasWorkPagerAdapter;
 
 public class SmetasMatCost extends AppCompatActivity implements
-        AbstrSmetasWorkCostFrag.OnClickCatListener, AbstrSmetasWorkCostFrag.OnClickTypekListener,
+        AbstrSmetasCostFrag.OnClickCatListener,
+        AbstrSmetasCostFrag.OnClickTypekListener,
         DialogSaveCostMat.OnCatTypeMatCostNameListener{
 
     public static final String TAG = "33333";
