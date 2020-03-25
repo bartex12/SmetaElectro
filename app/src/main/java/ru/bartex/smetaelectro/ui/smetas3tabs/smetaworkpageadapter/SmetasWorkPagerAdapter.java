@@ -55,6 +55,48 @@ public class SmetasWorkPagerAdapter extends FragmentPagerAdapter {
 
 
     //**************************** методы адаптера*********************
+    public void updateWorkCategoryAdd(){
+        Fragment fragment = getItem(0);
+        SmetasWorkRecyclerAdapter adapter = ((WorkCat) fragment).getAdapter();
+        adapter.updateWorkCategoryAdd();
+    }
+
+    public void updateMatCategoryAdd(){
+        Fragment fragment = getItem(0);
+        SmetasWorkRecyclerAdapter adapter = ((MatCat) fragment).getAdapter();
+        adapter.updateMatCategoryAdd();
+    }
+
+    //----------------
+
+    public void updateWorkTypeAdd(long cat_id){
+        Fragment fragment = getItem(1);
+        SmetasWorkRecyclerAdapter adapter = ((WorkType) fragment).getAdapter();
+        adapter.updateWorkTypeAdd(cat_id);
+    }
+
+    public void updateMatTypeAdd(long cat_id){
+        Fragment fragment = getItem(1);
+        SmetasWorkRecyclerAdapter adapter = ((MatType) fragment).getAdapter();
+        adapter.updateMatTypeAdd(cat_id);
+    }
+
+    //--------------
+
+    public void updateWorkNameAdd(long type_id){
+        Fragment fragment = getItem(2);
+        SmetasWorkRecyclerAdapter adapter = ((WorkName) fragment).getAdapter();
+        adapter.updateWorkNameAdd(type_id);
+    }
+
+    public void updateMatNameAdd(long type_id){
+        Fragment fragment = getItem(2);
+        SmetasWorkRecyclerAdapter adapter = ((MatName) fragment).getAdapter();
+        adapter.updateMatNameAdd(type_id);
+    }
+
+//----------------
+
     public void updateWorkType(long cat_id){
         Fragment fragment = getItem(1);
         SmetasWorkRecyclerAdapter adapter = ((WorkType) fragment).getAdapter();

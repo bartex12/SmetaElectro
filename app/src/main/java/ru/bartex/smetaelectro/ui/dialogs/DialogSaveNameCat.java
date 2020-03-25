@@ -109,7 +109,8 @@ public class DialogSaveNameCat extends DialogSaveNameAbstract {
                     Log.d(TAG, "Такое название отсутствует catId = " + catId);
 
                     //Вызываем метод интерфейса, передаём название категории в SmetaCategoryElectro
-                    workCategoryTypeNameListener.workCategoryTypeNameTransmit(null,null, nameCat);
+                    workCategoryTypeNameListener.workCategoryTypeNameTransmit(
+                            null,null, nameCat);
 
                     fiishDialog();
                     //getDialog().dismiss();

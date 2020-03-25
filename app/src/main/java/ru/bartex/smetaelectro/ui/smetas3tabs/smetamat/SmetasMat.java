@@ -89,6 +89,7 @@ public class SmetasMat extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
+                adapter.updateMatCategoryAdd();
                 // обновляем адаптер
                 updatePageAdapter(0);
                 break;
@@ -96,11 +97,13 @@ public class SmetasMat extends AppCompatActivity implements
             case 1:
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = CategoryMat.getIdFromName(database, catName);
+                long category_Id = CategoryMat.getIdFromName(database, catName);
                 long newTypeWorkNameId = TypeMat.insertTypeCatName(database,
-                        typeName, type_category_Id);
+                        typeName, category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeMatNameId=" + newTypeWorkNameId);
+
+                adapter. updateMatTypeAdd(category_Id);
                 // обновляем адаптер
                 updatePageAdapter(1);
                 break;
@@ -108,11 +111,12 @@ public class SmetasMat extends AppCompatActivity implements
             case 2:
                 Log.d(TAG, "++++++++ SmetasMat  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
-                long work_type_Id = TypeMat.getIdFromName(database, typeName);
-                long newWorkNameId = Mat.insertTypeCatName(database, workName, work_type_Id);
+                long type_Id = TypeMat.getIdFromName(database, typeName);
+                long newWorkNameId = Mat.insertTypeCatName(database, workName, type_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newMatNameId=" + newWorkNameId);
 
+                adapter. updateMatNameAdd(type_Id);
                 // обновляем адаптер
                 updatePageAdapter(2);
                 break;

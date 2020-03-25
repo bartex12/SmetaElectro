@@ -91,30 +91,34 @@ public class SmetasWork extends AppCompatActivity implements
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newCatMatNameId=" + newCatMatNameId);
 
-                // обновляем соседнюю вкладку типов материалов и показываем её
+                adapter.updateWorkCategoryAdd();
+                // обновляем вкладку категорий работы и показываем её
                 updatePageAdapter(0);
                 break;
 
             case 1:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 1");
                 //определяем id категории по её имени
-                long type_category_Id = CategoryWork.getIdFromName(database, catName);
-                long newTypeNameId = TypeWork.insertTypeCatName(database, typeName, type_category_Id);
+                long category_Id = CategoryWork.getIdFromName(database, catName);
+                long newTypeNameId = TypeWork.insertTypeCatName(database, typeName, category_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newTypeNameId=" + newTypeNameId);
-                // обновляем соседнюю вкладку типов материалов и показываем её
+
+                adapter. updateWorkTypeAdd(category_Id);
+                // обновляем вкладку типов работы и показываем её
                 updatePageAdapter(1);
                 break;
 
             case 2:
                 Log.d(TAG, "++++++++ SmetasWork  workCategoryTypeNameTransmit ++++++ case 2");
                 //определяем id типа по его имени
-                long work_type_Id = TypeWork.getIdFromName(database, typeName);
-                long newWorkNameId = Work.insertTypeCatName(database,  workName, work_type_Id);
+                long type_Id = TypeWork.getIdFromName(database, typeName);
+                long newWorkNameId = Work.insertTypeCatName(database,  workName, type_Id);
                 Log.d(TAG, "workCategoryTypeNameTransmit - workName = " + workName +
                         " typeName=" + typeName + " catName=" + catName +  " newWorkNameId=" + newWorkNameId);
 
-                // обновляем соседнюю вкладку типов материалов и показываем её
+                adapter. updateWorkNameAdd(type_Id);
+                // обновляем  вкладку  работы и показываем её
                 updatePageAdapter(2);
                 break;
         }

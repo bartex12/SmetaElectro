@@ -271,37 +271,77 @@ public class SmetasWorkRecyclerAdapter extends
                 database, file_id, names);
     }
 
+    //*************************************
+
+    public void updateWorkCategoryAdd() {
+        getParams(database, KindWork.WORK,  file_id,
+                0, false, 0, false, 0);
+        notifyDataSetChanged();
+    }
+
+    public void updateMatCategoryAdd() {
+        getParams(database, KindWork.MAT,  file_id,
+                0, false, 0, false, 0);
+        notifyDataSetChanged();
+    }
+
+    //--------------------
+
+    public void updateWorkTypeAdd(long cat_id) {
+        getParams(database, KindWork.WORK,  file_id,
+                1, true, cat_id, false, 0);
+        notifyDataSetChanged();
+    }
+
+    public void updateMatTypeAdd(long cat_id) {
+        getParams(database, KindWork.MAT,  file_id,
+                1, true, cat_id, false, 0);
+        notifyDataSetChanged();
+    }
+
+    //--------------------
+
+    public void updateWorkNameAdd(long type_id) {
+        getParams(database, KindWork.WORK, file_id,
+                2, false, 0, true, type_id);
+        notifyDataSetChanged();
+    }
+
+    public void updateMatNameAdd(long type_id) {
+        getParams(database, KindWork.MAT, file_id,
+                2, false, 0, true, type_id);
+        notifyDataSetChanged();
+    }
+
+    //**********************************************
+
     public void updateWorkType(long cat_id) {
         getParams(database, KindWork.WORK,  file_id,
                 1, true, cat_id, false, 0);
-//        getParams(database, kind,  file_id,
-//                positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
         notifyDataSetChanged();
     }
 
     public void updateWorkName(long cat_id, long type_id) {
         getParams(database, KindWork.WORK, file_id,
                 2, true, cat_id, true, type_id);
-//        getParams(database, kind, file_id,
-//                positionTab, isSelectedCat, cat_id, isSelectedType, type_id);
         notifyDataSetChanged();
     }
+
+    //------------------
 
     public void updateMatType(long cat_id){
         getParams(database, KindWork.MAT,  file_id,
                 1,true,cat_id,false,0);
-//        getParams(database, kind,  file_id,
-//                positionTab,isSelectedCat,cat_id,isSelectedType,type_id);
         notifyDataSetChanged();
     }
 
     public void  updateMatName(long cat_id, long type_id){
         getParams(database, KindWork.MAT, file_id,
                 2,true, cat_id,true, type_id);
-//        getParams(database, kind, file_id,
-//                positionTab,isSelectedCat, cat_id,isSelectedType, type_id);
         notifyDataSetChanged();
     }
+
+    //*********************************
 
     public void showDetails(int position, KindWork kind) {
         switch (position) {
