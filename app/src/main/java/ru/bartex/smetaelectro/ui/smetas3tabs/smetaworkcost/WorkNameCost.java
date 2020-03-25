@@ -74,10 +74,16 @@ public class WorkNameCost extends AbstrSmetasCostFrag {
     }
 
         private void sendIntent(String name) {
-        //находим id по имени работы
-        long work_id = Work.getIdFromName(database, name);
-        //ищем id категории работы, зная id типа
-        long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
+            // ВСЕ параметры нужно пересчитывать, так как они изменяются
+            // при щелчке на строке списка
+
+            //находим id по имени работы
+            long work_id = Work.getIdFromName(database, name);
+            //находим id типа работы по имени работы
+            long type_id = Work.getTypeIdFromName(database, name);
+            Log.d(TAG, "//  WorkNameCost sendIntent type_id =  "  + type_id );
+            //ищем id категории работы, зная id типа
+            long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), DetailCost.class);
         intent.putExtra(P.ID_CATEGORY, cat_id);

@@ -12,6 +12,7 @@ import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.DetailSmetaMatLine;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
@@ -78,8 +79,14 @@ public class MatName extends AbstrSmetasFrag {
     }
 
     private void sendIntent(String name) {
+        // ВСЕ параметры нужно пересчитывать, так как они изменяются
+        // при щелчке на строке списка
+
         //находим id материала по имени материала
         final long mat_id = Mat.getIdFromName(database, name);
+        //находим id типа работы по имени работы
+        long type_id = Mat.getTypeIdFromName(database, name);
+        Log.d(TAG, "//  WorkName sendIntent type_id =  "  + type_id );
         //ищем id категории материалов, зная id типа
         long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
         // проверяем есть ли такой  материал в FM для файла с file_id

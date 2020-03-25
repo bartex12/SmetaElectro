@@ -11,6 +11,7 @@ import android.util.Log;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas2tabs.detailes.detailscost.CostMatDetail;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindCost;
@@ -125,9 +126,15 @@ public class MatNameCost extends AbstrSmetasCostFrag {
     }
 
     private void sendIntent(String name) {
-        //находим id по имени работы
+        // ВСЕ параметры нужно пересчитывать, так как они изменяются
+        // при щелчке на строке списка
+
+        //находим id по имени материала
         long mat_id = Mat.getIdFromName(database, name);
-        //ищем id категории работы, зная id типа
+        //находим id типа материала по имени материала
+        long type_id = Mat.getTypeIdFromName(database, name);
+        Log.d(TAG, "//  MatNameCost sendIntent type_id =  "  + type_id );
+        //ищем id категории материала, зная id типа материала
         long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
 
         Intent intent = new Intent(getActivity(), CostMatDetail.class);
