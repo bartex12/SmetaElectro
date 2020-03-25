@@ -2,19 +2,28 @@ package ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost;
 
 
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.AbstrSmetasWorkCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.abstractfrag.todoit.AbstrSmetasTypeFrag;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.KindWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasCostRecyclerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkrecycleradapter.SmetasWorkRecyclerAdapter;
 import ru.bartex.smetaelectro.w_hlam.SmetasMatRecyclerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MatTypeCost extends AbstrSmetasWorkCostFrag {
+
+    public boolean isSelectedCat;
+    public long cat_id;
 
     public MatTypeCost() {
         // Required empty public constructor
@@ -32,53 +41,35 @@ public class MatTypeCost extends AbstrSmetasWorkCostFrag {
         return fragment;
     }
 
-//    @Override
-//    public void updateAdapter() {
-//        Log.d(TAG, "//  MatTypeCost updateAdapter // " );
-//        Cursor cursor;
-//        if (isSelectedCat){
-//            Log.d(TAG, "MatTypeCost updateAdapter isSelectedCat = true " );
-//            //Курсор  с названиями типов материалов для cat_id
-//            cursor = TypeMat.getNamesFromCatId(database, cat_id);
-//        }else{
-//            Log.d(TAG, "MatTypeCost updateAdapter isSelectedCat = false " );
-//            //получаем курсор с названиями типов материалов по всем категориям
-//            cursor =TypeMat.getCursorNames(database);
-//        }
-//        //Список с данными для адаптера
-//        data = new ArrayList<Map<String, Object>>(cursor.getCount());
-//        while (cursor.moveToNext()) {
-//            //смотрим значение текущей строки курсора
-//            String name_type = cursor.getString(cursor.getColumnIndex(TypeMat.TYPE_MAT_NAME));
-//            Log.d(TAG, "MatTypeCost - updateAdapter  name_type = " + name_type);
-//            m = new HashMap<>();
-//            m.put(P.ATTR_TYPE_NAME,name_type);
-//            data.add(m);
-//        }
-//        String[] from = new String[]{P.ATTR_TYPE_NAME};
-//        int[] to = new int[]{R.id.base_text};
-//        sara =  new SimpleAdapter(getActivity(), data, R.layout.list_item_single_mat, from, to);
-//        listView.setAdapter(sara);
-//    }
-//
-//    @Override
-//    public long getTypeId(String typeName) {
-//        return TypeMat.getIdFromName(database, typeName);
-//    }
-//
-//    @Override
-//    public long getCatId(long type_id) {
-//        return TypeMat.getCatIdFromTypeId(database, type_id);
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "//  MatTypeCost onCreate // " );
+        file_id = getArguments().getLong(P.ID_FILE);
+        position = getArguments().getInt(P.TAB_POSITION);
+        isSelectedCat =getArguments().getBoolean(P.IS_SELECTED_CAT);
+        cat_id = getArguments().getLong(P.ID_CATEGORY);
+    }
 
     @Override
     public SmetasCostRecyclerAdapter getSmetasCostRecyclerAdapter() {
-
-        return null;
+        Log.d(TAG, "//  MatTypeCost getSmetasCostRecyclerAdapter file_id =  "  + file_id );
+        return new SmetasCostRecyclerAdapter(
+                database, KindCost.COST_MAT, file_id, position, isSelectedCat, cat_id, false, 0);
     }
 
     @Override
     public SmetasCostRecyclerAdapter.OnClickOnNamekListener getOnClickOnNamekListener() {
-        return null;
+        return new SmetasCostRecyclerAdapter.OnClickOnNamekListener() {
+            @Override
+            public void nameTransmit(String name) {
+                Log.d(TAG, "//  MatType nameTransmit name =  "  + name );
+                long type_id = TypeMat.getIdFromName(database, name);
+                long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
+                Log.d(TAG, "MatType nameTransmit  cat_id = " +cat_id + "  type_id = " + type_id);
+
+                onClickTypeListener.typeAndClickTransmit(cat_id, type_id, true);
+            }
+        };
     }
 }

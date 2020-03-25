@@ -63,8 +63,6 @@ public class WorkType extends AbstrSmetasWorkFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  WorkType nameTransmit name =  "  + name );
-                Toast.makeText(getActivity(), " щелчок на списке типов ",
-                        Toast.LENGTH_SHORT).show();
                 long type_id = TypeWork.getIdFromName(database, name);
                 long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
                 Log.d(TAG, "WorkType nameTransmit  cat_id = " +cat_id + "  type_id = " + type_id);

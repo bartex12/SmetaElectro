@@ -170,16 +170,6 @@ public class SmetasWorkCost extends AppCompatActivity implements
         // адаптер, ViewPager инициализируются в onResume,
         // чтобы при возврате на SmetasWork из деталей происходило обновление пунктов списка
 
-//        //в макете стоит GONE
-//        FloatingActionButton fab = findViewById(R.id.fab_smetas_work);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
     }
 
     @Override

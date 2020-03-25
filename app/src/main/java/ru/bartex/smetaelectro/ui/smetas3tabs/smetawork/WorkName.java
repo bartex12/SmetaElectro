@@ -69,9 +69,7 @@ public class WorkName extends AbstrSmetasWorkFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  WorkType nameTransmit name =  "  + name );
-                Toast.makeText(getActivity(), " щелчок на списке наименований ",
-                        Toast.LENGTH_SHORT).show();
-
+                //вызываем DetailSmetaLine
                 sendIntent(name);
             }
         };
@@ -80,16 +78,10 @@ public class WorkName extends AbstrSmetasWorkFrag {
     private void sendIntent(String name) {
         //находим id работы по имени работы
         final long work_id = Work.getIdFromName(database, name);
-        Log.d(TAG, "WorkName - onItemClick  work_id = " + work_id + " work_name = " + name);
-        //находим id типа работы по имени работы
-        long type_id = Work.getTypeIdFromName(database, name);
-        Log.d(TAG, "WorkName - onItemClick  type_id = " + type_id);
         //ищем id категории работы, зная id типа
         long cat_id = TypeWork.getCatIdFromTypeId(database, type_id);
-        Log.d(TAG, "WorkName - onItemClick  cat_id = " + cat_id);
         // проверяем есть ли такая  работа в FW для файла с file_id
         final boolean isWork = FW.isWorkInFW(database, file_id, work_id);
-        Log.d(TAG, "WorkName - onItemClick  isWork = " + isWork);
 
         Intent intent = new Intent(getActivity(), DetailSmetaLine.class);
         intent.putExtra(P.ID_FILE_DEFAULT, file_id);

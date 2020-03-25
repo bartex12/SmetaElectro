@@ -61,7 +61,8 @@ public class MatName extends AbstrSmetasMatFrag {
     public SmetasWorkRecyclerAdapter getSmetasWorkRecyclerAdapter() {
         Log.d(TAG, "//  MatName getSmetasCatRecyclerAdapter file_id =  "  + file_id );
         return new SmetasWorkRecyclerAdapter(
-                database, KindWork.MAT, file_id, position, false,0, isSelectedType, type_id);
+                database, KindWork.MAT, file_id,
+                position, false,0, isSelectedType, type_id);
     }
 
     @Override
@@ -70,8 +71,7 @@ public class MatName extends AbstrSmetasMatFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  MatName nameTransmit name =  "  + name );
-//                Toast.makeText(getActivity(), " щелчок на списке наименований ",
-//                        Toast.LENGTH_SHORT).show();
+                //вызываем DetailSmetaMatLine
                 sendIntent(name);
             }
         };
@@ -80,16 +80,10 @@ public class MatName extends AbstrSmetasMatFrag {
     private void sendIntent(String name) {
         //находим id материала по имени материала
         final long mat_id = Mat.getIdFromName(database, name);
-        Log.d(TAG, "MatName - onItemClick  mat_id = " + mat_id + " mat_name = " + name);
-        //находим id типа материала по имени материала
-        long type_id = Mat.getTypeIdFromName(database, name);
-        Log.d(TAG, "MatName - onItemClick  type_id = " + type_id);
         //ищем id категории материалов, зная id типа
         long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
-        Log.d(TAG, "MatName - onItemClick  cat_id = " + cat_id);
         // проверяем есть ли такой  материал в FM для файла с file_id
         final boolean isMat = FM.isMatInFM(database, file_id, mat_id);
-        Log.d(TAG, "MatName - onItemClick  isMat = " + isMat);
 
         Intent intent = new Intent(getActivity(), DetailSmetaMatLine.class);
         intent.putExtra(P.ID_FILE, file_id);

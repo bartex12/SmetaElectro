@@ -58,8 +58,6 @@ public class WorkCatCost extends AbstrSmetasWorkCostFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  WorkCatCost nameTransmit name =  "  + name );
-                Toast.makeText(getActivity(), " щелчок на списке категорий ",
-                        Toast.LENGTH_SHORT).show();
                 long cat_id = CategoryWork.getIdFromName(database, name);
                 Log.d(TAG, "//  WorkCatCost nameTransmit cat_id =  "  + cat_id );
 

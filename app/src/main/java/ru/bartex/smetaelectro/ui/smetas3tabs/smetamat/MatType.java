@@ -60,8 +60,6 @@ public class MatType extends AbstrSmetasMatFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  MatType nameTransmit name =  "  + name );
-//                Toast.makeText(getActivity(), " щелчок на списке типов ",
-//                        Toast.LENGTH_SHORT).show();
                 long type_id = TypeMat.getIdFromName(database, name);
                 long cat_id = TypeMat.getCatIdFromTypeId(database, type_id);
                 Log.d(TAG, "MatType nameTransmit  cat_id = " +cat_id + "  type_id = " + type_id);

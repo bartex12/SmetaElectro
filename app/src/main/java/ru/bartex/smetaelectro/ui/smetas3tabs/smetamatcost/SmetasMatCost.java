@@ -194,9 +194,9 @@ public class SmetasMatCost extends AppCompatActivity implements
     private void createTabFrags() {
         //Log.d(TAG, "//SmetasWork-createTabFrags");
         //создаём фрагменты
-        tab1MatCatCost = WorkCatCost.newInstance(file_id, 0);
-        tab2MatTypeCost = WorkTypeCost.newInstance(file_id, 1, false, 0);
-        tab3MatNameCost = WorkNameCost.newInstance(file_id, 2, false, 0);
+        tab1MatCatCost =MatCatCost.newInstance(file_id, 0);
+        tab2MatTypeCost = MatTypeCost.newInstance(file_id, 1, false, 0);
+        tab3MatNameCost = MatNameCost.newInstance(file_id, 2, false, 0);
     }
 
     private void initPageAdapter() {
@@ -251,7 +251,7 @@ public class SmetasMatCost extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar_smetas_matcost);
         setSupportActionBar(toolbar);
         //показываем заголовок в заголовке экрана
-        toolbar.setTitle(R.string.title_activity_SmetasWorkCost);
+        toolbar.setTitle(R.string.title_activity_smetas_mat_cost);
         toolbar.setTitleTextColor(Color.GREEN);
     }
 

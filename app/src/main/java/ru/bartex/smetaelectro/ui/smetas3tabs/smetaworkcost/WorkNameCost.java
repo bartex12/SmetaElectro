@@ -69,16 +69,13 @@ public class WorkNameCost extends AbstrSmetasWorkCostFrag {
             @Override
             public void nameTransmit(String name) {
                 Log.d(TAG, "//  WorkNameCost nameTransmit name =  "  + name );
-                Toast.makeText(getActivity(), " щелчок на списке наименований ",
-                        Toast.LENGTH_SHORT).show();
-
                 //вызываем DetailCost
                 sendIntent(name);
             }
         };
     }
 
-        public void sendIntent(String name) {
+        private void sendIntent(String name) {
         //находим id по имени работы
         long work_id = Work.getIdFromName(database, name);
         //ищем id категории работы, зная id типа
