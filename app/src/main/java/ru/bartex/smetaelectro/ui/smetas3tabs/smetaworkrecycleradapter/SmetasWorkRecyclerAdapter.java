@@ -350,6 +350,7 @@ public class SmetasWorkRecyclerAdapter extends
 
     //*********************************
 
+    //показ деталей строки списка в зависимости от позиции вкладки и типа списка
     public void showDetails(int position, KindWork kind) {
         switch (position) {
             case 0:
@@ -434,6 +435,7 @@ public class SmetasWorkRecyclerAdapter extends
         }
     }
 
+    //изменение названия строки списка в зависимости от позиции вкладки и типа списка
     public void changeName(int position, KindWork kind) {
         switch (position) {
             case 0:
@@ -515,7 +517,7 @@ public class SmetasWorkRecyclerAdapter extends
         }
     }
 
-
+    //удаление элемента списка
     public void deleteItem(final int position, final KindWork kind) {
         new AlertDialog.Builder(context)
                 .setTitle("Удалить?")
@@ -527,175 +529,182 @@ public class SmetasWorkRecyclerAdapter extends
                 }).setNegativeButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (position) {
-                    case 0:
-                        switch (kind){
-                            case WORK:
-                                //находим id по имени файла
-                                long work_id = CategoryWork.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 0 WORK" +
-                                        " work_id = " + work_id +
-                                        " names[posItem] =" + names[posItem]);
-                                //находим количество строк типов работы для cat_id
-                                int countLineType = TypeWork.getCountLine(database, work_id);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                        " - countLineType = " + countLineType);
-                                if(countLineType > 0) {
-                                //menu.findItem(P.DELETE_ID).setEnabled(false);
-                                    Toast.makeText(context, " Удаление невозможно." +
-                                                    " Имеется записей типов работ: " + countLineType,
-                                            Toast.LENGTH_LONG).show();
-                                }else {
-                                //Удаляем файл из таблицы CategoryWork когда в категории нет типов
-                                 CategoryWork.deleteObject(database, work_id);
-                                 //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                getParamsCategoryWork(database, file_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
-                                      }
-                                break;
-
-                            case MAT:
-                                //находим id по имени файла
-                                long mat_id = CategoryMat.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 0 MAT" +
-                                        " mat_id = " + mat_id + " names[posItem] =" + names[posItem]);
-                                //находим количество строк типов работы для cat_id
-                                int countLineTypeMat = TypeMat.getCountLine(database, mat_id);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                        " - countLineType = " + countLineTypeMat);
-                                if(countLineTypeMat > 0) {
-                                    //menu.findItem(P.DELETE_ID).setEnabled(false);
-                                    Toast.makeText(context, " Удаление невозможно." +
-                                                    " Имеется записей типов материалов: " +
-                                                    countLineTypeMat, Toast.LENGTH_LONG).show();
-                                }else {
-                                    //Удаляем файл из таблицы CategoryWork когда в категории нет типов
-                                    CategoryMat.deleteObject(database, mat_id);
-                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                    getParamsCategoryMat(database, file_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
-                                }
-                                break;
-                        }
-                        break;
-
-                    case 1:
-                        switch (kind){
-                            case WORK:
-                                //находим id по имени файла
-                                long type_id = TypeWork.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 1 WORK" +
-                                        " type_id = " + type_id +
-                                        " names[posItem] =" + names[posItem]);
-                                //находим количество строк видов работы для type_id
-                                int countLineWork = Work.getCountLine(database, type_id);
-                                 Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                         " - countLineWork = " + countLineWork);
-                                if(countLineWork > 0) {
-                                //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-                                //menu.findItem(P.DELETE_ID).setVisible(false);
-                                    Toast.makeText(context, " Удаление невозможно " +
-                                                    "Имеется записей наименований: "+ countLineWork,
-                                            Toast.LENGTH_SHORT).show();
-                                }else {
-                                  //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
-                                 TypeWork.deleteObject(database, type_id);
-                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                    getParamsTypeWork(database, file_id, isSelectedCat, cat_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
-                                      }
-                                break;
-                            case MAT:
-                                //находим id по имени файла
-                                long type_id_mat = TypeMat.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 1 MAT" +
-                                        " type_id_mat = " + type_id_mat + " names[posItem] =" + names[posItem]);
-                                //находим количество строк видов работы для type_id
-                                int countLineNameMat = Mat.getCountLine(database, type_id_mat);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                        " - countLineWork = " + countLineNameMat);
-                                if(countLineNameMat > 0) {
-                                    //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-                                    //menu.findItem(P.DELETE_ID).setVisible(false);
-                                    Toast.makeText(context, " Удаление невозможно" +
-                                                    "Имеется записей наименований: "+ countLineNameMat,
-                                            Toast.LENGTH_SHORT).show();
-                                }else {
-                                    //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
-                                    TypeMat.deleteObject(database, type_id_mat);
-                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                    getParamsTypeMat(database, file_id, isSelectedCat, cat_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
-                                }
-                                break;
-                        }
-                        break;
-
-                    case 2:
-                        switch (kind){
-                            case WORK:
-                                //находим id по имени файла
-                                long work_id = Work.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 2 WORK" +
-                                        " work_id = " + work_id + " names[posItem] =" + names[posItem]);
-                                //находим количество строк видов работы в таблице FW для work_id
-                                 int countLineWorkFW = FW.getCountLine(database, work_id);
-                                 //находим количество строк расценок работы в таблице CostWork для work_id
-                                 int countCostLineWork = CostWork.getCountLine(database, work_id);
-                                 Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                         " - countLineWorkFW = " + countLineWorkFW +
-                                        " countCostLineWork =" + countCostLineWork);
-                                if(countLineWorkFW > 0) {
-                                 //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-                                //menu.findItem(P.DELETE_ID).setVisible(false);
-                                    Toast.makeText(context, " Удаление невозможно " +
-                                                    "Имеется записей в сметах: " + countLineWorkFW,
-                                            Toast.LENGTH_SHORT).show();
-                                }else {
-                                    //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
-                                    Work.deleteObject(database, work_id);
-                                    //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
-                                    CostWork.deleteObject(database, work_id);
-                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                    getParamsNameWork(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case MAT:
-                                //находим id по имени файла
-                                long name_id_mat = Mat.getIdFromName(database, names[posItem]);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 2 MAT" +
-                                        " name_id_mat = " + name_id_mat +
-                                        " names[posItem] =" + names[posItem]);
-                                //находим количество строк видов работы в таблице FW для work_id
-                                int countLineMatFM = FM.getCountLine(database, name_id_mat);
-                                //находим количество строк расценок работы в таблице CostWork для work_id
-                                int countCostLineMat = CostMat.getCountLine(database, name_id_mat);
-                                Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
-                                        " - countLineMatFM = " + countLineMatFM +
-                                        " countCostLineMat =" + countCostLineMat);
-                                if(countLineMatFM > 0) {
-                                    //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
-                                    //menu.findItem(P.DELETE_ID).setVisible(false);
-                                    Toast.makeText(context, " Удаление невозможно" +
-                                                    "Имеется записей в сметах: " + countLineMatFM,
-                                            Toast.LENGTH_SHORT).show();
-                                }else {
-                                    //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
-                                    Mat.deleteObject(database, name_id_mat);
-                                    //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
-                                    CostMat.deleteObject(database, name_id_mat);
-                                    //вызываем обновлённые параметры чтобы обновление прошло успешно
-                                    getParamsNameMat(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
-                                    Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                        }
-                        break;
-                }
+                //удаляем данные в зависимости от позиции вкладки и типа списка
+                getDeleteAction(position, kind);
                 //обновляем данные списка фрагмента работ
                 notifyDataSetChanged();
             }
         }).show();
     }
+
+    //*********************  getDeleteAction  ***************************
+    private void getDeleteAction(int position, KindWork kind) {
+        switch (position) {
+            case 0:
+                switch (kind){
+                    case WORK:
+                        //находим id по имени файла
+                        long work_id = CategoryWork.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 0 WORK" +
+                                " work_id = " + work_id +
+                                " names[posItem] =" + names[posItem]);
+                        //находим количество строк типов работы для cat_id
+                        int countLineType = TypeWork.getCountLine(database, work_id);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                " - countLineType = " + countLineType);
+                        if(countLineType > 0) {
+                        //menu.findItem(P.DELETE_ID).setEnabled(false);
+                            Toast.makeText(context, " Удаление невозможно." +
+                                            " Имеется записей типов работ: " + countLineType,
+                                    Toast.LENGTH_LONG).show();
+                        }else {
+                        //Удаляем файл из таблицы CategoryWork когда в категории нет типов
+                         CategoryWork.deleteObject(database, work_id);
+                         //вызываем обновлённые параметры чтобы обновление прошло успешно
+                        getParamsCategoryWork(database, file_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
+                              }
+                        break;
+
+                    case MAT:
+                        //находим id по имени файла
+                        long mat_id = CategoryMat.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 0 MAT" +
+                                " mat_id = " + mat_id + " names[posItem] =" + names[posItem]);
+                        //находим количество строк типов работы для cat_id
+                        int countLineTypeMat = TypeMat.getCountLine(database, mat_id);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                " - countLineType = " + countLineTypeMat);
+                        if(countLineTypeMat > 0) {
+                            //menu.findItem(P.DELETE_ID).setEnabled(false);
+                            Toast.makeText(context, " Удаление невозможно." +
+                                            " Имеется записей типов материалов: " +
+                                            countLineTypeMat, Toast.LENGTH_LONG).show();
+                        }else {
+                            //Удаляем файл из таблицы CategoryWork когда в категории нет типов
+                            CategoryMat.deleteObject(database, mat_id);
+                            //вызываем обновлённые параметры чтобы обновление прошло успешно
+                            getParamsCategoryMat(database, file_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                }
+                break;
+
+            case 1:
+                switch (kind){
+                    case WORK:
+                        //находим id по имени файла
+                        long type_id = TypeWork.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 1 WORK" +
+                                " type_id = " + type_id +
+                                " names[posItem] =" + names[posItem]);
+                        //находим количество строк видов работы для type_id
+                        int countLineWork = Work.getCountLine(database, type_id);
+                         Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                 " - countLineWork = " + countLineWork);
+                        if(countLineWork > 0) {
+                        //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                        //menu.findItem(P.DELETE_ID).setVisible(false);
+                            Toast.makeText(context, " Удаление невозможно " +
+                                            "Имеется записей наименований: "+ countLineWork,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                          //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
+                         TypeWork.deleteObject(database, type_id);
+                            //вызываем обновлённые параметры чтобы обновление прошло успешно
+                            getParamsTypeWork(database, file_id, isSelectedCat, cat_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
+                              }
+                        break;
+                    case MAT:
+                        //находим id по имени файла
+                        long type_id_mat = TypeMat.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 1 MAT" +
+                                " type_id_mat = " + type_id_mat + " names[posItem] =" + names[posItem]);
+                        //находим количество строк видов работы для type_id
+                        int countLineNameMat = Mat.getCountLine(database, type_id_mat);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                " - countLineWork = " + countLineNameMat);
+                        if(countLineNameMat > 0) {
+                            //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                            //menu.findItem(P.DELETE_ID).setVisible(false);
+                            Toast.makeText(context, " Удаление невозможно" +
+                                            "Имеется записей наименований: "+ countLineNameMat,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Удаляем файл из таблицы TypeWork когда в типе нет видов работ
+                            TypeMat.deleteObject(database, type_id_mat);
+                            //вызываем обновлённые параметры чтобы обновление прошло успешно
+                            getParamsTypeMat(database, file_id, isSelectedCat, cat_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                }
+                break;
+
+            case 2:
+                switch (kind){
+                    case WORK:
+                        //находим id по имени файла
+                        long work_id = Work.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 2 WORK" +
+                                " work_id = " + work_id + " names[posItem] =" + names[posItem]);
+                        //находим количество строк видов работы в таблице FW для work_id
+                         int countLineWorkFW = FW.getCountLine(database, work_id);
+                         //находим количество строк расценок работы в таблице CostWork для work_id
+                         int countCostLineWork = CostWork.getCountLine(database, work_id);
+                         Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                 " - countLineWorkFW = " + countLineWorkFW +
+                                " countCostLineWork =" + countCostLineWork);
+                        if(countLineWorkFW > 0) {
+                         //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                        //menu.findItem(P.DELETE_ID).setVisible(false);
+                            Toast.makeText(context, " Удаление невозможно " +
+                                            "Имеется записей в сметах: " + countLineWorkFW,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
+                            Work.deleteObject(database, work_id);
+                            //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                            CostWork.deleteObject(database, work_id);
+                            //вызываем обновлённые параметры чтобы обновление прошло успешно
+                            getParamsNameWork(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case MAT:
+                        //находим id по имени файла
+                        long name_id_mat = Mat.getIdFromName(database, names[posItem]);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem case 2 MAT" +
+                                " name_id_mat = " + name_id_mat +
+                                " names[posItem] =" + names[posItem]);
+                        //находим количество строк видов работы в таблице FW для work_id
+                        int countLineMatFM = FM.getCountLine(database, name_id_mat);
+                        //находим количество строк расценок работы в таблице CostWork для work_id
+                        int countCostLineMat = CostMat.getCountLine(database, name_id_mat);
+                        Log.d(TAG, "SmetasWorkRecyclerAdapter deleteItem" +
+                                " - countLineMatFM = " + countLineMatFM +
+                                " countCostLineMat =" + countCostLineMat);
+                        if(countLineMatFM > 0) {
+                            //menu.findItem(P.DELETE_ID).setEnabled(false); //так лучше
+                            //menu.findItem(P.DELETE_ID).setVisible(false);
+                            Toast.makeText(context, " Удаление невозможно" +
+                                            "Имеется записей в сметах: " + countLineMatFM,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Удаляем запись из таблицы Work когда в таблице FW нет такой  работы
+                            Mat.deleteObject(database, name_id_mat);
+                            //Удаляем запись из таблицы CostWork когда в таблице FW нет такой  работы
+                            CostMat.deleteObject(database, name_id_mat);
+                            //вызываем обновлённые параметры чтобы обновление прошло успешно
+                            getParamsNameMat(database, file_id, isSelectedCat, cat_id, isSelectedType, type_id);
+                            Toast.makeText(context, " Удалено ", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+                break;
+        }
+    }
+    //***************************  end   getDeleteAction  **************
 }
