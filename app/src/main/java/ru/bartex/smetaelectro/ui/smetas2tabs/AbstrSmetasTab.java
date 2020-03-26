@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.ui.smetas2tabs.adapters.SmetasTabRecyclerAdapter;
 
 
 public abstract class AbstrSmetasTab extends Fragment {

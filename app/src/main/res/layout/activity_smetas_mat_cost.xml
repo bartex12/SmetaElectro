@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.smetas3tabs.smetamatcost.SmetasMatCost">
+    tools:context=".ui.smetas3tabs.cost.matcost.SmetasMatCost">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_smetas_matcost"

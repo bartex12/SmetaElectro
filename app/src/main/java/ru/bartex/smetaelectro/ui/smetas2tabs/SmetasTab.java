@@ -20,10 +20,11 @@ import android.view.View;
 
 import ru.bartex.smetaelectro.ListOfSmetasStructured;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetamat.SmetasMat;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetamatcost.SmetasMatCost;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetawork.SmetasWork;
-import ru.bartex.smetaelectro.ui.smetas3tabs.smetaworkcost.SmetasWorkCost;
+import ru.bartex.smetaelectro.ui.smetas2tabs.adapters.SmetasTabPagerAdapter;
+import ru.bartex.smetaelectro.ui.smetas3tabs.workmat.mat.SmetasMat;
+import ru.bartex.smetaelectro.ui.smetas3tabs.cost.matcost.SmetasMatCost;
+import ru.bartex.smetaelectro.ui.smetas3tabs.workmat.work.SmetasWork;
+import ru.bartex.smetaelectro.ui.smetas3tabs.cost.workcost.SmetasWorkCost;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
 import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
 

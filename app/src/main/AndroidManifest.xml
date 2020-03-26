@@ -14,21 +14,21 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.smetabefore.SmetaNewNameChange"></activity>
         <activity
-            android:name=".ui.smetas3tabs.smetaworkcost.SmetasWorkCost"
+            android:name=".ui.smetas3tabs.cost.workcost.SmetasWorkCost"
             android:label="@string/title_activity_smetas_work_cost"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.smetas3tabs.smetawork.SmetasWork"
+            android:name=".ui.smetas3tabs.workmat.work.SmetasWork"
             android:label="@string/title_activity_SmetasWork"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.smetas3tabs.changedata.changedatamat.ChangeDataMat"
+            android:name=".ui.smetas3tabs.changedata.datamat.ChangeDataMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.changedata.changedatamat.ChangeDataTypeMat"
+            android:name=".ui.smetas3tabs.changedata.datamat.ChangeDataTypeMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.changedata.changedatamat.ChangeDataCategoryMat"
+            android:name=".ui.smetas3tabs.changedata.datamat.ChangeDataCategoryMat"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".ui.smetas3tabs.specific.SpesificMat"
@@ -43,20 +43,20 @@
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".ui.smetas3tabs.smetamat.detailsmat.CostMatDetail"
+            android:name=".ui.smetas3tabs.workmat.mat.detmat.CostMatDetail"
             android:label="@string/title_activity_smetas_mat_cost"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.smetamatcost.SmetasMatCost"
+            android:name=".ui.smetas3tabs.cost.matcost.SmetasMatCost"
             android:label="@string/title_activity_smetas_mat_cost"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.smetamat.detailsmat.DetailSmetaMatLine"
+            android:name=".ui.smetas3tabs.workmat.mat.detmat.DetailSmetaMatLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.smetamat.SmetasMat"
+            android:name=".ui.smetas3tabs.workmat.mat.SmetasMat"
             android:label="@string/title_activity_SmetasMat"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -66,16 +66,16 @@
             android:name=".ui.smetas3tabs.specific.SpesificWork"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
-        <activity android:name=".ui.smetas3tabs.changedata.changedatawork.ChangeDataWork" />
+        <activity android:name=".ui.smetas3tabs.changedata.datawork.ChangeDataWork" />
         <activity
-            android:name=".ui.smetas3tabs.changedata.changedatawork.ChangeDataType"
+            android:name=".ui.smetas3tabs.changedata.datawork.ChangeDataType"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.smetas3tabs.specific.SpecificType"
             android:label="@string/title_activity_CategoryMatSpecific"
             android:theme="@style/AppDialog" />
         <activity
-            android:name=".ui.smetas3tabs.changedata.changedatawork.ChangeDataCategory"
+            android:name=".ui.smetas3tabs.changedata.datawork.ChangeDataCategory"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.smetas3tabs.specific.SpecificCategory"
@@ -97,11 +97,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.smetas3tabs.smetawork.details.DetailSmetaLine"
+            android:name=".ui.smetas3tabs.workmat.work.detwork.DetailSmetaLine"
             android:label="@string/title_activity_details"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.smetas3tabs.smetawork.details.DetailCost"
+            android:name=".ui.smetas3tabs.workmat.work.detwork.DetailCost"
             android:label="@string/title_activity_CostDetail"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
