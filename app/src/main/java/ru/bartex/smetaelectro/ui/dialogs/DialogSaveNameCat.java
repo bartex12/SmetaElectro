@@ -15,9 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.database.work.CategoryWork;
 
 
 public class DialogSaveNameCat extends DialogSaveNameAbstract {

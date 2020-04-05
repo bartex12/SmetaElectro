@@ -7,9 +7,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+
 import android.view.inputmethod.InputMethodManager;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+
 
 abstract public class DialogSaveNameAbstract extends DialogFragment {
 

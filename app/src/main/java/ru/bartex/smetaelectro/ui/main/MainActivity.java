@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
 import ru.bartex.smetaelectro.ui.dialogs.DialogNewOrCurrentFragment;
 import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
+
 
 public class MainActivity extends AppCompatActivity {
 

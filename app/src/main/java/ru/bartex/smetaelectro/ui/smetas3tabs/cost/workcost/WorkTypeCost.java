@@ -7,8 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.smetas3tabs.cost.AbstrSmetasCostFrag;
 import ru.bartex.smetaelectro.ui.smetas3tabs.adapters.KindCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.adapters.SmetasCostRecyclerAdapter;

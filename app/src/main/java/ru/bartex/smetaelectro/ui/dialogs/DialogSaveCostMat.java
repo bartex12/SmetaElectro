@@ -25,12 +25,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.database.mat.UnitMat;
+
 
 public class DialogSaveCostMat extends DialogFragment {
 

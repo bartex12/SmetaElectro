@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.mat.Mat;
+
 
 public class SpesificMat extends AppCompatActivity {
     public static final String TAG = "33333";

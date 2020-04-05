@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.work.Work;
+
 
 public class ChangeDataWork extends AppCompatActivity {
 

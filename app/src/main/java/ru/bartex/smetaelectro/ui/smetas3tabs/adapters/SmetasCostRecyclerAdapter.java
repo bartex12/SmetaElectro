@@ -11,12 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.database.work.Work;
+;
 
 public class SmetasCostRecyclerAdapter extends
         RecyclerView.Adapter<SmetasCostRecyclerAdapter.ViewHolder> {

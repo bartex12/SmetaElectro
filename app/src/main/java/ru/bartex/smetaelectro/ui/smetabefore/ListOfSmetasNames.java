@@ -16,10 +16,11 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.files.FileWork;
 import ru.bartex.smetaelectro.ui.smetas2tabs.SmetasTab;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+
 import ru.bartex.smetaelectro.ui.dialogs.DialogWorkOrMatCosts;
 
 public class ListOfSmetasNames extends AppCompatActivity {

@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.mat.CategoryMat;
+
 
 public class ChangeDataCategoryMat extends AppCompatActivity {
     static String TAG = "33333";

@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataType;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.work.TypeWork;
+
 
 public class SpecificType extends AppCompatActivity {
 

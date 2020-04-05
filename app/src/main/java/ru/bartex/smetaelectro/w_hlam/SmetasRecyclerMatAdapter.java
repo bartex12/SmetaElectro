@@ -17,10 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.database.mat.Mat;
+
 
 //класс - адаптер для фрагмента материалов SmetasTabMat, в макете которого RecyclerView
 public class SmetasRecyclerMatAdapter extends RecyclerView.Adapter<SmetasRecyclerMatAdapter.ViewHolder> {

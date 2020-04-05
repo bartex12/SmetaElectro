@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategory;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.work.CategoryWork;
+
 
 public class SpecificCategory extends AppCompatActivity {
 

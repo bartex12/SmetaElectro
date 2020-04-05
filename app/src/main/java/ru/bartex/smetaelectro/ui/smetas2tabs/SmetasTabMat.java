@@ -3,11 +3,12 @@ package ru.bartex.smetaelectro.ui.smetas2tabs;
 import android.content.Intent;
 import android.os.Bundle;
 
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.database.mat.Mat;
 import ru.bartex.smetaelectro.ui.smetas2tabs.adapters.SmetasTabRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.workmat.mat.detmat.DetailSmetaMatLine;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
+
 
 //класс - фрагмент для вкладки Материалы
 public class SmetasTabMat extends AbstrSmetasTab {

@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataFile;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.files.FileWork;
+
 
 public class SmetaSpecification extends AppCompatActivity {
 

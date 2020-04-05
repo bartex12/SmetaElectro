@@ -19,16 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas3tabs.workmat.AbstrSmetasFrag;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.ui.smetas3tabs.cost.workcost.SmetasWorkCost;
 import ru.bartex.smetaelectro.ui.smetas3tabs.adapters.SmetasWorkPagerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.adapters.KindWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameAbstract;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameCat;
 import ru.bartex.smetaelectro.ui.dialogs.DialogSaveNameType;

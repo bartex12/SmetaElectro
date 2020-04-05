@@ -3,11 +3,12 @@ package ru.bartex.smetaelectro.ui.smetas2tabs;
 import android.content.Intent;
 import android.os.Bundle;
 
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.database.work.Work;
 import ru.bartex.smetaelectro.ui.smetas2tabs.adapters.SmetasTabRecyclerAdapter;
 import ru.bartex.smetaelectro.ui.smetas3tabs.workmat.work.detwork.DetailSmetaLine;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+
 
 
 //класс - фрагмент для вкладки Работа

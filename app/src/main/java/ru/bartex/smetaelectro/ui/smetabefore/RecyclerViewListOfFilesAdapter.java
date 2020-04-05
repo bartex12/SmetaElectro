@@ -18,8 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataFile;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.files.FileWork;
+
 
 public class RecyclerViewListOfFilesAdapter extends
         RecyclerView.Adapter<RecyclerViewListOfFilesAdapter.ViewHolder> {
