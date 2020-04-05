@@ -17,12 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.bartex.smetaelectro.R;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.database.work.Work;
 
 public class SmetasTabRecyclerAdapter extends
         RecyclerView.Adapter<SmetasTabRecyclerAdapter.ViewHolder>{
@@ -51,7 +51,7 @@ public class SmetasTabRecyclerAdapter extends
         this.onLineListener = onLineListener;
     }
 
-     SmetasTabRecyclerAdapter(SQLiteDatabase database, long file_id, int positionTab) {
+    public SmetasTabRecyclerAdapter(SQLiteDatabase database, long file_id, int positionTab) {
         this.database = database;
         this.file_id = file_id;
         this.positionTab = positionTab;

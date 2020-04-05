@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database;
+package ru.bartex.smetaelectro.database;
 
 
 import android.content.ContentValues;
@@ -9,20 +9,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.data.DataFile;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.TotalTab;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.UnitMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CategoryWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.CostWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Unit;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.Work;
+import ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.files.TotalTab;
+import ru.bartex.smetaelectro.database.mat.CategoryMat;
+import ru.bartex.smetaelectro.database.mat.CostMat;
+import ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.database.mat.Mat;
+import ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.database.mat.UnitMat;
+import ru.bartex.smetaelectro.database.work.CategoryWork;
+import ru.bartex.smetaelectro.database.work.CostWork;
+import ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.database.work.Unit;
+import ru.bartex.smetaelectro.database.work.Work;
+
 
 public class SmetaOpenHelper extends SQLiteOpenHelper {
 

@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
+package ru.bartex.smetaelectro.database.work;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +10,6 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataCategory;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
 
 public class CategoryWork {
     public static final String TAG = "33333";

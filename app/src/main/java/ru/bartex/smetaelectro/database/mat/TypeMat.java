@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
+package ru.bartex.smetaelectro.database.mat;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataTypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+
 
 public class TypeMat {
     public static final String TAG = "33333";

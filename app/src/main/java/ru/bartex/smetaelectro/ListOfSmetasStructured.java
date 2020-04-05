@@ -32,13 +32,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.SmetaOpenHelper;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.TypeWork;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.SmetaOpenHelper;
+import ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.mat.FM;
+import ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.database.work.TypeWork;
 import ru.bartex.smetaelectro.ui.main.MainActivity;
 import ru.bartex.smetaelectro.ui.smetabefore.ListOfSmetasNames;
 import ru.bartex.smetaelectro.ui.smetas3tabs.cost.matcost.SmetasMatCost;
@@ -82,7 +82,8 @@ public class ListOfSmetasStructured extends AppCompatActivity {
 
         file_id = getIntent().getExtras().getLong(P.ID_FILE);
         position_tab = getIntent().getExtras().getInt(P.TAB_POSITION);
-        Log.d(TAG, "ListOfSmetasStructured - onCreate file_id = " + file_id  + "  position_tab = " + position_tab);
+        Log.d(TAG, "ListOfSmetasStructured - onCreate file_id = " + file_id  +
+                "  position_tab = " + position_tab);
 
         llWork = findViewById(R.id.llWork);
 

@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
+package ru.bartex.smetaelectro.database.work;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,12 +7,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.data.DataFW;
-import ru.bartex.smetaelectro.data.DataWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CategoryMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+import ru.bartex.smetaelectro.database.files.FileWork;
 
 public class FW {
     public static final String TAG = "33333";

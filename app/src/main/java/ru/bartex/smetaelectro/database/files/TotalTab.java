@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files;
+package ru.bartex.smetaelectro.database.files;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;

@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
+package ru.bartex.smetaelectro.database.mat;
 
 import android.content.ContentValues;
 import android.content.Context;

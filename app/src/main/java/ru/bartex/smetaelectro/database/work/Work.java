@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work;
+package ru.bartex.smetaelectro.database.work;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,10 +10,7 @@ import android.util.Log;
 
 import ru.bartex.smetaelectro.R;
 import ru.bartex.smetaelectro.data.DataWork;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.CostMat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.FM;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.Mat;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat.TypeMat;
+
 
 public class Work {
     public static final String TAG = "33333";

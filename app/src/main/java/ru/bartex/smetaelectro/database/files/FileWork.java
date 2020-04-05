@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files;
+package ru.bartex.smetaelectro.database.files;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.bartex.smetaelectro.data.DataFile;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.work.FW;
+import ru.bartex.smetaelectro.database.P;
+import ru.bartex.smetaelectro.database.work.FW;
 
-import static ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P.getDateString;
-import static ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.P.getTimeString;
+import static ru.bartex.smetaelectro.database.P.getDateString;
+import static ru.bartex.smetaelectro.database.P.getTimeString;
+
 
 public class FileWork {
 
@@ -185,8 +186,8 @@ public class FileWork {
         Log.i(TAG, "FileWork.addFile ... ");
 
         //получаем дату и время в нужном для базы данных формате
-        String dateFormat = P.getDateString();
-        String timeFormat = P.getTimeString();
+        String dateFormat = getDateString();
+        String timeFormat = getTimeString();
 
         //заполняем данные для обновления в базе
         ContentValues cv = new ContentValues();

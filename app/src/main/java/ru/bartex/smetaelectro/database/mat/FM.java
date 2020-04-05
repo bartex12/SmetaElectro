@@ -1,4 +1,4 @@
-package ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.mat;
+package ru.bartex.smetaelectro.database.mat;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,8 +7,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ru.bartex.smetaelectro.data.DataFM;
-import ru.bartex.smetaelectro.data.DataFW;
-import ru.bartex.smetaelectro.ru.bartex.smetaelectro.database.files.FileWork;
+import ru.bartex.smetaelectro.database.files.FileWork;
 
 
 public class FM {
